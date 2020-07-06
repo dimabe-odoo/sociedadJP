@@ -18,17 +18,10 @@ class LoginController(http.Controller):
         else:
             request.env['res.partner'].sudo().create({'name': name, 'email': email, 'mobile': phoneNumber})
         
-        request.env['res.users'].sudo().create({'name': name, 'login': email, 'password': password})
+        request.env['res.users'].sudo().create({'name': name, 'login': email,
+        'password': password, 
+        'company_id':1,
+        'sel_groups_1_8_9':8})
 
-        uid = request.session.authenticate(
-            request.env.cr.dbname,
-            email,
-            password
-        )
 
-        if not uid:
-            return self.errcode(code=400, message='No se pudo conectar al sistema')
-
-        token = generate_token(uid)
-
-        return {'user': uid, 'token': token}
+        return {'message': 'Usuario creado correctamente'}
