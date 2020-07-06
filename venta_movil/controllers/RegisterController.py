@@ -17,12 +17,8 @@ class LoginController(http.Controller):
             contact.write({'name': name, 'email': email, 'mobile': phoneNumber})
         else:
             request.env['res.partner'].sudo().create({'name': name, 'email': email, 'mobile': phoneNumber})
-
-        user.name = name
-        user.password = password
-        user.login = email
-        user.email = email
-        request.env.cr.commit()
+        
+        request.env['res.users'].sudo().create({'name': name, 'login': email, 'password': password})
 
         uid = request.session.authenticate(
             request.env.cr.dbname,
