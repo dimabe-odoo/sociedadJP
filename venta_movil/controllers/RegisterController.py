@@ -3,7 +3,7 @@ from odoo.http import request
 from ..jwt_token import generate_token
 
 class LoginController(http.Controller):
-    @http.route('/api/login', type='json', auth='public', cors='*')
+    @http.route('/api/register', type='json', auth='public', cors='*')
     def do_register(self, name, password, email, phoneNumber):
         # search user exist
         user = request.env['res.users'].sudo().search(['email', '=', email])
