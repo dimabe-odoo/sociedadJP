@@ -29,4 +29,4 @@ class RegisterController(http.Controller):
         token = generate_token(create_user[0].id)
 
 
-        return {'message': 'Usuario creado correctamente', 'user': create_user[0].name}
+        return {'message': 'Usuario creado correctamente', 'user': create_user[0].name, 'token': token}
