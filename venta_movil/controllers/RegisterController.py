@@ -1,15 +1,16 @@
 from odoo import http
 from odoo.http import request
 from ..jwt_token import generate_token
+import werkzeug
 
-class LoginController(http.Controller):
+class RegisterController(http.Controller):
     @http.route('/api/register', type='json', auth='public', cors='*')
     def do_register(self, name, password, email, phoneNumber):
         # search user exist
         user = request.env['res.users'].sudo().search([('login', '=', email)])
 
         if user:
-            return self.errcode(code=400, message='Usuario registrado con anterioridad')
+            raise werkzeug.exceptions.BadRequest('el email {} ya se encuentra registrado'.format(email))
 
         contact = request.env['res.partner'].sudo().search([('email', '=', email)])
 
