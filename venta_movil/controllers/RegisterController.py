@@ -11,7 +11,7 @@ class LoginController(http.Controller):
         if user:
             return self.errcode(code=400, message='Usuario registrado con anterioridad')
 
-        contact = request.env['res.partner'].sudo().search([('email', '=', email)])
+        contact = request.env['res.partner'].sudo().search([('login', '=', email)])
 
         if contact: 
             contact.write({'name': name, 'email': email, 'mobile': phoneNumber})
