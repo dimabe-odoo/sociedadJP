@@ -19,6 +19,7 @@ class IrHttp(models.AbstractModel):
                         [('id', '=', int(payload['sub']))]
                     )
                     request.uid = u.id
+                    request.uemail = u.login
             except jwt.ExpiredSignatureError:
                 raise exceptions.AccessDenied()
         else:
