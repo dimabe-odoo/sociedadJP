@@ -15,4 +15,6 @@ class LoginController(http.Controller):
 
         token = generate_token(uid)
 
-        return {'user': uid[0].name, 'token': token}
+        user = request.env['res.users'].browse(uuid)
+
+        return {'user': user, 'token': token}
