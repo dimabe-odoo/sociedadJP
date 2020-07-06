@@ -6,5 +6,5 @@ class ProfileController(http.Controller):
 
     @http.route('/api/user', type='json', methods=['GET'], auth='token', cors='*')
     def do_user(self):
-
-        return {'bad': request.uid}
+        user = request.env['res_users'].search_read([('id', '=', request.uid)], ['name', 'login'])
+        return {'user': user}
