@@ -7,4 +7,5 @@ class ProfileController(http.Controller):
 
     @http.route('/api/user', type='json', auth='token', cors='*')
     def get_user(self):
-        return {'user': request.user}
+        user = request.user
+        return {'user': user}
