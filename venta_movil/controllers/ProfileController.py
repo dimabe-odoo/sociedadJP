@@ -5,6 +5,5 @@ import werkzeug
 class ProfileController(http.Controller):
 
     @http.route('/api/user', type='json', auth='token', cors='*')
-    def get_user(self, **Kw):
-        data = json.loads(request.httprequest.data)
-        return {'bad': data}
+    def get_user(self, uemail):
+        return {'bad': uemail}
