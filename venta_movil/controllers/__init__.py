@@ -2,3 +2,4 @@
 
 from . import controllers
 from . import LoginController
+from . import RegisterController
