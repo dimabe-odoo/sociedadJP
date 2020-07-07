@@ -22,10 +22,11 @@ class RegisterController(http.Controller):
         create_user = request.env['res.users'].sudo().create({
         'name': name, 
         'login': email,
+        'email': email,
         'password': password, 
         'company_id':1,
         'sel_groups_1_8_9':8,
-        'partner_id', partner[0].id})
+        'partner_id': partner[0].id})
 
         token = generate_token(create_user[0].id)
 
