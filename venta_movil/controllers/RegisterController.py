@@ -7,6 +7,7 @@ class RegisterController(http.Controller):
     @http.route('/api/register', type='json', auth='public', cors='*')
     def do_register(self, name, password, email, phoneNumber):
         # search user exist
+        email = email.lower()
         user = request.env['res.users'].sudo().search([('login', '=', email)])
 
         if user:
