@@ -26,7 +26,8 @@ class RegisterController(http.Controller):
         'password': password, 
         'company_id':1,
         'sel_groups_1_8_9':8,
-        'partner_id': partner[0].id})
+        'partner_id': partner[0].id,
+        'mobile': phoneNumber})
 
         token = generate_token(create_user[0].id)
 
