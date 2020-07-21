@@ -51,7 +51,7 @@
         <menuitem id="menu_jp_communes"
             name="Comunas"
             parent="97"
-            action="action_jp_commune_views"
+            action="contacts.menu_localisation"
         />
     </data>
 </odoo>
