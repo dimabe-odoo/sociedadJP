@@ -2,7 +2,7 @@
     <data>
         <record model="ir.ui.view" id="view_jp_commune_tree">
             <field name="name">view.jp.commune.tree</field>
-            <field name="model">custom.port</field>
+            <field name="model">jp.commmune</field>
             <field name="arch" type="xml">
                 <tree>
                 <field name="name"/>
@@ -16,7 +16,7 @@
             <field name="name">view.jp.commune.form</field>
             <field name="model">jp.commune</field>
             <field name="arch" type="xml">
-                <form name="Custom Port Form">
+                <form name="Jp Commune Form">
                 <sheet>
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only" />
@@ -50,7 +50,7 @@
 
         <menuitem id="menu_jp_communes"
             name="Comunas"
-            parent="menu_contacts.configuration_localization"
+            parent="contacts.configuration_localization"
             action="action_jp_commune_views"
         />
     </data>
