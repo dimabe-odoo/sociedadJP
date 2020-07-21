@@ -50,7 +50,7 @@
 
         <menuitem id="menu_jp_communes"
             name="Comunas"
-            parent="contacts.menu_localisation"
+            parent="base.menu_localisation"
             action="action_jp_commune_views"
         />
     </data>
