@@ -2,7 +2,7 @@
     <data>
         <record model="ir.ui.view" id="view_jp_commune_tree">
             <field name="name">view.jp.commune.tree</field>
-            <field name="model">jp.commmune</field>
+            <field name="model">jp.commune</field>
             <field name="arch" type="xml">
                 <tree>
                 <field name="name"/>
