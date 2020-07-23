@@ -9,5 +9,8 @@ class CommuneController(http.Controller):
         communes = request.env['jp.commune'].sudo().search([])
         result = []
         for res in communes:
-            result.append({'name': res.name})
+            result.append({
+                'id': res.id,
+                'name': res.name
+                })
         return result
