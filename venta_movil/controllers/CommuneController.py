@@ -4,7 +4,7 @@ import werkzeug
 
 class CommuneController(http.Controller):
 
-    @http.route('/api/communes', type='json', methods=['GET'], auth='public', cors='*')
+    @http.route('/api/communes', type='json', methods=['GET'], auth='token', cors='*')
     def get_communes(self):
         communes = request.env['jp.commune'].sudo().search([])
         result = []
