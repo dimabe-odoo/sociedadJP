@@ -6,7 +6,7 @@ class CommuneController(http.Controller):
 
     @http.route('/api/communes', type='json', methods=['GET'], auth='token', cors='*')
     def get_communes(self):
-        communes = request.env['jp.commune'].sudo().search([])
+        communes = request.env['jp.commune'].sudo().search([('state_id', '=', 1176)])
         result = []
         for res in communes:
             result.append({
