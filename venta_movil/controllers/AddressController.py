@@ -8,11 +8,10 @@ class AddressController(http.Controller):
     @http.route('/api/addresses', type='json', methods=['POST'], auth='token', cors='*')
     def get_communes(self, commune_id, city, address, latitude, longitude):
         partner_id = request.env['res.users'].sudo().search([('id', '=', request.uid)])[0].partner_id
-        contact = request.env['res.partner'].sudo().browse(partner_id[0])
-        if not contact:
-            raise werkzeug.exceptions.BadRequest('Imposible encontrar el contacto asociado al usuario {}'.format(contact))
+        if not partner_id:
+            raise werkzeug.exceptions.BadRequest('Imposible encontrar el contacto asociado al usuario')
 
-        contact.update({'state_id': 1176,'jp_commune_id': int(commune_id), 'city': city, 'street': address, 'partnet_latitude': float(latitude), 'partner_longitude': float(longitude)})
+        partner_id.write({'state_id': 1176,'jp_commune_id': int(commune_id), 'city': city, 'street': address, 'partnet_latitude': float(latitude), 'partner_longitude': float(longitude)})
 
         return {'message': 'Dirección creada correctamente'}
         
