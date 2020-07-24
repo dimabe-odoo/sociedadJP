@@ -5,3 +5,4 @@ from . import LoginController
 from . import RegisterController
 from . import ProfileController
 from . import CommuneController
+from . import AddressController
