@@ -7,7 +7,7 @@ class AddressController(http.Controller):
 
     @http.route('/api/addresses', type='json', methods=['POST'], auth='token', cors='*')
     def get_communes(self, commune_id, city, address, latitude, longitude):
-        partner_id = request.env['res.users'].sudo().search([('id', '=', request.uid)])[o].partner_id
+        partner_id = request.env['res.users'].sudo().search_read([('id', '=', request.uid)], ['partner_id'])
         raise werkzeug.exceptions.BadRequest(partner_id)
         contact = request.env['res.partner'].sudo().browse(partner_id)
         if not contact:
