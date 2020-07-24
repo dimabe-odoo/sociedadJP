@@ -7,7 +7,7 @@ class AddressController(http.Controller):
 
     @http.route('/api/addresses', type='json', methods=['POST'], auth='token', cors='*')
     def get_communes(self, commune_id, city, address, latitude, longitude):
-        contact = request.env['res.partner'].sudo().search(['user_id', '=', request.uid])
+        contact = request.env['res.partner'].sudo().search([('user_id', '=', request.uid)])
 
         if not contact:
             raise werkzeug.exceptions.BadRequest('Imposible encontrar el contacto asociado al usuario')
