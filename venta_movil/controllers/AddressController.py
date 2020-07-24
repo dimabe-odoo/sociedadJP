@@ -11,8 +11,8 @@ class AddressController(http.Controller):
 
         if not contact:
             raise werkzeug.exceptions.BadRequest('Imposible encontrar el contacto asociado al usuario')
-        
-        contact.update({'state_id': 1176,'jp_commune_id': commune_id, 'city': city, 'street': address, 'partnet_latitude': latitude, 'partner_longitude': longitude})
+
+        contact.update({'state_id': 1176,'jp_commune_id': int(commune_id), 'city': city, 'street': address, 'partnet_latitude': float(latitude), 'partner_longitude': float(longitude)})
 
         return {'message': 'Dirección creada correctamente'}
         
