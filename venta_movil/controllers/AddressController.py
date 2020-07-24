@@ -10,7 +10,7 @@ class AddressController(http.Controller):
         contact = request.env['res.partner'].sudo().search([('user_id', '=', request.uid)])
 
         if not contact:
-            raise werkzeug.exceptions.BadRequest('Imposible encontrar el contacto asociado al usuario')
+            raise werkzeug.exceptions.BadRequest('Imposible encontrar el contacto asociado al usuario {}'.format(contact))
 
         contact.update({'state_id': 1176,'jp_commune_id': int(commune_id), 'city': city, 'street': address, 'partnet_latitude': float(latitude), 'partner_longitude': float(longitude)})
 
