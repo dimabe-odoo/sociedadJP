@@ -20,7 +20,7 @@ class LoginController(http.Controller):
         return {'user': user[0].name, 'token': token, 'address': user[0].street}
 
 
-    @http.route('/api/login', type='json', auth='public', cors='*')
+    @http.route('/api/refresh-token', type='json', auth='public', cors='*')
     def do_refresh_token(self, email):
         user = request.env['res.users'].sudo().search_read([('id', '=', request.uid)], ['id'])
         if not user:
