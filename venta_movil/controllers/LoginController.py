@@ -18,3 +18,14 @@ class LoginController(http.Controller):
         user = request.env['res.users'].browse(uid)[0]
 
         return {'user': user[0].name, 'token': token, 'address': user[0].street}
+
+
+    @http.route('/api/login', type='json', auth='public', cors='*')
+    def do_refresh_token(self, email):
+        userId = request.env['res.users'].sudo().search_read([('id', '=', request.uid)], ['id'])
+        if not userId:
+            return self.errcode(code=400, message='incorrect login')
+        token = generate_token(userId)
+
+        return {'token': token}
+
