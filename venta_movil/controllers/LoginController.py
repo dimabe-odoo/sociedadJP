@@ -17,7 +17,7 @@ class LoginController(http.Controller):
 
         user = request.env['res.users'].browse(uid)[0]
 
-        return {'user': user[0].name, 'token': token, 'address': user[0].street}
+        return {'user': user[0].name, 'email': user[0].email, 'rut': user[0].vat, 'birth_day': user[0].birthday, 'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
 
 
     @http.route('/api/refresh-token', type='json', auth='public', cors='*')
