@@ -1,7 +1,7 @@
 from odoo import exceptions, models
 from odoo.http import request
 import jwt
-from ..jwt_token import decode_token
+from ..jwt_token import decode_token, generate_token
 
 
 class IrHttp(models.AbstractModel):
@@ -22,7 +22,7 @@ class IrHttp(models.AbstractModel):
                     request.uid = u.id
                     request.uemail = u.login
             except jwt.ExpiredSignatureError:
-               token = generate_token(uid)
+               token = generate_token(userId)
                return {'new-token': token}
         else:
             raise exceptions.AccessDenied()
