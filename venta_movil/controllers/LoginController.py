@@ -22,10 +22,10 @@ class LoginController(http.Controller):
 
     @http.route('/api/refresh-token', type='json', auth='public', cors='*')
     def do_refresh_token(self, email):
-        user = request.env['res.users'].sudo().search_read([('id', '=', request.uid)], ['id'])
-        if not user:
+        userId = request.env['res.users'].sudo().search_read([('email', '=', email)], ['id'])
+        if not userId:
             return self.errcode(code=400, message='incorrect login')
-        token = generate_token(user.id)
+        token = generate_token(userId)
 
         return {'token': token}
 
