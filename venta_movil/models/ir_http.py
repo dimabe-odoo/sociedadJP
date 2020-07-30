@@ -10,6 +10,7 @@ class IrHttp(models.AbstractModel):
     @classmethod
     def _auth_method_token(cls):
         token = request.httprequest.headers.get('authorization', '', type=str)
+        userId = request.uid
         if token:
             token = token.split(' ')[1]
             try:
@@ -21,6 +22,7 @@ class IrHttp(models.AbstractModel):
                     request.uid = u.id
                     request.uemail = u.login
             except jwt.ExpiredSignatureError:
-                raise exceptions.AccessDenied()
+               token = generate_token(uid)
+               return {'new-token': token}
         else:
             raise exceptions.AccessDenied()
