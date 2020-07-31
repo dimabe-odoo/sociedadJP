@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">Formulario de contacto</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <field name="country_id" position="before">
+                    <field name="jp_commune_id" domain="[('state_id', '=?', state_id)]"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
