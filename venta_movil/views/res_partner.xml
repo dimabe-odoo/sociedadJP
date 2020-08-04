@@ -7,9 +7,27 @@
             <field name="arch" type="xml">
                 <field name="country_id" position="before">
                     <group>
-                        <field name="jp_commune_id" domain="[('state_id', '=?', state_id)]"/>
+                        <field name="jp_commune_id" required="1" domain="[('state_id', '=?', state_id)]"/>
                     </group>
                 </field>
+                <xpath expr="//field[@name='state_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='city']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='street']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='mobile']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
             </field>
         </record>
     </data>
