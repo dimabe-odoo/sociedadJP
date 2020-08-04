@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class ResPartner(models.Model):
     _inherit = 'res.partner'
     jp_commune_id = fields.Many2one('jp.commune', string='Comuna')
-    country_id = fields.Many2one('res.country', string='País',default=_get_default_country)
+    country_id = fields.Many2one('res.country', string='País',default=_get_default_country())
 
     @api.model
     def _get_default_country(self):
