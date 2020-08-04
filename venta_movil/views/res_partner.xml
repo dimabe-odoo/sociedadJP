@@ -5,11 +5,9 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
-                <field name="country_id" position="before">
-                    <group>
-                        <field name="jp_commune_id" required="1" domain="[('state_id', '=?', state_id)]"/>
-                    </group>
-                </field>
+                <xpath expr="//div[@class='o_address_format']" position="inside">
+                    <field name="jp_commune_id" required="1" domain="[('state_id', '=?', state_id)]"/>
+                </xpath>
                 <xpath expr="//field[@name='state_id']" position="attributes">
                     <attribute name="required">1</attribute>
                 </xpath>
