@@ -3,10 +3,11 @@
         <record id="view_partner_form_inherit" model="ir.ui.view">
             <field name="name">Formulario de contacto</field>
             <field name="model">res.partner</field>
-            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@class='o_address_format']" position="inside">
-                    <field name="jp_commune_id" required="1" domain="[('state_id', '=?', state_id)]"/>
+                    <field name="jp_commune_id" required="1" domain="[('state_id', '=?', state_id)]"
+                           placeholder="Comuna"/>
                 </xpath>
                 <xpath expr="//field[@name='state_id']" position="attributes">
                     <attribute name="required">1</attribute>
