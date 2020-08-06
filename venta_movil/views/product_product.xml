@@ -1,9 +1,9 @@
 <odoo>
     <data>
-        <record id="product_product_variant_easy_edit_view_inherit" model="ir.ui.view">
+        <record id="product_product_normal_form_view_inherit" model="ir.ui.view">
             <field name="name"></field>
             <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='categ_id']" position="after">
                     <field name="supply_id" placeholder="Insumo"/>
