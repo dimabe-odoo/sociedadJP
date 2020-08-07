@@ -37,6 +37,7 @@ class StockPicking(models.Model):
                         'picking_type_code': 'incoming',
                         'origin': stock_picking.origin,
                         'state': 'done',
+                        'date_done': datetime.datetime.now(),
                         'picking_type_id': self.env['stock.picking.type'].search(
                             [('default_location_src_id', '=', stock_picking.location_dest_id.id),
                              ('sequence_code', '=', 'IN')]).id,
@@ -49,6 +50,7 @@ class StockPicking(models.Model):
                         'name': name,
                         'picking_type_code': 'outgoing',
                         'origin': stock_picking.origin,
+                        'date_done': datetime.datetime.now(),
                         'location_id': stock_picking.location_dest_id.id,
                         'picking_type_id': self.env['stock.picking.type'].search(
                             [('default_location_src_id', '=', stock_picking.location_dest_id.id),
@@ -70,13 +72,14 @@ class StockPicking(models.Model):
                         'product_uom': stock['product_uom'],
                         'product_uom_qty': stock['product_uom_qty']
                     })
+                    raise models.ValidationError(move)
                     self.env['stock.move.line'].create({
                         'move_id': move.id,
-                        'company_id':  stock['company_id'],
+                        'company_id': stock['company_id'],
                         'date': stock['date'],
                         'state': 'done',
                         'location_id': stock['location_id'],
-                        'product_id':stock['product_id'],
+                        'product_id': stock['product_id'],
                         'product_uom_id': stock['product_uom'],
                         'qty_done': move.product_uom_qty,
                         'location_dest_id': move.location_dest_id.id,
