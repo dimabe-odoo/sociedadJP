@@ -14,3 +14,5 @@ class StockPicking(models.Model):
                         [('product_id', '=', supply_id), ('location_id', '=', stock_picking.location_dest_id.id)])
                     raise models.ValidationError(quant.quantity)
                 # if stock_picking.quantity_done <
+                res = super(MrpWorkorder, self).button_validate()
+                return res
