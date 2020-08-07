@@ -5,6 +5,8 @@ import datetime
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
+    supply_dispatch_id = fields.Many2one('stock.picking', 'Cilindro Despachos por:')
+
     def button_validate(self):
         for stock_picking in self:
             message = ''
@@ -74,7 +76,7 @@ class StockPicking(models.Model):
                     })
                     self.env['stock.move.line'].create({
                         'move_id': move.id,
-                        'picking_id':dispatch.id,
+                        'picking_id': dispatch.id,
                         'company_id': stock['company_id'],
                         'date': stock['date'],
                         'state': 'done',
@@ -84,4 +86,7 @@ class StockPicking(models.Model):
                         'qty_done': move.product_uom_qty,
                         'location_dest_id': move.location_dest_id.id,
                     })
+                stock_picking.write({
+                    'supply_dispatch_id': dispatch.id
+                })
             return res
