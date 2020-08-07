@@ -72,9 +72,9 @@ class StockPicking(models.Model):
                         'product_uom': stock['product_uom'],
                         'product_uom_qty': stock['product_uom_qty']
                     })
-                    raise models.ValidationError(move)
                     self.env['stock.move.line'].create({
                         'move_id': move.id,
+                        'picking_id':dispatch.id,
                         'company_id': stock['company_id'],
                         'date': stock['date'],
                         'state': 'done',
