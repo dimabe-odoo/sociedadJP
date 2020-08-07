@@ -18,7 +18,7 @@ class StockPicking(models.Model):
                     if quant.quantity < move.product_uom_qty:
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
-                    stock_move = stock_moves.append({
+                    stock_moves.append({
                         'company_id': self.env.user.company_id.id,
                         'date': datetime.datetime.now(),
                         'location_id': stock_picking.location_dest_id.id,
@@ -57,12 +57,13 @@ class StockPicking(models.Model):
                         'partner_id': stock_picking.partner_id.id
                     })
                     location_dest = self.env['stock.location'].search([('name', '=', 'Vendors')])
-                for stock in stock_moves:
+                for stock, value in stock_moves:
+                    raise models.UserError(stock)
                     move = self.env['stock.move'].create({
                         'picking_id': dispatch.id,
-                        'company_id': stock.company_id,
-                        'date': stock.date,
-                        'location_id': stock.location_id,
+                        'company_id': self.env.user.company_id.id,
+                        'date': datetime.datetime.now(),
+                        'location_id': s,
                         'location_dest_id': location_dest.id,
                         'state': 'done',
                         'product_id': stock.product_id,
