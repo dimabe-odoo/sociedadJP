@@ -11,6 +11,6 @@ class StockPicking(models.Model):
                 if move.product_id.supply_id:
                     supply_id = move.product_id.supply_id.id
                     quant = self.env['stock.quant'].search(
-                        [('product_id', '=', supply_id), ('location_id', '=', stock_picking.location_id)])
+                        [('product_id', '=', supply_id), ('location_id', '=', stock_picking.location_id.id)])
                     raise models.ValidationError(quant.quantity)
                 # if stock_picking.quantity_done <
