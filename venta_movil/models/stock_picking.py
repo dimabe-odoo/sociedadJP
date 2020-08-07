@@ -6,9 +6,9 @@ class StockPicking(models.Model):
 
     def button_validate(self):
         for stock_picking in self:
-            raise models.ValidationError(stock_picking)
             message = ''
-            product = self.env['product.product'].browse(stock_picking.product_ids[0].id)
-            available_qty = product.with_context({'warehouse' : stock_picking.warehouse_id}).qty_available
+            supply = self.env['product.product'].browse(stock_picking.product_ids[0].supply_id)
+            available_qty = supply.with_context({'warehouse' : stock_picking.warehouse_id}).qty_available
+            raise models.ValidationError(available_qty)
             #if stock_picking.quantity_done < 
 
