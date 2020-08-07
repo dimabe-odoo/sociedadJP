@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="supply_dispatch_id" widget="many2onebutton"
-                           invisible="[('picking_type_code','=','incoming')]"/>
+                           invisible="[('picking_type_id.sequence_code','=','OUT')]"/>
                 </xpath>
             </field>
         </record>
