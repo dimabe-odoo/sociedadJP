@@ -73,11 +73,12 @@ class StockPicking(models.Model):
                     })
                     self.env['stock.move.line'].create({
                         'move_id': move.id,
-                        'company_id': move.company_id.id,
-                        'date': move.date,
+                        'company_id':  stock['company_id'],
+                        'date': stock['date'],
                         'state': 'done',
-                        'location_id': move.location_id.id,
-                        'product_uom_id': move.product_uom.id,
+                        'location_id': stock['location_id'],
+                        'product_id':stock['product_id'],
+                        'product_uom_id': stock['product_uom'],
                         'qty_done': move.product_uom_qty,
                         'location_dest_id': move.location_dest_id.id,
                     })
