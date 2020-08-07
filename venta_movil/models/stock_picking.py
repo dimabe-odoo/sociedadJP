@@ -57,7 +57,7 @@ class StockPicking(models.Model):
                         'partner_id': stock_picking.partner_id.id
                     })
                     location_dest = self.env['stock.location'].search([('name', '=', 'Vendors')])
-                for stock, value in stock_moves:
+                for stock in stock_moves:
                     raise models.UserError(stock)
                     move = self.env['stock.move'].create({
                         'picking_id': dispatch.id,
