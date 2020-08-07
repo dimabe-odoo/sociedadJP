@@ -30,6 +30,7 @@
         'views/res_partner.xml',
         'views/product_product.xml',
         'views/templates.xml',
+        'views/stock_picking.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
