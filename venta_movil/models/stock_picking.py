@@ -5,7 +5,7 @@ import datetime
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    supply_dispatch_id = fields.Many2one('stock.picking', 'Cilindro Despachos por:')
+    supply_dispatch_id = fields.Many2one('stock.picking', 'Cilindros Despachados:')
 
     def button_validate(self):
         for stock_picking in self:
