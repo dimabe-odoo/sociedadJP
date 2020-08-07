@@ -59,6 +59,7 @@ class StockPicking(models.Model):
                     location_dest = self.env['stock.location'].search([('name', '=', 'Vendors')])
                 for stock in stock_moves:
                     move = self.env['stock.move'].create({
+                        'name':dispatch.name,
                         'picking_id': dispatch.id,
                         'company_id': stock['company_id'],
                         'date': stock['date'],
