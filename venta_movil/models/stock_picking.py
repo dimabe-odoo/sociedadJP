@@ -23,7 +23,7 @@ class StockPicking(models.Model):
                         'date': datetime.datetime.now(),
                         'location_id': stock_picking.location_dest_id.id,
                         'product_id': supply_id.id,
-                        'product_uom': supply_id.uom_id,
+                        'product_uom': supply_id.uom_id.id,
                         'product_uom_qty': move.product_uom_qty
                     })
                 # if stock_picking.quantity_done <
