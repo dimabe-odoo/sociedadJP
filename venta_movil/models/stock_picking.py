@@ -30,13 +30,16 @@ class StockPicking(models.Model):
 
             res = super(StockPicking, self).button_validate()
             if res:
-                if stock_picking.picking_type_code == 'out_going':
+                if stock_picking.picking_type_code == 'outgoing':
                     name = 'IN/{}'.format(stock_picking.name)
                     dispatch = self.env['stock.picking'].create({
                         'name': name,
-                        'picking_type_code': 'in_coming',
+                        'picking_type_code': 'incoming',
                         'origin': stock_picking.origin,
-                        'state':'done',
+                        'state': 'done',
+                        'picking_type_id': self.env['stock.picking.type'].search(
+                            [('default_location_src_id', '=', stock_picking.location_dest_id.id),
+                             ('sequence_code', '=', 'IN')]).id,
                         'partner_id': stock_picking.partner_id.id
                     })
                     location_dest = self.env['stock.location'].search([('name', '=', 'Customers')])
@@ -44,8 +47,12 @@ class StockPicking(models.Model):
                     name = 'OUT/{}'.format(stock_picking.name)
                     dispatch = self.env['stock.picking'].create({
                         'name': name,
-                        'picking_type_code': 'out_going',
+                        'picking_type_code': 'outgoing',
                         'origin': stock_picking.origin,
+                        'location_id': stock_picking.location_dest_id.id,
+                        'picking_type_id': self.env['stock.picking.type'].search(
+                            [('default_location_src_id', '=', stock_picking.location_dest_id.id),
+                             ('sequence_code', '=', 'OUT')]).id,
                         'state': 'done',
                         'partner_id': stock_picking.partner_id.id
                     })
@@ -70,7 +77,7 @@ class StockPicking(models.Model):
                         'location_id': move.location_id.id,
                         'product_uom_id': move.product_uom.id,
                         'product_uom_qty': move.product_uom_qty,
-                        'qty_done':move.product_uom_qty,
+                        'qty_done': move.product_uom_qty,
                         'location_dest_id': move.location_dest_id.id,
                     })
             return res
