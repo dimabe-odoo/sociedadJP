@@ -59,7 +59,7 @@ class StockPicking(models.Model):
                     location_dest = self.env['stock.location'].search([('name', '=', 'Vendors')])
                 for stock in stock_moves:
                     move = self.env['stock.move'].create({
-                        'name':dispatch.name,
+                        'name': dispatch.name,
                         'picking_id': dispatch.id,
                         'company_id': stock['company_id'],
                         'date': stock['date'],
@@ -67,7 +67,7 @@ class StockPicking(models.Model):
                         'location_dest_id': location_dest.id,
                         'state': 'done',
                         'product_id': stock['product_id'],
-                        'product_uom':stock['product_uom'],
+                        'product_uom': stock['product_uom'],
                         'product_uom_qty': stock['product_uom_qty']
                     })
                     self.env['stock.move.line'].create({
@@ -77,7 +77,6 @@ class StockPicking(models.Model):
                         'state': 'done',
                         'location_id': move.location_id.id,
                         'product_uom_id': move.product_uom.id,
-                        'product_uom_qty': move.product_uom_qty,
                         'qty_done': move.product_uom_qty,
                         'location_dest_id': move.location_dest_id.id,
                     })
