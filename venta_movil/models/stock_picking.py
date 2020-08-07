@@ -18,7 +18,6 @@ class StockPicking(models.Model):
                     if quant.quantity < move.product_uom_qty:
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
-                    raise models.ValidationError(supply_id.uom_id)
                     stock_moves.append({
                         'company_id': self.env.user.company_id.id,
                         'date': datetime.datetime.now(),
