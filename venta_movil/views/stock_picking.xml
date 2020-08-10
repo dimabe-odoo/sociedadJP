@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="supply_dispatch_id" widget="many2onebutton"
-                           attrs="{'invisible':[('picking_type_code','=','outgoing'),('supply_dispatch_id','=',None)]}" />
+                        invisible="[('picking_type_code','=','outgoing'),('supply_dispatch_id','=',None)]}" />
                 </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
                     <field name="purchase_without_supply" attrs="{'visible':[('picking_type_code','!=','outgoing')]}" />
