@@ -9,11 +9,9 @@
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="supply_dispatch_id" widget="many2onebutton" />
                 </xpath>
-                <xpath expr="//field[@name='supply_dispatch_id']" position="attributes">
-                    <attribute name="attrs">{'invisible': [('picking_type_id', '!=', None),('picking_type_id.sequence_code','!=','IN'),('supply_dispatch_id','=',None)]}</attribute>
-                </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
                     <field name="purchase_without_supply" attrs="{'visible':[('picking_type_code','!=','outgoing')]}" />
+                    <field name="picking_type_code" />
                 </xpath>
             </field>
         </record>
