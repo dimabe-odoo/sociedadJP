@@ -10,6 +10,9 @@
                     <field name="supply_dispatch_id" widget="many2onebutton"
                            attrs="{'visible':[('picking_type_code','!=','outgoing')]}"/>
                 </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="after">
+                    <field name="purchase_without_supply" attrs="{'visible':[('picking_type_code','!=','outgoing')]}" />
+                </xpath>
             </field>
         </record>
     </data>

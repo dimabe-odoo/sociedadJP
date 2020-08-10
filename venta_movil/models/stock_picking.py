@@ -7,7 +7,14 @@ class StockPicking(models.Model):
 
     supply_dispatch_id = fields.Many2one('stock.picking', 'Cilindros Despachados:')
 
+    purchase_without_supply = fields.Boolean(string='Compra ComoDato')
+
+    sale_with_rent = fields.Boolean(string='Préstamo de cilindros')
+
     def button_validate(self):
+        if self.purchase_without_supply:
+            res = super(StockPicking, self).button_validate()
+            return res
         for stock_picking in self:
             message = ''
             stock_moves = []
@@ -28,8 +35,7 @@ class StockPicking(models.Model):
                         'product_uom': supply_id.uom_id.id,
                         'product_uom_qty': move.product_uom_qty
                     })
-                # if stock_picking.quantity_done <
-
+                    
             res = super(StockPicking, self).button_validate()
             if res:
                 if stock_picking.picking_type_code == 'outgoing':
