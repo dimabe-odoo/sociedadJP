@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='barcode']" position="after">
-                    <field name="supply_id" placeholder="Insumo"/>
+                    <field name="supply_id" placeholder="Insumo" attrs="{'invisible':[('supply_id','=',None)]}"/>
                 </xpath>
             </field>
         </record>
