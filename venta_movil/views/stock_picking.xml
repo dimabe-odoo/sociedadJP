@@ -9,7 +9,7 @@
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="supply_dispatch_id" widget="many2onebutton" />
                 </xpath>
-                <xpath expr="//field[@name='origin']" position="attributes">
+                <xpath expr="//field[@name='supply_dispatch_id']" position="attributes">
                     <attribute name="attrs">{'invisible': [('picking_type_code','!=','incoming'),('supply_dispatch_id','=',None)]}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
