@@ -11,7 +11,7 @@
                         invisible="[('picking_type_code','!=','Recepción'),('supply_dispatch_id','=',None)]" />
                 </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
-                    <field name="purchase_without_supply" attrs="{'invisible':[('picking_type_code','!=','Recepción')]}" />
+                    <field name="purchase_without_supply" />
                 </xpath>
             </field>
         </record>
