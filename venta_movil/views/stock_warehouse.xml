@@ -9,7 +9,7 @@
             <field name="priority" eval="1000"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='wh_output_stock_loc_id']" position="after">
-                    <field name="loan_location_id" attrs="{'domain':[('loan_location','=',True)]}"/>
+                    <field name="loan_location_id"/>
                 </xpath>
             </field>
         </record>
