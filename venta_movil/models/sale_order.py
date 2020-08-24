@@ -23,7 +23,7 @@ class SaleOrder(models.Model):
                         'origin': self.name,
                         'company_id': self.env.user.company_id.id
                     })
-                    stock_move = self.env['stock_move'].create({
+                    stock_move = self.env['stock.move'].create({
                         'name': 'SUPPLY/' + stock_picking.name,
                         'picking_id': stock_picking.id,
                         'company_id': self.env.user.company_id.id,
