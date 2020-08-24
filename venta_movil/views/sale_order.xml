@@ -9,7 +9,6 @@
             <field name="priority" eval="100"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='payment_term_id']" position="after">
-                    <label for="loan_supply"/>
                     <field name="loan_supply"/>
                 </xpath>
             </field>
