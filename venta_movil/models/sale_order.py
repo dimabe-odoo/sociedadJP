@@ -18,7 +18,7 @@ class SaleOrder(models.Model):
                         'parent_id': self.partner_id.id,
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
-                        'picking_type_id': self.env['stock.picking.id'].search(
+                        'picking_type_id': self.env['stock.picking.type'].search(
                             [('sequence_code', '=', 'IN'), ('warehouse_id', '=', self.warehouse_id.id)]).id,
                         'origin': self.name,
                         'company_id': self.env.user.company_id.id
