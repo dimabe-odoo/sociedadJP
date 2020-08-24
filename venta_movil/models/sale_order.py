@@ -42,7 +42,8 @@ class SaleOrder(models.Model):
                         'date': datetime.utcnow(),
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
-                        'product_uom_id': line.product_id.id,
+                        'product_id': line.product_id.id,
+                        'product_uom_id':line.product_uom_id.id,
                         'qty_done': line.product_uom_qty,
                         'product_uom': line.product_uom.id,
                     })
