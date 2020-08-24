@@ -7,7 +7,7 @@ class SaleOrder(models.Model):
 
     loan_supply = fields.Boolean('Prestamo de Cilindro')
 
-    supply_reception_id = fields.Many2one('Entrado de insumo')
+    supply_reception_id = fields.Many2one('stock.picking', 'Entrado de insumo')
 
     def action_confirm(self):
         self.ensure_one()
