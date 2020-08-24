@@ -32,7 +32,8 @@
         'views/templates.xml',
         'views/stock_picking.xml',
         'views/sale_order.xml',
-        'views/stock_location.xml'
+        'views/stock_location.xml',
+        'views/stock_warehouse.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

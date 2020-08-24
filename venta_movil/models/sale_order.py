@@ -54,3 +54,4 @@ class SaleOrder(models.Model):
                         'supply_reception_id': stock_picking.id
                     })
             super(SaleOrder, self).action_confirm()
+
