@@ -15,7 +15,7 @@ class SaleOrder(models.Model):
             for line in self.order_line:
                 if line.product_id.supply_id:
                     stock_picking = self.env['stock.picking'].create({
-                        'parent_id': self.parent_id.id,
+                        'parent_id': self.partner_id.id,
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'picking_type_id': self.env['stock.picking.id'].search(
