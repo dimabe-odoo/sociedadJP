@@ -11,6 +11,8 @@ class StockPicking(models.Model):
 
     sale_with_rent = fields.Boolean(string='Préstamo de cilindros')
 
+    show_supply = fields.Boolean(string='Mostrar Despacho de insumo')
+
     def button_validate(self):
         if not self.origin and self.picking_type_code != 'internal':
             raise models.ValidationError('El movimiento no cuenta con un documento de referencia')
@@ -98,3 +100,7 @@ class StockPicking(models.Model):
                     'supply_dispatch_id': dispatch.id
                 })
             return res
+
+    @api.onchange('supply_dispatch_id')
+    def compute_show_dipatch(self):
+        self.show_supply = item.supply_dispatch_id and item.picking_type_code == 'incoming'
