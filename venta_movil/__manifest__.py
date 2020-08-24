@@ -21,7 +21,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock'],
+    'depends': ['base','stock','sale'],
 
     # always loaded
     'data': [
@@ -30,7 +30,9 @@
         'views/res_partner.xml',
         'views/product_product.xml',
         'views/templates.xml',
-        'views/stock_picking.xml'
+        'views/stock_picking.xml',
+        'views/sale_order.xml',
+        'views/stock_location.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
