@@ -24,7 +24,7 @@ class SaleOrder(models.Model):
                         'company_id': self.env.user.company_id.id
                     })
                     stock_picking.write({
-                        'name': 'SUPPLY/'+self.name
+                        'name': 'SUPPLY/'+stock_picking.name
                     })
                     stock_move = self.env['stock.move'].create({
                         'name': 'SUPPLY/' + stock_picking.name,
