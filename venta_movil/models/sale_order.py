@@ -44,7 +44,7 @@ class SaleOrder(models.Model):
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'product_id': line.product_id.id,
                         'product_uom_id': line.product_uom.id,
-                        'qty_done': line.product_uom_qty,
+                        'qty_done': line.product_uom_qty
                     })
                     stock_picking.button_validate()
                     self.write({
