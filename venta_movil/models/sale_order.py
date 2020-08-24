@@ -15,13 +15,16 @@ class SaleOrder(models.Model):
             for line in self.order_line:
                 if line.product_id.supply_id:
                     stock_picking = self.env['stock.picking'].create({
-                        'partner_id': 'SUPPLY/' + self.partner_id.id,
+                        'partner_id': self.partner_id.id,
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'picking_type_id': self.env['stock.picking.type'].search(
                             [('sequence_code', '=', 'IN'), ('warehouse_id', '=', self.warehouse_id.id)]).id,
                         'origin': self.name,
                         'company_id': self.env.user.company_id.id
+                    })
+                    stock_picking.write({
+                        'name': 'SUPPLY/'+self.name
                     })
                     stock_move = self.env['stock.move'].create({
                         'name': 'SUPPLY/' + stock_picking.name,
