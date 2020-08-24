@@ -30,7 +30,7 @@
         'views/res_partner.xml',
         'views/product_product.xml',
         'views/templates.xml',
-        'views/stock_picking.xml'
+        'views/stock_picking.xml',
         'views/sale_order.xml',
         'views/stock_location.xml'
     ],
