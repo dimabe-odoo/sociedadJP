@@ -15,7 +15,7 @@ class SaleOrder(models.Model):
             for line in self.order_line:
                 if line.product_id.supply_id:
                     stock_picking = self.env['stock.picking'].create({
-                        'partner_id': self.partner_id.id,
+                        'partner_id': 'SUPPLY/' + self.partner_id.id,
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'picking_type_id': self.env['stock.picking.type'].search(
@@ -31,7 +31,7 @@ class SaleOrder(models.Model):
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'state': 'confirmed',
-                        'product_id': line.product_id.id,
+                        'product_id': line.product_id.supply_id.id,
                         'product_uom': line.product_uom.id,
                         'product_uom_qty': line.product_uom_qty
                     })
@@ -42,7 +42,7 @@ class SaleOrder(models.Model):
                         'date': datetime.utcnow(),
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
-                        'product_id': line.product_id.id,
+                        'product_id': line.product_id.supply_id.id,
                         'product_uom_id': line.product_uom.id,
                         'qty_done': line.product_uom_qty
                     })
