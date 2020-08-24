@@ -12,6 +12,8 @@ class StockPicking(models.Model):
     sale_with_rent = fields.Boolean(string='Préstamo de cilindros')
 
     def button_validate(self):
+        if not self.origin:
+            raise models.ValidationError('El movimiento no cuenta con un documento de referencia')
         if self.purchase_without_supply:
             res = super(StockPicking, self).button_validate()
             return res
