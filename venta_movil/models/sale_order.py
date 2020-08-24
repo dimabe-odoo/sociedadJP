@@ -36,7 +36,7 @@ class SaleOrder(models.Model):
                         'product_uom_qty': line.product_uom_qty
                     })
                     self.env['stock.move.line'].create({
-                        'move_line': stock_move.id,
+                        'move_id': stock_move.id,
                         'picking_id': stock_picking.id,
                         'company_id': self.env.user.company_id.id,
                         'date': datetime.utcnow(),
