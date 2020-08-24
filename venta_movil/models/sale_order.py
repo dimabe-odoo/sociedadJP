@@ -30,7 +30,7 @@ class SaleOrder(models.Model):
                         'date': datetime.utcnow(),
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
-                        'state': 'progress',
+                        'state': 'confirmed',
                         'product_id': line.product_id.id,
                         'product_uom': line.product_uom.id,
                         'product_uom_qty': line.product_uom_qty
