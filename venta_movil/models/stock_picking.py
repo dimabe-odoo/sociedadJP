@@ -11,7 +11,7 @@ class StockPicking(models.Model):
 
     sale_with_rent = fields.Boolean(string='Préstamo de cilindros')
 
-    show_supply = fields.Boolean(string='Mostrar Despacho de insumo',compute='compute_show_dipatch')
+    show_supply = fields.Boolean(string='Mostrar Despacho de insumo', compute='compute_show_dipatch')
 
     def button_validate(self):
         if not self.origin and self.picking_type_code != 'internal':
@@ -47,20 +47,37 @@ class StockPicking(models.Model):
                 if stock_picking.picking_type_code == 'outgoing':
                     name = 'IN/{}'.format(stock_picking.name)
                     location = self.env['stock.location'].search([('name', '=', 'Customers')])
-                    loan = self.env['stock.warehouse'].search([('warehouse_id','=',self.picking_type_id.warehouse_id.id)]).loan_location
-                    dispatch = self.env['stock.picking'].create({
-                        'name': name,
-                        'picking_type_code': 'incoming',
-                        'origin': stock_picking.origin,
-                        'state': 'done',
-                        'location_id': location.id,
-                        'location_dest_id': loan.id,
-                        'date_done': datetime.datetime.now(),
-                        'picking_type_id': self.env['stock.picking.type'].search(
-                            [('default_location_src_id', '=', stock_picking.location_dest_id.id),
-                             ('sequence_code', '=', 'IN')]).id,
-                        'partner_id': stock_picking.partner_id.id
-                    })
+                    if stock_picking.sale_id.loan_supply:
+                        location = self.env['stock.location'].search([('name', '=', 'Customers')])
+                        loan = self.env['stock.warehouse'].search(
+                            [('warehouse_id', '=', self.picking_type_id.warehouse_id.id)]).loan_location
+                        dispatch = self.env['stock.picking'].create({
+                            'name': name,
+                            'picking_type_code': 'incoming',
+                            'origin': stock_picking.origin,
+                            'state': 'done',
+                            'location_id': location.id,
+                            'location_dest_id': loan.id,
+                            'date_done': datetime.datetime.now(),
+                            'picking_type_id': self.env['stock.picking.type'].search(
+                                [('default_location_src_id', '=', stock_picking.location_dest_id.id),
+                                 ('sequence_code', '=', 'IN')]).id,
+                            'partner_id': stock_picking.partner_id.id
+                        })
+                    else:
+                        dispatch = self.env['stock.picking'].create({
+                            'name': name,
+                            'picking_type_code': 'incoming',
+                            'origin': stock_picking.origin,
+                            'state': 'done',
+                            'location_id': location.id,
+                            'location_dest_id': stock_picking.location_id.id,
+                            'date_done': datetime.datetime.now(),
+                            'picking_type_id': self.env['stock.picking.type'].search(
+                                [('default_location_src_id', '=', stock_picking.location_dest_id.id),
+                                 ('sequence_code', '=', 'IN')]).id,
+                            'partner_id': stock_picking.partner_id.id
+                        })
                 if stock_picking.picking_type_code == 'incoming':
                     name = 'OUT/{}'.format(stock_picking.name)
                     dispatch = self.env['stock.picking'].create({
@@ -78,7 +95,7 @@ class StockPicking(models.Model):
                     location_dest = self.env['stock.location'].search([('name', '=', 'Vendors')])
                 for stock in stock_moves:
                     if self.picking_type_code == 'outgoing':
-                        product_id = self.env['product.product'].search([('supply_id.id','=',move.product_id.id)])
+                        product_id = self.env['product.product'].search([('supply_id.id', '=', move.product_id.id)])
                         if product_id:
                             move = self.env['stock.move'].create({
                                 'name': dispatch.name,
