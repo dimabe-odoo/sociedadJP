@@ -46,18 +46,20 @@ class StockPicking(models.Model):
             if res:
                 if stock_picking.picking_type_code == 'outgoing':
                     name = 'IN/{}'.format(stock_picking.name)
+                    location = self.env['stock.location'].search([('name', '=', 'Customers')])
+                    l
                     dispatch = self.env['stock.picking'].create({
                         'name': name,
                         'picking_type_code': 'incoming',
                         'origin': stock_picking.origin,
                         'state': 'done',
+                        'location_id': location.id,
                         'date_done': datetime.datetime.now(),
                         'picking_type_id': self.env['stock.picking.type'].search(
                             [('default_location_src_id', '=', stock_picking.location_dest_id.id),
                              ('sequence_code', '=', 'IN')]).id,
                         'partner_id': stock_picking.partner_id.id
                     })
-                    location_dest = self.env['stock.location'].search([('name', '=', 'Customers')])
                 if stock_picking.picking_type_code == 'incoming':
                     name = 'OUT/{}'.format(stock_picking.name)
                     dispatch = self.env['stock.picking'].create({
