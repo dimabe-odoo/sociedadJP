@@ -10,9 +10,10 @@ class SaleOrder(models.Model):
     supply_reception_id = fields.Many2one('stock.picking', 'Entrada de insumo')
 
     def action_confirm(self):
-        super(SaleOrder, self).action_confirm()
+        res = super(SaleOrder, self).action_confirm()
         if self.loan_supply:
             self.picking_ids.write({
                 'loan_supply': True,
-                'location_dest_id' : self.warehouse_id.loan_location.id
+                'location_dest_id': self.warehouse_id.loan_location.id
             })
+        return res
