@@ -22,13 +22,13 @@ class StockPicking(models.Model):
         for stock_picking in self:
             message = ''
             stock_moves = []
-
             for move in stock_picking.move_ids_without_package:
                 if move.product_id.supply_id:
                     supply_id = move.product_id.supply_id
                     quant = self.env['stock.quant'].search(
-                        [('product_id', '=', supply_id.id), ('location_id', '=', stock_picking.location_dest_id.id)])
-                    if quant.quantity < move.product_uom_qty:
+                        [('product_id', '=', supply_id.id),
+                         ('location_id', '=', stock_picking.location_dest_id.id)])
+                    if quant.quantity < move.product_uom_qty and self.picking_type_code == 'incoming':
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
                     stock_moves.append({
@@ -39,7 +39,7 @@ class StockPicking(models.Model):
                         'product_uom': supply_id.uom_id.id,
                         'product_uom_qty': move.product_uom_qty
                     })
-                    
+
             res = super(StockPicking, self).button_validate()
             if res:
                 if stock_picking.picking_type_code == 'outgoing':
@@ -56,7 +56,7 @@ class StockPicking(models.Model):
                         'partner_id': stock_picking.partner_id.id
                     })
                     location_dest = self.env['stock.location'].search([('name', '=', 'Customers')])
-                else:
+                if stock_picking.picking_type_code == 'incoming':
                     name = 'OUT/{}'.format(stock_picking.name)
                     dispatch = self.env['stock.picking'].create({
                         'name': name,
