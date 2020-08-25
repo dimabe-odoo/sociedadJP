@@ -14,6 +14,6 @@ class SaleOrder(models.Model):
         if self.loan_supply:
             self.picking_ids.write({
                 'loan_supply': True,
-                'location_dest_id': self.warehouse_id.loan_location.id
+                'location_dest_id': self.warehouse_id.loan_location_id.id
             })
         return res
