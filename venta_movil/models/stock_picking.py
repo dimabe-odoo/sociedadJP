@@ -11,7 +11,7 @@ class StockPicking(models.Model):
 
     sale_with_rent = fields.Boolean(string='Préstamo de cilindros')
 
-    show_supply = fields.Boolean(string='Mostrar Despacho de insumo', compute='compute_show_dipatch')
+    show_supply = fields.Boolean(string='Mostrar Despacho de insumo')
 
     def button_validate(self):
         # if not self.origin or self.origin == '':
@@ -172,10 +172,7 @@ class StockPicking(models.Model):
                             'location_dest_id': move.location_dest_id.id,
                         })
                 stock_picking.write({
-                    'supply_dispatch_id': dispatch.id
+                    'supply_dispatch_id': dispatch.id,
+                    'show_supply': True
                 })
             return res
-
-    @api.onchange('supply_dispatch_id')
-    def compute_show_dipatch(self):
-        self.show_supply = self.supply_dispatch_id and self.picking_type_code in ('incoming', 'outgoing')
