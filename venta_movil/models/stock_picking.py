@@ -44,7 +44,7 @@ class StockPicking(models.Model):
                             'picking_type_code': 'incoming',
                             'picking_type_id': self.env['stock.picking.type'].search(
                                 [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
-                                 ('sequence_code', '=', 'OUT')]).id,
+                                 ('sequence_code', '=', 'IN')]).id,
                             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                             'location_dest_id': self.env['stock.warehouse'].search(
                                 [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location_id.id,
