@@ -11,7 +11,7 @@ class StockPicking(models.Model):
 
     sale_with_rent = fields.Boolean(string='Préstamo de cilindros')
 
-    show_supply = fields.Boolean(string='Mostrar Despacho de insumo')
+    show_supply = fields.Boolean(string='Mostrar Despacho de insumo',compute='compute_show_dipatch')
 
     def button_validate(self):
         if not self.origin and self.picking_type_code != 'internal':
