@@ -47,13 +47,14 @@ class StockPicking(models.Model):
                 if stock_picking.picking_type_code == 'outgoing':
                     name = 'IN/{}'.format(stock_picking.name)
                     location = self.env['stock.location'].search([('name', '=', 'Customers')])
-                    l
+                    loan = self.env['stock.warehouse'].search([('warehouse_id','=',self.picking_type_id.warehouse_id.id)]).loan_location
                     dispatch = self.env['stock.picking'].create({
                         'name': name,
                         'picking_type_code': 'incoming',
                         'origin': stock_picking.origin,
                         'state': 'done',
                         'location_id': location.id,
+                        'location_dest_id': loan.id,
                         'date_done': datetime.datetime.now(),
                         'picking_type_id': self.env['stock.picking.type'].search(
                             [('default_location_src_id', '=', stock_picking.location_dest_id.id),
@@ -76,30 +77,83 @@ class StockPicking(models.Model):
                     })
                     location_dest = self.env['stock.location'].search([('name', '=', 'Vendors')])
                 for stock in stock_moves:
-                    move = self.env['stock.move'].create({
-                        'name': dispatch.name,
-                        'picking_id': dispatch.id,
-                        'company_id': stock['company_id'],
-                        'date': stock['date'],
-                        'location_id': stock['location_id'],
-                        'location_dest_id': location_dest.id,
-                        'state': 'done',
-                        'product_id': stock['product_id'],
-                        'product_uom': stock['product_uom'],
-                        'product_uom_qty': stock['product_uom_qty']
-                    })
-                    self.env['stock.move.line'].create({
-                        'move_id': move.id,
-                        'picking_id': dispatch.id,
-                        'company_id': stock['company_id'],
-                        'date': stock['date'],
-                        'state': 'done',
-                        'location_id': stock['location_id'],
-                        'product_id': stock['product_id'],
-                        'product_uom_id': stock['product_uom'],
-                        'qty_done': move.product_uom_qty,
-                        'location_dest_id': move.location_dest_id.id,
-                    })
+                    if self.picking_type_code == 'outgoing':
+                        product_id = self.env['product.product'].search([('supply_id.id','=',move.product_id.id)])
+                        if product_id:
+                            move = self.env['stock.move'].create({
+                                'name': dispatch.name,
+                                'picking_id': dispatch.id,
+                                'company_id': stock['company_id'],
+                                'date': stock['date'],
+                                'location_id': location.id,
+                                'location_dest_id': loan.id,
+                                'state': 'done',
+                                'product_id': product_id.id,
+                                'product_uom': product_id.uom_id.id,
+                                'product_uom_qty': stock['product_uom_qty']
+                            })
+                            self.env['stock.move.line'].create({
+                                'move_id': move.id,
+                                'picking_id': dispatch.id,
+                                'company_id': stock['company_id'],
+                                'date': stock['date'],
+                                'state': 'done',
+                                'location_id': stock['location_id'],
+                                'product_id': product_id.id,
+                                'product_uom_id': product_id.uom_id.id,
+                                'qty_done': move.product_uom_qty,
+                                'location_dest_id': move.location_dest_id.id,
+                            })
+                        else:
+                            move = self.env['stock.move'].create({
+                                'name': dispatch.name,
+                                'picking_id': dispatch.id,
+                                'company_id': stock['company_id'],
+                                'date': stock['date'],
+                                'location_id': location.id,
+                                'location_dest_id': loan.id,
+                                'state': 'done',
+                                'product_id': stock['product_id'],
+                                'product_uom': stock['product_uom'],
+                                'product_uom_qty': stock['product_uom_qty']
+                            })
+                            self.env['stock.move.line'].create({
+                                'move_id': move.id,
+                                'picking_id': dispatch.id,
+                                'company_id': stock['company_id'],
+                                'date': stock['date'],
+                                'state': 'done',
+                                'location_id': stock['location_id'],
+                                'product_id': stock['product_id'],
+                                'product_uom_id': stock['product_uom'],
+                                'qty_done': move.product_uom_qty,
+                                'location_dest_id': move.location_dest_id.id,
+                            })
+                    if picking_type_code == 'incoming':
+                        move = self.env['stock.move'].create({
+                            'name': dispatch.name,
+                            'picking_id': dispatch.id,
+                            'company_id': stock['company_id'],
+                            'date': stock['date'],
+                            'location_id': stock['location_id'],
+                            'location_dest_id': location_dest.id,
+                            'state': 'done',
+                            'product_id': stock['product_id'],
+                            'product_uom': stock['product_uom'],
+                            'product_uom_qty': stock['product_uom_qty']
+                        })
+                        self.env['stock.move.line'].create({
+                            'move_id': move.id,
+                            'picking_id': dispatch.id,
+                            'company_id': stock['company_id'],
+                            'date': stock['date'],
+                            'state': 'done',
+                            'location_id': stock['location_id'],
+                            'product_id': stock['product_id'],
+                            'product_uom_id': stock['product_uom'],
+                            'qty_done': move.product_uom_qty,
+                            'location_dest_id': move.location_dest_id.id,
+                        })
                 stock_picking.write({
                     'supply_dispatch_id': dispatch.id
                 })
