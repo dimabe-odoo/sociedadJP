@@ -5,9 +5,9 @@ from datetime import datetime
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    loan_supply = fields.Boolean('Prestamo de Cilindro')
+    loan_supply = fields.Boolean('¿Es prestamo de cilindro?')
 
-    supply_reception_id = fields.Many2one('stock.picking', 'Entrado de insumo')
+    supply_reception_id = fields.Many2one('stock.picking', 'Entrada de insumo')
 
     def action_confirm(self):
         self.ensure_one()
@@ -31,7 +31,7 @@ class SaleOrder(models.Model):
                         'picking_id': stock_picking.id,
                         'reference': 'SUPPLY/' + stock_picking.name,
                         'company_id': self.env.user.company_id.id,
-                        'date': datetime.datetime.now(),
+                        'date': datetime.now(),
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'state': 'confirmed',
@@ -86,7 +86,7 @@ class SaleOrder(models.Model):
                         'move_id': stock_move.id,
                         'picking_id': stock_picking.id,
                         'company_id': self.env.user.company_id.id,
-                        'date': datetime.utcnow(),
+                        'date': datetime.now(),
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'product_id': line.product_id.supply_id.id,
