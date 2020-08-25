@@ -50,7 +50,7 @@ class StockPicking(models.Model):
                         stock_move = self.env['stock.move'].create({
                             'name':dispatch.name,
                             'picking_id': dispatch.id,
-                            'product_id': product.product_id.id,
+                            'product_id': product.product_id.supply_id.id,
                             'product_uom': product.product_id.uom_id.id,
                             'product_uom_qty': product.product_uom_qty,
                             'state': 'confirmed',
@@ -87,7 +87,7 @@ class StockPicking(models.Model):
                         stock_move = self.env['stock.move'].create({
                             'name': dispatch.name,
                             'picking_id': dispatch.id,
-                            'product_id': product.product_id.id,
+                            'product_id': product.product_id.supply_id.id,
                             'product_uom': product.product_id.uom_id.id,
                             'product_uom_qty': product.product_uom_qty,
                             'state': 'confirmed',
@@ -124,7 +124,7 @@ class StockPicking(models.Model):
                     stock_move = self.env['stock.move'].create({
                         'name': dispatch.name,
                         'picking_id': dispatch.id,
-                        'product_id': product.product_id.id,
+                        'product_id': product.product_id.supply_id.id,
                         'product_uom': product.product_id.uom_id.id,
                         'product_uom_qty': product.product_uom_qty,
                         'state': 'confirmed',
