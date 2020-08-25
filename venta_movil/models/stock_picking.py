@@ -41,7 +41,7 @@ class StockPicking(models.Model):
                                 [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]),
                             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]),
                             'location_dest_id': self.env['stock.warehouse'].search(
-                                [('id', '=', picking_type_id.warehouse_id.id)]).loan_location.id,
+                                [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location.id,
                             'state': 'done',
                             'date_done': datetime.datetime.now(),
                             'origin': item.origin,
@@ -77,7 +77,7 @@ class StockPicking(models.Model):
                                 [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'IN')]),
                             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]),
                             'location_dest_id': self.env['stock.warehouse'].search(
-                                [('id', '=', picking_type_id.warehouse_id.id)]).lot_stock_id.id,
+                                [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
                             'state': 'done',
                             'date_done': datetime.datetime.now(),
                             'origin': item.origin,
@@ -110,10 +110,10 @@ class StockPicking(models.Model):
                         'name': 'OUT/' + item.name,
                         'picking_type_code': 'outgoing',
                         'picking_type_id': self.env['stock.picking.type'].search(
-                            [('warehouse_id.id', '=', item.warehouse_id.id), ('sequence_code', '=', 'OUT')]),
+                            [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]),
                         'location_id': self.env['stock.location'].search([('name', '=', 'Vendors')]),
                         'location_dest_id': self.env['stock.warehouse'].search(
-                            [('id', '=', picking_type_id.warehouse_id.id)]).lot_stock_id.id,
+                            [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
                         'state': 'done',
                         'date_done': datetime.datetime.now(),
                         'origin': item.origin,
