@@ -47,7 +47,7 @@ class StockPicking(models.Model):
                                  ('sequence_code', '=', 'OUT')]).id,
                             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                             'location_dest_id': self.env['stock.warehouse'].search(
-                                [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location.id,
+                                [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location_id.id,
                             'state': 'done',
                             'date_done': datetime.datetime.now(),
                             'origin': item.origin,

@@ -12,8 +12,9 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
         if self.loan_supply:
-            self.picking_ids.write({
-                'loan_supply': True,
-                'location_dest_id': self.warehouse_id.loan_location_id.id
-            })
+            for loan in self.picking_ids:
+                loan.write({
+                    'loan_supply': True,
+                    'location_dest_id': self.warehouse_id.location_dest_id.id
+                })
         return res
