@@ -37,7 +37,7 @@ class StockPicking(models.Model):
             if res:
                 if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
-                        reception = self.env['stock.picking'].create({
+                        reception_loan = self.env['stock.picking'].create({
                             'name': 'IN/' + item.name,
                             'picking_type_code': 'incoming',
                             'picking_type_id': self.env['stock.picking.type'].search(
@@ -46,10 +46,14 @@ class StockPicking(models.Model):
                             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                             'location_dest_id': self.env['stock.warehouse'].search(
                                 [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location_id.id,
-                            'state': 'done',
+                            'state': 'assigned',
                             'date_done': datetime.datetime.now(),
                             'origin': item.origin,
                             'partner_id': item.partner_id.id
+                        })
+                        item.write({
+                            'supply_dispatch_id': reception_loan.id,
+                            'show_supply': True
                         })
                         stock_move = self.env['stock.move'].create({
                             'name': reception.name,
@@ -74,10 +78,7 @@ class StockPicking(models.Model):
                             'location_id': stock_move.location_id.id,
                             'location_dest_id': stock_move.location_dest_id.id
                         })
-                        item.write({
-                            'supply_dispatch_id': reception.id,
-                            'show_supply': True
-                        })
+
                     else:
                         reception = self.env['stock.picking'].create({
                             'name': 'IN/' + item.name,
@@ -88,7 +89,7 @@ class StockPicking(models.Model):
                             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                             'location_dest_id': self.env['stock.warehouse'].search(
                                 [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
-                            'state': 'done',
+                            'state': 'assigned',
                             'date_done': datetime.datetime.now(),
                             'origin': item.origin,
                             'partner_id': item.partner_id.id
@@ -132,7 +133,7 @@ class StockPicking(models.Model):
                         'location_id': self.env['stock.location'].search([('name', '=', 'Vendors')]).id,
                         'location_dest_id': self.env['stock.warehouse'].search(
                             [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
-                        'state': 'done',
+                        'state': 'assigned',
                         'date_done': datetime.datetime.now(),
                         'origin': item.origin,
                         'partner_id': item.partner_id.id
