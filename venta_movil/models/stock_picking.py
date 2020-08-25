@@ -148,3 +148,4 @@ class StockPicking(models.Model):
                 'supply_dispatch_id': dispatch.id,
                 'show_supply': True
             })
+            return res
