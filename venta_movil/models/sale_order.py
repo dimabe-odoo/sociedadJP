@@ -8,3 +8,11 @@ class SaleOrder(models.Model):
     loan_supply = fields.Boolean('¿Es prestamo de cilindro?')
 
     supply_reception_id = fields.Many2one('stock.picking', 'Entrada de insumo')
+
+    def action_confirm(self):
+        super(SaleOrder, self).action_confirm()
+        if self.loan_supply:
+            self.picking_ids.write({
+                'loan_supply': True,
+                'location_dest_id' : self.warehouse_id.loan_location.id
+            })
