@@ -30,6 +30,8 @@ class StockPicking(models.Model):
                     if quant.quantity < move.product_uom_qty and self.picking_type_code == 'incoming':
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
+                else:
+                    return super(StockPicking,self).button_validate()
             res = super(StockPicking, self).button_validate()
             if res:
                 if item.picking_type_code == 'outgoing':
@@ -148,4 +150,5 @@ class StockPicking(models.Model):
                 'supply_dispatch_id': dispatch.id,
                 'show_supply': True
             })
+            item.supply_dispatch_id.button_validate()
             return res
