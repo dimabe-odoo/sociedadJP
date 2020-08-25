@@ -20,7 +20,7 @@ class StockPicking(models.Model):
             return super(StockPicking, self).button_validate()
         for item in self:
             message = ''
-            product
+            product = []
             quantity = 0
             for move in item.move_line_ids_without_package:
                 if move.product_id.supply_id:
