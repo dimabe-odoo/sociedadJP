@@ -56,14 +56,14 @@ class StockPicking(models.Model):
                             'show_supply': True
                         })
                         stock_move = self.env['stock.move'].create({
-                            'name': reception.name,
-                            'picking_id': reception.id,
+                            'name': reception_loan.name,
+                            'picking_id': reception_loan.id,
                             'product_id': product.product_id.supply_id.id,
                             'product_uom': product.product_id.uom_id.id,
                             'product_uom_qty': product.product_uom_qty,
                             'state': 'confirmed',
-                            'location_id': reception.location_id.id,
-                            'location_dest_id': reception.location_dest_id.id,
+                            'location_id': reception_loan.location_id.id,
+                            'location_dest_id': reception_loan.location_dest_id.id,
                             'date': datetime.datetime.now(),
                             'company_id': self.env.user.company_id.id
                         })
