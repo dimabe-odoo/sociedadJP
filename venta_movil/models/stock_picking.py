@@ -112,6 +112,11 @@ class StockPicking(models.Model):
                             'location_id': stock_move.location_id.id,
                             'location_dest_id': stock_move.location_dest_id.id
                         })
+                    item.write({
+                        'supply_dispatch_id': dispatch.id,
+                        'show_supply': True
+                    })
+                    item.supply_dispatch_id.button_validate()
                 if item.picking_type_code == 'incoming':
                     dispatch = self.env['stock.picking'].create({
                         'name': 'OUT/' + item.name,
@@ -150,9 +155,9 @@ class StockPicking(models.Model):
                         'location_id': stock_move.location_id.id,
                         'location_dest_id': stock_move.location_dest_id.id
                     })
-            item.write({
-                'supply_dispatch_id': dispatch.id,
-                'show_supply': True
-            })
-            item.supply_dispatch_id.button_validate()
+                    item.write({
+                        'supply_dispatch_id': dispatch.id,
+                        'show_supply': True
+                    })
+                    item.supply_dispatch_id.button_validate()
             return res
