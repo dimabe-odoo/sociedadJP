@@ -24,7 +24,7 @@ class StockPicking(models.Model):
             quantity = 0
             for move in item.move_line_ids_without_package:
                 if move.product_id.supply_id:
-                    quant = self.env['stock.quant'].search([('product_id.id', '=', product_id.supply_id.id),
+                    quant = self.env['stock.quant'].search([('product_id.id', '=', move.product_id.supply_id.id),
                                                             ('location_id.id', '=', item.location_dest_id.id)])
                     product = move
                     if quant.quantity < move.product_uom_qty and self.picking_type_code == 'incoming':
