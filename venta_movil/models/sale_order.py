@@ -49,7 +49,6 @@ class SaleOrder(models.Model):
                         'product_uom_id': line.product_uom.id,
                         'qty_done': line.product_uom_qty
                     })
-                    stock_picking.button_validate()
                     self.write({
                         'supply_reception_id': stock_picking.id
                     })

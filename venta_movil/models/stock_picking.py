@@ -19,6 +19,8 @@ class StockPicking(models.Model):
         if self.purchase_without_supply:
             res = super(StockPicking, self).button_validate()
             return res
+        if self.sale_id and self.picking_type_code == 'outgoing':
+            self.sale_id.supply_reception_id.button_validate()
         for stock_picking in self:
             message = ''
             stock_moves = []
