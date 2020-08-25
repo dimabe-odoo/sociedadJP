@@ -13,8 +13,6 @@ class StockPicking(models.Model):
 
     show_supply = fields.Boolean(string='Mostrar Despacho de insumo')
 
-    loan_supply = fields.Boolean(default=False)
-
     def button_validate(self):
         if not self.origin:
             raise models.ValidationError('El movimiento no cuenta con un documento de referencia')
