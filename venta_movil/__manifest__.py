@@ -38,5 +38,8 @@
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
+    ],
+    'qweb':[
+        'static/xml/point_of_sale.xml'
     ]
 }
