@@ -2,10 +2,10 @@
 <odoo>
     <data>
 
-        <record id="ModelName_form_inherit" model="ir.ui.view">
-            <field name="name">ProjectName.ModelName.form</field>
+        <record id="sale_view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale_view_order_form</field>
             <field name="model">sale.order</field>
-            <field name="inherit_id" ref="ProjectName.ViewExternalID"/>
+            <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="priority" eval="100"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='payment_term_id']" position="after">
