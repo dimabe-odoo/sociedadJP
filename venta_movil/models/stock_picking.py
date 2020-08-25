@@ -93,6 +93,10 @@ class StockPicking(models.Model):
                         'partner_id': stock_picking.partner_id.id
                     })
                     location_dest = self.env['stock.location'].search([('name', '=', 'Vendors')])
+                stock_picking.write({
+                    'supply_dispatch_id': dispatch.id,
+                    'show_supply': True
+                })
                 for stock in stock_moves:
                     if self.picking_type_code == 'outgoing':
                         product_id = self.env['product.product'].search([('supply_id.id', '=', move.product_id.id)])
@@ -171,8 +175,5 @@ class StockPicking(models.Model):
                             'qty_done': move.product_uom_qty,
                             'location_dest_id': move.location_dest_id.id,
                         })
-                stock_picking.write({
-                    'supply_dispatch_id': dispatch.id,
-                    'show_supply': True
-                })
+
             return res
