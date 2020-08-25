@@ -29,8 +29,9 @@ class SaleOrder(models.Model):
                     stock_move = self.env['stock.move'].create({
                         'name': 'SUPPLY/' + stock_picking.name,
                         'picking_id': stock_picking.id,
+                        'reference': 'SUPPLY/' + stock_picking.name,
                         'company_id': self.env.user.company_id.id,
-                        'date': datetime.utcnow(),
+                        'date': datetime.datetime.now(),
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'state': 'confirmed',
@@ -40,9 +41,10 @@ class SaleOrder(models.Model):
                     })
                     self.env['stock.move.line'].create({
                         'move_id': stock_move.id,
+                        'reference': 'SUPPLY/' + stock_picking.name,
                         'picking_id': stock_picking.id,
                         'company_id': self.env.user.company_id.id,
-                        'date': datetime.utcnow(),
+                        'date': datetime.now(),
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'product_id': line.product_id.supply_id.id,
@@ -72,7 +74,7 @@ class SaleOrder(models.Model):
                         'name': 'SUPPLY/' + stock_picking.name,
                         'picking_id': stock_picking.id,
                         'company_id': self.env.user.company_id.id,
-                        'date': datetime.utcnow(),
+                        'date': datetime.now(),
                         'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                         'location_dest_id': self.warehouse_id.lot_stock_id.id,
                         'state': 'confirmed',
