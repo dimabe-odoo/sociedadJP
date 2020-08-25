@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <template id="assets" inherit_id="point_of_sale.assets">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/venta_movil/static/js/pos_test.js"/>
-                <link rel="stylesheet" href="/venta_movil/static/css/pos_test.scss"/>
-            </xpath>
+        <template id="assets" inherit_id="point_of_sale.template">
+            <t t-extend="PaymentScreen-Paymentmethods">
+                <t t-jquery="div[class='paymentmethods']" t-operation="after">
+                    <div class='control-button'>
+                        <i class='fa fa-tag'/> Care of
+                    </div>
+                </t>
+            </t>
         </template>
     </data>
 </odoo>
