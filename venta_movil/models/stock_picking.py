@@ -62,12 +62,12 @@ class StockPicking(models.Model):
                             'picking_id': stock_move.picking_id.id,
                             'move_id': stock_move.id,
                             'product_id': stock_move.product_id.id,
-                            'product_uom_id': stock_m.product_uom.id,
+                            'product_uom_id': stock_move.product_uom.id,
                             'qty_done': stock_move.product_uom_qty,
                             'state': 'confirmed',
-                            'company_id': stock_mov.company_id.id,
-                            'location_id': stock_mov.location_id.id,
-                            'location_dest_id': stock.location_dest_id.id
+                            'company_id': stock_move.company_id.id,
+                            'location_id': stock_move.location_id.id,
+                            'location_dest_id': stock_move.location_dest_id.id
                         })
                     else:
                         dispatch = self.env['stock.picking'].create({
@@ -98,12 +98,12 @@ class StockPicking(models.Model):
                             'picking_id': stock_move.picking_id.id,
                             'move_id': stock_move.id,
                             'product_id': stock_move.product_id.id,
-                            'product_uom_id': stock_m.product_uom.id,
+                            'product_uom_id': stock_move.product_uom.id,
                             'qty_done': stock_move.product_uom_qty,
                             'state': 'confirmed',
-                            'company_id': stock_mov.company_id.id,
-                            'location_id': stock_mov.location_id.id,
-                            'location_dest_id': stock.location_dest_id.id
+                            'company_id': stock_move.company_id.id,
+                            'location_id': stock_move.location_id.id,
+                            'location_dest_id': stock_move.location_dest_id.id
                         })
                 if item.picking_type_code == 'incoming':
                     dispatch = self.env['stock.picking'].create({
@@ -134,12 +134,12 @@ class StockPicking(models.Model):
                         'picking_id': stock_move.picking_id.id,
                         'move_id': stock_move.id,
                         'product_id': stock_move.product_id.id,
-                        'product_uom_id': stock_m.product_uom.id,
+                        'product_uom_id': stock_move.product_uom.id,
                         'qty_done': stock_move.product_uom_qty,
                         'state': 'confirmed',
-                        'company_id': stock_mov.company_id.id,
-                        'location_id': stock_mov.location_id.id,
-                        'location_dest_id': stock.location_dest_id.id
+                        'company_id': stock_move.company_id.id,
+                        'location_id': stock_move.location_id.id,
+                        'location_dest_id': stock_move.location_dest_id.id
                     })
             item.write({
                 'supply_dispatch_id': dispatch.id,
