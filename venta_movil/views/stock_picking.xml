@@ -7,8 +7,8 @@
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='origin']" position="after">
-                    <field name="show_supply" invisible="1"/>
-                    <field name="supply_dispatch_id" groups="base.group_no_one" attrs="{'invisible':[('show_supply','=',True)]}"
+                    <field name="show_supply" invisible="1" groups="base.group_no_one"/>
+                    <field name="supply_dispatch_id"  attrs="{'invisible':[('show_supply','=',False)]}"
                            widget="many2onebutton"/>
                 </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
