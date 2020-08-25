@@ -21,6 +21,7 @@ class StockPicking(models.Model):
         for item in self:
             message = ''
             product = []
+            dispatch = []
             quantity = 0
             for move in item.move_line_ids_without_package:
                 if move.product_id.supply_id:
@@ -31,7 +32,7 @@ class StockPicking(models.Model):
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
                 else:
-                    return super(StockPicking,self).button_validate()
+                    return super(StockPicking, self).button_validate()
             res = super(StockPicking, self).button_validate()
             if res:
                 if item.picking_type_code == 'outgoing':
@@ -40,7 +41,8 @@ class StockPicking(models.Model):
                             'name': 'IN/' + item.name,
                             'picking_type_code': 'incoming',
                             'picking_type_id': self.env['stock.picking.type'].search(
-                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]).id,
+                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                                 ('sequence_code', '=', 'OUT')]).id,
                             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                             'location_dest_id': self.env['stock.warehouse'].search(
                                 [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location.id,
@@ -50,7 +52,7 @@ class StockPicking(models.Model):
                             'partner_id': item.partner_id.id
                         })
                         stock_move = self.env['stock.move'].create({
-                            'name':dispatch.name,
+                            'name': dispatch.name,
                             'picking_id': dispatch.id,
                             'product_id': product.product_id.supply_id.id,
                             'product_uom': product.product_id.uom_id.id,
@@ -77,7 +79,8 @@ class StockPicking(models.Model):
                             'name': 'IN/' + item.name,
                             'picking_type_code': 'incoming',
                             'picking_type_id': self.env['stock.picking.type'].search(
-                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'IN')]).id,
+                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                                 ('sequence_code', '=', 'IN')]).id,
                             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                             'location_dest_id': self.env['stock.warehouse'].search(
                                 [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
@@ -114,7 +117,8 @@ class StockPicking(models.Model):
                         'name': 'OUT/' + item.name,
                         'picking_type_code': 'outgoing',
                         'picking_type_id': self.env['stock.picking.type'].search(
-                            [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]).id,
+                            [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                             ('sequence_code', '=', 'OUT')]).id,
                         'location_id': self.env['stock.location'].search([('name', '=', 'Vendors')]).id,
                         'location_dest_id': self.env['stock.warehouse'].search(
                             [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
