@@ -38,7 +38,7 @@ class StockPicking(models.Model):
                 if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
                         reception_loan = self.env['stock.picking'].create({
-                            'name': 'IN/' + item.name,
+                            'name': 'LEND/' + item.name,
                             'picking_type_code': 'incoming',
                             'picking_type_id': self.env['stock.picking.type'].search(
                                 [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
