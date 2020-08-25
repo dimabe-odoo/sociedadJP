@@ -178,4 +178,4 @@ class StockPicking(models.Model):
 
     @api.onchange('supply_dispatch_id')
     def compute_show_dipatch(self):
-        self.show_supply = self.supply_dispatch_id and self.picking_type_code == 'incoming'
+        self.show_supply = self.supply_dispatch_id and self.picking_type_code in ('incoming', 'outgoing')
