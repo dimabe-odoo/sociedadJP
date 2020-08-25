@@ -38,8 +38,8 @@ class StockPicking(models.Model):
                             'name': 'IN/' + item.name,
                             'picking_type_code': 'incoming',
                             'picking_type_id': self.env['stock.picking.type'].search(
-                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]),
-                            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]),
+                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]).id,
+                            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                             'location_dest_id': self.env['stock.warehouse'].search(
                                 [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location.id,
                             'state': 'done',
@@ -74,8 +74,8 @@ class StockPicking(models.Model):
                             'name': 'IN/' + item.name,
                             'picking_type_code': 'incoming',
                             'picking_type_id': self.env['stock.picking.type'].search(
-                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'IN')]),
-                            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]),
+                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'IN')]).id,
+                            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
                             'location_dest_id': self.env['stock.warehouse'].search(
                                 [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
                             'state': 'done',
@@ -110,8 +110,8 @@ class StockPicking(models.Model):
                         'name': 'OUT/' + item.name,
                         'picking_type_code': 'outgoing',
                         'picking_type_id': self.env['stock.picking.type'].search(
-                            [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]),
-                        'location_id': self.env['stock.location'].search([('name', '=', 'Vendors')]),
+                            [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]).id,
+                        'location_id': self.env['stock.location'].search([('name', '=', 'Vendors')]).id,
                         'location_dest_id': self.env['stock.warehouse'].search(
                             [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
                         'state': 'done',
