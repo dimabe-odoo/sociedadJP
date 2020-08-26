@@ -12,7 +12,8 @@ odoo.define('pos.custom_button', function (require) {
             self.custom_function();
         },
         custom_function : function(){
-            console.log('Log Test');
+            var self = this;
+            console.log(self)
         }
     });
     screens.define_action_button({
