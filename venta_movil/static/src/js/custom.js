@@ -13,7 +13,7 @@ odoo.define('pos.custom_button', function (require) {
         },
         custom_function : function(){
             var self = this;
-            var check = self.document.getElementById('borr');
+            var check = document.getElementById('borr');
             console.log(check);
         }
     });
