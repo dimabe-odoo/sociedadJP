@@ -29,10 +29,10 @@ class PosOrder(models.Model):
                     'picking_id': reception.id,
                     'product_id': line.product_id.supply_id.id,
                     'product_uom': line.product_id.uom_id.id,
-                    'product_uom_qty': line.product_uom_qty,
+                    'product_uom_qty': line.qty,
                     'state': 'confirmed',
-                    'location_id': line.location_id.id,
-                    'location_dest_id': line.location_dest_id.id,
+                    'location_id': reception.location_id.id,
+                    'location_dest_id': reception.location_dest_id.id,
                     'date': datetime.datetime.now(),
                     'company_id': self.env.user.company_id.id
                 })
