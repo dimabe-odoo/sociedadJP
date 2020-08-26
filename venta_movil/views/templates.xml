@@ -1,17 +1,5 @@
 <odoo>
     <data>
-        <templates id="template" xml:space="preserve">
-        <t t-extend="OrderSelectorWidget">
-            <t t-jquery="div.order-selector" t-operation="append">
-                <div>
-                    <span class="order-button square add-product">
-                        <i class="fa fa-files-o"></i>
-                            Add Product
-                        </span>
-                    </div>
-                </t>
-            </t>
-        </templates>
         <!-- <template id="listing"> -->
         <!--   <ul> -->
         <!--     <li t-foreach="objects" t-as="object"> -->
