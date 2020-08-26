@@ -21,7 +21,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock','sale'],
+    'depends': ['base','stock','sale','point_of_sale'],
 
     # always loaded
     'data': [
@@ -38,5 +38,8 @@
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
+    ],
+    'qweb':[
+        'static/src/xml/custom_button.xml'
     ]
 }
