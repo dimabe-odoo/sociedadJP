@@ -15,6 +15,9 @@
                     <field name="purchase_without_supply"
                            attrs="{'invisible':[('picking_type_code','in',('internal','outgoing'),('supply_dispatch_id','=',None))]}"/>
                 </xpath>
+                <xpath expr="//field[@name='location_id']" position="attributes">
+                    <attribute name="domain">[('usage','=','internal')]</attribute>
+                </xpath>
             </field>
         </record>
     </data>
