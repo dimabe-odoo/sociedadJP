@@ -13,7 +13,8 @@ odoo.define('pos.custom_button', function (require) {
         },
         custom_function : function(){
             var self = this;
-            console.log(self);
+            var check = document.getElementById("#borrowed");
+            console.log(check);
         }
     });
     screens.define_action_button({
