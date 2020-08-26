@@ -19,3 +19,5 @@ from . import sale_order
 from . import stock_warehouse
 
 from . import pos_session
+
+from . import pos_order
