@@ -14,7 +14,7 @@ odoo.define('pos.custom_button', function (require) {
         custom_function : function(){
             var self = this;
             var check = document.getElementById('borr');
-            console.log(this.model);
+            console.log(self.model);
         }
     });
     screens.define_action_button({
