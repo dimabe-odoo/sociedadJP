@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+import datetime
 
 
 class PosOrder(models.Model):
