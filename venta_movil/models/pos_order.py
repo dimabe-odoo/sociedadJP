@@ -6,7 +6,7 @@ class PosOrder(models.Model):
 
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
-        for line in lines:
+        for line in self.lines:
             if line.product_id.supply_id:
                 reception = self.env['stock.picking'].create({
                     'name': 'POS/IN/' + self.picking_id.name,
