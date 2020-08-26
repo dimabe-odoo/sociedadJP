@@ -8,6 +8,5 @@ class PosSession (models.Model):
     name = fields.Char()
     
     def create(self,values):
-        raise models.ValidationError(values)
         super(self,PosSession).create(values)
 
