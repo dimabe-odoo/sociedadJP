@@ -4,7 +4,7 @@
         <span class="control-button">
             <i class="fa fa-print"></i>
             Custom Button
-            <input type="checkbox" id="borrowed" class="form-control"/>
+            <input type="checkbox" id="borr" class="form-control"/>
         </span>
 
     </t>
