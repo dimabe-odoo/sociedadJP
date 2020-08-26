@@ -166,4 +166,6 @@ class StockPicking(models.Model):
                         'show_supply': True
                     })
                     item.supply_dispatch_id.button_validate()
+                if item.picking_type_id.sequence_code == 'POS':
+                    raise models.ValidationError('Paso POS')
             return res
