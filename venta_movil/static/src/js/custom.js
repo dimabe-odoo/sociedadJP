@@ -13,7 +13,7 @@ odoo.define('pos.custom_button', function (require) {
         },
         custom_function : function(){
             var self = this;
-            console.log(self.do_action().toSource());
+            console.log(self.toSource());
         }
     });
     screens.define_action_button({
