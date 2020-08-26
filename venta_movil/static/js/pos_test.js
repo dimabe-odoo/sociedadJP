@@ -1,24 +1,21 @@
-odoo.define('custom-button.custom_button', function (require) {
-    "use strict";
-    var core = require('web.core');
+odoo.define('pos_popup_button',function(require){
+    'use_strict';
     var screens = require('point_of_sale.screens');
-    var gui = require('point_of_sale.gui');
-
-
-//Custom Code
-    var CustomButton = screens.ActionButtonWidget.extend({
-        template: 'CustomButton',
-        button_click: function () {
-            var self = this;
-            self.custom_function();
-
-        },
-        custom_function: function () {
-            console.log('Hi I am button click of CustomButton');
+    var PopupButton = screens.ActionButtonWidget.extend({
+        template : 'PopupButton',
+        button_click : function() {
+            this.gui.show_popup('confirm',{
+                'title': 'PopUp',
+                'body':'Opening popup after clicking on the button',
+            });
         }
     });
     screens.define_action_button({
-        'name': 'custom_button',
-        'widget': CustomButton,
+        'name':'popup_button',
+        'widget':PopupButton,
+        'condition': function(){
+            return this.pos.config.popup_button;
+        },
     });
+    return PopupButton
 });

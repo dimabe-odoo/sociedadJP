@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template id="payment_scren">
+    <t t-extend="PosWidget">
+        <t t-query="div.pos-branding" t-operation="inner">
+            <button class="popup-misc"
+                    style="position:absolute;left:300px; top:7px;width: 100px; height: 37px; font-size:15px;">Name popup
+            </button>
+        </t>
+    </t>
+</template>

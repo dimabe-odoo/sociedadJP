@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="create_pop_up">
+            <field name="name">Pop Up</field>
+            <field name="res_model">pos.popups</field>
+            <field name="view_mode">form</field>
+        </record>
+        <record id="create_pop_up_form_view" model="ir.ui.view">
+            <field name="name">ProjectName.create_pop_up.form</field>
+            <field name="model">pos.popups</field>
+            <field name="arch" type="xml">
+                <form string="ModelTitle">
+                    <br/>
+                    <h2>Enter the name:</h2>
+                    <label for="name" style="clear:left;text-align:right;padding-right:10px;float:left;padding-left:5em"/>
+                    <field name="name" nolable="1" style="float:left;padding-left:5em"/><br/><br/>
+                    <br/>
+                    <br/>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -8,6 +8,11 @@
                         <i class='fa fa-tag'/> Care of
                     </div>
                 </t>
+                <t t-name="PopupButton">
+                    <div class="control-button">
+                        <i class="fa fa-list-alt"/> Popup Button
+                    </div>
+                </t>
             </t>
         </template>
     </data>
