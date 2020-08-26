@@ -5,7 +5,7 @@ class PosOrder(models.Model):
     _inherit = 'pos.order'
 
     def create_picking(self):
-        super(PosOrder, self).create_picking()
+        res = super(PosOrder, self).create_picking()
         for line in lines:
             if line.product_id.supply_id:
                 reception = self.env['stock.picking'].create({
@@ -50,3 +50,4 @@ class PosOrder(models.Model):
                     'supply_dispatch_id': reception.id,
                     'show_supply': True
                 })
+        return res
