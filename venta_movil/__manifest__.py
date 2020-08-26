@@ -33,9 +33,7 @@
         'views/stock_picking.xml',
         'views/sale_order.xml',
         'views/stock_location.xml',
-        'views/stock_warehouse.xml',
-        'static/js/pos_test.js',
-        'static/css/pos_test.scss'
+        'views/stock_warehouse.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
