@@ -4,7 +4,8 @@
         <span class="control-button">
             <i class="fa fa-print"></i>
             Custom Button
+            <input type="checkbox"/>
         </span>
-        <input type="checkbox"/>
+
     </t>
 </templates>
