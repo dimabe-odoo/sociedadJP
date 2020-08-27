@@ -13,8 +13,26 @@ class StockPicking(models.Model):
 
     show_supply = fields.Boolean(string='Mostrar Despacho de insumo')
 
-    def create(self,values):
-        raise models.ValidationError(type(values))
+    @api.model
+    def create(self, vals):
+        raise models.ValidationError(type(vals))
+        if 'sequence_id' not in vals or not vals['sequence_id']:
+            if vals['warehouse_id']:
+                wh = self.env['stock.warehouse'].browse(vals['warehouse_id'])
+                vals['sequence_id'] = self.env['ir.sequence'].create({
+                    'name': wh.name + ' ' + _('Sequence') + ' ' + vals['sequence_code'],
+                    'prefix': wh.code + '/' + vals['sequence_code'] + '/', 'padding': 5,
+                    'company_id': wh.company_id.id,
+                }).id
+            else:
+                vals['sequence_id'] = self.env['ir.sequence'].create({
+                    'name': _('Sequence') + ' ' + vals['sequence_code'],
+                    'prefix': vals['sequence_code'], 'padding': 5,
+                    'company_id': self.env.company.id,
+                }).id
+
+        picking_type = super(PickingType, self).create(vals)
+        return picking_type
 
     def button_validate(self):
         if not self.origin:
