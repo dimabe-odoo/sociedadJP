@@ -6,4 +6,4 @@ class PurchaseOrderLine(models.Model):
 
     purchase_without_supply = fields.Integer('Compra comodato')
 
-    have_purchase_without_supply = fields.Boolean('¿Tiene compra comodato?')
+
