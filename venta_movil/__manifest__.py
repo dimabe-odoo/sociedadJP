@@ -34,7 +34,7 @@
         'views/sale_order.xml',
         'views/stock_location.xml',
         'views/stock_warehouse.xml',
-        'views/'
+        'views/purchase_order.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
