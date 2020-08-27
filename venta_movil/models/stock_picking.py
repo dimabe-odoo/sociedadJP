@@ -110,7 +110,7 @@ class StockPicking(models.Model):
                 else:
                     continue
             item.write({
-                'supply_dispatch_id': picking.id,
+                'supply_dispatch_id': picking,
                 'show_supply': True
             })
             res = super(StockPicking, self).button_validate()
