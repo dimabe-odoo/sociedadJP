@@ -20,29 +20,64 @@ class StockPicking(models.Model):
             return super(StockPicking, self).button_validate()
         for item in self:
             message = ''
-            picking = self.env['stock.picking']
-            quantity = 0
+            picking_id = 0
+            location_id = 0
             values = {}
-            if item.picking_type_code == 'incoming':
-                values['name'] = 'OUT/' + item.name
-                values['picking_type_code'] = 'outgoing'
-                values['picking_type_id'] = self.env['stock.picking.type'].search(
-                    [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]).id
-                values['location_id'] = item.location_dest_id.id
-                values['location_dest_id'] = self.env['stock.location'].search([('name', '=', 'Vendors')]).id
             if item.picking_type_code == 'outgoing':
-                values['name'] = 'IN/' + item.name
-                values['picking_type_code'] = 'incoming'
-                values['picking_type_id'] = self.env['stock.picking.type'].search(
-                    [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'IN')]).id
-                values['location_dest_id'] = self.env['stock.location'].search([('name', '=', 'Customers')]).id
-            values['state'] = 'assigned'
-            values['date_done'] = datetime.datetime.now()
-            values['origin'] = item.origin
-            values['partner_id'] = item.partner_id.id
-
-            picking.create(values)
-            raise models.ValidationError('{},{},{}'.format(values.keys(), values.values(), picking))
+                if item.sale_id.loan_supply:
+                    reception_loan = self.env['stock.picking'].create({
+                        'name': 'LEND/' + item.name,
+                        'picking_type_code': 'incoming',
+                        'picking_type_id': self.env['stock.picking.type'].search(
+                            [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                             ('sequence_code', '=', 'IN')]).id,
+                        'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                        'location_dest_id': self.env['stock.warehouse'].search(
+                            [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location_id.id,
+                        'state': 'assigned',
+                        'date_done': datetime.datetime.now(),
+                        'origin': item.origin,
+                        'partner_id': item.partner_id.id
+                    })
+                    picking = reception_loan.id
+                    location_id = reception_loan.location_id.id
+                    location_dest_id = reception_loan.location_dest_id.id
+                else:
+                    reception = self.env['stock.picking'].create({
+                        'name': 'IN/' + item.name,
+                        'picking_type_code': 'incoming',
+                        'picking_type_id': self.env['stock.picking.type'].search(
+                            [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                             ('sequence_code', '=', 'IN')]).id,
+                        'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                        'location_dest_id': self.env['stock.warehouse'].search(
+                            [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
+                        'state': 'assigned',
+                        'date_done': datetime.datetime.now(),
+                        'origin': item.origin,
+                        'partner_id': item.partner_id.id
+                    })
+                    picking = reception.id
+                    location_id = reception.location_id.id
+                    location_dest_id = reception.location_dest_id.id
+            if item.picking_type_code == 'incoming':
+                dispatch = self.env['stock.picking'].create({
+                    'name': 'OUT/' + item.name,
+                    'picking_type_code': 'outgoing',
+                    'picking_type_id': self.env['stock.picking.type'].search(
+                        [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                         ('sequence_code', '=', 'OUT')]).id,
+                    'location_id': self.env['stock.location'].search([('name', '=', 'Vendors')]).id,
+                    'location_dest_id': self.env['stock.warehouse'].search(
+                        [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
+                    'state': 'assigned',
+                    'date_done': datetime.datetime.now(),
+                    'origin': item.origin,
+                    'partner_id': item.partner_id.id
+                })
+                picking = dispatch.id
+                location_id = dispatch.location_id.id
+                location_dest_id = dispatch.location_dest_id.id
             for move in item.move_ids_without_package:
                 if move.product_id.supply_id:
                     quant = self.env['stock.quant'].search([('product_id.id', '=', move.product_id.supply_id.id),
@@ -51,10 +86,10 @@ class StockPicking(models.Model):
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
                     stock_move = self.env['stock.move'].create({
-                        'picking_id': picking.id,
+                        'picking_id': picking,
                         'name': 'MOVE',
-                        'location_id': picking.location_id.id,
-                        'location_dest_id': picking.location_dest_id.id,
+                        'location_id': location_id,
+                        'location_dest_id': location_dest_id,
                         'product_id': move.product_id.supply_id.id,
                         'date': datetime.datetime.now(),
                         'company_id': self.env.user.company_id.id,
