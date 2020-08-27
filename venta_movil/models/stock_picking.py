@@ -103,7 +103,7 @@ class StockPicking(models.Model):
                         'date':stock_move.date,
                         'location_id':stock_move.location_id.id,
                         'location_dest_id':stock_move.location_dest_id.id,
-                        'product_uom_id':stock_move.product_uom_id.id,
+                        'product_uom_id':stock_move.product_uom.id,
                         'product_id': stock_move.product_id.id,
                         'product_uom_qty':stock_move.product_uom_qty
                     })
