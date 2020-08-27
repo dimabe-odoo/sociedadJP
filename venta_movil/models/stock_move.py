@@ -8,7 +8,8 @@ class StockMove(models.Model):
 
     @api.onchange
     def on_change_qty(self):
-        if self.product_qty < self.
+        if self.product_uom_qt < self.purchase_without_supply:
+            raise models.ValidationError('Error')
     
 
 
