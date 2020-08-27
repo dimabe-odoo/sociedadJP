@@ -28,13 +28,14 @@ class StockPicking(models.Model):
                 values['picking_type_code'] = 'outgoing'
                 values['picking_type_id'] = self.env['stock.picking.type'].search(
                     [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]).id
-                values['location_dest_id'] = self.env['stock.location'].search([('name', '=', 'Customers')]).id
+                values['location_id'] = item.location_dest_id.id
+                values['location_dest_id'] = self.env['stock.location'].search([('name', '=', 'Vendors')]).id
             if item.picking_type_code == 'outgoing':
                 values['name'] = 'IN/' + item.name
                 values['picking_type_code'] = 'incoming'
                 values['picking_type_id'] = self.env['stock.picking.type'].search(
                     [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'IN')]).id
-                values['location_dest_id'] = self.env['stock.location'].search([('name', '=', 'Vendors')]).id
+                values['location_dest_id'] = self.env['stock.location'].search([('name', '=', 'Customers')]).id
             values['state'] = 'assigned'
             values['date_done'] = datetime.datetime.now()
             values['origin'] = item.origin
