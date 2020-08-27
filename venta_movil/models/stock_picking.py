@@ -49,7 +49,7 @@ class StockPicking(models.Model):
                             supply_id.display_name))
                     stock_move = self.env['stock.move'].create({
                         'picking_id': picking.id,
-                        'name': picking.name,
+                        'name': 'MOVE',
                         'location_id': picking.location_id.id,
                         'location_dest_id': picking.location_dest_id.id,
                         'product_id': move.product_id.supply_id.id,
@@ -71,5 +71,9 @@ class StockPicking(models.Model):
                     })
                 else:
                     continue
+            item.write({
+                'supply_dispatch_id': picking.id,
+                'show_supply': True
+            })
             res = super(StockPicking, self).button_validate()
             return res
