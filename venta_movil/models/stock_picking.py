@@ -39,6 +39,7 @@ class StockPicking(models.Model):
             values['date_done'] = datetime.datetime.now()
             values['origin'] = item.origin
             values['partner_id'] = item.partner_id.id
+            raise models.ValidationError('{},{}'.format(values.keys(),values.values()))
             picking.create(values)
             for move in item.move_ids_without_package:
                 if move.product_id.supply_id:
