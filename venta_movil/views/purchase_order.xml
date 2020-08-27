@@ -9,10 +9,10 @@
             <field name="priority" eval="1000"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='order_line']//tree//field[@name='product_qty']" position="after">
-                    <field name="purchase_without_supply" />
+                    <field name="purchase_without_supply" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='date_order']" position="after">
-                    <field name="have_purchase_without_supply"/>
+                    <field name="have_purchase_without_supply" invisible="1"/>
                 </xpath>
             </field>
         </record>
