@@ -99,7 +99,7 @@ class StockPicking(models.Model):
                             'picking_id': reception.id,
                             'product_id': product.product_id.supply_id.id,
                             'product_uom': product.product_id.uom_id.id,
-                            'product_uom_qty': product.product_uom_qty,
+                            'product_uom_qty': product.purchase_without_supply,
                             'state': 'confirmed',
                             'location_id': reception.location_id.id,
                             'location_dest_id': reception.location_dest_id.id,
