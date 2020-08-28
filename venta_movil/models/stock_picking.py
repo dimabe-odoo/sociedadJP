@@ -21,9 +21,8 @@ class StockPicking(models.Model):
             item.have_supply = bool(item.move_ids_without_package.mapped('product_id').mapped('supply_id'))
 
     def button_validate(self):
-        if self.purchase_without_supply:
-            return super(StockPicking, self).button_validate()
         for item in self:
+            raise models.ValidationError(item.purchase_id)
             message = ''
             picking_id = 0
             location_dest_id = 0
