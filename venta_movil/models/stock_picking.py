@@ -13,6 +13,13 @@ class StockPicking(models.Model):
 
     show_supply = fields.Boolean(string='Mostrar Despacho de insumo')
 
+    have_supply = fields.Boolean(string='Tiene Insumos',compute='compute_have_supply')
+
+    @api.onchange('move_ids_without_package')
+    def compute_have_supply(self):
+        for item in self:
+            item.have_supply = bool(move_ids_without_package.mapped('product_id').mapped('supply_id'))
+
     def button_validate(self):
         if self.purchase_without_supply:
             return super(StockPicking, self).button_validate()
@@ -119,3 +126,4 @@ class StockPicking(models.Model):
                 })
             res = super(StockPicking, self).button_validate()
             return res
+
