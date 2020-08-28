@@ -79,14 +79,17 @@ class StockPicking(models.Model):
                     if quant.quantity < move.product_uom_qty and self.picking_type_code == 'incoming':
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
-                    if move.product_id.supply_id.id in picking.move_ids_without_package.mapped('product_id').mapped('id'):
+                    if move.product_id.supply_id.id in picking.move_ids_without_package.mapped('product_id').mapped(
+                            'id'):
                         for supply in picking.move_ids_without_package:
                             if supply.product_id.id == move.product_id.supply_id.id:
                                 supply.write({
-                                    'product_uom_qty' : (move.product_uom_qty - move.purchase_without_supply) + supply.product_uom_qty
+                                    'product_uom_qty': (
+                                                               move.product_uom_qty - move.purchase_without_supply) + supply.product_uom_qty
                                 })
                                 supply.move_line_ids.write({
-                                    'qty_done' : (move.product_uom_qty - move.purchase_without_supply) + supply.product_uom_qty
+                                    'qty_done': (
+                                                        move.product_uom_qty - move.purchase_without_supply) + supply.product_uom_qty
                                 })
                         continue
                     else:
@@ -104,13 +107,13 @@ class StockPicking(models.Model):
                             'date_expected': item.scheduled_date
                         })
                         self.env['stock.move.line'].create({
-                            'company_id':stock_move.company_id.id,
-                            'date':stock_move.date,
-                            'location_id':stock_move.location_id.id,
-                            'location_dest_id':stock_move.location_dest_id.id,
-                            'product_uom_id':stock_move.product_uom.id,
+                            'company_id': stock_move.company_id.id,
+                            'date': stock_move.date,
+                            'location_id': stock_move.location_id.id,
+                            'location_dest_id': stock_move.location_dest_id.id,
+                            'product_uom_id': stock_move.product_uom.id,
                             'product_id': stock_move.product_id.id,
-                            'qty_done':stock_move.product_uom_qty
+                            'qty_done': stock_move.product_uom_qty
                         })
                 else:
                     continue
