@@ -88,6 +88,7 @@ class StockPicking(models.Model):
                                 supply.move_line_ids.write({
                                     'qty_done' : (move.product_uom_qty - move.purchase_without_supply) + supply.product_uom_qty
                                 })
+                        continue
                     else:
                         stock_move = self.env['stock.move'].create({
                             'picking_id': picking.id,
