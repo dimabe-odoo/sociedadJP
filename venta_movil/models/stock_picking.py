@@ -96,14 +96,14 @@ class StockPicking(models.Model):
                             quantity = move.product_uom_qty - move.purchase_without_supply
                         stock_move = self.env['stock.move'].create({
                             'picking_id': picking_id,
-                            'name': 'MOVE',
+                            'name': 'MOVE/'+item.name,
                             'location_id': location_id,
                             'location_dest_id': location_dest_id,
                             'product_id': move.product_id.supply_id.id,
                             'date': datetime.datetime.now(),
                             'company_id': self.env.user.company_id.id,
                             'procure_method': 'make_to_stock',
-                            'product_uom_qty': quantity,
+                            'quantity_done': quantity,
                             'product_uom': move.product_id.supply_id.uom_id.id,
                             'date_expected': item.scheduled_date
                         })
