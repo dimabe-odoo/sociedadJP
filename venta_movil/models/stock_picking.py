@@ -22,6 +22,7 @@ class StockPicking(models.Model):
             message = ''
             picking_id = 0
             location_id = 0
+            location_dest_id = 0
             values = {}
             if item.picking_type_code == 'outgoing':
                 if item.sale_id.loan_supply:
@@ -39,7 +40,7 @@ class StockPicking(models.Model):
                         'origin': item.origin,
                         'partner_id': item.partner_id.id
                     })
-                    picking = reception_loan.id
+                    picking_id = reception_loan.id
                     location_id = reception_loan.location_id.id
                     location_dest_id = reception_loan.location_dest_id.id
                 else:
@@ -57,7 +58,7 @@ class StockPicking(models.Model):
                         'origin': item.origin,
                         'partner_id': item.partner_id.id
                     })
-                    picking = reception.id
+                    picking_id = reception.id
                     location_id = reception.location_id.id
                     location_dest_id = reception.location_dest_id.id
             if item.picking_type_code == 'incoming':
@@ -75,7 +76,7 @@ class StockPicking(models.Model):
                     'origin': item.origin,
                     'partner_id': item.partner_id.id
                 })
-                picking = dispatch.id
+                picking_id = dispatch.id
                 location_id = dispatch.location_id.id
                 location_dest_id = dispatch.location_dest_id.id
             for move in item.move_ids_without_package:
@@ -86,7 +87,7 @@ class StockPicking(models.Model):
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
                     stock_move = self.env['stock.move'].create({
-                        'picking_id': picking,
+                        'picking_id': picking_id,
                         'name': 'MOVE',
                         'location_id': location_id,
                         'location_dest_id': location_dest_id,
