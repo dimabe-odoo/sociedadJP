@@ -14,8 +14,6 @@ class StockPicking(models.Model):
     show_supply = fields.Boolean(string='Mostrar Despacho de insumo')
 
     def button_validate(self):
-        if not self.origin:
-            raise models.ValidationError('El movimiento no cuenta con un documento de referencia')
         if self.purchase_without_supply:
             return super(StockPicking, self).button_validate()
         for item in self:
