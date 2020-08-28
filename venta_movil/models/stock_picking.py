@@ -126,5 +126,5 @@ class StockPicking(models.Model):
                         'purchase_without_supply': False
                     })
 
-    res = super(StockPicking, self).button_validate()
-    return res
+        res = super(StockPicking, self).button_validate()
+        return res
