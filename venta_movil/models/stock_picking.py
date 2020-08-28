@@ -84,6 +84,10 @@ class StockPicking(models.Model):
                     if quant.quantity < move.product_uom_qty and self.picking_type_code == 'incoming':
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
+                    if item.sale_id.loan_supply:
+                        quantity = move.product_uom_qty - move.loan_supply
+                    else:
+                        quantity = move.product_uom_qty - move.purchase_without_supply
                     stock_move = self.env['stock.move'].create({
                         'picking_id': picking_id,
                         'name': 'MOVE',
@@ -93,7 +97,7 @@ class StockPicking(models.Model):
                         'date': datetime.datetime.now(),
                         'company_id': self.env.user.company_id.id,
                         'procure_method': 'make_to_stock',
-                        'product_uom_qty': move.product_uom_qty - move.purchase_without_supply,
+                        'product_uom_qty': quantity,
                         'product_uom': move.product_id.supply_id.uom_id.id,
                         'date_expected': item.scheduled_date
                     })
