@@ -110,6 +110,5 @@ class StockPicking(models.Model):
                 'supply_dispatch_id': picking_id,
                 'show_supply': True
             })
-            item.supply_dispatch_id.button_validate()
             res = super(StockPicking, self).button_validate()
             return res
