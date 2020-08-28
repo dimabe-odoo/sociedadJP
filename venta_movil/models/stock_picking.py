@@ -5,7 +5,7 @@ import datetime
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    supply_dispatch_id = fields.Many2one('stock.picking', 'Cilindros Despachados:')
+    supply_dispatch_id = fields.Many2one('stock.picking', 'Movimiento de cilindros:')
 
     purchase_without_supply = fields.Boolean(string='Compra Como dato')
 
@@ -110,6 +110,7 @@ class StockPicking(models.Model):
                         'product_id': stock_move.product_id.id,
                         'qty_done':stock_move.product_uom_qty
                     })
+            raise models.ValidationError(picking_id)
             item.write({
                 'supply_dispatch_id': picking_id,
                 'show_supply': True,
