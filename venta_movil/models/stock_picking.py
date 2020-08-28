@@ -108,12 +108,13 @@ class StockPicking(models.Model):
                         'location_dest_id':stock_move.location_dest_id.id,
                         'product_uom_id':stock_move.product_uom.id,
                         'product_id': stock_move.product_id.id,
-                        'product_uom_qty':stock_move.product_uom_qty
+                        'qty_done':stock_move.product_uom_qty
                     })
             item.write({
                 'supply_dispatch_id': picking_id,
                 'show_supply': True,
                 'purchase_without_supply' : False
             })
+            item.supply_dispatch_id.button_validate()
             res = super(StockPicking, self).button_validate()
             return res
