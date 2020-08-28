@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="show_supply" groups="base.group_no_one"/>
-                    <field name="supply_dispatch_id" attrs="{'invisible':[('show_supply','=',False)]}"
+                    <field name="supply_dispatch_id" attrs="{'invisible':[('show_supply','=',False)],'readonly':1}"
                            widget="many2onebutton"/>
                 </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
@@ -16,7 +16,7 @@
                            attrs="{'invisible':[('picking_type_code','in',('internal','outgoing'),('supply_dispatch_id','=',None))]}"/>
                 </xpath>
                 <xpath expr="//field[@name='move_ids_without_package']//tree//field[@name='product_uom_qty']" position="after">
-                    <field name="purchase_without_supply"/>
+                    <field name="purchase_without_supply" attrs="{'invisible':[('picking_type_code','in',('outgoing','internal'))]}"/>
                 </xpath>
             </field>
         </record>
