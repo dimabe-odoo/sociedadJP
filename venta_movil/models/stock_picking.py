@@ -41,7 +41,7 @@ class StockPicking(models.Model):
                                 [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location_id.id,
                             'state': 'assigned',
                             'date_done': datetime.datetime.now(),
-                            'origin': item.origin,
+                            'origin': 'Entrada de'+item.origin,
                             'partner_id': item.partner_id.id
                         })
                         picking_id = reception_loan.id
@@ -59,7 +59,7 @@ class StockPicking(models.Model):
                                 [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
                             'state': 'assigned',
                             'date_done': datetime.datetime.now(),
-                            'origin': item.origin,
+                            'origin': 'Entrada de '+ item.origin,
                             'partner_id': item.partner_id.id
                         })
                         picking_id = reception.id
@@ -77,7 +77,7 @@ class StockPicking(models.Model):
                             [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
                         'state': 'assigned',
                         'date_done': datetime.datetime.now(),
-                        'origin': item.origin,
+                        'origin': 'Salida de '+item.origin,
                         'partner_id': item.partner_id.id
                     })
                     picking_id = dispatch.id
