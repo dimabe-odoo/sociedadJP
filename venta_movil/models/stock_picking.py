@@ -74,7 +74,7 @@ class StockPicking(models.Model):
                     'origin': item.origin,
                     'partner_id': item.partner_id.id
                 })
-                picking = dispatch.id
+                picking_id = dispatch.id
                 location_id = dispatch.location_id.id
                 location_dest_id = dispatch.location_dest_id.id
             for move in item.move_ids_without_package:
