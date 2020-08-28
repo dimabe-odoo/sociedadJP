@@ -118,7 +118,7 @@ class StockPicking(models.Model):
                         'product_id': stock_move.product_id.id,
                         'qty_done':stock_move.product_uom_qty
                     })
-            if item.have_supply:
+            if picking_id > 0:
                 item.write({
                     'supply_dispatch_id': picking_id,
                     'show_supply': True,
