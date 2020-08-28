@@ -19,7 +19,6 @@ class StockPicking(models.Model):
     def compute_have_supply(self):
         for item in self:
             item.have_supply = bool(item.move_ids_without_package.mapped('product_id').mapped('supply_id'))
-            raise models.UserError(item.have_supply)
 
     def button_validate(self):
         if self.purchase_without_supply:
