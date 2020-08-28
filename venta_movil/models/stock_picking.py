@@ -22,33 +22,52 @@ class StockPicking(models.Model):
             location_dest_id = 0
             location_id = 0
             values = {}
-            if item.picking_type_code == 'outgoing':
-                if item.sale_id.loan_supply:
-                    reception_loan = self.env['stock.picking'].create({
-                        'name': 'LEND/' + item.name,
-                        'picking_type_code': 'incoming',
+            if item.move_ids_without_package.filtered(lambda a : a.product_id.supply_id):
+                if item.picking_type_code == 'outgoing':
+                    if item.sale_id.loan_supply:
+                        reception_loan = self.env['stock.picking'].create({
+                            'name': 'LEND/' + item.name,
+                            'picking_type_code': 'incoming',
+                            'picking_type_id': self.env['stock.picking.type'].search(
+                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                                 ('sequence_code', '=', 'IN')]).id,
+                            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                            'location_dest_id': self.env['stock.warehouse'].search(
+                                [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location_id.id,
+                            'state': 'assigned',
+                            'date_done': datetime.datetime.now(),
+                            'origin': item.origin,
+                            'partner_id': item.partner_id.id
+                        })
+                        picking_id = reception_loan.id
+                        location_id = reception_loan.location_id.id
+                        location_dest_id = reception_loan.location_dest_id.id
+                    else:
+                        reception = self.env['stock.picking'].create({
+                            'name': 'IN/' + item.name,
+                            'picking_type_code': 'incoming',
+                            'picking_type_id': self.env['stock.picking.type'].search(
+                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                                 ('sequence_code', '=', 'IN')]).id,
+                            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                            'location_dest_id': self.env['stock.warehouse'].search(
+                                [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
+                            'state': 'assigned',
+                            'date_done': datetime.datetime.now(),
+                            'origin': item.origin,
+                            'partner_id': item.partner_id.id
+                        })
+                        picking_id = reception.id
+                        location_id = reception.location_id.id
+                        location_dest_id = reception.location_dest_id.id
+                if item.picking_type_code == 'incoming':
+                    dispatch = self.env['stock.picking'].create({
+                        'name': 'OUT/' + item.name,
+                        'picking_type_code': 'outgoing',
                         'picking_type_id': self.env['stock.picking.type'].search(
                             [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
-                             ('sequence_code', '=', 'IN')]).id,
-                        'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
-                        'location_dest_id': self.env['stock.warehouse'].search(
-                            [('id', '=', item.picking_type_id.warehouse_id.id)]).loan_location_id.id,
-                        'state': 'assigned',
-                        'date_done': datetime.datetime.now(),
-                        'origin': item.origin,
-                        'partner_id': item.partner_id.id
-                    })
-                    picking_id = reception_loan.id
-                    location_id = reception_loan.location_id.id
-                    location_dest_id = reception_loan.location_dest_id.id
-                else:
-                    reception = self.env['stock.picking'].create({
-                        'name': 'IN/' + item.name,
-                        'picking_type_code': 'incoming',
-                        'picking_type_id': self.env['stock.picking.type'].search(
-                            [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
-                             ('sequence_code', '=', 'IN')]).id,
-                        'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                             ('sequence_code', '=', 'OUT')]).id,
+                        'location_id': self.env['stock.location'].search([('name', '=', 'Vendors')]).id,
                         'location_dest_id': self.env['stock.warehouse'].search(
                             [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
                         'state': 'assigned',
@@ -56,27 +75,9 @@ class StockPicking(models.Model):
                         'origin': item.origin,
                         'partner_id': item.partner_id.id
                     })
-                    picking_id = reception.id
-                    location_id = reception.location_id.id
-                    location_dest_id = reception.location_dest_id.id
-            if item.picking_type_code == 'incoming':
-                dispatch = self.env['stock.picking'].create({
-                    'name': 'OUT/' + item.name,
-                    'picking_type_code': 'outgoing',
-                    'picking_type_id': self.env['stock.picking.type'].search(
-                        [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
-                         ('sequence_code', '=', 'OUT')]).id,
-                    'location_id': self.env['stock.location'].search([('name', '=', 'Vendors')]).id,
-                    'location_dest_id': self.env['stock.warehouse'].search(
-                        [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
-                    'state': 'assigned',
-                    'date_done': datetime.datetime.now(),
-                    'origin': item.origin,
-                    'partner_id': item.partner_id.id
-                })
-                picking_id = dispatch.id
-                location_id = dispatch.location_id.id
-                location_dest_id = dispatch.location_dest_id.id
+                    picking_id = dispatch.id
+                    location_id = dispatch.location_id.id
+                    location_dest_id = dispatch.location_dest_id.id
             for move in item.move_ids_without_package:
                 if move.product_id.supply_id:
                     quant = self.env['stock.quant'].search([('product_id.id', '=', move.product_id.supply_id.id),
@@ -110,10 +111,11 @@ class StockPicking(models.Model):
                         'product_id': stock_move.product_id.id,
                         'qty_done':stock_move.product_uom_qty
                     })
-            item.write({
-                'supply_dispatch_id': picking_id,
-                'show_supply': True,
-                'purchase_without_supply' : False
-            })
+            if item.move_ids_without_package.filtered(lambda a: a.product_id.supply_id):
+                item.write({
+                    'supply_dispatch_id': picking_id,
+                    'show_supply': True,
+                    'purchase_without_supply' : False
+                })
             res = super(StockPicking, self).button_validate()
             return res
