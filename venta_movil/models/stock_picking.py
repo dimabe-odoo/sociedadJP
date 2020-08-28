@@ -121,7 +121,5 @@ class StockPicking(models.Model):
                         'show_supply': True,
                         'purchase_without_supply': False
                     })
-            if item.supply_dispatch_id:
-                item.supply_dispatch_id.button_validate()
         res = super(StockPicking, self).button_validate()
         return res
