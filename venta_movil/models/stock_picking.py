@@ -108,7 +108,8 @@ class StockPicking(models.Model):
                     })
             item.write({
                 'supply_dispatch_id': picking_id,
-                'show_supply': True
+                'show_supply': True,
+                'purchase_without_supply' : False
             })
             res = super(StockPicking, self).button_validate()
             return res

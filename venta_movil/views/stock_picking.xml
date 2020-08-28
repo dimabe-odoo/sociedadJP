@@ -13,10 +13,10 @@
                 </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
                     <field name="purchase_without_supply"
-                           attrs="{'invisible':[('picking_type_code','in',('internal','outgoing'),('supply_dispatch_id','=',None))]}"/>
+                           invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='move_ids_without_package']//tree//field[@name='product_uom_qty']" position="after">
-                    <field name="purchase_without_supply" attrs="{'invisible':[('picking_type_code','in',('outgoing','internal'))]}"/>
+                    <field name="purchase_without_supply" attrs="{'invisible':[('purchase_without_supply','=',False)]}"/>
                 </xpath>
             </field>
         </record>
