@@ -22,7 +22,6 @@ class StockPicking(models.Model):
             message = ''
             picking_id = 0
             location_id = 0
-            location_dest_id = 0
             values = {}
             if item.picking_type_code == 'outgoing':
                 if item.sale_id.loan_supply:
@@ -40,7 +39,7 @@ class StockPicking(models.Model):
                         'origin': item.origin,
                         'partner_id': item.partner_id.id
                     })
-                    picking_id = reception_loan.id
+                    picking = reception_loan.id
                     location_id = reception_loan.location_id.id
                     location_dest_id = reception_loan.location_dest_id.id
                 else:
@@ -58,7 +57,7 @@ class StockPicking(models.Model):
                         'origin': item.origin,
                         'partner_id': item.partner_id.id
                     })
-                    picking_id = reception.id
+                    picking = reception.id
                     location_id = reception.location_id.id
                     location_dest_id = reception.location_dest_id.id
             if item.picking_type_code == 'incoming':
@@ -76,7 +75,7 @@ class StockPicking(models.Model):
                     'origin': item.origin,
                     'partner_id': item.partner_id.id
                 })
-                picking_id = dispatch.id
+                picking = dispatch.id
                 location_id = dispatch.location_id.id
                 location_dest_id = dispatch.location_dest_id.id
             for move in item.move_ids_without_package:
@@ -87,7 +86,7 @@ class StockPicking(models.Model):
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
                     stock_move = self.env['stock.move'].create({
-                        'picking_id': picking_id,
+                        'picking_id': picking,
                         'name': 'MOVE',
                         'location_id': location_id,
                         'location_dest_id': location_dest_id,
@@ -111,10 +110,9 @@ class StockPicking(models.Model):
                 else:
                     continue
             item.write({
-                'supply_dispatch_id': picking_id,
+                'supply_dispatch_id': picking,
                 'show_supply': True
             })
             item.supply_dispatch_id.button_validate()
             res = super(StockPicking, self).button_validate()
             return res
-
