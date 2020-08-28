@@ -8,7 +8,7 @@ class SaleOrder(models.Model):
     loan_supply = fields.Boolean('¿Es prestamo de cilindro?')
 
     def action_confirm(self):
-        res = Super(SaleOrder, self).action_confirm()
+        res = super(SaleOrder, self).action_confirm()
         if self.loan_supply:
             for pick in self.picking_ids:
                 pick.write({
