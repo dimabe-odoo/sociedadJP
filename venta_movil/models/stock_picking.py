@@ -22,7 +22,7 @@ class StockPicking(models.Model):
             location_dest_id = 0
             location_id = 0
             values = {}
-            if item.move_ids_without_package.filtered(lambda a : a.product_id.supply_id):
+            if item.move_ids_without_package.mapped('product_id').mapped('supply_id'):
                 if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
                         reception_loan = self.env['stock.picking'].create({
@@ -111,7 +111,7 @@ class StockPicking(models.Model):
                         'product_id': stock_move.product_id.id,
                         'qty_done':stock_move.product_uom_qty
                     })
-            if item.move_ids_without_package.filtered(lambda a: a.product_id.supply_id):
+            if item.move_ids_without_package.mapped('product_id').mapped('supply_id'):
                 item.write({
                     'supply_dispatch_id': picking_id,
                     'show_supply': True,
