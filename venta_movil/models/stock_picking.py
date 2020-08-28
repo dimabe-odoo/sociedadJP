@@ -79,34 +79,20 @@ class StockPicking(models.Model):
                     if quant.quantity < move.product_uom_qty and self.picking_type_code == 'incoming':
                         raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
                             supply_id.display_name))
-                    if move.product_id.supply_id.id in picking.move_ids_without_package.mapped('product_id').mapped(
-                            'id'):
-                        for supply in picking.move_ids_without_package:
-                            if supply.product_id.id == move.product_id.supply_id.id:
-                                supply.write({
-                                    'product_uom_qty': (
-                                                               move.product_uom_qty - move.purchase_without_supply) + supply.product_uom_qty
-                                })
-                                supply.move_line_ids.write({
-                                    'qty_done': (
-                                                        move.product_uom_qty - move.purchase_without_supply) + supply.product_uom_qty
-                                })
-                        continue
-                    else:
-                        stock_move = self.env['stock.move'].create({
-                            'picking_id': picking.id,
-                            'name': 'MOVE',
-                            'location_id': picking.location_id.id,
-                            'location_dest_id': picking.location_dest_id.id,
-                            'product_id': move.product_id.supply_id.id,
-                            'date': datetime.datetime.now(),
-                            'company_id': self.env.user.company_id.id,
-                            'procure_method': 'make_to_stock',
-                            'product_uom_qty': move.product_uom_qty - move.purchase_without_supply,
-                            'product_uom': move.product_id.supply_id.uom_id.id,
-                            'date_expected': item.scheduled_date
+                    stock_move = self.env['stock.move'].create({
+                        'picking_id': picking.id,
+                        'name': 'MOVE',
+                        'location_id': picking.location_id.id,
+                        'location_dest_id': picking.location_dest_id.id,
+                        'product_id': move.product_id.supply_id.id,
+                        'date': datetime.datetime.now(),
+                        'company_id': self.env.user.company_id.id,
+                        'procure_method': 'make_to_stock',
+                        'product_uom_qty': move.product_uom_qty - move.purchase_without_supply,
+                        'product_uom': move.product_id.supply_id.uom_id.id,
+                        'date_expected': item.scheduled_date
                         })
-                        self.env['stock.move.line'].create({
+                    self.env['stock.move.line'].create({
                             'company_id': stock_move.company_id.id,
                             'date': stock_move.date,
                             'location_id': stock_move.location_id.id,
@@ -114,7 +100,7 @@ class StockPicking(models.Model):
                             'product_uom_id': stock_move.product_uom.id,
                             'product_id': stock_move.product_id.id,
                             'qty_done': stock_move.product_uom_qty
-                        })
+                    })
                 else:
                     continue
             item.write({
