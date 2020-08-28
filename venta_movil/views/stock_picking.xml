@@ -10,6 +10,7 @@
                     <field name="show_supply" groups="base.group_no_one"/>
                     <field name="supply_dispatch_id"
                            widget="many2onebutton"/>
+                    <field name="have_supply"/>
                 </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
                     <field name="purchase_without_supply" attrs="{'invisible':[('picking_type_code','in',('outgoing','internal'))]}"/>
