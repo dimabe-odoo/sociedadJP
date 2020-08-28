@@ -111,7 +111,7 @@ class StockPicking(models.Model):
                 else:
                     continue
             item.write({
-                'supply_dispatch_id': picking,
+                'supply_dispatch_id': picking_id,
                 'show_supply': True
             })
             item.supply_dispatch_id.button_validate()
