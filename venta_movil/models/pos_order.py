@@ -49,7 +49,7 @@ class PosOrder(models.Model):
                     'location_dest_id': stock_move.location_dest_id.id
                 })
                 picking.button_validate()
-                raise models.ValidationError(picking)
+                models._logger.error('Picking {}'.format(picking.values()))
                 self.picking_id.write({
                     'supply_dispatch_id': picking.id,
                     'show_supply': True
