@@ -9,7 +9,6 @@ class PosOrder(models.Model):
 
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
-        picking = self.env['stock.picking']
         picking = self.env['stock.picking'].create({
             'name': 'POS/IN/' + item.name,
             'picking_type_code': 'incoming',
@@ -50,6 +49,7 @@ class PosOrder(models.Model):
                     'location_dest_id': stock_move.location_dest_id.id
                 })
                 picking.button_validate()
+                raise models.ValidationError(picking)
                 self.picking_id.write({
                     'supply_dispatch_id': picking.id,
                     'show_supply': True
