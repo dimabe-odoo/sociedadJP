@@ -21,6 +21,7 @@ class StockPicking(models.Model):
             item.have_supply = bool(item.move_ids_without_package.mapped('product_id').mapped('supply_id'))
 
     def button_validate(self):
+        models._logger.error(self.picking_type_code)
         for item in self:
             if ('Entrada' in item.origin) or ('Salida' in item.origin):
                 return super(StockPicking, self).button_validate()
@@ -28,7 +29,7 @@ class StockPicking(models.Model):
             picking_id = self.env['stock.picking']
             models._logger.error(self.origin)
             if item.purchase_id or item.sale_id:
-                if item.picking_type_code == 'outgoing':
+                if item.picking_type_code == 'outgoing' :
                     if item.sale_id.loan_supply:
                         reception_loan = self.env['stock.picking'].create({
                             'name': 'LEND/' + item.name,
