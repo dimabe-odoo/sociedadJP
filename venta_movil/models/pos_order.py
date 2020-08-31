@@ -21,7 +21,7 @@ class PosOrder(models.Model):
             'state': 'assigned',
             'date_done': datetime.datetime.now(),
             'origin': 'Entrada de ' + self.name,
-            'partner_id': item.partner_id.id
+            'partner_id': self.partner_id.id
         })
         for line in self.lines:
             if line.product_id.supply_id:
