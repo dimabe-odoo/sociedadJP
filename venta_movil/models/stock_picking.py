@@ -26,6 +26,7 @@ class StockPicking(models.Model):
                 return super(StockPicking, self).button_validate()
             message = ''
             picking_id = self.env['stock.picking']
+            models._logger.error('Hola ')
             if item.purchase_id or item.sale_id:
                 if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
