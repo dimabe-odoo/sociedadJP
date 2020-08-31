@@ -32,7 +32,7 @@ class PosOrder(models.Model):
                     'product_uom': line.product_id.uom_id.id,
                     'product_uom_qty': line.qty,
                     'state': 'confirmed',
-                    'location_id': reception.location_id.id,
+                    'location_id': picking.location_id.id,
                     'location_dest_id': picking.location_dest_id.id,
                     'date': datetime.datetime.now(),
                     'company_id': self.env.user.company_id.id
