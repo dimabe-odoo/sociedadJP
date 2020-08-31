@@ -10,17 +10,17 @@ class PosOrder(models.Model):
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
         picking = self.env['stock.picking'].create({
-            'name': 'POS/IN/' + item.name,
+            'name': 'POS/IN/' + self.name,
             'picking_type_code': 'incoming',
             'picking_type_id': self.env['stock.picking.type'].search(
-                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                [('warehouse_id.id', '=', self.picking_type_id.warehouse_id.id),
                  ('sequence_code', '=', 'IN')]).id,
             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
             'location_dest_id': self.env['stock.warehouse'].search(
-                [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
+                [('id', '=', self.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
             'state': 'assigned',
             'date_done': datetime.datetime.now(),
-            'origin': 'Entrada de ' + item.origin,
+            'origin': 'Entrada de ' + self.name,
             'partner_id': item.partner_id.id
         })
         for line in self.lines:
