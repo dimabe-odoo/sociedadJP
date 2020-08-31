@@ -23,13 +23,9 @@ class StockPicking(models.Model):
     def button_validate(self):
         for item in self:
             if ('Entrada' in item.origin) or ('Salida' in item.origin):
-                return super(StockPicking,self).button_validate()
+                return super(StockPicking, self).button_validate()
             message = ''
-            picking_id = 0
-            location_dest_id = 0
-            location_id = 0
-            values = {}
-
+            picking_id = self.env['stock.picking']
             if item.purchase_id or item.sale_id:
                 if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
@@ -47,9 +43,7 @@ class StockPicking(models.Model):
                             'origin': 'Entrada de' + item.origin,
                             'partner_id': item.partner_id.id
                         })
-                        picking_id = reception_loan.id
-                        location_id = reception_loan.location_id.id
-                        location_dest_id = reception_loan.location_dest_id.id
+                        picking_id = reception_loan
                     else:
                         reception = self.env['stock.picking'].create({
                             'name': 'IN/' + item.name,
@@ -65,9 +59,7 @@ class StockPicking(models.Model):
                             'origin': 'Entrada de ' + item.origin,
                             'partner_id': item.partner_id.id
                         })
-                        picking_id = reception.id
-                        location_id = reception.location_id.id
-                        location_dest_id = reception.location_dest_id.id
+                        picking_id = reception
                 if item.picking_type_code == 'incoming':
                     dispatch = self.env['stock.picking'].create({
                         'name': 'OUT/' + item.name,
@@ -83,9 +75,7 @@ class StockPicking(models.Model):
                         'origin': 'Salida de ' + item.origin,
                         'partner_id': item.partner_id.id
                     })
-                    picking_id = dispatch.id
-                    location_id = dispatch.location_id.id
-                    location_dest_id = dispatch.location_dest_id.id
+                    picking_id = dispatch
                 for move in item.move_ids_without_package:
                     if move.product_id.supply_id:
                         quant = self.env['stock.quant'].search(
@@ -99,10 +89,10 @@ class StockPicking(models.Model):
                         else:
                             quantity = move.product_uom_qty - move.purchase_without_supply
                         stock_move = self.env['stock.move'].create({
-                            'picking_id': picking_id,
+                            'picking_id': picking_id.id,
                             'name': 'MOVE/' + item.name,
-                            'location_id': location_id,
-                            'location_dest_id': location_dest_id,
+                            'location_id': picking_id.location_id.id,
+                            'location_dest_id': picking_id.location_dest_id.id,
                             'product_id': move.product_id.supply_id.id,
                             'date': datetime.datetime.now(),
                             'company_id': self.env.user.company_id.id,
@@ -125,6 +115,5 @@ class StockPicking(models.Model):
                         'show_supply': True,
                         'purchase_without_supply': False
                     })
-
         res = super(StockPicking, self).button_validate()
         return res
