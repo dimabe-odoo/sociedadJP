@@ -21,3 +21,10 @@ from . import stock_warehouse
 from . import pos_session
 
 from . import pos_order
+
+from . import purchase_order_line
+
+from . import purchase_order
+
+from . import stock_move
+

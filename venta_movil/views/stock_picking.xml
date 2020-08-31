@@ -8,12 +8,17 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="show_supply" groups="base.group_no_one"/>
-                    <field name="supply_dispatch_id" attrs="{'invisible':[('show_supply','=',False)]}"
+                    <field name="supply_dispatch_id"
                            widget="many2onebutton"/>
+                    <field name="have_supply"/>
                 </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
-                    <field name="purchase_without_supply"
-                           attrs="{'invisible':[('picking_type_code','in',('internal','outgoing'),('supply_dispatch_id','=',None))]}"/>
+                    <field name="purchase_without_supply" attrs="{'invisible':[('picking_type_code','in',('outgoing','internal'))]}"/>
+                    <field name="sale_with_rent" attrs="{'invisible':[('picking_type_code','in',('incoming','internal'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']//tree//field[@name='product_uom_qty']" position="after">
+                    <field name="purchase_without_supply" attrs="{'invisible':[('parent.purchase_without_supply','=',False)]}"/>
+                    <field name="loan_supply" attrs="{'invisible':[('parent.sale_with_rent','=',False)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='location_id']" position="attributes">
                     <attribute name="domain">[('usage','=','internal')]</attribute>
