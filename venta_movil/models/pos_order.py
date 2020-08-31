@@ -5,6 +5,8 @@ import datetime
 class PosOrder(models.Model):
     _inherit = 'pos.order'
 
+    supply_reception_id = fields.Many2one('stock.picking', 'Recepcion de Insumos')
+
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
         picking = self.env['stock.picking']
@@ -24,7 +26,6 @@ class PosOrder(models.Model):
                 'partner_id': item.partner_id.id
             })
             for line in self.lines:
-                quant = self.env['stock.quant'].search([()])
                 if line.product_id.supply_id:
                     stock_move = self.env['stock.move'].create({
                         'name': reception.name,
@@ -53,5 +54,8 @@ class PosOrder(models.Model):
                     self.picking_id.write({
                         'supply_dispatch_id': reception.id,
                         'show_supply': True
+                    })
+                    self.write({
+                        'supply_reception_id': reception.id
                     })
             return res
