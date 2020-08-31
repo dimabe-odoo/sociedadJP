@@ -10,7 +10,7 @@ class PosOrder(models.Model):
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
         picking = self.env['stock.picking']
-        picking_id = self.env['stock.picking'].create({
+        picking = self.env['stock.picking'].create({
             'name': 'POS/IN/' + item.name,
             'picking_type_code': 'incoming',
             'picking_type_id': self.env['stock.picking.type'].search(
@@ -27,14 +27,14 @@ class PosOrder(models.Model):
         for line in self.lines:
             if line.product_id.supply_id:
                 stock_move = self.env['stock.move'].create({
-                    'name': reception.name,
-                    'picking_id': reception.id,
+                    'name': picking.name,
+                    'picking_id': picking.id,
                     'product_id': line.product_id.supply_id.id,
                     'product_uom': line.product_id.uom_id.id,
                     'product_uom_qty': line.qty,
                     'state': 'confirmed',
                     'location_id': reception.location_id.id,
-                    'location_dest_id': reception.location_dest_id.id,
+                    'location_dest_id': picking.location_dest_id.id,
                     'date': datetime.datetime.now(),
                     'company_id': self.env.user.company_id.id
                 })
@@ -49,12 +49,12 @@ class PosOrder(models.Model):
                     'location_id': stock_move.location_id.id,
                     'location_dest_id': stock_move.location_dest_id.id
                 })
-                reception.button_validate()
+                picking.button_validate()
                 self.picking_id.write({
-                    'supply_dispatch_id': reception.id,
+                    'supply_dispatch_id': picking.id,
                     'show_supply': True
                 })
                 self.write({
-                    'supply_reception_id': reception.id
+                    'supply_reception_id': picking.id
                 })
         return res
