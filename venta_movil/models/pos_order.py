@@ -28,7 +28,7 @@ class PosOrder(models.Model):
                 'name': reception_id.name,
                 'picking_id': reception_id.id,
                 'location_id': reception_id.location_id.id,
-                'location_dest': reception_id.location_dest_id.id,
+                'location_dest_id': reception_id.location_dest_id.id,
                 'product_id': line.product_id.supply_id.id,
                 'date': datetime.datetime.now(),
                 'company_id': reception_id.company_id.id,
