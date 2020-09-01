@@ -3,7 +3,6 @@ odoo.define('pos.custom_button', function (require) {
     var core = require('web.core');
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
-    var sessiong = require('point_of_sale.session')
     var models = require('point_of_sale.models');
     var CustomButton = screens.ActionButtonWidget.extend({
         template : 'CustomButton',
@@ -20,11 +19,10 @@ odoo.define('pos.custom_button', function (require) {
         },
         action_data: function(){
             var self = this;
-            var user = session.uid;
             rpc.query({
                 model:'pos.order',
                 method:'test',
-                args : [[user],{'id':user}]
+                args : [[user],{'id':2}]
             }).then(function(e){
                 console.log('hola')
             })
