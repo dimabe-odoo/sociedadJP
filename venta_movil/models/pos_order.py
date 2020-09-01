@@ -15,7 +15,7 @@ class PosOrder(models.Model):
                 [('warehouse_id.id', '=', self.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]).id,
             'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]),
             'location_dest_id': self.location_id.id,
-            'move_line': 'direct',
+            'move_type': 'direct',
             'picking_type_code': 'incoming',
             'state': 'assigned',
             'date_done': datetime.datetime.now(),
