@@ -13,7 +13,7 @@ class PosOrder(models.Model):
             'name': 'POS/IN/{}'.format(self.name),
             'picking_type_id': self.env['stock.picking.type'].search(
                 [('warehouse_id.id', '=', self.picking_type_id.warehouse_id.id), ('sequence_code', '=', 'OUT')]).id,
-            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]),
+            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
             'location_dest_id': self.location_id.id,
             'move_type': 'direct',
             'picking_type_code': 'incoming',
