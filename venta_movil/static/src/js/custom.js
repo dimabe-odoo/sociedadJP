@@ -4,6 +4,7 @@ odoo.define('pos.custom_button', function (require) {
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
     var models = require('point_of_sale.models');
+        var rpc = require('web.rpc');
     var CustomButton = screens.ActionButtonWidget.extend({
         template : 'CustomButton',
 
