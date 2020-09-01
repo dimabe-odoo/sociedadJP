@@ -13,8 +13,9 @@ odoo.define('pos.custom_button', function (require) {
         },
         custom_function : function(){
             var self = this;
+            var models_test = require('point_of_sale.models')
             var check = document.getElementById('borr');
-            console.log(self.models);
+            console.log(models_test);
         }
     });
     screens.define_action_button({
