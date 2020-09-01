@@ -49,6 +49,5 @@ class PosOrder(models.Model):
             reception_id.button_validate()
         self.write({
             'supply_reception_id': reception_id.id,
-            'show_supply': True
         })
         return res
