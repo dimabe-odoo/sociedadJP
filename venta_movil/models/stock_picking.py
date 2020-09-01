@@ -104,6 +104,7 @@ class StockPicking(models.Model):
                             'date_expected': item.scheduled_date
                         })
                         self.env['stock.move.line'].create({
+                            'move_id':stock_move.id,
                             'company_id': stock_move.company_id.id,
                             'date': stock_move.date,
                             'location_id': stock_move.location_id.id,
