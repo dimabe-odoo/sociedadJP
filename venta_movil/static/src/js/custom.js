@@ -3,7 +3,7 @@ odoo.define('pos.custom_button', function (require) {
     var core = require('web.core');
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
-
+    var models = require('point_of_sale.models');
     var CustomButton = screens.ActionButtonWidget.extend({
         template : 'CustomButton',
 
@@ -14,7 +14,7 @@ odoo.define('pos.custom_button', function (require) {
         custom_function : function(){
             var self = this;
             var check = document.getElementById('borr');
-            console.log(self.model);
+            console.log(self.models);
         }
     });
     screens.define_action_button({
