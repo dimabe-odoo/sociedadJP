@@ -46,7 +46,8 @@ class PosOrder(models.Model):
                 'product_uom_id':stock_move.product_uom.id,
                 'qty_done':stock_move.quantity_done
             })
-            reception_id.write({
-                'supply_reception_id': reception_id.id,
-                'show_supply':True
-            })
+            reception_id.button_validate()
+        self.write({
+            'supply_reception_id': reception_id.id,
+            'show_supply':True
+        })
