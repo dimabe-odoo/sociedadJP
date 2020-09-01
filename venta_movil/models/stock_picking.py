@@ -29,7 +29,7 @@ class StockPicking(models.Model):
             picking_id = self.env['stock.picking']
             models._logger.error(self.origin)
             if item.purchase_id or item.sale_id:
-                if item.picking_type_code == 'outgoing' :
+                if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
                         reception_loan = self.env['stock.picking'].create({
                             'name': 'LEND/' + item.name,
