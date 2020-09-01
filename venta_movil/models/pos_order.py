@@ -58,3 +58,6 @@ class PosOrder(models.Model):
                 continue
 
         return res
+
+    def test(self):
+        raise models.ValidationError('Hola')
