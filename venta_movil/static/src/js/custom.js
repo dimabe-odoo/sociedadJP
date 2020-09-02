@@ -13,7 +13,7 @@ odoo.define('pos.custom_button', function (require) {
                 'title': 'Prestamo',
                 'confirm': function () {
                     var value = this.$('.active');
-                    console.log(value);
+                    console.log(value[0].innerHTML);
                 },
                 'body': '¿Esta seguro de realizar un prestamo?'
             })
