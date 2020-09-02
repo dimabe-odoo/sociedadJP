@@ -8,7 +8,6 @@ odoo.define('pos.custom_button', function (require) {
     var session = require('web.session');
     var CustomButton = screens.ActionButtonWidget.extend({
         template : 'CustomButton',
-
         button_click : function(){
             var self = this;
             self.custom_function();
