@@ -16,7 +16,8 @@ odoo.define('pos.custom_button', function (require) {
         custom_function : function(){
             var self = this;
             var user = session.uid;
-            console.log(self.pos.db.get_orders().toSource())
+            var test = self.pos.db.get_orders()
+            console.log(test)
             rpc.query({
                 model: 'pos.order',
                 method: 'test',
