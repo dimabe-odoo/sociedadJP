@@ -7,7 +7,5 @@
             Custom Button
             <input type="checkbox" id="borr" class="form-control"/>
         </span>
-
     </t>
-
 </templates>
