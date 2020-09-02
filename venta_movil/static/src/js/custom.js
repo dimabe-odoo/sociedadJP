@@ -5,6 +5,7 @@ odoo.define('pos.custom_button', function (require) {
     var gui = require('point_of_sale.gui');
     var models = require('point_of_sale.models');
     var rpc = require('web.rpc');
+    var session = require('web.session');
     var CustomButton = screens.ActionButtonWidget.extend({
         template : 'CustomButton',
 
@@ -14,14 +15,12 @@ odoo.define('pos.custom_button', function (require) {
         },
         custom_function : function(){
             var self = this;
-            models.load_models({
+            var user = session.uid;
+            rpc.query({
                 model: 'pos.order',
-                loaded : function(self){
-                    self.test()
-                }
-            })
-            var check = document.getElementById('loan_qty');
-            console.log(models.Order)
+                method: 'test',
+                args : [[user],{'id':2}]
+            });
         },
         action_data: function(){
             var self = this;
