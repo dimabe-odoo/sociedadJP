@@ -9,10 +9,10 @@ odoo.define('pos.custom_button', function (require) {
 
         button_click: function () {
             var self = this;
-            self.gui.show_popup('textinput', {
+            self.gui.show_popup('number', {
                 'title': 'Prestamo',
                 'confirm': function () {
-                    var value = this.$('#text-input').val();
+                    var value = this.$('value').val();
                     console.log(value);
                     var value2 = document.getElementById('text-input');
                     console.log(value2.value);
