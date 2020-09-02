@@ -14,7 +14,12 @@ odoo.define('pos.custom_button', function (require) {
         },
         custom_function : function(){
             var self = this;
-            models.load_fields('pos.session', ['supply_id']);
+            models.load_models({
+                model: 'pos.order',
+                loaded : function(self){
+                    self.test()
+                }
+            })
             var check = document.getElementById('loan_qty');
             console.log(models.Order)
         },
