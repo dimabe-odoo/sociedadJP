@@ -59,5 +59,5 @@ class PosOrder(models.Model):
 
         return res
 
-    def test(self,user):
+    def test(self, user):
         raise models.ValidationError(self)
