@@ -12,7 +12,10 @@ odoo.define('pos.custom_button', function (require) {
             self.gui.show_popup('textinput', {
                 'title': 'Prestamo',
                 'confirm': function () {
-                    console.log(self.$('#text-input').val());
+                    var value = this.$('#text-input').val();
+                    console.log(value);
+                    var value2 = document.getElementById('text-input');
+                    console.log(value2.value);
                 },
                 'body': '¿Esta seguro de realizar un prestamo?'
             })
