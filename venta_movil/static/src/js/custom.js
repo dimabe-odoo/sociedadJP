@@ -9,8 +9,11 @@ odoo.define('pos.custom_button', function (require) {
 
         button_click : function(){
             var self = this;
-            self.gui.show_popup('confirm',{
+            self.gui.show_popup('text',{
                 'title':'Prestamo',
+                'confirm':function(){
+                  console.log('Hello')
+                },
                 'body':'¿Esta seguro de realizar un prestamo?'
             })
         },
