@@ -9,9 +9,9 @@
         </span>
     </t>
     <t t-name="PopupButton">
-    <div class="control-button">
-        <i class="fa fa-list-alt"/>
-        Prestamo
-    </div>
+        <div class="control-button">
+            <i class="fa fa-list-alt"/>
+            Prestamo
+        </div>
     </t>
 </templates>
