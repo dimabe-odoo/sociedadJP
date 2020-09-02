@@ -13,7 +13,7 @@ odoo.define('pos.custom_button', function (require) {
         },
         custom_function : function(){
             var self = this;
-            var value = this.getElementById('loan_supply').value;
+            var value = document.getElementById('loan_supply').value;
             console.log(value)
         },
         action_data: function(){
