@@ -10,7 +10,7 @@ odoo.define('pos.custom_button', function (require) {
         button_click : function(){
             var self = this;
             self.gui.show_pop_up('textinput',{
-                title: _t('Ingrese cantidad a prestar'),
+                title: 'Ingrese cantidad a prestar',
                 confirm : function(){
                     console.log("Hola")
                 }
