@@ -2,7 +2,7 @@ odoo.define('pos_popup_button', function (require) {
     'use_strict';
     var screens = require('point_of_sale.screens');
     var PopupButton = screens.ActionButtonWidget.extend({
-        template: 'PopupButton',
+        template: 'CustomButton',
         button_click: function () {
             this.gui.show_popup('confirm', {
                 'title': 'Prestamo',
