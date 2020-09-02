@@ -6,8 +6,7 @@
             Custom Button
             <input type="checkbox" id="borr" class="form-control"/>
         </span>
+        <input type="number" id="loan_supply" />
     </t>
-    <t t-name="CustomInput">
-        <input type="number" id="loan_qty"/>
-    </t>
+
 </templates>

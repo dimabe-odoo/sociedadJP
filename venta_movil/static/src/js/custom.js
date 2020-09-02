@@ -13,7 +13,8 @@ odoo.define('pos.custom_button', function (require) {
         },
         custom_function : function(){
             var self = this;
-            console.log(_super_orderline)
+            var value = this.document.getElementById('loan_supply').value;
+            console.log(value)
         },
         action_data: function(){
 
