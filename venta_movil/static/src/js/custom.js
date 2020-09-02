@@ -1,27 +1,23 @@
 odoo.define('pos.custom_button', function (require) {
 'use strict';
-    var core = require('web.core');
     var screens = require('point_of_sale.screens');
-    var gui = require('point_of_sale.gui');
-    var models = require('point_of_sale.models');
-    var _super_orderline = models.Orderline.prototype;
-    var CustomButton = screens.ActionButtonWidget.extend({
+
+    var PopUpButton = screens.ActionButtonWidget.extend({
         template : 'CustomButton',
         button_click : function(){
-            var self = this;
-            self.custom_function();
-        },
-        custom_function : function(){
-            var self = this;
-            var value = $('#loan_supply');
-            console.log(value)
-        },
-        action_data: function(){
+            this.gui.show_popup('confirm',{
+                'title':'Prestamo',
+                'body':'¿Esta Seguro debe que quiere realizar el prestamo?'
+            });
 
         }
-    });
-    screens.define_action_button({
-        'name':'custom_button',
-        'widget':CustomButton
     })
+    screens.define_action_button({
+        'name':'popup_button',
+        'widget':PopUpButton,
+        'condition':function(){
+            return this.pos.config.popup_button;
+        },
+    });
+    return PopUpButton;
 });
