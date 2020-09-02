@@ -60,4 +60,4 @@ class PosOrder(models.Model):
         return res
 
     def test(self,user):
-        raise models.ValidationError('Hola')
+        raise models.ValidationError(self)
