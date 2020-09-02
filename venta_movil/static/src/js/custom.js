@@ -19,7 +19,6 @@ odoo.define('pos.custom_button', function (require) {
             rpc.query({
                 model: 'pos.order',
                 method: 'test',
-                args : [[user],{'id':2}]
             });
         },
         action_data: function(){
