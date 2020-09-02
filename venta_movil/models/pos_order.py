@@ -56,8 +56,4 @@ class PosOrder(models.Model):
                 reception_id.button_validate()
             else:
                 continue
-
         return res
-
-    def test(self, user):
-        raise models.ValidationError(self.env['pos.order'].search([]))
