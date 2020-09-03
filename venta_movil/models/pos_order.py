@@ -57,3 +57,10 @@ class PosOrder(models.Model):
             else:
                 continue
         return res
+
+    @api.model
+    def _order_fields(self, ui_order):
+        models._logger.error(ui_order)
+        order_fields = super(PosOrder, self)._order_fields(ui_order)
+        order_fields['cita_id'] = ui_order.get('cita_id', False)
+        return order_fields
