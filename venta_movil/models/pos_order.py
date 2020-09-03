@@ -12,7 +12,7 @@ class PosOrder(models.Model):
     @api.models
     def create(self,values):
         models._logger.error('{},{}'.format(values.keys(),values.values()))
-        return super(PosOrder).create(values)
+        return super(PosOrder,self).create(values)
 
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
