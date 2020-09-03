@@ -9,6 +9,11 @@ class PosOrder(models.Model):
 
     loan_supply = fields.Integer()
 
+    @api.models
+    def create(self,values):
+        models._logger.error('{},{}'.format(values.keys(),values.values()))
+        return super(PosOrder).create(values)
+
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
         if self.lines.filtered(lambda l: l.product_id.supply_id):
