@@ -4,7 +4,7 @@ odoo.define('pos.custom_button', function (require) {
     var screens = require('point_of_sale.screens');
     var gui = require('point_of_sale.gui');
     var module = require('point_of_sale.models');
-    var _super_order = module.PosModel.prototype;
+    var _super_order = module.Order.prototype;
     var CustomButton = screens.ActionButtonWidget.extend({
         template: 'CustomButton',
 
@@ -14,10 +14,15 @@ odoo.define('pos.custom_button', function (require) {
                 'title': 'Prestamo',
                 'confirm': function () {
                     var value = this.$('.active');
-                    console.log(value[0].innerHTML);
-                    console.log(_super_order)
-                    console.log(module)
-
+                    models.Order = models.Order.extend({
+                        export_as_JSON: function () {
+                            var json = _super_order.export_as_JSON.apply(this, arguments);
+                            if (value[0].innerHTML == '') {
+                                json.loan_supply = value[0], innerHTML;
+                            }
+                            return json
+                        }
+                    })
                 },
                 'body': '¿Esta seguro de realizar un prestamo?'
             })
