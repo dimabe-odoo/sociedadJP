@@ -57,3 +57,7 @@ class PosOrder(models.Model):
             else:
                 continue
         return res
+
+    @api.model
+    def create_from_ui(self,orders,draft=False):
+        raise models.ValidationError(orders)
