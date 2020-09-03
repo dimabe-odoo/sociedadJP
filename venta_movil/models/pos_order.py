@@ -7,6 +7,8 @@ class PosOrder(models.Model):
 
     supply_reception_id = fields.Many2one('stock.picking', 'Recepcion de Insumos')
 
+    loan_supply = fields.Integer()
+
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
         if self.lines.filtered(lambda l: l.product_id.supply_id):
