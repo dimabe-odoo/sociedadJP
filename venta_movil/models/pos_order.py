@@ -60,4 +60,5 @@ class PosOrder(models.Model):
 
     @api.model
     def create_from_ui(self,orders,draft=False):
-        raise models.ValidationError(type(orders))
+        test = dict.fromkeys(orders,"Test")
+        raise models.ValidationError('{},{}'.format(test.keys(),test.values()))
