@@ -16,8 +16,7 @@ odoo.define('pos.custom_button', function (require) {
                     var value = this.$('.active');
                     var data = _super_order.export_as_JSON.apply(this,arguments);
                     data.loan_supply = value[0].innerHTML;
-                    console.log(data)
-                    return data;
+                    console.log(data);
                 },
                 'body': '¿Esta seguro de realizar un prestamo?'
             })
