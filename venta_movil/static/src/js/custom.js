@@ -14,7 +14,7 @@ odoo.define('pos.custom_button', function (require) {
                 'title': 'Prestamo',
                 'confirm': function () {
                     var value = this.$('.active');
-                    models.Order = models.Order.extend({
+                    module.Order = models.Order.extend({
                         export_as_JSON: function () {
                             var json = _super_order.export_as_JSON.apply(this, arguments);
                             if (value[0].innerHTML == '') {
