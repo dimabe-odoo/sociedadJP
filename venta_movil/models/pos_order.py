@@ -9,7 +9,7 @@ class PosOrder(models.Model):
 
     loan_supply = fields.Integer()
 
-    @api.models
+    @api.model
     def create(self,values):
         models._logger.error('{},{}'.format(values.keys(),values.values()))
         return super(PosOrder,self).create(values)
