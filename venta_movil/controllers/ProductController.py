@@ -12,3 +12,5 @@ class ProductController(http.Controller):
                 'ProductName':res.name,
                 'Price':res.list_price
             })
+
+        return data
