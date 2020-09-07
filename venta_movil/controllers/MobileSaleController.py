@@ -10,7 +10,7 @@ class MobileSaleController(http.Controller):
         saleman_id = request.env['res.partner'].sudo().search([('id','=',saleman_id)])
         product_id = request.env['product.product'].sudo().search([('id','=',product_id)])
 
-        name = request.env['ir.sequence'].next_by_code('mobile.sale.order')
+        name = request.env['ir.sequence'].sudo().next_by_code('mobile.sale.order')
 
 
 
