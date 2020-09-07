@@ -15,7 +15,7 @@ class MobileSaleController(http.Controller):
         sale_order = request.env['mobile.sale.order'].sudo().create({
             'name':name,
             'customer_id':customer_id.id,
-            'partner_id':partner_id.id,
+            'saleman_id':saleman_id.id,
             'product_id':product_id.id,
             'state':'progress',
             'date_done':None
