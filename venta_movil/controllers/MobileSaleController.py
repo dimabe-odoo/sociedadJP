@@ -17,8 +17,7 @@ class MobileSaleController(http.Controller):
             'customer_id':customer_id.id,
             'saleman_id':saleman_id.id,
             'product_id':product_id.id,
-            'state':'progress',
-            'date_done':None
+            'state':'progress'
         })
 
         return {'sale_order':sale_order.name}
