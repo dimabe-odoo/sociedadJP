@@ -14,7 +14,7 @@ class ModileSaleOrder(models.Model):
 
     date_done = fields.Datetime('Fecha de entrega')
 
-    product_id = fields.Many2many('product.product','Producto')
+    product_ids = fields.Many2many('product.product','Producto')
 
     total_sale = fields.Float('Total')
 
