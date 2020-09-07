@@ -12,6 +12,13 @@ class MobileSaleController(http.Controller):
 
         name = request.env['ir.sequence'].sudo().next_by_code('mobile.sale.order')
 
+        sale_order = request.env['mobile.sale.order'].sudo().create({
+            'name':name,
+            'customer_id':customer_id.id,
+            'partner_id':partner_id.id,
+            'product_id':product_id.id,
+            'state':'progress',
+            'date_done':None
+        })
 
-
-        return {'customer':customer_id.name,'saleman_id':saleman_id.name ,'name':name}
+        return {'sale_order':sale_order.name}
