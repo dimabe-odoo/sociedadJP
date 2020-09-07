@@ -23,7 +23,7 @@ class StockPicking(models.Model):
     def button_validate(self):
         models._logger.error(self.picking_type_code)
         for item in self:
-            if ('Entrada' in item.origin) or ('Salida' in item.origin):
+            if ('Entrada' in item.origin) or ('Salida' in item.origin) or not item.origin:
                 return super(StockPicking, self).button_validate()
             message = ''
             picking_id = self.env['stock.picking']
@@ -85,7 +85,7 @@ class StockPicking(models.Model):
                              ('location_id.id', '=', item.location_dest_id.id)])
                         if quant.quantity < move.product_uom_qty and self.picking_type_code == 'incoming':
                             raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
-                                supply_id.display_name))
+                                move.product_id.supply_id.display_name))
                         if item.sale_id.loan_supply:
                             quantity = move.product_uom_qty - move.loan_supply
                         else:
