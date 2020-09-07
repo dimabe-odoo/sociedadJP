@@ -5,10 +5,10 @@ import datetime
 class MobileSaleController(http.Controller):
 
     @http.route('/api/sale/create_sale',type='json',method=['POST'],auth='public',cors='*')
-    def create_sale(self,customer_id,saleman_id,product_id,location_id):
+    def create_sale(self,customer_id,saleman_id,product_ids,location_id):
         customer = request.env['res.partner'].sudo().search([('id','=',customer_id)])
         saleman = request.env['res.partner'].sudo().search([('id','=',saleman_id)])
-        product = request.env['product.product'].sudo().search([('id','=',product_id)])
+        product = request.env['product.product'].sudo().search([('id','in',product_ids)])
         location = request.env['stock.location'].sudo().search([('id','=',location_id)])
 
         name = request.env['ir.sequence'].sudo().next_by_code('mobile.sale.order')
@@ -22,10 +22,12 @@ class MobileSaleController(http.Controller):
             'state':'progress'
         })
 
-        return {'sale_order':sale_order.id}
+        return {'message':'Compra realizada satifactoriamente','sale_order':sale_order.id}
 
     @http.route('/api/sale/make_done',type='json',method=['GET'],auth='public',cors='*')
     def make_done(self,mobile_id):
         mobile_order = request.env['mobile.sale.order'].sudo().search([('id','=',mobile_id)])
+
+        mobile_order.write({'state':'done','date_done':datetime.datetime.now})
 
         return {'mobile_order',mobile_order.name}
