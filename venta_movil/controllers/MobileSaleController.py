@@ -28,4 +28,4 @@ class MobileSaleController(http.Controller):
     def make_done(self,mobile_id):
         mobile_order = request.env['mobile.sale.order'].sudo().search([('id','=',mobile_id)])
 
-        return {'mobile_order',mobile_id.name}
+        return {'mobile_order',mobile_order.name}
