@@ -26,6 +26,6 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/sale/make_done',type='json',method=['GET'],auth='public',cors='*')
     def make_done(self,mobile_id):
-        mobile_order = request.env['mobile.order'].search([('id','=',mobile_id)])
+        mobile_order = request.env['mobile.order'].sudo().search([('id','=',mobile_id)])
 
         return {'mobile_order',mobile_id.name}
