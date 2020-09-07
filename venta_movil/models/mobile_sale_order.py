@@ -17,3 +17,7 @@ class ModileSaleOrder(models.Model):
     product_id = fields.Many2one('product.product','Producto')
 
     sale_id = fields.Many2one('sale.order','Venta Interna')
+
+    location_id = fields.Many2one('stock.location','Ubicacion')
+
+    is_loan = fields.Boolean('Es Prestamo')
