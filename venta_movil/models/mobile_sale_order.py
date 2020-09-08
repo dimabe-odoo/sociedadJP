@@ -23,3 +23,4 @@ class ModileSaleOrder(models.Model):
     location_id = fields.Many2one('stock.location','Ubicacion')
 
     is_loan = fields.Boolean('Es Prestamo')
+
