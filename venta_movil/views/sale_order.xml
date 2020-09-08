@@ -23,7 +23,7 @@
                     <field name="name"/>
                     <field name="partner_id"/>
                     <field name="amount_total"/>
-                    <field name="partner_id.commune_id"/>
+                    <field name="partner_id"/>
                     <button type="object" name="assign_location_id" string="Asignar"/>
                 </tree>
             </field>        
