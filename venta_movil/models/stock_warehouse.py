@@ -6,5 +6,5 @@ class StockWarehouse (models.Model):
 
     loan_location_id = fields.Many2one('stock.location','Ubicacion de Prestamo')
     
-    truck_ids = fields.Many2many('stock.location')
+    truck_ids = fields.Many2many('stock.location',domain=[('is_truck','=',True)])
 
