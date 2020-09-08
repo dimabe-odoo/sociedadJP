@@ -17,7 +17,7 @@ class StockLocation (models.Model):
             res = {
                 'invisible':{
                     'user_id':{
-                        1
+                        0
                     }
                 }
             }
@@ -29,4 +29,5 @@ class StockLocation (models.Model):
                     }
                 }
             }
+        return res
 

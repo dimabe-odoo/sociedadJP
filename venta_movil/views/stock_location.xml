@@ -11,7 +11,7 @@
                 <xpath expr="//field[@name='return_location']" position="after">
                     <field name="loan_location"/>
                     <field name="is_truck"/>
-                    <field name="user_id"/>
+                    <field name="user_id" invisible="1"/>
                 </xpath>
             </field>
         </record>
