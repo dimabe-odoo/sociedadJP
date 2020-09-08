@@ -42,6 +42,6 @@
         <menuitem id="sale_order_with_delivery"
                   name="Pedido a domicilio"
                   parent="sale.sale_order_menu"
-                  action="sale_order_assing_saleman_action"/>
+                  action="sale_order_assign_saleman_action"/>
     </data>
 </odoo>
