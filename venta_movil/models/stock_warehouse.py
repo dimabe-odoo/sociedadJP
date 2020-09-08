@@ -8,9 +8,7 @@ class StockWarehouse (models.Model):
 
     is_truck = fields.Boolean('¿Es camion?')
 
-    user_id = field.Many2one('res.user')
-
-
+    truck_ids = fields.Many2many('Camiones')
     
 
 
