@@ -19,4 +19,4 @@ class SaleOrder(models.Model):
         return res
 
     def assign_location_id(self):
-        raise models.ValidationError('Assignado')
+        raise models.ValidationError(self.user)
