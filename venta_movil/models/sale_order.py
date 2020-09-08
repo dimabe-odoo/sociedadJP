@@ -7,6 +7,8 @@ class SaleOrder(models.Model):
 
     loan_supply = fields.Boolean('¿Es prestamo de cilindro?')
 
+    with_delivery = fields.Boolean('Despacho a Domicilio')
+
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
         if self.loan_supply:
@@ -15,3 +17,6 @@ class SaleOrder(models.Model):
                     'sale_with_rent': True
                 })
         return res
+
+    def assign_location_id(self):
+        raise models.ValidationError('Assignado')

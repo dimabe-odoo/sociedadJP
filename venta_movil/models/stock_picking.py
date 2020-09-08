@@ -23,7 +23,7 @@ class StockPicking(models.Model):
     def button_validate(self):
         models._logger.error(self.picking_type_code)
         for item in self:
-            if ('Entrada' in item.origin) or ('Salida' in item.origin) and not item.origin:
+            if ('Entrada' in item.origin) or ('Salida' in item.origin):
                 return super(StockPicking, self).button_validate()
             message = ''
             picking_id = self.env['stock.picking']
