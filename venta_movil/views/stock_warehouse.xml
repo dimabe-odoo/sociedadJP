@@ -10,6 +10,11 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='wh_output_stock_loc_id']" position="after">
                     <field name="loan_location_id"/>
+                    <field name="truck_ids">
+                        <tree>
+                            <field name="name"/>
+                        </tree>
+                    </field>
                 </xpath>
             </field>
         </record>
