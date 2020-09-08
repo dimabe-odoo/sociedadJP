@@ -47,7 +47,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Pedido a domicilio" id="mobile_sale_order_menu" parent="" action="ModelName_act_window"/>
+        <menuitem name="Pedido a domicilio" id="mobile_sale_order_menu" parent="" action="mobile_sale_order_act_window"/>
 
     </data>
 </odoo>
