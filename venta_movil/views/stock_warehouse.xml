@@ -10,6 +10,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='wh_output_stock_loc_id']" position="after">
                     <field name="loan_location_id"/>
+                    <field name="is_truck"/>
+                    <field name="user_id" attrs="{'invisible':[('is_truck','=',False)]}"/>
                 </xpath>
             </field>
         </record>
