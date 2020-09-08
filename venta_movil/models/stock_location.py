@@ -8,4 +8,25 @@ class StockLocation (models.Model):
 
     is_truck = fields.Boolean('¿Es Camion?')
 
+    user_id = fields.Many2one('res.users')
+
+
+    @api.onchange('is_truck')
+    def onchange_istruck(self):
+        if self.is_truck:
+            res = {
+                'invisible':{
+                    'user_id':{
+                        1
+                    }
+                }
+            }
+        else:
+            res = {
+                'invisible': {
+                    'user_id': {
+                        1
+                    }
+                }
+            }
 
