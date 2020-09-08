@@ -25,6 +25,7 @@
                     <field name="partner_id"/>
                     <field name="amount_total"/>
                     <field name="partner_id"/>
+                    <field name="with_delivery" invisible="1"/>
                     <button type="object" name="assign_location_id" string="Asignar"/>
                 </tree>
             </field>        
