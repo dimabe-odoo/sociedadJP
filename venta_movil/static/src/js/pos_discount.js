@@ -5,7 +5,7 @@ odoo.define('pos_discount.andes',function (require) {
         button_click : function (){
             var order = this.pos.get_order();
             if (order.selected_order_line){
-
+                console.log(order.selected_order_line);
             };
         }
     })

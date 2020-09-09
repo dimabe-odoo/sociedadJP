@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="BtnDiscount">
         <div class="control-button">
-            <i class="fa fa-gift"/> Descuento Los Andes
+            <i class="fa fa-gift"/> Prestamo
         </div>
     </t>
 </templates>
