@@ -31,3 +31,5 @@ from . import stock_move
 from . import mobile_sale_order
 
 from . import mobile_line
+
+from . import pos_order_line
