@@ -41,5 +41,8 @@
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
+    ],
+    'qweb':[
+        'static/src/xml/pos_discount.xml'
     ]
 }

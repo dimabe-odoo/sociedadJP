@@ -2,7 +2,7 @@ from odoo import fields, models, api
 import datetime
 
 
-class ModileSaleOrder(models.Model):
+class MobileSaleOrder(models.Model):
     _name = 'mobile.sale.order'
 
     name = fields.Char('Nombre', readonly=1)
@@ -34,7 +34,7 @@ class ModileSaleOrder(models.Model):
     def create(self, values):
         values['state'] = 'draft'
         values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order')
-        return super(ModileSaleOrder, self).create(values)
+        return super(MobileSaleOrder, self).create(values)
 
     def make_done(self):
         sale_odoo = self.env['sale.order'].create({
