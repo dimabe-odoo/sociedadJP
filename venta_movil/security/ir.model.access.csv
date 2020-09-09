@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_venta_movil_jp_commune,venta_movil.jp_commune,model_jp_commune,,1,1,1,1
 access_venta_movil_mobile_sale_order,venta_movil.mobile_sale_order,model_mobile_sale_order,,1,1,1,1
-accces_venta_movil_mobile_line,venta_movil.mobile_line,model_mobile_line,,1,1,1,1
+access_venta_movil_mobile_line,venta_movil.mobile_line,model_mobile_line,,1,1,1,1
