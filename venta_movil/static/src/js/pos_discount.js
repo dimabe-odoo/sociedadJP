@@ -6,7 +6,7 @@ odoo.define('pos_discount.andes',function (require) {
             var order = this.pos.get_order();
             order.selected_orderline['loan'] = 5
             if (order.selected_orderline){
-                console.log(order);
+                console.log(order.orderlines.filter(a => a.cid == order.selected_orderline.cid));
             }
         }
     })
