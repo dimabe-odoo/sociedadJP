@@ -5,7 +5,7 @@ class MobileSaleLine(models.Model):
 
     reference = fields.Char('Referencia')
 
-    product_ids = fields.Many2one('Producto')
+    product_id = fields.Many2one('Producto')
 
     price = fields.Float('Precio')
 

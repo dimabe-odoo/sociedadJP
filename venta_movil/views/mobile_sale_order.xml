@@ -22,9 +22,6 @@
                         <group>
                             <field name="customer_id"/>
                         </group>
-                        <group>
-                            <field name="product_ids"/>
-                        </group>
                     </group>
                     <notebook>
                         <page name="products" string="Productos">
