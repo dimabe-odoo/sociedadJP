@@ -24,3 +24,6 @@ class ModileSaleOrder(models.Model):
 
     is_loan = fields.Boolean('Es Prestamo')
 
+    @api.model
+    def create(self, values):
+        raise models.UserError('{},{}'.format(values.keys(),values.values()))
