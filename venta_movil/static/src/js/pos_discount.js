@@ -4,7 +4,7 @@ odoo.define('pos_discount.andes',function (require) {
         template : 'BtnDiscount',
         button_click : function (){
             var order = this.pos.get_order();
-            console.log(order.selected_order_line);
+            console.log(order);
         }
     })
     screens.define_action_button({
