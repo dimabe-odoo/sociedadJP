@@ -41,7 +41,8 @@ class ModileSaleOrder(models.Model):
             'company_id': self.env.user.company_id.id,
             'currency_id': self.currency_id.id,
             'partner_id': self.customer_id.id,
-            'picking_policy': 'direct'
+            'picking_policy': 'direct',
+            'origin': self.id
         })
         self.write({
             'state': 'done',

@@ -9,6 +9,8 @@ class SaleOrder(models.Model):
 
     with_delivery = fields.Boolean('Despacho a Domicilio')
 
+    origin = fields.Many2one('mobile.sale.order','Origen')
+
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
         if self.loan_supply:

@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form>
                 <header>
-                    <button type="object" string="Marcar como hecho" name="make_done"/>
+                    <button type="object" string="Marcar como hecho" name="make_done" attrs="{'invisible':[('state','!=','done')]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="progress,done" />
                 </header>
                 <sheet>
