@@ -8,6 +8,11 @@ class PosOrder(models.Model):
     supply_reception_id = fields.Many2one('stock.picking', 'Recepcion de Insumos')
 
     loan_supply = fields.Integer()
+    
+    @api.model
+    def create(self,values):
+        models._logger.error('{},{}'.format(values.keys(),values.values()))
+        return super(PosOrder, self).create(values)
 
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
