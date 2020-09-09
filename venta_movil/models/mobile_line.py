@@ -13,4 +13,6 @@ class MobileSaleLine(models.Model):
 
     qty = fields.Integer('Cantidad')
 
+    currency_id = fields.Many2one('res.currency','Moneda',default=self.env['res.currency'].search([('name','=','CLP')]))
+
     mobile_id = fields.Many2one('mobile.sale.order',auto_join=True)
