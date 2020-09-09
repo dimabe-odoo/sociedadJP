@@ -40,7 +40,6 @@ class ModileSaleOrder(models.Model):
         sale_odoo = self.env['sale.order'].create({
             'company_id': self.env.user.company_id.id,
             'currency_id': self.currency_id.id,
-            'date_done': datetime.datetime.now(),
             'partner_id': self.customer_id.id,
             'picking_policy': 'direct'
         })
