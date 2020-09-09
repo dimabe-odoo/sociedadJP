@@ -7,7 +7,7 @@ class ModileSaleOrder(models.Model):
 
     name = fields.Char('Nombre', readonly=1)
 
-    state = fields.Selection([('progress', 'En Progeso'), ('done', 'Hecha')])
+    state = fields.Selection([('draft','Borrador'),('progress', 'En Progeso'), ('done', 'Hecha')])
 
     customer_id = fields.Many2one('res.partner', 'Cliente')
 
@@ -32,7 +32,7 @@ class ModileSaleOrder(models.Model):
 
     @api.model
     def create(self, values):
-        values['state'] = 'progress'
+        values['state'] = 'draft'
         values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order')
         return super(ModileSaleOrder, self).create(values)
 
@@ -42,7 +42,8 @@ class ModileSaleOrder(models.Model):
             'currency_id': self.currency_id.id,
             'partner_id': self.customer_id.id,
             'picking_policy': 'direct',
-            'origin': self.id
+            'origin': self.id,
+            'with_delivery':True,
         })
         self.write({
             'state': 'done',

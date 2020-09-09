@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
                 <form>
                 <header>
-                    <button type="object" string="Marcar como hecho" name="make_done" attrs="{'invisible':[('state','!=','done')]}"/>
-                    <field name="state" widget="statusbar" statusbar_visible="progress,done" />
+                    <button type="object" string="Marcar como hecho" name="make_done" attrs="{'invisible':[('state','=','done')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,progress,done" />
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -21,6 +21,11 @@
                     <group>
                         <group>
                             <field name="customer_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="is_loan"/>
                         </group>
                     </group>
                     <notebook>
