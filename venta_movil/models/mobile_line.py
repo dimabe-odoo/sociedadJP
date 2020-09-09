@@ -7,12 +7,15 @@ class MobileSaleLine(models.Model):
 
     product_id = fields.Many2one('product.product','Producto')
 
-    price = fields.Float('Precio')
+    price = fields.Monetary('Precio')
 
     state = fields.Selection([('progress','En Progeso'),('done','Hecha')],default='progress')
 
     qty = fields.Integer('Cantidad')
 
-    currency_id = fields.Many2one('res.currency','Moneda')
+    currency_id = fields.Many2one('res.currency','Moneda',default=_default_currency)
 
     mobile_id = fields.Many2one('mobile.sale.order',auto_join=True)
+
+    def _default_currency(self):
+        return self.env['res.currency'].search([('name','=','CLP')])
