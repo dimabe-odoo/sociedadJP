@@ -4,6 +4,7 @@ odoo.define('pos_discount.andes',function (require) {
         template : 'BtnDiscount',
         button_click : function (){
             var order = this.pos.get_order();
+            order.selected_orderline['loan'] = 5
             if (order.selected_orderline){
                 console.log(order.selected_orderline);
             }
