@@ -3,7 +3,7 @@ from odoo import fields,models,api
 class MobileSaleLine(models.Model):
     _name = 'mobile.sale.line'
 
-    reference = fields.Char('Referencia',ref='mobile_id.name')
+    reference = fields.Char('Referencia',rel='mobile_id.name')
 
     product_id = fields.Many2one('product.product','Producto')
 
