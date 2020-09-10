@@ -37,6 +37,7 @@ class PosOrder(models.Model):
         else:
             return res
         for line in self.lines:
+
             if line.product_id.supply_id:
                 stock_move = self.env['stock.move'].create({
                     'name': reception_id.name,
@@ -50,16 +51,28 @@ class PosOrder(models.Model):
                     'quantity_done': line.qty,
                     'product_uom': line.product_id.supply_id.uom_id.id,
                 })
-                self.env['stock.move.line'].create({
-                    'move_id': stock_move.id,
-                    'company_id': stock_move.company_id.id,
-                    'date': stock_move.date,
-                    'location_id': stock_move.location_id.id,
-                    'location_dest_id': stock_move.location_dest_id.id,
-                    'product_id': stock_move.product_id.id,
-                    'product_uom_id': stock_move.product_uom.id,
-                    'qty_done': stock_move.quantity_done
-                })
+                if line.loan > 0:
+                    self.env['stock.move.line'].create({
+                        'move_id': stock_move.id,
+                        'company_id': stock_move.company_id.id,
+                        'date': stock_move.date,
+                        'location_id': stock_move.location_id.id,
+                        'location_dest_id': stock_move.location_dest_id.id,
+                        'product_id': stock_move.product_id.id,
+                        'product_uom_id': stock_move.product_uom.id,
+                        'qty_done': stock_move.quantity_done - line.loan
+                    })
+                else:
+                    self.env['stock.move.line'].create({
+                        'move_id': stock_move.id,
+                        'company_id': stock_move.company_id.id,
+                        'date': stock_move.date,
+                        'location_id': stock_move.location_id.id,
+                        'location_dest_id': stock_move.location_dest_id.id,
+                        'product_id': stock_move.product_id.id,
+                        'product_uom_id': stock_move.product_uom.id,
+                        'qty_done': stock_move.quantity_done
+                    })
                 reception_id.button_validate()
             else:
                 continue
