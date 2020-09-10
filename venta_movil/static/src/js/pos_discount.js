@@ -13,7 +13,8 @@ odoo.define('pos_discount.andes',function (require) {
             console.log(json)
             var order = this.pos.get_order();
             if(json.lines){
-                json.lines[0].filter(a => a.id).loan = 5
+                console.log(typeof(json.lines))
+                json.lines.loan = 5
             }
             return json;
         }
