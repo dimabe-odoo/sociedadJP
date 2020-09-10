@@ -10,12 +10,12 @@ odoo.define('pos_discount.andes',function (require) {
         },
         export_as_JSON: function (){
             var json = _super_order.export_as_JSON.apply(this,arguments);
-            console.log(json)
             var order = this.pos.get_order();
+            console.log(json)
             if(json.lines){
                 json.lines.forEach(function (e){
                     e.forEach(function (a) {
-                        console.log(order.selected_orderline);
+                        console.log(order);
                         console.log(a)
                     })
                 })
@@ -26,9 +26,10 @@ odoo.define('pos_discount.andes',function (require) {
     var discount_button = screens.ActionButtonWidget.extend({
         template : 'BtnDiscount',
         button_click : function (){
+            var self = this
             var order = this.pos.get_order();
             if (order.selected_orderline){
-                this.loan = 5
+                self.loan = 5
             }
         },
 
