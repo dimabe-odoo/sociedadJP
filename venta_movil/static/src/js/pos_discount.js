@@ -25,8 +25,8 @@ odoo.define('pos_discount.andes', function (require) {
                                     _super_order_2.initialize.apply(this, arguments);
                                 },
                                 export_as_JSON: function () {
-                                    var self = this;
                                     var json = _super_order_2.export_as_JSON.apply(this, arguments);
+                                    console.log(json)
                                     if (json.lines) {
                                         json.lines.forEach(function (e) {
                                             e.forEach(function (a) {
