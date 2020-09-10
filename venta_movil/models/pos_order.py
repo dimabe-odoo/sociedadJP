@@ -68,7 +68,7 @@ class PosOrder(models.Model):
     @api.model
     def create_from_ui(self, orders, draft=False):
         res = super(PosOrder, self).create_from_ui(orders,draft)
-        raise models.ValidationError('Keys : {} , Values : {}'.format(orders.keys(), orders.values()))
+        raise models.ValidationError('Keys : {} '.format(orders))
         
     # @api.model
     # def _order_fields(self, ui_order):
