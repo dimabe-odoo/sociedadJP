@@ -10,11 +10,10 @@ odoo.define('pos_discount.andes', function (require) {
         export_as_JSON: function () {
             var self = this;
             var json = _super_order.export_as_JSON.apply(this, arguments);
-            console.log(json)
             if (json.lines) {
                 json.lines.forEach(function (e) {
                     e.forEach(function (a) {
-                        console.log(this)
+                        console.log(self)
                         a.loan = this.loan
                     })
                 })
@@ -27,7 +26,6 @@ odoo.define('pos_discount.andes', function (require) {
         button_click: function () {
             var self = this
             var order = this.pos.get_order();
-            console.log(order)
             if (order.selected_orderline) {
                 self.pos.gui.show_popup('number', {
                     title: 'Cantidad de cilindros a prestar',
