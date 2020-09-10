@@ -37,7 +37,8 @@ odoo.define('pos_discount.andes', function (require) {
                                 body: 'Cantidad a prestar no puede ser mayor a la cantidad a comprar'
                             })
                         } else {
-                            console.log(models.Order)
+                            var _super_order_2 = models.Order.prototype;
+                            console.log(_super_order_2)
                         }
                     }
                 })
