@@ -12,10 +12,10 @@ odoo.define('pos_discount.andes',function (require) {
                     console.log(json)
                 }
             })
-            order.selected_orderline['loan'] = 5
-            if (order.selected_orderline){
-                console.log(order.orderlines.filter(a => a.cid == order.selected_orderline.cid));
-            }
+            // order.selected_orderline['loan'] = 5
+            // if (order.selected_orderline){
+            //     console.log(order.orderlines.filter(a => a.cid == order.selected_orderline.cid));
+            // }
         }
     })
     screens.define_action_button({
