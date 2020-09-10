@@ -36,7 +36,7 @@ odoo.define('pos_discount.andes', function (require) {
                 self.pos.gui.show_popup('number',{
                     title : 'Cantidad de cilindros a prestar',
                     confirm : function () {
-                        console.log(self.getElementsByClassName('popup-input value active'));
+                        console.log(document.getElementsByClassName('popup-input value active'));
 
                     }
                 })
