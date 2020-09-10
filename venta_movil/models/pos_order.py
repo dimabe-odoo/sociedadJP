@@ -69,5 +69,4 @@ class PosOrder(models.Model):
     def _order_fields(self, ui_order):
         models._logger.error(ui_order)
         order_fields = super(PosOrder, self)._order_fields(ui_order)
-        order_fields['loan'] = ui_order.get('loan', False)
         return order_fields
