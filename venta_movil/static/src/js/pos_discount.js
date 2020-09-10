@@ -14,12 +14,8 @@ odoo.define('pos_discount.andes', function (require) {
             if (json.lines) {
                 json.lines.forEach(function (e) {
                     e.forEach(function (a) {
-                        console.log(a)
-                        if (a.loan > a.qty) {
-                            self.pos.gui.show_popup('error', {
-                                title: ('Cantidad de prestamo'),
-                                body: ('La cantidad de prestamo no puede ser mayor a la cantidad a comprar')
-                            })
+                        if(a.product_id === self.selected_product){
+                            a.loan = self.loan
                         }
                     })
                 })
@@ -34,11 +30,19 @@ odoo.define('pos_discount.andes', function (require) {
             var order = this.pos.get_order();
             console.log(order)
             if (order.selected_orderline) {
-                self.pos.gui.show_popup('number',{
-                    title : 'Cantidad de cilindros a prestar',
-                    confirm : function () {
-                        self['loan'] = document.getElementsByClassName('popup-input value active')[0].innerHTML;
-                        console.log(order.selected_orderline)
+                self.pos.gui.show_popup('number', {
+                    title: 'Cantidad de cilindros a prestar',
+                    confirm: function () {
+                        let loan = parseInt(document.getElementsByClassName('popup-input value active')[0].innerHTML);
+                        if (loan > order.selected_orderline.quantity) {
+                            self.pos.gui.show_popup('error', {
+                                title: 'Error',
+                                body: 'Cantidad a prestar no puede ser mayor a la cantidad a comprar'
+                            })
+                        } else {
+                            self['loan'] = loan;
+                            self['selected_product'] = order.selected_orderline.product.id
+                        }
                     }
                 })
             } else {
