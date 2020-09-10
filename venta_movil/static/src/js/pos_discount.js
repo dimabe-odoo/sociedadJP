@@ -30,9 +30,7 @@ odoo.define('pos_discount.andes', function (require) {
                                     if (json.lines) {
                                         json.lines.forEach(function (e) {
                                             e.forEach(function (a) {
-                                                if(a.product_id === order.selected_orderline.product.id){
-                                                    a.loan = loan
-                                                }
+                                                a.loan = loan
                                             })
                                         })
                                     }
