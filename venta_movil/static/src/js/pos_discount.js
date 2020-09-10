@@ -14,6 +14,7 @@ odoo.define('pos_discount.andes', function (require) {
             if (json.lines) {
                 json.lines.forEach(function (e) {
                     e.forEach(function (a) {
+                        console.log(a)
                         if (a.loan > a.qty) {
                             self.pos.gui.show_popup('error', {
                                 title: ('Cantidad de prestamo'),
