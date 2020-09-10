@@ -3,24 +3,6 @@ odoo.define('pos_discount.andes', function (require) {
     var models = require('point_of_sale.models');
     var _super_order = models.Order.prototype;
     var loan = 0
-    models.Order = models.Order.extend({
-        initialize: function () {
-            _super_order.initialize.apply(this, arguments);
-        },
-        export_as_JSON: function () {
-            var self = this;
-            var json = _super_order.export_as_JSON.apply(this, arguments);
-            if (json.lines) {
-                json.lines.forEach(function (e) {
-                    e.forEach(function (a) {
-                        console.log(self)
-                        a.loan = this.loan
-                    })
-                })
-            }
-            return json;
-        }
-    })
     var discount_button = screens.ActionButtonWidget.extend({
         template: 'BtnDiscount',
         button_click: function () {
@@ -37,8 +19,25 @@ odoo.define('pos_discount.andes', function (require) {
                                 body: 'Cantidad a prestar no puede ser mayor a la cantidad a comprar'
                             })
                         } else {
-                            var _super_order_2 = models.Order.prototype;
-                            console.log(_super_order_2)
+                            let _super_order_2 = models.Order.prototype;
+                            models.Order = models.Order.extend({
+                                initialize: function () {
+                                    _super_order_2.initialize.apply(this, arguments);
+                                },
+                                export_as_JSON: function () {
+                                    var self = this;
+                                    var json = _super_order_2.export_as_JSON.apply(this, arguments);
+                                    if (json.lines) {
+                                        json.lines.forEach(function (e) {
+                                            e.forEach(function (a) {
+                                                console.log(self)
+                                                a.loan = this.loan
+                                            })
+                                        })
+                                    }
+                                    return json;
+                                }
+                            })
                         }
                     }
                 })
