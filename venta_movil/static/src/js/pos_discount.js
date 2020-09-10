@@ -14,8 +14,7 @@ odoo.define('pos_discount.andes', function (require) {
             if (json.lines) {
                 json.lines.forEach(function (e) {
                     e.forEach(function (a) {
-                        console.log('this ='+this)
-                        console.log('self = '+ self)
+                        console.log(this)
                         a.loan = this.loan
                     })
                 })
