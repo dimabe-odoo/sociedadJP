@@ -33,8 +33,12 @@ odoo.define('pos_discount.andes', function (require) {
             var order = this.pos.get_order();
             console.log(order)
             if (order.selected_orderline) {
-                console.log(this)
-                console.log(self)
+                self.pos.gui.show_popup('number',{
+                    title : 'Cantidad de cilindros a prestar',
+                    confirm : function () {
+                        console.log('1')
+                    }
+                })
             } else {
                 self.pos.gui.show_popup('error', {
                     title: ('Sin Producto'),
