@@ -33,7 +33,8 @@ odoo.define('pos_discount.andes',function (require) {
             var order = this.pos.get_order();
             console.log(order)
             if (order.selected_orderline){
-
+                console.log(this)
+                console.log(self)
             }
         },
 
