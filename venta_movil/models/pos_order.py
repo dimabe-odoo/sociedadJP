@@ -52,6 +52,7 @@ class PosOrder(models.Model):
                     'product_uom': line.product_id.supply_id.uom_id.id,
                 })
                 if line.loan > 0:
+                    models._logger.error(line.loan)
                     self.env['stock.move.line'].create({
                         'move_id': stock_move.id,
                         'company_id': stock_move.company_id.id,
