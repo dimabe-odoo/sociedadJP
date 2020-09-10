@@ -9,7 +9,9 @@ odoo.define('pos_discount.andes',function (require) {
             models.Order = models.Order.extend({
                 export_as_JSON : function (){
                     var json = _super_Order.export_as_JSON.apply(this,arguments);
-                    console.log(json)
+                    if(json.lines){
+                        json.line[1][1]['loan'] = 5
+                    }
                 }
             })
             // order.selected_orderline['loan'] = 5
