@@ -16,7 +16,7 @@ odoo.define('pos_discount.andes',function (require) {
             this.loan = 0;
         },
         export_as_JSON: function (){
-            var json = _super_orderline.export_as_JSON.apply(this,arguments);
+            var json = _super_order.export_as_JSON.apply(this,arguments);
             console.log(json)
             json.loan = this.loan;
             return json;
