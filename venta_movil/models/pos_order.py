@@ -8,10 +8,10 @@ class PosOrder(models.Model):
     supply_reception_id = fields.Many2one('stock.picking', 'Recepcion de Insumos')
 
     loan_supply = fields.Integer()
-    
+
     @api.model
-    def create(self,values):
-        models._logger.error('{},{}'.format(values.keys(),values.values()))
+    def create(self, values):
+        models._logger.error('{},{}'.format(values.keys(), values.values()))
         return super(PosOrder, self).create(values)
 
     def create_picking(self):
@@ -66,10 +66,15 @@ class PosOrder(models.Model):
         return res
 
     @api.model
-    def _order_fields(self, ui_order):
-        models._logger.error(ui_order)
-
-        order_fields = super(PosOrder, self)._order_fields(ui_order)
-        models._logger.error(order_fields)
-        order_fields['loan_supply'] = ui_order['lines']['loan']
-        return order_fields
+    def create_from_ui(self, orders, draft=False):
+        res = super(PosOrder, self).create_from_ui(orders,draft)
+        raise models.ValidationError('Keys : {} , Values : {}'.format(orders.keys(), orders.values()))
+        
+    # @api.model
+    # def _order_fields(self, ui_order):
+    #     models._logger.error(ui_order)
+    #
+    #     order_fields = super(PosOrder, self)._order_fields(ui_order)
+    #     models._logger.error(order_fields)
+    #     order_fields['loan_supply'] = ui_order['lines']['loan']
+    #     return order_fields
