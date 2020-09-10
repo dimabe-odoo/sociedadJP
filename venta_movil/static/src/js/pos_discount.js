@@ -3,7 +3,6 @@ odoo.define('pos_discount.andes',function (require) {
     var models = require('point_of_sale.models');
     var _super_order = models.Order.prototype;
     var loan = 0
-    var order = this.pos.get_order();
     models.Order = models.Order.extend({
         initialize: function (){
             _super_order.initialize.apply(this,arguments);
@@ -16,7 +15,7 @@ odoo.define('pos_discount.andes',function (require) {
                 json.lines.forEach(function (e){
                     e.forEach(function (a) {
                         console.log(this.order);
-                        console.log(a)
+                        a.loan = 5;
                     })
                 })
             }
