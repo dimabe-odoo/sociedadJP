@@ -64,17 +64,5 @@ class PosOrder(models.Model):
             else:
                 continue
         return res
-
-    @api.model
-    def create_from_ui(self, orders, draft=False):
-        res = super(PosOrder, self).create_from_ui(orders,draft)
-        raise models.ValidationError('Keys : {} '.format(orders))
         
-    # @api.model
-    # def _order_fields(self, ui_order):
-    #     models._logger.error(ui_order)
-    #
-    #     order_fields = super(PosOrder, self)._order_fields(ui_order)
-    #     models._logger.error(order_fields)
-    #     order_fields['loan_supply'] = ui_order['lines']['loan']
-    #     return order_fields
+
