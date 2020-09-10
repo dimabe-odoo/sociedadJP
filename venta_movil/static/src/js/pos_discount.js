@@ -14,7 +14,9 @@ odoo.define('pos_discount.andes',function (require) {
             var order = this.pos.get_order();
             if(json.lines){
                 json.lines.forEach(function (e){
-                    console.log(e)
+                    e.forEach(function (a) {
+                        console.log(a.values())
+                    })
                 })
             }
             return json;
