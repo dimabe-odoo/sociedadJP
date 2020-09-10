@@ -9,32 +9,7 @@ odoo.define('pos_discount.andes',function (require) {
         button_click : function (){
             var self = this
             var order = this.pos.get_order();
-            if (order.selected_orderline){
-                self.loan = 5
-            }
-            models.Order = models.Order.extend({
-            initialize: function (){
-                _super_order.initialize.apply(this,arguments);
-            },
-            export_as_JSON: function (){
-                var self = this;
-                var json = _super_order.export_as_JSON.apply(this,arguments);
-                console.log(json)
-                if(json.lines){
-                    json.lines.forEach(function (e){
-                        e.forEach(function (a) {
-                            if(a.loan > a.qty){
-                             self.pos.gui.show_popup('error',{
-                               title: ('Cantidad de prestamo'),
-                               body : ('La cantidad de prestamo no puede ser mayor a la cantidad a comprar')
-                           })
-                        }
-                    })
-                })
-            }
-            return json;
-        }
-    })
+            console.log(order)
         },
 
     })
