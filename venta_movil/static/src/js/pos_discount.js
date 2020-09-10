@@ -12,11 +12,11 @@ odoo.define('pos_discount.andes', function (require) {
             var json = _super_order.export_as_JSON.apply(this, arguments);
             if (json.lines) {json.lines.forEach(function (e) {
                     e.forEach(function (a) {
-                        console.log(self.pos)
-                        a.loan = this.loan
+                        a.loan = self.pos.loan
                     })
                 })
             }
+            console.log(json)
             return json;
         }
     })
@@ -36,9 +36,8 @@ odoo.define('pos_discount.andes', function (require) {
                                 body: 'Cantidad a prestar no puede ser mayor a la cantidad a comprar'
                             })
                         } else {
-                            console.log(this.pos)
-                            self['loan'] = loan;
-                            self['selected_product'] = order.selected_orderline.product.id
+                            this.pos['loan'] = loan;
+                            this.pos['selected_product'] = order.selected_orderline.product.id
                         }
                     }
                 })
