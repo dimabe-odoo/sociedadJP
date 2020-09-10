@@ -6,11 +6,17 @@ odoo.define('pos_discount.andes',function (require) {
         template : 'BtnDiscount',
         button_click : function (){
             var order = this.pos.get_order();
+
             order.selected_orderline['loan'] = 5
             if (order.selected_orderline){
                 console.log(order.orderlines.export_as_JSON());
             }
-        }
+        },
+        export_as_JSON : function (){
+                var data = _super_Order.export_as_JSON.apply(this,arguments);
+                console.log(data);
+                return data
+            }
     })
     screens.define_action_button({
         'name':'discount_btn',
