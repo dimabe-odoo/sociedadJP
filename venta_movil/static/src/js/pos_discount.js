@@ -3,13 +3,6 @@ odoo.define('pos_discount.andes',function (require) {
     var models = require('point_of_sale.models');
     var _super_order = models.Order.prototype;
     var loan = 0
-    models.load_models({
-        model : 'pos.order.line',
-        fields : ['loan_qty'],
-        loaded : function (){
-            return this.loan
-        }
-    })
     models.Order = models.Order.extend({
         initialize: function (){
             _super_order.initialize.apply(this,arguments);
@@ -18,7 +11,7 @@ odoo.define('pos_discount.andes',function (require) {
         export_as_JSON: function (){
             var json = _super_order.export_as_JSON.apply(this,arguments);
             console.log(json)
-            json.loan = this.loan;
+            json.lines[0][2].loan = this.loan;
             return json;
         }
     })
