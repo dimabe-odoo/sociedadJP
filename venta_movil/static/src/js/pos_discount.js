@@ -13,9 +13,8 @@ odoo.define('pos_discount.andes', function (require) {
             if (json.lines) {json.lines.forEach(function (e) {
                     e.forEach(function (a) {
                         if(a.product_id === self.pos.selected_product){
-                            console.log('Son Iguales')
+                            a.loan = self.pos.loan
                         }
-                        a.loan = self.pos.loan
                     })
                 })
             }
