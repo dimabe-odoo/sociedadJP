@@ -57,25 +57,28 @@ class PosOrder(models.Model):
                 'partner_id': self.partner_id.id
             })
             for line in self.lines:
-                if self.is_loan and line.product_id.supply_id.id:
-                    qty = (line.qty - line.loan)
-                    loan_move = self.env['stock.move'].create({
-                        'name': loan_id.name,
-                        'picking_id': loan_id.id,
-                        'location_id': loan_id.location_id.id,
-                        'location_dest_id': loan_id.location_dest_id.id,
-                        'product_id': line.product_id.supply_id.id,
-                        'date': datetime.datetime.now(),
-                        'company_id': loan_id.company_id.id,
-                        'procure_method': 'make_to_stock',
-                        'quantity_done': qty,
-                        'product_uom': line.product_id.supply_id.uom_id.id
-                    })
-                    self.write({
-                        'loan_reception_id': loan_id.id
-                    })
-                    self.loan_reception_id.button_validate()
                 if line.product_id.supply_id.id:
+                    if self.is_loan:
+                        loan_move = self.env['stock.move'].create({
+                            'name': loan_id.name,
+                            'picking_id': loan_id.id,
+                            'location_id': loan_id.location_id.id,
+                            'location_dest_id': loan_id.location_dest_id.id,
+                            'product_id': line.product_id.supply_id.id,
+                            'date': datetime.datetime.now(),
+                            'company_id': loan_id.company_id.id,
+                            'procure_method': 'make_to_stock',
+                            'quantity_done': line.loan,
+                            'product_uom': line.product_id.supply_id.uom_id.id
+                        })
+                        self.write({
+                            'loan_reception_id': loan_id.id
+                        })
+                        self.loan_reception_id.button_validate()
+                    if line.loan != 0:
+                        qty = (line.qty - line.loan)
+                    else:
+                        qty = line.qty
                     stock_move = self.env['stock.move'].create({
                         'name': reception_id.name,
                         'picking_id': reception_id.id,
