@@ -93,6 +93,7 @@ class StockPicking(models.Model):
                                     'product_uom': move.product_id.supply_id.uom_id.id,
                                     'date_expected': item.scheduled_date
                                 })
+                    return super(StockPicking, self).button_validate()
                 if item.picking_type_code == 'incoming':
                     dispatch = self.env['stock.picking'].create({
                         'name': 'OUT/' + item.name,
@@ -134,4 +135,4 @@ class StockPicking(models.Model):
                             'supply_dispatch_id': dispatch.id,
                             'purchase_without_supply': True
                     })
-
+                    return super(StockPicking, self).button_validate()
