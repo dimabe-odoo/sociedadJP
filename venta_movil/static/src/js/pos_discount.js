@@ -12,8 +12,9 @@ odoo.define('pos_discount.andes', function (require) {
             var json = _super_order.export_as_JSON.apply(this, arguments);
             if (json.lines) {json.lines.forEach(function (e) {
                     e.forEach(function (a) {
-                        console.log('Producto of a' + a.product_id)
-                        console.log('Product of self.pos'+self.pos.selected_product)
+                        if(a.product_id === self.pos.selected_product){
+                            console.log('Son Iguales')
+                        }
                         a.loan = self.pos.loan
                     })
                 })
@@ -40,6 +41,7 @@ odoo.define('pos_discount.andes', function (require) {
                         } else {
                             this.pos['loan'] = loan;
                             this.pos['selected_product'] = order.selected_orderline.product.id
+                            location.reload();
                         }
                     }
                 })
