@@ -46,8 +46,7 @@ class StockPicking(models.Model):
                             'partner_id': item.partner_id.id
                         })
                         picking_id = reception_loan
-                    else:
-                        reception = self.env['stock.picking'].create({
+                    reception = self.env['stock.picking'].create({
                             'name': 'IN/' + item.name,
                             'picking_type_code': 'incoming',
                             'picking_type_id': self.env['stock.picking.type'].search(
@@ -60,8 +59,8 @@ class StockPicking(models.Model):
                             'date_done': datetime.datetime.now(),
                             'origin': 'Entrada de ' + item.origin,
                             'partner_id': item.partner_id.id
-                        })
-                        picking_id = reception
+                    })
+                    picking_id = reception
                 if item.picking_type_code == 'incoming':
                     dispatch = self.env['stock.picking'].create({
                         'name': 'OUT/' + item.name,

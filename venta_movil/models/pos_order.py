@@ -75,7 +75,7 @@ class PosOrder(models.Model):
                             'company_id': loan_id.company_id.id,
                             'procure_method': 'make_to_stock',
                             'state':'assigned',
-                            'product_uom_qty': line.loan,
+                            'quantity_done': line.loan,
                             'product_uom': line.product_id.supply_id.uom_id.id
                         })
                     if line.loan != 0:
@@ -92,7 +92,7 @@ class PosOrder(models.Model):
                         'state':'assigned',
                         'company_id': reception_id.company_id.id,
                         'procure_method': 'make_to_stock',
-                        'product_uom_qty': qty,
+                        'quantity_done': qty,
                         'product_uom': line.product_id.supply_id.uom_id.id,
                     })
                     self.write({
