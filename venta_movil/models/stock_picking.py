@@ -102,7 +102,7 @@ class StockPicking(models.Model):
                                     'date': datetime.datetime.now(),
                                     'company_id': self.env.user.company_id.id,
                                     'procure_method': 'make_to_stock',
-                                    'quantity_done': qty,
+                                    'quantity_done': move.loan_supply,
                                     'product_uom': move.product_id.supply_id.uom_id.id,
                                     'date_expected': item.scheduled_date
                                 })
