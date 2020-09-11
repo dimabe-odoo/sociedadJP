@@ -25,7 +25,7 @@ class PosOrder(models.Model):
                 loan_id = self.env['stock.picking'].create({
                     'name': 'POS/LOAN/{}'.format(self.name),
                     'picking_type_id': self.env['stock.picking.type'].search([
-                        ('warehouse_id,id', '=', self.picking_type_id.warehouse_id.id),
+                        ('warehouse_id.id', '=', self.picking_type_id.warehouse_id.id),
                         ('sequence_code', '=', 'IN')
                     ]).id,
                     'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
@@ -44,7 +44,7 @@ class PosOrder(models.Model):
             reception_id = self.env['stock.picking'].create({
                 'name': 'POS/IN/{}'.format(self.name),
                 'picking_type_id': self.env['stock.picking.type'].search([
-                    ('warehouse_id,id', '=', self.picking_type_id.warehouse_id.id),
+                    ('warehouse_id.id', '=', self.picking_type_id.warehouse_id.id),
                     ('sequence_code', '=', 'IN')
                 ]).id,
                 'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
