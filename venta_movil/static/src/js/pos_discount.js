@@ -41,7 +41,6 @@ odoo.define('pos_discount.andes', function (require) {
                         } else {
                             this.pos['loan'] = loan;
                             this.pos['selected_product'] = order.selected_orderline.product.id
-                            location.reload();
                         }
                     }
                 })
