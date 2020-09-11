@@ -7,7 +7,7 @@ class PosOrder(models.Model):
 
     supply_reception_id = fields.Many2one('stock.picking', 'Recepcion de Insumos')
 
-    loan_supply = fields.Integer()
+    loan_supply = fields.Boolean()
 
     @api.model
     def create(self, values):
@@ -61,7 +61,7 @@ class PosOrder(models.Model):
                         'location_dest_id': stock_move.location_dest_id.id,
                         'product_id': stock_move.product_id.id,
                         'product_uom_id': stock_move.product_uom.id,
-                        'qty_done': stock_move.quantity_done - line.loan
+                        'qty_done': stock_move.quantity_done
                     })
                 else:
                     self.env['stock.move.line'].create({
