@@ -88,16 +88,16 @@ class PosOrder(models.Model):
                         'quantity_done': line.qty,
                         'product_uom': line.product_id.supply_id.uom_id.id,
                     })
-                self.env['stock.move.line'].create({
-                    'move_id': stock_move.id,
-                    'company_id': stock_move.company_id.id,
-                    'date': stock_move.date,
-                    'location_id': stock_move.location_id.id,
-                    'location_dest_id': stock_move.location_dest_id.id,
-                    'product_id': stock_move.product_id.id,
-                    'product_uom_id': stock_move.product_uom.id,
-                    'qty_done': stock_move.quantity_done
-                })
+                # self.env['stock.move.line'].create({
+                #     'move_id': stock_move.id,
+                #     'company_id': stock_move.company_id.id,
+                #     'date': stock_move.date,
+                #     'location_id': stock_move.location_id.id,
+                #     'location_dest_id': stock_move.location_dest_id.id,
+                #     'product_id': stock_move.product_id.id,
+                #     'product_uom_id': stock_move.product_uom.id,
+                #     'qty_done': stock_move.quantity_done
+                # })
                 reception_id.button_validate()
             else:
                 continue
