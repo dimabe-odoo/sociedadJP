@@ -19,7 +19,7 @@ class PosOrder(models.Model):
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
         if self.lines.filtered(lambda l: l.product_id.supply_id):
-            if self.is_loan:
+            if self.lines.filtered(lambda q: q.loan > 0):
                 loan_id = self.env['stock.picking'].create({
                     'name': 'POS/LOAN/{}'.format(self.name),
                     'picking_type_id': self.env['stock.picking.type'].search([
@@ -64,7 +64,7 @@ class PosOrder(models.Model):
             })
             for line in self.lines:
                 if line.product_id.supply_id:
-                    if self.is_loan:
+                    if self.lines.filtered(lambda q: q.loan > 0):
                         loan_move = self.env['stock.move'].create({
                             'name': loan_id.name,
                             'picking_id': loan_id.id,
@@ -99,6 +99,6 @@ class PosOrder(models.Model):
                     self.supply_reception_id.button_validate()
                 else:
                     continue
-            if self.is_loan:
+            if self.lines.filtered(lambda q: q.loan > 0):
                 self.loan_reception_id.button_validate()
             self.supply_reception_id.button_validate()
