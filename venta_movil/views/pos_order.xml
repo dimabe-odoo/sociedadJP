@@ -9,7 +9,9 @@
             <field name="priority" eval="800"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='picking_id']" position="after">
+                    <field name="is_loan" invisible="1"/>
                     <field name="supply_reception_id"/>
+                    <field name="loan_recepction_id" attrs="{'invisible':[('is_loan','=',False)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='lines']//tree//field[@name='qty']" position="after">
                     <field name="loan" attrs="{'invisible':[('loan','=',None)]}"/>
