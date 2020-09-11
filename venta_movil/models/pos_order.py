@@ -58,6 +58,8 @@ class PosOrder(models.Model):
         for line in self.lines:
             if line.product_id.supply_id:
                 if line.loan > 0:
+                    qty = (line.qty - line.loan)
+                    models._logger.error(qty)
                     stock_move = self.env['stock.move'].create({
                         'name': reception_id.name,
                         'picking_id': reception_id.id,
@@ -67,7 +69,7 @@ class PosOrder(models.Model):
                         'date': datetime.datetime.now(),
                         'company_id': reception_id.company_id.id,
                         'procure_method': 'make_to_stock',
-                        'quantity_done':  (line.qty - line.loan),
+                        'quantity_done':  qty,
                         'product_uom': line.product_id.supply_id.uom_id.id,
                     })
                 else:
