@@ -56,7 +56,6 @@ class PosOrder(models.Model):
         else:
             return res
         for line in self.lines:
-
             if line.product_id.supply_id:
                 if line.loan > 0:
                     stock_move = self.env['stock.move'].create({
@@ -104,8 +103,7 @@ class PosOrder(models.Model):
                     'product_uom_id': stock_move.product_uom.id,
                     'qty_done': stock_move.quantity_done
                 })
-            reception_id.button_validate()
-        else:
-            continue
-
-    return res
+                reception_id.button_validate()
+            else:
+                continue
+        return res
