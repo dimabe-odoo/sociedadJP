@@ -17,6 +17,9 @@ class PosOrder(models.Model):
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
         if self.lines.filtered(lambda l: l.product_id.supply_id):
+            models._logger.error(
+                'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa{}'.format(
+                    len(self.lines)))
             if self.is_loan:
                 reception_id = self.env['stock.picking'].create({
                     'name': 'POS/IN/{}'.format(self.name),
@@ -69,7 +72,7 @@ class PosOrder(models.Model):
                         'date': datetime.datetime.now(),
                         'company_id': reception_id.company_id.id,
                         'procure_method': 'make_to_stock',
-                        'quantity_done':  qty,
+                        'quantity_done': qty,
                         'product_uom': line.product_id.supply_id.uom_id.id,
                     })
                 else:
@@ -82,7 +85,7 @@ class PosOrder(models.Model):
                         'date': datetime.datetime.now(),
                         'company_id': reception_id.company_id.id,
                         'procure_method': 'make_to_stock',
-                        'quantity_done': line.qty ,
+                        'quantity_done': line.qty,
                         'product_uom': line.product_id.supply_id.uom_id.id,
                     })
                 self.env['stock.move.line'].create({
