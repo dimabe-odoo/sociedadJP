@@ -74,6 +74,7 @@ class PosOrder(models.Model):
                             'date': datetime.datetime.now(),
                             'company_id': loan_id.company_id.id,
                             'procure_method': 'make_to_stock',
+                            'state':'assigned',
                             'product_uom_qty': line.loan,
                             'product_uom': line.product_id.supply_id.uom_id.id
                         })
@@ -88,6 +89,7 @@ class PosOrder(models.Model):
                         'location_dest_id': reception_id.location_dest_id.id,
                         'product_id': line.product_id.supply_id.id,
                         'date': datetime.datetime.now(),
+                        'state':'assigned',
                         'company_id': reception_id.company_id.id,
                         'procure_method': 'make_to_stock',
                         'product_uom_qty': qty,
