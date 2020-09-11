@@ -78,6 +78,20 @@ class StockPicking(models.Model):
                                         move.product_id.supply_id.display_name))
                                 if item.sale_id.loan_supply:
                                     qty = move.product_uom_qty - move.loan_supply
+                                    self.env['stock.move'].create({
+                                        'picking_id': loan_reception_id.id,
+                                        'name': 'MOVE/' + item.name,
+                                        'location_id': loan_reception_id.location_id.id,
+                                        'location_dest_id': loan_reception_id.location_dest_id.id,
+                                        'product_id': move.product_id.supply_id.id,
+                                        'date': datetime.datetime.now(),
+                                        'company_id': self.env.user.company_id.id,
+                                        'procure_method': 'make_to_stock',
+                                        'quantity_done': move.loan_supply,
+                                        'product_uom': move.product_id.supply_id.uom_id.id,
+                                        'date_expected': item.scheduled_date
+                                    })
+                                    item.loan_reception_id.button_validate()
                                 else:
                                     qty = move.product_uom_qty
                                 self.env['stock.move'].create({
@@ -93,19 +107,10 @@ class StockPicking(models.Model):
                                     'product_uom': move.product_id.supply_id.uom_id.id,
                                     'date_expected': item.scheduled_date
                                 })
-                                self.env['stock.move'].create({
-                                    'picking_id': loan_reception_id.id,
-                                    'name': 'MOVE/' + item.name,
-                                    'location_id': loan_reception_id.location_id.id,
-                                    'location_dest_id': loan_reception_id.location_dest_id.id,
-                                    'product_id': move.product_id.supply_id.id,
-                                    'date': datetime.datetime.now(),
-                                    'company_id': self.env.user.company_id.id,
-                                    'procure_method': 'make_to_stock',
-                                    'quantity_done': move.loan_supply,
-                                    'product_uom': move.product_id.supply_id.uom_id.id,
-                                    'date_expected': item.scheduled_date
-                                })
+
+
+
+                    item.supply_dispatch_id.button_validate()
                     return super(StockPicking, self).button_validate()
                 if item.picking_type_code == 'incoming':
                     dispatch = self.env['stock.picking'].create({
