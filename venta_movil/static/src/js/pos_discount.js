@@ -12,6 +12,8 @@ odoo.define('pos_discount.andes', function (require) {
             var json = _super_order.export_as_JSON.apply(this, arguments);
             if (json.lines) {json.lines.forEach(function (e) {
                     e.forEach(function (a) {
+                        console.log('Producto of a' + a.product_id)
+                        console.log('Product of self.pos'+self.pos.selected_product)
                         a.loan = self.pos.loan
                     })
                 })
