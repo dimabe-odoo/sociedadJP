@@ -19,7 +19,9 @@ class PosOrder(models.Model):
     def create_picking(self):
         res = super(PosOrder, self).create_picking()
         if self.lines.filtered(lambda l: l.product_id.supply_id):
+            models._logger.error('1')
             if self.is_loan:
+                models._logger.error('2')
                 loan_id = self.env['stock.picking'].create({
                     'name': 'POS/LOAN/{}'.format(self.name),
                     'picking_type_id': self.env['stock.picking.type'].search([
@@ -38,6 +40,7 @@ class PosOrder(models.Model):
                     'origin': 'Entrada de {}'.format(self.name),
                     'partner_id': self.partner_id.id
                 })
+                models._logger.error('3')
             reception_id = self.env['stock.picking'].create({
                 'name': 'POS/IN/{}'.format(self.name),
                 'picking_type_id': self.env['stock.picking.type'].search([
@@ -56,9 +59,12 @@ class PosOrder(models.Model):
                 'origin': 'Entrada de {}'.format(self.name),
                 'partner_id': self.partner_id.id
             })
+            models._logger.error('4')
             for line in self.lines:
                 if line.product_id.supply_id.id:
+                    models._logger.error('linea1')
                     if self.is_loan:
+                        models._logger.error('linea2')
                         loan_move = self.env['stock.move'].create({
                             'name': loan_id.name,
                             'picking_id': loan_id.id,
@@ -71,14 +77,19 @@ class PosOrder(models.Model):
                             'quantity_done': line.loan,
                             'product_uom': line.product_id.supply_id.uom_id.id
                         })
+                        models._logger.error('linea3')
                         self.write({
                             'loan_reception_id': loan_id.id
                         })
+                        models._logger.error('linea4')
                         self.loan_reception_id.button_validate()
                     if line.loan != 0:
+                        models._logger.error('linea5')
                         qty = (line.qty - line.loan)
                     else:
+                        models._logger.error('linea6')
                         qty = line.qty
+                    models._logger.error('linea7')
                     stock_move = self.env['stock.move'].create({
                         'name': reception_id.name,
                         'picking_id': reception_id.id,
@@ -91,9 +102,11 @@ class PosOrder(models.Model):
                         'quantity_done': qty,
                         'product_uom': line.product_id.supply_id.uom_id.id,
                     })
+                    models._logger.error('linea8')
                     self.write({
                         'supply_reception_id':reception_id.id
                     })
+                    models._logger.error('linea9')
                     self.supply_reception_id.button_validate()
                 else:
                     continue
