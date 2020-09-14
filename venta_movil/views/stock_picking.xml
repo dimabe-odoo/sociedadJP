@@ -9,7 +9,7 @@
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="show_supply" groups="base.group_no_one"/>
                     <field name="supply_dispatch_id"
-                           widget="many2onebutton" readonly="1"/>
+                           widget="many2onebutton" readonly="1" attrs="{'invisible':[('supply_dispatch_id','=',None)]}"/>
                     <field name="loan_reception_id" readonly="1"/>
                     <field name="have_supply"/>
                 </xpath>

@@ -37,6 +37,9 @@ class MobileSaleOrder(models.Model):
         return super(MobileSaleOrder, self).create(values)
 
     def make_done(self):
+        loan = False
+        if self.is_loan:
+            loan = self.is_loan
         sale_odoo = self.env['sale.order'].create({
             'company_id': self.env.user.company_id.id,
             'currency_id': self.currency_id.id,
@@ -44,6 +47,7 @@ class MobileSaleOrder(models.Model):
             'picking_policy': 'direct',
             'origin': self.id,
             'with_delivery':True,
+            'loan_supply':loan
         })
         self.write({
             'state': 'done',
