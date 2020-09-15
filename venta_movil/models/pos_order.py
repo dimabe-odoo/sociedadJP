@@ -83,7 +83,7 @@ class PosOrder(models.Model):
                         qty = (line.qty - line.loan)
                     else:
                         qty = line.qty
-                    if (line.qty - line.loan) == 0:
+                    if (line.qty - line.loan) != 0:
                         stock_move = self.env['stock.move'].create({
                             'name': reception_id.name,
                             'picking_id': reception_id.id,

@@ -11,7 +11,7 @@
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="loan_supply"/>
                     <field name="with_delivery"/>
-                    <field name="origin" attrs="{'invisible':[('with_delivery','=',False)]}"/>
+                    <field name="origin" readonly="1" attrs="{'invisible':[('with_delivery','=',False)]}"/>
                 </xpath>
             </field>
         </record>
