@@ -41,26 +41,27 @@ class PosOrder(models.Model):
                 self.write({
                     'loan_reception_id':loan_id.id
                 })
-            reception_id = self.env['stock.picking'].create({
-                'name': 'POS/IN/{}'.format(self.name),
-                'picking_type_id': self.env['stock.picking.type'].search([
-                    ('warehouse_id.id', '=', self.picking_type_id.warehouse_id.id),
-                    ('sequence_code', '=', 'IN')
-                ]).id,
-                'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
-                'location_dest_id': self.env['stock.warehouse'].search([
-                    ('id', '=', self.picking_type_id.warehouse_id.id)
-                ]).lot_stock_id.id,
-                'move_type': 'direct',
-                'picking_type_code': 'incoming',
-                'state': 'assigned',
-                'date_done': datetime.datetime.now(),
-                'company_id': self.env.user.company_id.id,
-                'origin': 'Entrada de {}'.format(self.name),
-                'partner_id': self.partner_id.id
-            })
+            if self.lines.filtered(lambda a : (a.loan - a.qty) != 0):
+                reception_id = self.env['stock.picking'].create({
+                    'name': 'POS/IN/{}'.format(self.name),
+                    'picking_type_id': self.env['stock.picking.type'].search([
+                        ('warehouse_id.id', '=', self.picking_type_id.warehouse_id.id),
+                        ('sequence_code', '=', 'IN')
+                    ]).id,
+                    'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                    'location_dest_id': self.env['stock.warehouse'].search([
+                        ('id', '=', self.picking_type_id.warehouse_id.id)
+                    ]).lot_stock_id.id,
+                    'move_type': 'direct',
+                    'picking_type_code': 'incoming',
+                    'state': 'assigned',
+                    'date_done': datetime.datetime.now(),
+                    'company_id': self.env.user.company_id.id,
+                    'origin': 'Entrada de {}'.format(self.name),
+                    'partner_id': self.partner_id.id
+                })
             self.write({
-                'supply_reception_id' : self.supply_reception_id.id
+                'supply_reception_id': self.supply_reception_id.id
             })
             for line in self.lines:
                 if line.product_id.supply_id:
@@ -82,19 +83,20 @@ class PosOrder(models.Model):
                         qty = (line.qty - line.loan)
                     else:
                         qty = line.qty
-                    stock_move = self.env['stock.move'].create({
-                        'name': reception_id.name,
-                        'picking_id': reception_id.id,
-                        'location_id': reception_id.location_id.id,
-                        'location_dest_id': reception_id.location_dest_id.id,
-                        'product_id': line.product_id.supply_id.id,
-                        'date': datetime.datetime.now(),
-                        'state':'assigned',
-                        'company_id': reception_id.company_id.id,
-                        'procure_method': 'make_to_stock',
-                        'quantity_done': qty,
-                        'product_uom': line.product_id.supply_id.uom_id.id,
-                    })
+                    if (line.qty - line.loan) == 0:
+                        stock_move = self.env['stock.move'].create({
+                            'name': reception_id.name,
+                            'picking_id': reception_id.id,
+                            'location_id': reception_id.location_id.id,
+                            'location_dest_id': reception_id.location_dest_id.id,
+                            'product_id': line.product_id.supply_id.id,
+                            'date': datetime.datetime.now(),
+                            'state': 'assigned',
+                            'company_id': reception_id.company_id.id,
+                            'procure_method': 'make_to_stock',
+                            'quantity_done': qty,
+                            'product_uom': line.product_id.supply_id.uom_id.id,
+                        })
                     self.write({
                         'supply_reception_id':reception_id.id
                     })
