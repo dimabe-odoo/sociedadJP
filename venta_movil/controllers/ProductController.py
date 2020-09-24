@@ -9,9 +9,8 @@ class ProductController(http.Controller):
         data = []
         for res in result:
             data.append({
-                'Id':res.id,
-                'ProductName':res.name,
-                'Price':res.list_price
+                'id':res.id,
+                'name':res.display_name,
             })
 
         return data
