@@ -14,4 +14,4 @@ class ProductController(http.Controller):
                 'price': res.fixed_price
             })
 
-        return result
+        return data
