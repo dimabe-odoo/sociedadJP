@@ -1,5 +1,11 @@
 <odoo>
     <data>
-
+        <template id="assets"
+                  inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/JavaScript"
+                        src="/venta_movil/static/src/js/pos_discount.js"/>
+            </xpath>
+        </template>
     </data>
 </odoo>

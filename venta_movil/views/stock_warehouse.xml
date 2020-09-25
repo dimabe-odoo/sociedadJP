@@ -11,6 +11,9 @@
                 <xpath expr="//field[@name='wh_output_stock_loc_id']" position="after">
                     <field name="loan_location_id"/>
                     <field name="truck_ids"/>
+                        <tree>
+                            <field name="name"/>
+                        </tree>
                 </xpath>
             </field>
         </record>

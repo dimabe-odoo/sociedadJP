@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+       <record id="mobile_sale_order_form_view" model="ir.ui.view">
+            <field name="name">mobile_sale_order_form_view</field>
+            <field name="model">mobile.sale.order</field>
+            <field name="arch" type="xml">
+                <form>
+                <header>
+                    <button type="object" string="Marcar como hecho" name="make_done" attrs="{'invisible':[('state','=','done')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,progress,done" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Nombre"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="customer_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="is_loan"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="products" string="Productos">
+                            <field name="mobile_lines">
+                                <tree>
+                                    <field name="product_id"/>
+                                    <field name="price"/>
+                                    <field name="qty"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="mobile_sale_order_tree_view" model="ir.ui.view">
+            <field name="name">mobile_sale_order_tree_view</field>
+            <field name="model">mobile.sale.order</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="customer_id" widget="many2onebutton"/>
+                    <field name="total_sale" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="mobile_sale_order_act_window" model="ir.actions.act_window">
+            <field name="name">Pedido a domicilio</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mobile.sale.order</field>
+            <field name="view_id" ref="mobile_sale_order_tree_view"/>     
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Pedido a domicilio" id="mobile_sale_order_menu" parent="sale.sale_order_menu" action="mobile_sale_order_act_window"/>
+
+    </data>
+</odoo>

@@ -11,39 +11,9 @@
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="loan_supply"/>
                     <field name="with_delivery"/>
+                    <field name="origin" readonly="1" attrs="{'invisible':[('with_delivery','=',False)]}"/>
                 </xpath>
             </field>
         </record>
-
-        <record id="sale_order_assing_saleman" model="ir.ui.view">
-            <field name="name">sale_order_assing_saleman</field>
-            <field name="model">sale.order</field>
-            <field name="priority">133</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="name"/>
-                    <field name="partner_id"/>
-                    <field name="amount_total"/>
-                    <field name="state" invisible="1"/>
-                    <field name="with_delivery" invisible="1"/>
-                    <button type="object" name="assign_location_id" string="Asignar"/>
-                </tree>
-            </field>        
-        </record>
-
-        <record id="sale_order_assign_saleman_action" model="ir.actions.act_window">
-            <field name="name">Pedido a domicilio</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sale.order</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="sale_order_assing_saleman" />
-            <field name="domain">
-                [('with_delivery','=',True)]
-            </field>
-        </record>
-        <menuitem id="sale_order_with_delivery"
-                  name="Pedido a domicilio"
-                  parent="sale.sale_order_menu"
-                  action="sale_order_assign_saleman_action"/>
     </data>
 </odoo>
