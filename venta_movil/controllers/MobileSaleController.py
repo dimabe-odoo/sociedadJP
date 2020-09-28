@@ -29,7 +29,7 @@ class MobileSaleController(http.Controller):
                 'mobile_id': sale_order.id
             })
 
-        return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id, 'total': sale_order.total}
+        return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
     @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
     def take_saleman(self, mobile_id, location_saleman):
