@@ -21,10 +21,10 @@ class MobileSaleController(http.Controller):
 
         for product in product_ids:
             line = request.env['mobile.sale.order'].sudo().create({
-                'product_id': product.id,
-                'price': product.price,
+                'product_id': product['id'],
+                'price': product['price'],
                 'state': 'progress',
-                'qty': product.qty,
+                'qty': product['qty'],
                 'mobile_id': sale_order.id
             })
 
