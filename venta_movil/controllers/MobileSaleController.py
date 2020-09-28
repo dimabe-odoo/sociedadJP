@@ -20,6 +20,7 @@ class MobileSaleController(http.Controller):
         })
 
         for product in product_ids:
+            logging.error(product['id'])
             line = request.env['mobile.sale.order'].sudo().create({
                 'product_id': product['id'],
                 'price': product['price'],
