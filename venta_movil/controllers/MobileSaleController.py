@@ -1,25 +1,35 @@
 from odoo import http
 from odoo.http import request
 import datetime
+import logging
 
 
 class MobileSaleController(http.Controller):
 
     @http.route('/api/sale/create_sale', type='json', method=['POST'], auth='public', cors='*')
     def create_sale(self, customer_id, product_ids, total, is_loan=False):
+        logging.error('customer_id : {}, product_ids : {} , total : {}'.format(customer_id,product_ids,total))
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
-        products = request.env['product.product'].sudo().search([('id', 'in', product_ids)])
-
         name = request.env['ir.sequence'].sudo().next_by_code('mobile.sale.order')
 
         sale_order = request.env['mobile.sale.order'].sudo().create({
             'name': name,
             'customer_id': customer.id,
-            'product_ids': products,
             'total': total,
             'state': 'progress',
             'is_loan': is_loan
         })
+
+        for product in product_ids:
+            result = request.env['product.pricelist'].search([('name', '=', 'Clientes Empresa JP')]).mapped(
+                'item_ids').filtered(lambda a: a.product_tmpl_id.id == product.id).fixed_price
+            line = request.env['mobile.sale.order'].sudo().create({
+                'product_id': product.id,
+                'price': result,
+                'state': 'progress',
+                'qty': product.qty,
+                'mobile_id': sale_order.id
+            })
 
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id, 'total': sale_order.total}
 
