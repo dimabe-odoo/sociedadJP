@@ -8,7 +8,6 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/sale/create_sale', type='json', method=['POST'], auth='public', cors='*')
     def create_sale(self, customer_id, product_ids, is_loan=False):
-        logging.error('customer_id : {}, product_ids : {} , total : {}'.format(customer_id,product_ids,total))
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
         name = request.env['ir.sequence'].sudo().next_by_code('mobile.sale.order')
 
