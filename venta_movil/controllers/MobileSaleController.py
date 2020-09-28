@@ -21,7 +21,7 @@ class MobileSaleController(http.Controller):
 
         for product in product_ids:
             logging.error(type(product['id']))
-            line = request.env['mobile.sale.order'].sudo().create({
+            line = request.env['mobile.sale.line'].sudo().create({
                 'product_id': product['id'],
                 'price': product['price'],
                 'state': 'progress',
