@@ -12,7 +12,7 @@ class ProductController(http.Controller):
                 'id':res.product_tmpl_id.id,
                 'name':res.product_tmpl_id.display_name,
                 'price': res.fixed_price,
-                'image_1024' : res.image_1024,
+                'image_1024' : res.product_tmpl_id.image_1024,
 
             })
 
