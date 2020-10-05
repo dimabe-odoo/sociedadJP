@@ -10,7 +10,7 @@ class ProductController(http.Controller):
         for res in result:
             data.append({
                 'id':res.product_tmpl_id.id,
-                'name':res.product_tmpl_id.name,
+                'name':res.product_tmpl_id.display_name,
                 'price': res.fixed_price,
             })
 
