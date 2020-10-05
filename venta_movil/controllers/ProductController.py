@@ -8,9 +8,10 @@ class ProductController(http.Controller):
         result = request.env['product.pricelist'].search([('name','=','Tarifa Publica Reparto')]).item_ids
         data = []
         for res in result:
+            product = request.env['product.product'].search([('product_tmpl_id','=',res.product_tmpl_id.id)])
             data.append({
-                'id':type(res.product_tmpl_id),
-                'name':res.product_tmpl_id.display_name,
+                'id': product.id,
+                'name':product.display_name,
                 'price': res.fixed_price,
             })
 
