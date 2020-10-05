@@ -12,10 +12,6 @@ class ProductController(http.Controller):
                 'id':res.product_tmpl_id.id,
                 'name':res.product_tmpl_id.name,
                 'price': res.fixed_price,
-                'image_1024' : res.product_tmpl_id.image_1024,
-                'image_128' : res.product_tmpl_id.image_128,
-                'image_1920' : res.product_tmpl_id.image_1920,
-                'image_256' : res.product_tmpl_id.image_256
             })
 
         return data
