@@ -11,7 +11,7 @@ class ProductController(http.Controller):
             product = request.env['product.product'].search([('product_tmpl_id','=',res.product_tmpl_id.id)])
             data.append({
                 'id': product.id,
-                'name':product.display_name,
+                'name':product.name,
                 'price': res.fixed_price,
             })
 
