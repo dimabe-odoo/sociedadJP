@@ -12,6 +12,8 @@ class ProductController(http.Controller):
             price = request.env['product.pricelist'].search(
                 [('name', '=', 'Tarifa Publica Reparto')]).item_ids.filtered(
                 lambda a: a.product_tmpl_id.id == res.product_tmpl_id.id).fixed_price
+            if price == 0:
+                continue
             data.append({
                 'id': res.id,
                 'name': res.name,
