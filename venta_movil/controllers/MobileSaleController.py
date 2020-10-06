@@ -7,8 +7,8 @@ import logging
 class MobileSaleController(http.Controller):
 
     @http.route('/api/sale/create_sale', type='json', method=['POST'], auth='public', cors='*')
-    def create_sale(self, customer_id, product_ids, is_loan=False):
-        customer = request.env['res.partner'].sudo().search([('email', '=', customer_id)])
+    def create_sale(self, product_ids, is_loan=False):
+        customer = request.env['res.users'].sudo().search([('id', '=', request.uid)])[0].partner_id
         name = request.env['ir.sequence'].sudo().next_by_code('mobile.sale.order')
 
         sale_order = request.env['mobile.sale.order'].sudo().create({
@@ -19,7 +19,7 @@ class MobileSaleController(http.Controller):
         })
 
         for product in product_ids:
-            logging.error(type(product['id']))
+            logging.error('{}'.format(product))
             line = request.env['mobile.sale.line'].sudo().create({
                 'product_id': product['id'],
                 'price': product['price'],
