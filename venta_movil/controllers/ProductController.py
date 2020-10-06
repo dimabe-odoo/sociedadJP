@@ -5,15 +5,14 @@ class ProductController(http.Controller):
 
     @http.route('/api/products',type='json',method='GET',auth='token',cors='*')
     def get_products(self):
-        result = request.env['product.pricelist'].search([('name','=','Tarifa Publica Reparto')]).item_ids
+        result = request.env['product.product'].search([])
         data = []
         for res in result:
-            product = request.env['product.product'].search([('product_tmpl_id','=',res.product_tmpl_id.id)])
             data.append({
-                'id': product.id,
-                'name': product.name,
-                'price': res.fixed_price,
-                'photo':product.image_1024
+                'id': res.id,
+                'name': res.name,
+                #'price': res.fixed_price,
+                'photo':res.image_1024
             })
 
         return data
