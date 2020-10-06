@@ -4,7 +4,7 @@ from odoo.http import request
 
 class ProductController(http.Controller):
 
-    @http.route('/api/products', type='json', method='GET', auth='token', cors='*')
+    @http.route('/api/get_products', type='json', method='GET', auth='token', cors='*')
     def get_products(self):
         result = request.env['product.product'].search([])
         data = []
