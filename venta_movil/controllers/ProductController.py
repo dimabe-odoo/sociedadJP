@@ -18,7 +18,6 @@ class ProductController(http.Controller):
                 'id': res.id,
                 'name': res.name,
                 'price': price,
-                'photo': res.image_1024
             })
 
         return data
