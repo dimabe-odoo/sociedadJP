@@ -13,6 +13,7 @@ class ProductController(http.Controller):
                 'id': product.id,
                 'name': product.name,
                 'price': res.fixed_price,
+                'photo':product.image_1024
             })
 
         return data
