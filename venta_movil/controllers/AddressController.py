@@ -17,6 +17,6 @@ class AddressController(http.Controller):
 
     @http.route('/api/get_address',type='json',methods=['POST'],auth='token',cors='*')
     def add_address(self,partner_id):
-        partner_id = request.env['res.partner'].sudo().search([('partner_id','=',partner_id)])
+        partner_id = request.env['res.partner'].sudo().search([('id','=',partner_id)])
         return partner_id.child_ids
 
