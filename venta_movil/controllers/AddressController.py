@@ -41,8 +41,8 @@ class AddressController(http.Controller):
             res.append({
                 'name': child.name,
                 'street': child.street,
-                'city':child.city,
-                'mobile':child.phone,
-                'references':child.comment,
+                'city': child.city,
+                'mobile': child.phone,
+                'references': child.comment,
             })
         return res
