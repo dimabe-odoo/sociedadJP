@@ -22,7 +22,7 @@ class AddressController(http.Controller):
     def add_address(self, partner_id):
         partner_id = request.env['res.partner'].sudo().search([('id', '=', partner_id)])
         res = []
-        for child in partner_id.child_ids:
+        for child in partner_id.mapped('child_ids'):
             res.append({
                 {
                     "id": child.id,
