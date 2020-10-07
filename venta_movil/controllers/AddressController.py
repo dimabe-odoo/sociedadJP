@@ -28,6 +28,6 @@ class AddressController(http.Controller):
             'city': city,
             'email':partner.email,
             'phone':partner.phone,
-            'partner_id':partner_id
+            'parent_id':partner_id
         })
         return res
