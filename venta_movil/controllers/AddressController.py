@@ -31,3 +31,13 @@ class AddressController(http.Controller):
             'parent_id':partner_id
         })
         return res
+
+    @http.route('/api/get_address',type='json',methods=['POST'],auth='token',cors='*')
+    def get_address(self,partner_id):
+        childs = request.env['res.partner'].search([('id','=',partner_id)]).child_ids
+        res = []
+        for child in childs:
+            res.append({
+                'name':child.name
+            })
+        return res
