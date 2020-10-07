@@ -34,4 +34,4 @@ class AddressController(http.Controller):
         #             "street": child.street
         #         }
         #     })
-        return partner_id.mapped('child_ids')
+        return partner_id.mapped('child_ids').values
