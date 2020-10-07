@@ -19,13 +19,14 @@ class AddressController(http.Controller):
         return {'message': 'Dirección creada correctamente'}
 
     @http.route('/api/add_address', type='json', methods=['POST'], auth='token', cors='*')
-    def add_address(self, city, address, name, partner_id, email, phone, reference):
+    def add_address(self, city, address, name, partner_id,commune_id, email, phone, reference):
         partner = request.env['res.partner'].search([('id', '=', partner_id)])
         res = request.env['res.partner'].sudo().create({
             'type': 'other',
             'name': name,
             'street': address,
             'city': city,
+            'jp_commune_id' : commune_id,
             'email': email,
             'mobile': phone,
             'parent_id': partner_id,
