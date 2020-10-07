@@ -18,20 +18,16 @@ class AddressController(http.Controller):
 
         return {'message': 'Dirección creada correctamente'}
 
-    @http.route('/api/get_address', type='json', methods=['POST'], auth='token', cors='*')
-    def add_address(self, partner_id):
-        partner_id = request.env['res.partner'].sudo().search([('id', '=', partner_id)])
-        res = []
-        # for child in partner_id.mapped('child_ids'):
-        #     res.append({
-        #         {
-        #             "id": child['id'],
-        #             "partner_Id": partner_id.id,
-        #             "city": child['city'],
-        #             "commune": child.jp_commune_id.name,
-        #             "references": child.comment,
-        #             "name": child.name,
-        #             "street": child.street
-        #         }
-        #     })
-        return partner_id.mapped('child_ids').values
+    @http.route('/api/add_address', type='json', methods=['POST'], auth='token', cors='*')
+    def add_address(self, city, address, name, partner_id):
+        partner = request.env['res.partner'].search([('id', '=', partner_id)])
+        res = request.env['res.partner'].sudo().create({
+            'type': 'other',
+            'name': name,
+            'street': address,
+            'city': city,
+            'email':partner.email,
+            'phone':partner.phone,
+            'partner_id':partner_id
+        })
+        return res
