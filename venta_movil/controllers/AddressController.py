@@ -40,10 +40,12 @@ class AddressController(http.Controller):
         res = []
         for child in childs:
             res.append({
+                'id':child.id,
                 'name': child.name,
                 'street': child.street,
                 'city': child.city,
-                'mobile': child.phone,
+                'mobile': child.mobile,
+                'commune':child.jp_commune_id.name,
                 'references': child.comment,
             })
         return res
