@@ -32,7 +32,7 @@ class AddressController(http.Controller):
             'parent_id': partner_id,
             'comment': reference
         })
-        return res
+        return {'message':'Direccion creada correctamente'}
 
     @http.route('/api/get_address', type='json', methods=['POST'], auth='token', cors='*')
     def get_address(self, partner_id):
