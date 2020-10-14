@@ -53,4 +53,4 @@ class AddressController(http.Controller):
     @http.route('/api/delete_address',type='json',method=['POST'],auth='token',cors='*')
     def delete(self,partner_id):
         partner_id = request.env['res.partner'].search([('id','=',partner_id)])
-        partner_id.unlink()
+        partner_id.sudo().unlink()
