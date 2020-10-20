@@ -17,7 +17,9 @@ class LoginController(http.Controller):
 
         user = request.env['res.users'].browse(uid)[0]
 
-        return {'user': user[0].name,'points': user[0].partner_id.loyalty_points,'partner_id' : user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat, 'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
+        sale_order = request.env['sale.order'].search([('partner_id','=',user[0].partner_id.id)])
+
+        return {'user': user[0].name,'last_order':sale_order[-1],'points': user[0].partner_id.loyalty_points,'partner_id' : user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat, 'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
 
 
     @http.route('/api/refresh-token', type='json', auth='public', cors='*')
