@@ -2,6 +2,7 @@ from odoo import http
 from odoo.http import request
 from ..jwt_token import generate_token
 
+
 class LoginController(http.Controller):
     @http.route('/api/login', type='json', auth='public', cors='*')
     def do_login(self, user, password):
@@ -17,13 +18,14 @@ class LoginController(http.Controller):
 
         user = request.env['res.users'].browse(uid)[0]
 
-        if len(request.env['sale.order'].search([('partner_id','=',user[0].partner_id.id)])) > 1:
-            last_order = request.env['sale.order'].search([('partner_id','=',user[0].partner_id.id)])[-1]
+        if len(request.env['sale.order'].search([('partner_id', '=', user[0].partner_id.id)])) > 1:
+            last_order = request.env['sale.order'].search([('partner_id', '=', user[0].partner_id.id)])[-1]
         else:
             last_order = 'No tiene pedido asociados'
 
-        return {'user': user[0].name,'last_order':last_order,'points': user[0].partner_id.loyalty_points,'partner_id' : user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat, 'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
-
+        return {'user': user[0].name, 'last_order': last_order, 'points': user[0].partner_id.loyalty_points,
+                'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
+                'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
 
     @http.route('/api/refresh-token', type='json', auth='public', cors='*')
     def do_refresh_token(self, email):
@@ -33,4 +35,3 @@ class LoginController(http.Controller):
         token = generate_token(userId)
 
         return {'token': token}
-

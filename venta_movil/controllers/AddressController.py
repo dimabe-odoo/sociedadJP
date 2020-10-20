@@ -41,6 +41,10 @@ class AddressController(http.Controller):
         childs = request.env['res.partner'].search([('id', '=', partner_id)]).child_ids
         res = []
         for child in childs:
+            if request.env['res.partner'].search([('address_favorite_id','=',child.id)]):
+                is_favorite = True
+            else:
+                is_favorite = False
             res.append({
                 'id': child.id,
                 'name': child.name,
@@ -49,6 +53,7 @@ class AddressController(http.Controller):
                 'mobile': child.mobile,
                 'commune': child.jp_commune_id.name,
                 'references': child.comment,
+                'is_favorite' : is_favorite
             })
         return res
 
@@ -62,7 +67,7 @@ class AddressController(http.Controller):
         return {'message': 'Direccion eliminada correctamente'}
 
     @http.route('/api/set_favorite', type='json', method=['POST'], auth='token', cors='*')
-    def set_favority(self, partner_id, address_id):
+    def set_favorite(self, partner_id, address_id):
         partner_id = request.env['res.partner'].search([('id', '=', partner_id)])
         partner_id.sudo().write({
             'address_favorite_id': None
