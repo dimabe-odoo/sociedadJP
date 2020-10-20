@@ -6,3 +6,4 @@ class ResPartner(models.Model):
     jp_commune_id = fields.Many2one('jp.commune', string='Comuna')
     country_id = fields.Many2one('res.country', string='País', default=lambda self: self.env[
         'res.country'].search([('code', '=', 'CL')]))
+    address_favorite_id = fields.Many2one('Direccion Favorita','res.partner')

@@ -19,22 +19,22 @@ class AddressController(http.Controller):
         return {'message': 'Dirección creada correctamente'}
 
     @http.route('/api/add_address', type='json', methods=['POST'], auth='token', cors='*')
-    def add_address(self, city, address, name, partner_id,commune_id, email, phone, reference,latitude,longitude):
+    def add_address(self, city, address, name, partner_id, commune_id, email, phone, reference, latitude, longitude):
         partner = request.env['res.partner'].search([('id', '=', partner_id)])
         res = request.env['res.partner'].sudo().create({
             'type': 'other',
             'name': name,
             'street': address,
             'city': city,
-            'partner_latitude':float(latitude),
-            'partner_longitude':float(longitude),
-            'jp_commune_id' : commune_id,
+            'partner_latitude': float(latitude),
+            'partner_longitude': float(longitude),
+            'jp_commune_id': commune_id,
             'email': email,
             'mobile': phone,
             'parent_id': partner_id,
             'comment': reference
         })
-        return {'message':'Direccion creada correctamente'}
+        return {'message': 'Direccion creada correctamente'}
 
     @http.route('/api/get_address', type='json', methods=['POST'], auth='token', cors='*')
     def get_address(self, partner_id):
@@ -42,21 +42,32 @@ class AddressController(http.Controller):
         res = []
         for child in childs:
             res.append({
-                'id':child.id,
+                'id': child.id,
                 'name': child.name,
                 'street': child.street,
                 'city': child.city,
                 'mobile': child.mobile,
-                'commune':child.jp_commune_id.name,
+                'commune': child.jp_commune_id.name,
                 'references': child.comment,
             })
         return res
 
-    @http.route('/api/delete_address',type='json',method=['POST'],auth='token',cors='*')
-    def delete(self,partner_id):
-        partner_id = request.env['res.partner'].search([('id','=',partner_id)])
+    @http.route('/api/delete_address', type='json', method=['POST'], auth='token', cors='*')
+    def delete(self, partner_id):
+        partner_id = request.env['res.partner'].search([('id', '=', partner_id)])
         partner_id.sudo().write({
             'parent_id': None
         })
 
-        return {'message':'Direccion eliminada correctamente'}
+        return {'message': 'Direccion eliminada correctamente'}
+
+    @http.route('/api/set_favorite', type='json', method=['POST'], auth='token', cors='*')
+    def set_favority(self, partner_id, address_id):
+        partner_id = request.env['res.partner'].search([('id', '=', partner_id)])
+        partner_id.sudo().write({
+            'address_favorite_id': None
+        })
+        partner_id.sudo().write({
+            'address_favorite_id': address_id
+        })
+        return partner_id.address_favorite_id.name
