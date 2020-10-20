@@ -41,7 +41,7 @@ class AddressController(http.Controller):
         childs = request.env['res.partner'].search([('id', '=', partner_id)]).child_ids
         res = []
         for child in childs:
-            if request.env['res.partner'].search([('address_favorite_id','=',child.id)]):
+            if request.env['res.partner'].sudo().search([('address_favorite_id','=',child.id)]):
                 is_favorite = True
             else:
                 is_favorite = False
