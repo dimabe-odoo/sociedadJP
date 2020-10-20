@@ -17,7 +17,7 @@ class LoginController(http.Controller):
 
         user = request.env['res.users'].browse(uid)[0]
 
-        if request.env['sale.order'].search([('partner_id','=',user[0].partner_id.id)])[-1]:
+        if len(request.env['sale.order'].search([('partner_id','=',user[0].partner_id.id)])) > 1:
             last_order = request.env['sale.order'].search([('partner_id','=',user[0].partner_id.id)])[-1]
         else:
             last_order = 'No tiene pedido asociados'
