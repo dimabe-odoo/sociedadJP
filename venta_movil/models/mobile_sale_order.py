@@ -39,7 +39,7 @@ class MobileSaleOrder(models.Model):
     @api.onchange('address_id')
     def compute_address_ids(self):
         for item in self:
-            self.address_id = self.env['res.partner'].search([('id','in',self.customer_id.child_ids.mapped('id'))])
+            self.address_ids = self.env['res.partner'].search([('id','in',self.customer_id.child_ids.mapped('id'))])
 
     @api.model
     def create(self, values):
