@@ -26,6 +26,7 @@
                         </group>
                         <group>
                             <field name="saleman_id" attrs="{'visible':[('state','=','on route')]}"/>
+                            <field name="location_id" />
                             <field name="warehouse_id"/>
                         </group>
                     </group>
@@ -38,10 +39,10 @@
                         <page name="products" string="Productos">
                             <field name="mobile_lines">
                                 <tree editable="true" create="true" delete="true">
-                                    <field name="product_id" attrs="{'readonly':[('state','=','done')]}"/>
-                                    <field name="price" attrs="{'readonly':[('state','=','done')]}"/>
-                                    <field name="loan_qty" attrs="{'invisible':[('parent.is_loan','=',True)],'readonly':[('state','=','done')]}" />
-                                    <field name="qty" attrs="{'readonly':[('state','=','done')]}"/>
+                                    <field name="product_id" attrs="{'readonly':[('parent.state','=','done')]}"/>
+                                    <field name="price" attrs="{'readonly':[('parent.state','=','done')]}"/>
+                                    <field name="loan_qty" attrs="{'invisible':[('parent.is_loan','=',True)],'readonly':[('parent.state','=','done')]}" />
+                                    <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
                                 </tree>
                             </field>
                         </page>
