@@ -17,7 +17,7 @@ class MobileSaleOrder(models.Model):
 
     price_list_id = fields.Many2one('product.pricelist','Lista de Precio del Cliente') 
 
-    saleman_id = fields.Many2one('res.partner', 'Vendedor')
+    saleman_id = fields.Many2one('hr.employee', 'Vendedor')
 
     date_done = fields.Datetime('Fecha de entrega')
 
@@ -30,7 +30,9 @@ class MobileSaleOrder(models.Model):
 
     sale_id = fields.Many2one('sale.order', 'Venta Interna')
 
-    location_id = fields.Many2one('stock.location', 'Ubicacion')
+    warehouse_id = fields.Many2one('stock.warehouse','Bodega')
+
+    location_id = fields.Many2one('stock.location', 'Ubicacion',domain=[('is_truck','=',True)])
 
     is_loan = fields.Boolean('Es Prestamo')
 
@@ -40,6 +42,11 @@ class MobileSaleOrder(models.Model):
     def compute_address_ids(self):
         for item in self:
             self.address_ids = self.env['res.partner'].search([('id','in',self.customer_id.child_ids.mapped('id'))])
+
+    def button_confirm(self):
+        self.write({
+            'state':'confirm'
+        })
 
     @api.model
     def create(self, values):

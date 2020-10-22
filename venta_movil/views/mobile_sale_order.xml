@@ -24,6 +24,10 @@
                             <field name="address_ids" invisible="1"/>
                             <field name="address_id" attrs="{'readonly':[('state','=','done')]}" domain="[('id','in',address_ids)]"/>
                         </group>
+                        <group>
+                            <field name="saleman_id" attrs="{'visible':[('state','=','on route')]}"/>
+                            <field name="warehouse_id"/>
+                        </group>
                     </group>
                     <group>
                         <group>
@@ -46,7 +50,6 @@
                 </form>
             </field>
         </record>
-
         <record id="mobile_sale_order_tree_view" model="ir.ui.view">
             <field name="name">mobile_sale_order_tree_view</field>
             <field name="model">mobile.sale.order</field>
