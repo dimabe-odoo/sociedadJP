@@ -12,6 +12,7 @@
                                 attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                         <button type="object" string="Confirmar" name="button_confirm"
                         />
+
                         <field name="state" widget="statusbar" statusbar_visible="cancel,draft,confirm,on route,done"/>
                     </header>
                     <sheet>

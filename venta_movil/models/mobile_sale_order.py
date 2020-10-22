@@ -54,6 +54,11 @@ class MobileSaleOrder(models.Model):
         values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order')
         return super(MobileSaleOrder, self).create(values)
 
+    def button_dispatch(self):
+        self.write({
+            'state':'on route'
+        })
+
     def make_done(self):
         loan = False
         if self.is_loan:
