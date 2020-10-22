@@ -9,7 +9,10 @@
                 <form>
                     <header>
                         <button type="object" string="Marcar como hecho" name="make_done"
-                                attrs="{'invisible':[('state','=','done')]}"/>
+                                attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
+                        <button type="object" string="Confirmar" name="button_confirm"
+                                attrs="{'invisible:[('state','not in',('draft','confirm','cancel','on route'))]'}"
+                        />
                         <field name="state" widget="statusbar" statusbar_visible="cancel,draft,confirm,on route,done"/>
                     </header>
                     <sheet>
