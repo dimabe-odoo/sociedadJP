@@ -22,7 +22,7 @@
                         <group>
                             <field name="customer_id"/>
                             <field name="address_ids" invisible='1'/>
-                            <field name="address_id" attrs="{'domain':[('id','in',address_ids)]}"/>
+                            <field name="address_id" attrs="{'domain':[('id','in','address_ids')]}"/>
                         </group>
                     </group>
                     <group>
@@ -33,7 +33,7 @@
                     <notebook>
                         <page name="products" string="Productos">
                             <field name="mobile_lines">
-                                <tree editable="true">
+                                <tree>
                                     <field name="product_id"/>
                                     <field name="price"/>
                                     <field name="qty"/>
