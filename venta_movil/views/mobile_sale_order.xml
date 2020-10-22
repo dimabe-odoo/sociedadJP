@@ -40,6 +40,9 @@
                                 <field name="is_loan" attrs="{'readonly':[('state','=','done')]}"/>
                             </group>
                         </group>
+                        <group>
+                            <field name="price_list_id"/>
+                        </group>
                         <notebook>
                             <page name="products" string="Productos">
                                 <field name="mobile_lines">
