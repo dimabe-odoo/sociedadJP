@@ -8,7 +8,7 @@ class MobileSaleLine(models.Model):
 
     product_id = fields.Many2one('product.product', 'Producto')
 
-    loan_qty = fields.Many2one('Prestamo')
+    loan_qty = fields.Integer('Prestamo')
 
     price = fields.Monetary('Precio')
 

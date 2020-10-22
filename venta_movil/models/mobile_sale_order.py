@@ -7,7 +7,7 @@ class MobileSaleOrder(models.Model):
 
     name = fields.Char('Nombre', readonly=1)
 
-    state = fields.Selection([('draft','Borrador'),('progress', 'En Progeso'), ('done', 'Hecha')])
+    state = fields.Selection([('cancel','Cancelado'),('draft','Borrador'),('confirm', 'Confirmado'),('on route','En Ruta'), ('done', 'Hecha')])
 
     customer_id = fields.Many2one('res.partner', 'Cliente')
 
@@ -58,7 +58,8 @@ class MobileSaleOrder(models.Model):
             'picking_policy': 'direct',
             'origin': self.id,
             'with_delivery':True,
-            'loan_supply':loan
+            'loan_supply':loan,
+            'date_done':datetime.datetime.now()
         })
         self.write({
             'state': 'done',
