@@ -25,7 +25,7 @@
                             <field name="address_id" attrs="{'readonly':[('state','=','done')]}" domain="[('id','in',address_ids)]"/>
                         </group>
                         <group>
-                            <field name="saleman_id" attrs="{'visible':[('state','=','on route')]}"/>
+                            <field name="saleman_id" attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                             <field name="location_id" />
                             <field name="warehouse_id"/>
                         </group>
