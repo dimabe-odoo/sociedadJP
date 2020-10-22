@@ -11,6 +11,12 @@ class MobileSaleOrder(models.Model):
 
     customer_id = fields.Many2one('res.partner', 'Cliente')
 
+    address_id = fields.Many2one('res.partner','Direccion de envio')
+
+    address_ids = fields.Many2many('res.partner','Direcciones del cliente',compute='compute_address_ids')
+
+    price_list_id = field.Many2one('product.pricelist','Lista de Precio del Cliente') 
+
     saleman_id = fields.Many2one('res.partner', 'Vendedor')
 
     date_done = fields.Datetime('Fecha de entrega')
@@ -29,6 +35,12 @@ class MobileSaleOrder(models.Model):
     is_loan = fields.Boolean('Es Prestamo')
 
     date_done = fields.Datetime('Fecha de Realizado')
+
+    def compute_address_ids(self):
+        for item in self:
+            list_ids = self.customer_id.mapped('child_ids').mapped('id')
+            list_ids.append(self.customer_id.id)
+            self.address_id = self.env['res.partner'].search([('id','in',list_ids)])
 
     @api.model
     def create(self, values):
