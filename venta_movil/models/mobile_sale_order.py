@@ -36,11 +36,10 @@ class MobileSaleOrder(models.Model):
 
     date_done = fields.Datetime('Fecha de Realizado')
 
+    @api.onchange('address_id')
     def compute_address_ids(self):
         for item in self:
-            list_ids = self.customer_id.mapped('child_ids').mapped('id')
-            list_ids.append(self.customer_id.id)
-            self.address_id = self.env['res.partner'].search([('id','in',list_ids)])
+            self.address_id = self.env['res.partner'].search([('id','in',self.customer_id.child_ids)])
 
     @api.model
     def create(self, values):
