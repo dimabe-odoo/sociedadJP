@@ -33,7 +33,7 @@
                     <notebook>
                         <page name="products" string="Productos">
                             <field name="mobile_lines">
-                                <tree>
+                                <tree editable="true">
                                     <field name="product_id"/>
                                     <field name="price"/>
                                     <field name="qty"/>
