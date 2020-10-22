@@ -1,53 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
-       <record id="mobile_sale_order_form_view" model="ir.ui.view">
+
+        <record id="mobile_sale_order_form_view" model="ir.ui.view">
             <field name="name">mobile_sale_order_form_view</field>
             <field name="model">mobile.sale.order</field>
             <field name="arch" type="xml">
                 <form>
-                <header>
-                    <button type="object" string="Marcar como hecho" name="make_done" attrs="{'invisible':[('state','=','done')]}"/>
-                    <field name="state" widget="statusbar" statusbar_visible="cancel,draft,confirm,on route,done" />
-                </header>
-                <sheet>
-                    <div class="oe_title">
-                        <label for="name"/>
-                        <h1>
-                            <field name="name" placeholder="Nombre" attrs="{'invisible':[('name','=',None)]}"/>
-                        </h1>
-                    </div>
-                    <group>
+                    <header>
+                        <button type="object" string="Marcar como hecho" name="make_done"
+                                attrs="{'invisible':[('state','=','done')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="cancel,draft,confirm,on route,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Nombre" attrs="{'invisible':[('name','=',None)]}"/>
+                            </h1>
+                        </div>
                         <group>
-                            <field name="customer_id" attrs="{'readonly':[('state','=','done')]}"/>
-                            <field name="address_ids" invisible="1"/>
-                            <field name="address_id" attrs="{'readonly':[('state','=','done')]}" domain="[('id','in',address_ids)]"/>
+                            <group>
+                                <field name="customer_id" attrs="{'readonly':[('state','=','done')]}"/>
+                                <field name="address_ids" invisible="1"/>
+                                <field name="address_id" attrs="{'readonly':[('state','=','done')]}"
+                                       domain="[('id','in',address_ids)]"/>
+                            </group>
+                            <group>
+                                <field name="saleman_id"
+                                       attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
+                                <field name="location_id"/>
+                                <field name="warehouse_id"/>
+                            </group>
                         </group>
                         <group>
-                            <field name="saleman_id" attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
-                            <field name="location_id" />
-                            <field name="warehouse_id"/>
+                            <group>
+                                <field name="is_loan" attrs="{'readonly':[('state','=','done')]}"/>
+                            </group>
                         </group>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="is_loan" attrs="{'readonly':[('state','=','done')]}"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page name="products" string="Productos">
-                            <field name="mobile_lines">
-                                <tree editable="true" create="true" delete="true">
-                                    <field name="product_id" attrs="{'readonly':[('parent.state','=','done')]}"/>
-                                    <field name="price" attrs="{'readonly':[('parent.state','=','done')]}"/>
-                                    <field name="loan_qty" attrs="{'invisible':[('parent.is_loan','=',True)],'readonly':[('parent.state','=','done')]}" />
-                                    <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
+                        <notebook>
+                            <page name="products" string="Productos">
+                                <field name="mobile_lines">
+                                    <tree editable="true" create="true" delete="true">
+                                        <field name="product_id" attrs="{'readonly':[('parent.state','=','done')]}"
+                                               required="1"/>
+                                        <field name="price" attrs="{'readonly':[('parent.state','=','done')]}"
+                                               required="1"/>
+                                        <field name="loan_qty"
+                                               attrs="{'required':[('parent.is_loan','=',True)],'invisible':[('parent.is_loan','=',False)],'readonly':[('parent.state','=','done')]}"/>
+                                        <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -58,7 +64,7 @@
                 <tree>
                     <field name="name"/>
                     <field name="customer_id" widget="many2onebutton"/>
-                    <field name="total_sale" />
+                    <field name="total_sale"/>
                 </tree>
             </field>
         </record>
@@ -67,11 +73,12 @@
             <field name="name">Pedido a domicilio</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mobile.sale.order</field>
-            <field name="view_id" ref="mobile_sale_order_tree_view"/>     
+            <field name="view_id" ref="mobile_sale_order_tree_view"/>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Pedido a domicilio" id="mobile_sale_order_menu" parent="sale.sale_order_menu" action="mobile_sale_order_act_window"/>
+        <menuitem name="Pedido a domicilio" id="mobile_sale_order_menu" parent="sale.sale_order_menu"
+                  action="mobile_sale_order_act_window"/>
 
     </data>
 </odoo>
