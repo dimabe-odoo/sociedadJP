@@ -21,8 +21,7 @@
                     <group>
                         <group>
                             <field name="customer_id"/>
-                            <field name="address_ids" invisible='1'/>
-                            <field name="address_id" attrs="{'domain':[('id','in','address_ids')]}"/>
+                            <field name="address_id"/>
                         </group>
                     </group>
                     <group>
