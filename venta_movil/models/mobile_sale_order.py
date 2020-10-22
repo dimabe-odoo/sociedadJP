@@ -15,7 +15,7 @@ class MobileSaleOrder(models.Model):
 
     address_ids = fields.Many2many('res.partner','Direcciones del cliente',compute='compute_address_ids')
 
-    price_list_id = field.Many2one('product.pricelist','Lista de Precio del Cliente') 
+    price_list_id = fields.Many2one('product.pricelist','Lista de Precio del Cliente') 
 
     saleman_id = fields.Many2one('res.partner', 'Vendedor')
 
