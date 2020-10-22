@@ -36,7 +36,7 @@
                                 <tree>
                                     <field name="product_id"/>
                                     <field name="price"/>
-                                    <field name="loan_qty" attrs="{invisible:[('parent.is_loan','=',True)]}" />
+                                    <field name="loan_qty" attrs="{'invisible':[('parent.is_loan','=',True)]}" />
                                     <field name="qty"/>
                                 </tree>
                             </field>
