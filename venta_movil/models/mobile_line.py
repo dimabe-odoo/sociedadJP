@@ -8,6 +8,8 @@ class MobileSaleLine(models.Model):
 
     product_id = fields.Many2one('product.product', 'Producto')
 
+    loan_qty = fields.Many2one('Prestamo')
+
     price = fields.Monetary('Precio')
 
     state = fields.Selection([('progress', 'En Progeso'), ('done', 'Hecha')], default='progress')
