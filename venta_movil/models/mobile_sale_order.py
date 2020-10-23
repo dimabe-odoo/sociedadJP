@@ -40,6 +40,11 @@ class MobileSaleOrder(models.Model):
 
     date_done = fields.Datetime('Fecha de Realizado')
 
+    @api.onchange('mobile_lines')
+    def onchange_mobile_line(self):
+        for item in self:
+            self.total_sale = sum(self.mobile_lines.mapped('price'))
+
     @api.onchange('address_id')
     def compute_address_ids(self):
         for item in self:
@@ -55,8 +60,6 @@ class MobileSaleOrder(models.Model):
         values['state'] = 'draft'
         values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order')
         res = super(MobileSaleOrder, self).create(values)
-        if values['address_id'] == None:
-            res.user_id.notify_warning(res.name,res.partner_phone, False)
         return res
 
     def button_dispatch(self):
