@@ -14,7 +14,7 @@
                                 attrs="{'invisible':[('state','!=','confirm')]}"
                         />
                         <button type="object" string="Despachar" name="button_dispatch"
-                                attrs="{'invisible':[('state','!=','on route')]"/>
+                                attrs="{'invisible':[('state','!=','onroute')]"/>
                         />
                         <field name="state" widget="statusbar" statusbar_visible="cancel,draft,confirm,on route,done"/>
                     </header>

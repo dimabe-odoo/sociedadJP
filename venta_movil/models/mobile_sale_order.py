@@ -8,7 +8,7 @@ class MobileSaleOrder(models.Model):
     name = fields.Char('Nombre', readonly=1)
 
     state = fields.Selection(
-        [('cancel', 'Cancelado'), ('draft', 'Borrador'), ('confirm', 'Confirmado'), ('on route', 'En Ruta'),
+        [('cancel', 'Cancelado'), ('draft', 'Borrador'), ('confirm', 'Confirmado'), ('onroute', 'En Ruta'),
          ('done', 'Hecha')], default='draft')
 
     customer_id = fields.Many2one('res.partner', 'Cliente')
