@@ -73,12 +73,25 @@ class MobileSaleOrder(models.Model):
             'origin': self.id,
             'with_delivery': True,
             'loan_supply': loan,
+            'warehouse_id':self.warehouse_id.id,
+            'pricelist_id':self.price_list_id.id
         })
+        for line in self.mobile_lines:
+            self.env['sale.order.line'].create({
+                'name':sale_odoo.name,
+                'order_id':sale_odoo.id,
+                'price_unit':line.price,
+                'product_uom_qty':float(line.qty),
+                'currency_id':line.currency_id.id
+            })
         self.write({
             'state': 'done',
             'date_done': datetime.datetime.now(),
             'sale_id': sale_odoo.id
         })
+        self.sale_id.action_confirm()
+        for picking in self.sale_id.picking_ids:
+            picking.button_validate()
         self.mobile_lines.write({
             'state': 'done'
         })
