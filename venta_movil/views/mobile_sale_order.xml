@@ -27,7 +27,7 @@
                         <group>
                             <group>
                                 <field name="customer_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
-                                <field name="address_id" attrs="{'readonly':[('state','=','done')]}"/>
+                                <field name="address_id" attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"/>
                             </group>
                             <group>
                                 <field name="saleman_id"
