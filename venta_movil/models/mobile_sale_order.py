@@ -55,7 +55,7 @@ class MobileSaleOrder(models.Model):
         for item in self:
             item.truck_ids = self.warehouse_id.truck_ids
 
-    @api.onchange('address_id')
+    @api.onchange('customer_id')
     def onchange_address_id(self):
         res = {
             'domain':{
