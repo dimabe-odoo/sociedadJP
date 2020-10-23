@@ -60,7 +60,9 @@
                                         <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
                                     </tree>
                                 </field>
-                                <field name="total_sale"/>
+                                <strong>
+                                    <field name="total_sale" readonly="1" style="float:left;font-size:20px;"/>
+                                </strong>
                             </page>
                         </notebook>
                     </sheet>
