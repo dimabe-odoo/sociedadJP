@@ -61,7 +61,7 @@
                                     </tree>
                                 </field>
                                 <strong>
-                                    <field name="total_sale" readonly="1" style="float:right;font-size:20px;"/>
+                                    <span>Total: $ </span><field name="total_sale" readonly="1" style="float:right;font-size:20px;"/>
                                 </strong>
                             </page>
                         </notebook>
