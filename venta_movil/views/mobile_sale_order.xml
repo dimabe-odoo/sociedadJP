@@ -32,8 +32,8 @@
                             <group>
                                 <field name="saleman_id"
                                        attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
-                                <field name="location_id" />
                                 <field name="warehouse_id" required="1"/>
+                                <field name="location_id" />
                             </group>
                         </group>
                         <group>
@@ -74,6 +74,8 @@
                 <tree>
                     <field name="name"/>
                     <field name="customer_id" widget="many2onebutton"/>
+                    <field name="address_id" widget="many2onebutton"/>
+                    <field name="sale_id" widget="many2onebutton" />
                     <field name="total_sale"/>
                 </tree>
             </field>

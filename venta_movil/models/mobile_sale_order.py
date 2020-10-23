@@ -107,13 +107,6 @@ class MobileSaleOrder(models.Model):
                 'product_uom_qty':float(line.qty),
                 'currency_id':line.currency_id.id
             })
-            if self.is_loan:
-                for picking in self.sale_id.picking_ids:
-                    for move in move_ids_without_package:
-                        if move.product_id.id == line.product_id.id:
-                            move.write({
-                                'loan_supply':line.qty
-                            })
         self.write({
             'state': 'done',
             'date_done': datetime.datetime.now(),
