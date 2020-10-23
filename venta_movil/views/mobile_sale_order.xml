@@ -35,7 +35,7 @@
                                 <field name="saleman_id"
                                        attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                                 <field name="location_id" attrs="{'invisible':[('state','in',('cancel','draft','onroute','done')),'required':[('state','=','confirm')]]}"/>
-                                <field name="warehouse_id" attrs="{'ivisible':[('state','!=','confirm')],'required':[('state','=','confirm')]}"/>
+                                <field name="warehouse_id" attrs="{'invisible':[('state','!=','confirm')],'required':[('state','=','confirm')]}"/>
                             </group>
                         </group>
                         <group>
