@@ -14,7 +14,7 @@
                                 attrs="{'invisible':[('state','=','confirm')]}"
                         />
                         <button type="object" string="Despachar" name="button_dispatch"
-                                attrs="{'invisible':[('state','!=','onroute')]}" />
+                                attrs="{'invisible':[('state','!=','confirm')]}" />
                         <field name="state" widget="statusbar" statusbar_visible="cancel,draft,confirm,onroute,done"/>
                     </header>
                     <sheet>

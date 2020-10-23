@@ -58,7 +58,7 @@ class MobileSaleOrder(models.Model):
 
     def button_dispatch(self):
         self.write({
-            'state': 'on route'
+            'state': 'onroute'
         })
 
     def make_done(self):
