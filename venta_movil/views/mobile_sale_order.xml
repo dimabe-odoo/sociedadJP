@@ -41,7 +41,7 @@
                         <group>
                             <group>
                                 <field name="is_loan" attrs="{'readonly':[('state','=','done')]}"/>
-                                <field name='sale_id' readonly=1 attrs="{'invisible':[('state','!=','done')]}"/>
+                                <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
                             </group>
                         </group>
                         <group>
