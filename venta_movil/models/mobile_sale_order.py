@@ -55,9 +55,14 @@ class MobileSaleOrder(models.Model):
         for item in self:
             item.truck_ids = self.warehouse_id.truck_ids
 
-    # @api.onchange('address_id')
-    # def onchange_address_id(self):
-    #
+    @api.onchange('address_id')
+     def onchange_address_id(self):
+        res = {
+            'domain':{
+                'address_id' : ['id','in',self.customer_id.child_ids.mapped('id')]
+            }
+        }
+        return res
     
 
     def button_confirm(self):
