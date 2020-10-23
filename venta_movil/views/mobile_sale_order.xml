@@ -26,7 +26,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
+                                <field name="customer_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
                                 <field name="address_ids" invisible="1"/>
                                 <field name="address_id" attrs="{'readonly':[('state','=','done')]}"
                                        domain="[('id','in',address_ids)]"/>
