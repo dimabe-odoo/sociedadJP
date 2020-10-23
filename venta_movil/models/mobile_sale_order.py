@@ -54,7 +54,10 @@ class MobileSaleOrder(models.Model):
     def create(self, values):
         values['state'] = 'draft'
         values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order')
-        return super(MobileSaleOrder, self).create(values)
+        res = super(MobileSaleOrder, self).create(values)
+        if values['address_id'] == None:
+            res.user_id.notify_warning(res.name,res.partner_phone, False)
+        return res
 
     def button_dispatch(self):
         self.write({
