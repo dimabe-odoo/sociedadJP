@@ -24,7 +24,10 @@ class MobileSaleLine(models.Model):
 
     @api.onchange('product_id')
     def onchange_product_id(self):
-        price = self.mobile_id.price_list_id.filtered(lambda a: a.product_tmpl_id.id == a.product_id.id).price
+        price = 0
+        for item in self.mobile.price_list_id.item_ids:
+            if item.product_tmpl_id.id == self.product_id.id:
+                price = item.price
         self.price = price
 
     @api.onchange('loan_qty')
