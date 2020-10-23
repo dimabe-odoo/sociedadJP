@@ -59,7 +59,7 @@ class MobileSaleOrder(models.Model):
     def onchange_address_id(self):
         res = {
             'domain':{
-                'address_id' : ['id','in',self.customer_id.child_ids.mapped('id')]
+                'address_id' : [('id','in',self.customer_id.child_ids.mapped('id'))]
             }
         }
         return res
