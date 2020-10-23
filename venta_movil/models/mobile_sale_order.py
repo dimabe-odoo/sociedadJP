@@ -7,15 +7,18 @@ class MobileSaleOrder(models.Model):
 
     name = fields.Char('Nombre', readonly=1)
 
-    state = fields.Selection([('cancel','Cancelado'),('draft','Borrador'),('confirm', 'Confirmado'),('on route','En Ruta'), ('done', 'Hecha')],default='draft')
+    state = fields.Selection(
+        [('cancel', 'Cancelado'), ('draft', 'Borrador'), ('confirm', 'Confirmado'), ('on route', 'En Ruta'),
+         ('done', 'Hecha')], default='draft')
 
     customer_id = fields.Many2one('res.partner', 'Cliente')
 
-    address_id = fields.Many2one('res.partner','Direccion de envio')
+    address_id = fields.Many2one('res.partner', 'Direccion de envio')
 
-    address_ids = fields.Many2many('res.partner','Direcciones del cliente',compute='compute_address_ids')
+    address_ids = fields.Many2many('res.partner', 'Direcciones del cliente', compute='compute_address_ids')
 
-    price_list_id = fields.Many2one('product.pricelist','Lista de Precio del Cliente') 
+    price_list_id = fields.Many2one('product.pricelist', 'Lista de Precio del Cliente',
+                                    default='customer_id.property_product_pricelist')
 
     saleman_id = fields.Many2one('hr.employee', 'Vendedor')
 
@@ -30,9 +33,9 @@ class MobileSaleOrder(models.Model):
 
     sale_id = fields.Many2one('sale.order', 'Venta Interna')
 
-    warehouse_id = fields.Many2one('stock.warehouse','Bodega')
+    warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
-    location_id = fields.Many2one('stock.location', 'Ubicacion',domain=[('is_truck','=',True)])
+    location_id = fields.Many2one('stock.location', 'Ubicacion', domain=[('is_truck', '=', True)])
 
     is_loan = fields.Boolean('Es Prestamo')
 
@@ -41,11 +44,11 @@ class MobileSaleOrder(models.Model):
     @api.onchange('address_id')
     def compute_address_ids(self):
         for item in self:
-            self.address_ids = self.env['res.partner'].search([('id','in',self.customer_id.child_ids.mapped('id'))])
+            self.address_ids = self.env['res.partner'].search([('id', 'in', self.customer_id.child_ids.mapped('id'))])
 
     def button_confirm(self):
         self.write({
-            'state':'confirm'
+            'state': 'confirm'
         })
 
     @api.model
@@ -56,7 +59,7 @@ class MobileSaleOrder(models.Model):
 
     def button_dispatch(self):
         self.write({
-            'state':'on route'
+            'state': 'on route'
         })
 
     def make_done(self):
@@ -69,9 +72,9 @@ class MobileSaleOrder(models.Model):
             'partner_id': self.customer_id.id,
             'picking_policy': 'direct',
             'origin': self.id,
-            'with_delivery':True,
-            'loan_supply':loan,
-            'date_done':datetime.datetime.now()
+            'with_delivery': True,
+            'loan_supply': loan,
+            'date_done': datetime.datetime.now()
         })
         self.write({
             'state': 'done',
