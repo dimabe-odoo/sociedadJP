@@ -20,3 +20,15 @@ class MobileSaleLine(models.Model):
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
 
     mobile_id = fields.Many2one('mobile.sale.order', auto_join=True)
+
+
+    @api.onchange('product_id')
+    def onchange_product_id(self):
+        price = self.mobile_id.price_list_id.filtered(lambda a: a.product_id.id == a.product_id.id).price
+        self.price = price
+
+    @api.onchange('loan_qty')
+    def onchange_loan_qty(self):
+        if self.loan_qty > self.qty:
+            raise models.ValidationError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
+        
