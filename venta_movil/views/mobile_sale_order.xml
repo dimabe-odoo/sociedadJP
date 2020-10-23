@@ -11,7 +11,7 @@
                         <button type="object" string="Marcar como hecho" name="make_done"
                                 attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                         <button type="object" string="Confirmar" name="button_confirm"
-                                attrs="{'invisible':[('state','=','confirm')]}"
+                                attrs="{'invisible':[('state','!=','draft')]}"
                         />
                         <button type="object" string="Despachar" name="button_dispatch"
                                 attrs="{'invisible':[('state','!=','confirm')]}" />
@@ -34,13 +34,14 @@
                             <group>
                                 <field name="saleman_id"
                                        attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
-                                <field name="location_id" attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
+                                <field name="location_id" attrs="{'invisible':[('state','in',('cancel','draft','onroute','done'))]}"/>
                                 <field name="warehouse_id"/>
                             </group>
                         </group>
                         <group>
                             <group>
                                 <field name="is_loan" attrs="{'readonly':[('state','=','done')]}"/>
+                                <field name='sale_id' readonly=1 attrs="{'invisible':[('state','!=','done')]}"/>
                             </group>
                         </group>
                         <group>
