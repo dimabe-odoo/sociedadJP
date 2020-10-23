@@ -11,7 +11,7 @@
                         <button type="object" string="Marcar como hecho" name="make_done"
                                 attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                         <button type="object" string="Confirmar" name="button_confirm"
-                                attrs="{'invisible':[('state','!=','confirm')]}"
+                                attrs="{'invisible':[('state','=','confirm')]}"
                         />
                         <button type="object" string="Despachar" name="button_dispatch"
                                 />
