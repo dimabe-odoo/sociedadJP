@@ -43,7 +43,7 @@ class MobileSaleOrder(models.Model):
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
-            self.total_sale = sum(self.mobile_lines.mapped('price')) * sum(self.mobile_line.mapped('qty'))
+            self.total_sale = sum(self.mobile_lines.mapped('price')) * sum(self.mobile_lines.mapped('qty'))
 
     @api.onchange('address_id')
     def compute_address_ids(self):
