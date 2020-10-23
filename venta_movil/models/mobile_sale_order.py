@@ -55,9 +55,10 @@ class MobileSaleOrder(models.Model):
         for item in self:
             item.truck_ids = self.warehouse_id.truck_ids
 
-    def compute_address_ids(self):
-        for item in self:
-            self.address_ids = self.env['res.partner'].search([('id', 'in', self.customer_id.child_ids.mapped('id'))])
+    @api.onchange('address_id')
+    def onchange_address_id(self):
+       
+    
 
     def button_confirm(self):
         self.write({
