@@ -67,17 +67,6 @@ class MobileSaleOrder(models.Model):
         res = super(MobileSaleOrder, self).create(values)
         return res
 
-    @api.model
-    def write(self,values):
-        res = super(MobileSaleOrder, self).write(values)
-        for item in self:
-            total = []
-            for line in item.mobile_lines:
-                total.append(line.price * line.qty)
-            item.write({
-                'total_sale' : sum(total)
-            })
-        return res
 
     def button_dispatch(self):
         self.write({
