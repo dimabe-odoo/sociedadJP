@@ -11,9 +11,9 @@ class MobileSaleOrder(models.Model):
         [('cancel', 'Cancelado'), ('draft', 'Borrador'), ('confirm', 'Confirmado'), ('onroute', 'En Ruta'),
          ('done', 'Hecha')], default='draft')
 
-    customer_id = fields.Many2one('res.partner', 'Cliente')
+    customer_id = fields.Many2one('res.partner', 'Cliente',required=True)
 
-    address_id = fields.Many2one('res.partner', 'Direccion de envio')
+    address_id = fields.Many2one('res.partner', 'Direccion de envio',required=True)
 
     address_ids = fields.Many2many('res.partner', 'Direcciones del cliente', compute='compute_address_ids')
 

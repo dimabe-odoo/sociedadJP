@@ -34,8 +34,8 @@
                             <group>
                                 <field name="saleman_id"
                                        attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
-                                <field name="location_id" attrs="{'invisible':[('state','in',('cancel','draft','onroute','done'))]}"/>
-                                <field name="warehouse_id"/>
+                                <field name="location_id" attrs="{'invisible':[('state','in',('cancel','draft','onroute','done')),'required':[('state','=','confirm')]]}"/>
+                                <field name="warehouse_id" attrs="{'ivisible':[('state','!=','confirm')],'required':[('state','=','confirm')]}"/>
                             </group>
                         </group>
                         <group>
@@ -51,7 +51,7 @@
                             <page name="products" string="Productos">
                                 <field name="mobile_lines">
                                     <tree editable="true" create="true" delete="true">
-                                        <field name="product_id" attrs="{'readonly':[('parent.state','=','done')]}"
+                                        <field name="product_id" attrs="{'readonly':[('parent.state','=','done')],}"
                                                required="1"/>
                                         <field name="price" attrs="{'readonly':[('parent.state','=','done')]}"
                                                required="1"/>
