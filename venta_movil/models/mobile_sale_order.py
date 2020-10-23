@@ -79,6 +79,7 @@ class MobileSaleOrder(models.Model):
         for line in self.mobile_lines:
             self.env['sale.order.line'].create({
                 'name':sale_odoo.name,
+                'product_id':line.product_id.id,
                 'order_id':sale_odoo.id,
                 'price_unit':line.price,
                 'product_uom_qty':float(line.qty),
