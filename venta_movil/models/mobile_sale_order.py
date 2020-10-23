@@ -13,7 +13,7 @@ class MobileSaleOrder(models.Model):
 
     customer_id = fields.Many2one('res.partner', 'Cliente',required=True)
 
-    address_id = fields.Many2one('res.partner', 'Direccion de envio',required=True)
+    address_id = fields.Many2one('res.partner', 'Direccion de envio')
 
     address_ids = fields.Many2many('res.partner', 'Direcciones del cliente', compute='compute_address_ids')
 
