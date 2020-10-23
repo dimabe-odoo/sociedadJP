@@ -27,7 +27,7 @@ class MobileSaleLine(models.Model):
         price = 0
         for item in self.mobile_id.price_list_id.item_ids:
             if item.product_tmpl_id.id == self.product_id.id:
-                price = item.price
+                price = item.fixed_price
         self.price = price
 
     @api.onchange('loan_qty')
