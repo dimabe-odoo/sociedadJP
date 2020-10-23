@@ -73,7 +73,6 @@ class MobileSaleOrder(models.Model):
             'origin': self.id,
             'with_delivery': True,
             'loan_supply': loan,
-            'date_done': datetime.datetime.now()
         })
         self.write({
             'state': 'done',
