@@ -119,7 +119,7 @@ class MobileSaleOrder(models.Model):
                 'product_id':line.product_id.id,
                 'date':datetime.datetime.now(),
                 'location_dest_id': self.location_id.id,
-                'location_id':self.env['stock.location'].search([('name','=','Customers')]).id
+                'location_id':self.env['stock.location'].search([('name','=','Customers')]).id,
                 'product_uom_id':line.product_id.uom_id.id,
                 'product_uom_qty':line.qty
             })
