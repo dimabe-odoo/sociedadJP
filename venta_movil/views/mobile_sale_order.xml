@@ -14,7 +14,7 @@
                                 attrs="{'invisible':[('state','!=','draft')]}"
                         />
                         <button type="object" string="Despachar" name="button_dispatch"
-                                attrs="{'invisible':[('state','!=','confirm')]}" />
+                                attrs="{'invisible':[('state','!=','confirm')]}"/>
                         <field name="state" widget="statusbar" statusbar_visible="cancel,draft,confirm,onroute,done"/>
                     </header>
                     <sheet>
@@ -26,8 +26,11 @@
                         </div>
                         <group>
                             <group>
-                                <field name="customer_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}" domain="[('type','!=','other')]"/>
-                                <field name="address_id" attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"/>
+                                <field name="customer_id" widget="res_partner_many2one"
+                                       context="{'res_partner_search_mode': 'customer'}"
+                                       domain="[('type','!=','other')]"/>
+                                <field name="address_id"
+                                       attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"/>
                             </group>
                             <group>
                                 <field name="saleman_id"
@@ -75,8 +78,9 @@
                     <field name="name"/>
                     <field name="customer_id" widget="many2onebutton"/>
                     <field name="address_id" widget="many2onebutton"/>
-                    <field name="sale_id" widget="many2onebutton" />
+                    <field name="sale_id" widget="many2onebutton"/>
                     <field name="total_sale"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
