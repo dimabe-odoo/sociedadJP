@@ -25,7 +25,7 @@
                             </h1>
                         </div>
                         <group>
-                            <group>
+                            <group style="border-right:1px solid black;">
                                 <field name="customer_id" widget="res_partner_many2one"
                                        domain="[('type','!=','other')]"/>
                                 <field name="address_id"
