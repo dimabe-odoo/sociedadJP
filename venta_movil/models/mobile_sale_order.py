@@ -113,6 +113,15 @@ class MobileSaleOrder(models.Model):
             'sale_id': sale_odoo.id
         })
         self.sale_id.action_confirm()
+        for line in self.mobile_line:
+            self.env['stock.move.line'].create({
+                'picking_id':self.sale_id.picking_ids[0].id,
+                'product_id':line.product_id.id,
+                'date':datetime.datetime.now(),
+                'location_dest_id': self.location_id.id,
+                'product_uom_id':line.product_id.uom_id.id,
+                'product_uom_qty':line.qty
+            })
         self.mobile_lines.write({
             'state': 'done'
         })
