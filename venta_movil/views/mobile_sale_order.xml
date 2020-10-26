@@ -33,7 +33,7 @@
                                 <field name="saleman_id"
                                        attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                                 <field name="warehouse_id" required="1"/>
-                                <field name="location_id" />
+                                <field name="location_id" attrs="{'invisible':[('state','!=','confirm')]}"/>
                             </group>
                         </group>
                         <group>
