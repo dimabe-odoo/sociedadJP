@@ -30,6 +30,12 @@ class MobileSaleLine(models.Model):
                 price = item.fixed_price
         self.price = price
 
+    @api.onchange('qty')
+    def onchange_qty(self):
+        for item in self:
+            stock = self.env['stock.quant'].search([('location_id','=',self.warehouse_id.lot_stock_id.id)])
+            raise models.ValidationError('{}'.format(stock.values()))
+
     @api.onchange('loan_qty')
     def onchange_loan_qty(self):
         if self.loan_qty > self.qty:
