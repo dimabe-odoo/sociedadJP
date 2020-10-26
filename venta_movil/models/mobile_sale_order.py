@@ -86,6 +86,11 @@ class MobileSaleOrder(models.Model):
             'state': 'onroute'
         })
 
+    def cancel_order(self):
+        self.write({
+            'state':'cancel'
+        })
+
     def make_done(self):
         loan = False
         if self.is_loan:

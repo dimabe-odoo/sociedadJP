@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
+                        <button type="cancel" string="Cancelar" name="cancel_order" />
                         <button type="object" string="Marcar como hecho" name="make_done"
                                 attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                         <button type="object" string="Confirmar" name="button_confirm"
@@ -89,6 +90,5 @@
 
         <menuitem name="Pedido a domicilio" id="mobile_sale_order_menu" parent="sale.sale_order_menu"
                   action="mobile_sale_order_act_window"/>
-
     </data>
 </odoo>
