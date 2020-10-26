@@ -29,7 +29,6 @@ class StockPicking(models.Model):
             if item.purchase_id or item.sale_id:
                 if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
-                        raise models.ValidationError('Aca')
                         loan_reception_id = self.env['stock.picking'].create({
                             'name': 'LOAN/{}'.format(self.name),
                             'picking_type_id': self.env['stock.picking.type'].search([
