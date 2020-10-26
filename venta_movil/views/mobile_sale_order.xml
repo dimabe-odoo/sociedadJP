@@ -46,7 +46,7 @@
                             </group>
                         </group>
                         <group>
-                            <field name="price_list_id"/>
+                            <field name="price_list_id" invisible="1"/>
                         </group>
                         <notebook>
                             <page name="products" string="Productos">
