@@ -36,7 +36,7 @@ class MobileSaleOrder(models.Model):
 
     location_id = fields.Many2one('stock.location', 'Ubicacion', domain=[('is_truck', '=', True)])
 
-    truck_ids = fields.Many2many('stock.location','Camion',compute='compute_trucks')
+    truck_ids = fields.Many2many('stock.location','Camion')
 
     is_loan = fields.Boolean('Es Prestamo')
 
@@ -51,9 +51,12 @@ class MobileSaleOrder(models.Model):
             item.total_sale = sum(total)
 
     @api.onchange('warehouse_id')
-    def compute_trucks(self):
-        for item in self:
-            item.truck_ids = self.warehouse_id.truck_ids
+    def onchange_warehouse(self):
+        res = {
+            'domain':{
+                'location_id' : [('id','in',self.warehouse_id.truck_ids.mapped('id'))]
+            }
+        }
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
