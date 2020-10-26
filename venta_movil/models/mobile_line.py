@@ -34,7 +34,7 @@ class MobileSaleLine(models.Model):
     def onchange_qty(self):
         for item in self:
             stock = self.env['stock.quant'].search([('location_id','=',self.mobile_id.warehouse_id.lot_stock_id.id)])
-            raise models.ValidationError('{}'.format(stock.values()))
+            raise models.ValidationError('{}'.format(stock.quantity))
 
     @api.onchange('loan_qty')
     def onchange_loan_qty(self):
