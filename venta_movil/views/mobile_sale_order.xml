@@ -30,7 +30,7 @@
 
                                        domain="[('type','!=','other')]"/>
                                 <field name="address_id"
-                                       context="{'default_parent_id': customer_id, 'default_type': 'other'}"
+                                       context="{'default_name':'Hola','default_parent_id': customer_id, 'default_type': 'other'}"
                                        attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"/>
                             </group>
                             <group>
