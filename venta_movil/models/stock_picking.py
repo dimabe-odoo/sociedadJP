@@ -28,8 +28,9 @@ class StockPicking(models.Model):
                 raise models.ValidationError('Aqui')
                 return super(StockPicking,self).button_validate()
             if item.purchase_id or item.sale_id:
-                raise models.ValidationError('Aca')
+
                 if item.picking_type_code == 'outgoing':
+                    raise models.ValidationError('Aca')
                     if item.sale_id.loan_supply:
                         loan_reception_id = self.env['stock.picking'].create({
                             'name': 'LOAN/{}'.format(self.name),
