@@ -25,8 +25,10 @@ class StockPicking(models.Model):
     def button_validate(self):
         for item in self:
             if ('Entrada' in item.origin) or ('Salida' in item.origin):
+                raise models.ValidationError('Aqui')
                 return super(StockPicking,self).button_validate()
             if item.purchase_id or item.sale_id:
+                raise models.ValidationError('Aca')
                 if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
                         loan_reception_id = self.env['stock.picking'].create({
@@ -107,9 +109,6 @@ class StockPicking(models.Model):
                                     'product_uom': move.product_id.supply_id.uom_id.id,
                                     'date_expected': item.scheduled_date
                                 })
-
-
-
                     item.supply_dispatch_id.button_validate()
                     return super(StockPicking, self).button_validate()
                 if item.picking_type_code == 'incoming':
