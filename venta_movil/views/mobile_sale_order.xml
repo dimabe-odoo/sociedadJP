@@ -31,6 +31,8 @@
                                 <field name="address_id"
                                        context="{'default_parent_id': customer_id,'form_view_ref': 'venta_movil.new_address_form','default_type': 'other'}"
                                        attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"/>
+                                <field name="is_loan" widget="boolean_toggle" attrs="{'readonly':[('state','=','done')]}"/>
+                                <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
                             </group>
                             <group>
                                 <field name="saleman_id"
@@ -39,15 +41,7 @@
                                 <field name="location_id" attrs="{'invisible':[('state','!=','confirm')]}"/>
                             </group>
                         </group>
-                        <group>
-                            <group>
-                                <field name="is_loan" widget="boolean_toggle" attrs="{'readonly':[('state','=','done')]}"/>
-                                <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
-                            </group>
-                        </group>
-                        <group>
-                            <field name="price_list_id" invisible="1"/>
-                        </group>
+                        <field name="price_list_id" invisible="1"/>
                         <notebook>
                             <page name="products" string="Productos">
                                 <field name="mobile_lines" widget="one2many_list">
