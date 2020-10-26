@@ -11,13 +11,14 @@ class MobileSaleOrder(models.Model):
         [('cancel', 'Cancelado'), ('draft', 'Borrador'), ('confirm', 'Confirmado'), ('onroute', 'En Ruta'),
          ('done', 'Hecha')], default='draft')
 
-    customer_id = fields.Many2one('res.partner', 'Cliente',required=True)
+    customer_id = fields.Many2one('res.partner', 'Cliente', required=True)
 
     address_id = fields.Many2one('res.partner', 'Direccion de envio')
 
     address_ids = fields.Many2many('res.partner', 'Direcciones del cliente', compute='compute_address_ids')
 
-    price_list_id = fields.Many2one('product.pricelist', 'Lista de Precio del Cliente')
+    price_list_id = fields.Many2one('product.pricelist', 'Lista de Precio del Cliente',
+                                    related='customer_id.property_product_pricelist')
 
     saleman_id = fields.Many2one('hr.employee', 'Vendedor')
 
@@ -25,7 +26,7 @@ class MobileSaleOrder(models.Model):
 
     mobile_lines = fields.One2many('mobile.sale.line', 'mobile_id', 'Productos')
 
-    total_sale = fields.Monetary('Total',compute='onchange_mobile_line')
+    total_sale = fields.Monetary('Total', compute='onchange_mobile_line')
 
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
@@ -36,7 +37,7 @@ class MobileSaleOrder(models.Model):
 
     location_id = fields.Many2one('stock.location', 'Ubicacion', domain=[('is_truck', '=', True)])
 
-    truck_ids = fields.Many2many('stock.location','Camion')
+    truck_ids = fields.Many2many('stock.location', 'Camion')
 
     is_loan = fields.Boolean('Es Prestamo')
 
@@ -53,8 +54,8 @@ class MobileSaleOrder(models.Model):
     @api.onchange('warehouse_id')
     def onchange_warehouse(self):
         res = {
-            'domain':{
-                'location_id' : [('id','in',self.warehouse_id.truck_ids.mapped('id'))]
+            'domain': {
+                'location_id': [('id', 'in', self.warehouse_id.truck_ids.mapped('id'))]
             }
         }
         return res
@@ -62,13 +63,11 @@ class MobileSaleOrder(models.Model):
     @api.onchange('customer_id')
     def onchange_address_id(self):
         res = {
-            'domain':{
-                'address_id' : [('id','in',self.customer_id.child_ids.mapped('id'))],
-                'price_list_id' : [('id','=',self.customer_id.property_product_pricelist.id)]
+            'domain': {
+                'address_id': [('id', 'in', self.customer_id.child_ids.mapped('id'))]
             }
         }
         return res
-    
 
     def button_confirm(self):
         self.write({
@@ -81,7 +80,6 @@ class MobileSaleOrder(models.Model):
         values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order')
         res = super(MobileSaleOrder, self).create(values)
         return res
-
 
     def button_dispatch(self):
         self.write({
@@ -100,17 +98,17 @@ class MobileSaleOrder(models.Model):
             'origin': self.id,
             'with_delivery': True,
             'loan_supply': loan,
-            'warehouse_id':self.warehouse_id.id,
-            'pricelist_id':self.price_list_id.id
+            'warehouse_id': self.warehouse_id.id,
+            'pricelist_id': self.price_list_id.id
         })
         for line in self.mobile_lines:
             self.env['sale.order.line'].create({
-                'name':sale_odoo.name,
-                'product_id':line.product_id.id,
-                'order_id':sale_odoo.id,
-                'price_unit':line.price,
-                'product_uom_qty':float(line.qty),
-                'currency_id':line.currency_id.id
+                'name': sale_odoo.name,
+                'product_id': line.product_id.id,
+                'order_id': sale_odoo.id,
+                'price_unit': line.price,
+                'product_uom_qty': float(line.qty),
+                'currency_id': line.currency_id.id
             })
         self.write({
             'state': 'done',
@@ -122,7 +120,7 @@ class MobileSaleOrder(models.Model):
             'state': 'done'
         })
         self.sale_id.picking_ids[0].write({
-            'show_supply':True
+            'show_supply': True
         })
         for stock in self.sale_id.picking_ids[0].move_line_ids_without_package:
             stock.write({
