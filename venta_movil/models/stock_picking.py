@@ -25,7 +25,6 @@ class StockPicking(models.Model):
     def button_validate(self):
         for item in self:
             if ('Entrada' in item.origin) or ('Salida' in item.origin):
-                raise models.ValidationError('Aqui')
                 return super(StockPicking,self).button_validate()
             if item.purchase_id or item.sale_id:
 
