@@ -98,15 +98,6 @@ class MobileSaleOrder(models.Model):
             'warehouse_id':self.warehouse_id.id,
             'pricelist_id':self.price_list_id.id
         })
-        for line in self.mobile_lines:
-            self.env['sale.order.line'].create({
-                'name':sale_odoo.name,
-                'product_id':line.product_id.id,
-                'order_id':sale_odoo.id,
-                'price_unit':line.price,
-                'product_uom_qty':float(line.qty),
-                'currency_id':line.currency_id.id
-            })
         self.write({
             'state': 'done',
             'date_done': datetime.datetime.now(),
