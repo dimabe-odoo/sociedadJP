@@ -57,6 +57,7 @@ class MobileSaleOrder(models.Model):
                 'location_id' : [('id','in',self.warehouse_id.truck_ids.mapped('id'))]
             }
         }
+        return res
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
