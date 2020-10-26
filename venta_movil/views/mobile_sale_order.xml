@@ -29,7 +29,7 @@
                                 <field name="customer_id" widget="res_partner_many2one"
                                        domain="[('type','!=','other')]"/>
                                 <field name="address_id"
-                                       context="{'default_parent_id': customer_id,'form_view_ref': 'base.view_partner_short_form','default_type': 'other'}"
+                                       context="{'default_parent_id': customer_id,'form_view_ref': 'venta_movil.new_address_form','default_type': 'other'}"
                                        attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"/>
                             </group>
                             <group>
