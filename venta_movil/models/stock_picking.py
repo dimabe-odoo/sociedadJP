@@ -51,63 +51,63 @@ class StockPicking(models.Model):
                         self.write({
                             'loan_reception_id':loan_reception_id.id
                         })
-                        reception = self.env['stock.picking'].create({
-                            'name': 'IN/' + item.name,
-                            'picking_type_code': 'incoming',
-                            'picking_type_id': self.env['stock.picking.type'].search(
-                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
-                                 ('sequence_code', '=', 'IN')]).id,
-                            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
-                            'location_dest_id': self.env['stock.warehouse'].search(
-                                [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
-                            'state': 'assigned',
-                            'date_done': datetime.datetime.now(),
-                            'origin': 'Entrada de ' + item.origin,
-                            'partner_id': item.partner_id.id
-                        })
-                        self.write({
-                            'supply_dispatch_id': reception.id,
-                            'have_supply' : True
-                        })
-                        for move in item.move_ids_without_package:
-                            if move.product_id.supply_id:
-                                quant = self.env['stock.quant'].search(
-                                    [('product_id.id', '=', move.product_id.supply_id.id),
-                                     ('location_id.id', '=', item.location_dest_id.id)])
-                                if quant.quantity < move.product_uom_qty and self.picking_type_code == 'incoming':
-                                    raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
-                                        move.product_id.supply_id.display_name))
-                                if item.sale_id.loan_supply:
-                                    qty = move.product_uom_qty - move.loan_supply
-                                    self.env['stock.move'].create({
-                                        'picking_id': loan_reception_id.id,
-                                        'name': 'MOVE/' + item.name,
-                                        'location_id': loan_reception_id.location_id.id,
-                                        'location_dest_id': loan_reception_id.location_dest_id.id,
-                                        'product_id': move.product_id.supply_id.id,
-                                        'date': datetime.datetime.now(),
-                                        'company_id': self.env.user.company_id.id,
-                                        'procure_method': 'make_to_stock',
-                                        'quantity_done': move.loan_supply,
-                                        'product_uom': move.product_id.supply_id.uom_id.id,
-                                        'date_expected': item.scheduled_date
-                                    })
-                                    item.loan_reception_id.button_validate()
-                                else:
-                                    qty = move.product_uom_qty
+                    reception = self.env['stock.picking'].create({
+                        'name': 'IN/' + item.name,
+                        'picking_type_code': 'incoming',
+                        'picking_type_id': self.env['stock.picking.type'].search(
+                            [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                                ('sequence_code', '=', 'IN')]).id,
+                        'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                        'location_dest_id': self.env['stock.warehouse'].search(
+                            [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
+                        'state': 'assigned',
+                        'date_done': datetime.datetime.now(),
+                        'origin': 'Entrada de ' + item.origin,
+                        'partner_id': item.partner_id.id
+                    })
+                    self.write({
+                        'supply_dispatch_id': reception.id,
+                        'have_supply' : True
+                    })
+                    for move in item.move_ids_without_package:
+                        if move.product_id.supply_id:
+                            quant = self.env['stock.quant'].search(
+                                [('product_id.id', '=', move.product_id.supply_id.id),
+                                    ('location_id.id', '=', item.location_dest_id.id)])
+                            if quant.quantity < move.product_uom_qty and self.picking_type_code == 'incoming':
+                                raise models.UserError('No tiene la cantidad necesaria de insumos {}'.format(
+                                    move.product_id.supply_id.display_name))
+                            if item.sale_id.loan_supply:
+                                qty = move.product_uom_qty - move.loan_supply
                                 self.env['stock.move'].create({
-                                    'picking_id': reception.id,
+                                    'picking_id': loan_reception_id.id,
                                     'name': 'MOVE/' + item.name,
-                                    'location_id': reception.location_id.id,
-                                    'location_dest_id': reception.location_dest_id.id,
+                                    'location_id': loan_reception_id.location_id.id,
+                                    'location_dest_id': loan_reception_id.location_dest_id.id,
                                     'product_id': move.product_id.supply_id.id,
                                     'date': datetime.datetime.now(),
                                     'company_id': self.env.user.company_id.id,
                                     'procure_method': 'make_to_stock',
-                                    'quantity_done': qty,
+                                    'quantity_done': move.loan_supply,
                                     'product_uom': move.product_id.supply_id.uom_id.id,
                                     'date_expected': item.scheduled_date
                                 })
+                                    item.loan_reception_id.button_validate()
+                            else:
+                                qty = move.product_uom_qty
+                        self.env['stock.move'].create({
+                            'picking_id': reception.id,
+                            'name': 'MOVE/' + item.name,
+                            'location_id': reception.location_id.id,
+                            'location_dest_id': reception.location_dest_id.id,
+                            'product_id': move.product_id.supply_id.id,
+                            'date': datetime.datetime.now(),
+                            'company_id': self.env.user.company_id.id,
+                            'procure_method': 'make_to_stock',
+                            'quantity_done': qty,
+                            'product_uom': move.product_id.supply_id.uom_id.id,
+                            'date_expected': item.scheduled_date
+                        })
                     item.supply_dispatch_id.button_validate()
                     return super(StockPicking, self).button_validate()
                 if item.picking_type_code == 'incoming':
