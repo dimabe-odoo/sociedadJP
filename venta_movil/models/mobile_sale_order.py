@@ -64,7 +64,7 @@ class MobileSaleOrder(models.Model):
         res = {
             'domain':{
                 'address_id' : [('id','in',self.customer_id.child_ids.mapped('id'))],
-                'price_list_id' : [('id','=',self.customer_id.price_list_id.id)]
+                'price_list_id' : [('id','=',self.customer_id.property_product_pricelist.id)]
             }
         }
         return res
