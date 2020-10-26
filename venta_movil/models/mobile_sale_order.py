@@ -116,6 +116,9 @@ class MobileSaleOrder(models.Model):
         self.mobile_lines.write({
             'state': 'done'
         })
+        self.sale_id.picking_ids[0].write({
+            'show_supply':True
+        })
         for stock in self.sale_id.picking_ids[0].move_line_ids_without_package:
             stock.write({
                 'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty
