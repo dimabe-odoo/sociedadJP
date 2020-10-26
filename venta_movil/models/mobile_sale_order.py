@@ -9,7 +9,7 @@ class MobileSaleOrder(models.Model):
 
     state = fields.Selection(
         [('cancel', 'Cancelado'), ('draft', 'Borrador'), ('confirm', 'Confirmado'), ('onroute', 'En Ruta'),
-         ('done', 'Hecha')], default='draft')
+         ('done', 'Hecha')], default='draft',string='Estado')
 
     customer_id = fields.Many2one('res.partner', 'Cliente', required=True)
 
@@ -36,8 +36,6 @@ class MobileSaleOrder(models.Model):
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
     location_id = fields.Many2one('stock.location', 'Ubicacion', domain=[('is_truck', '=', True)])
-
-    truck_ids = fields.Many2many('stock.location', 'Camion')
 
     is_loan = fields.Boolean('Es Prestamo')
 

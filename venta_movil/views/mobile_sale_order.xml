@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button type="object" string="Cancelar" name="cancel_order" />
+                        <button type="object" string="Cancelar" name="cancel_order" attrs="{'invisible':[('state','=','cancel')]}"/>
                         <button type="object" string="Marcar como hecho" name="make_done"
                                 attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                         <button type="object" string="Confirmar" name="button_confirm"
