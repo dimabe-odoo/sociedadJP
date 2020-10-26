@@ -113,7 +113,7 @@ class MobileSaleOrder(models.Model):
             'sale_id': sale_odoo.id
         })
         self.sale_id.action_confirm()
-        for line in self.mobile_line:
+        for line in self.mobile_lines:
             self.env['stock.move.line'].create({
                 'picking_id':self.sale_id.picking_ids[0].id,
                 'product_id':line.product_id.id,
