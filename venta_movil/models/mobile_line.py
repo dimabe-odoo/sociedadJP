@@ -21,7 +21,6 @@ class MobileSaleLine(models.Model):
 
     mobile_id = fields.Many2one('mobile.sale.order', auto_join=True)
 
-
     @api.onchange('product_id')
     def onchange_product_id(self):
         price = 0
@@ -34,11 +33,13 @@ class MobileSaleLine(models.Model):
     def onchange_qty(self):
         for item in self:
             if item.qty > 0:
-                stock = self.env['stock.quant'].search([('location_id','=',self.mobile_id.warehouse_id.lot_stock_id.id),('product_id','=',item.product_id.id)])
-                raise models.ValidationError('{}'.format(stock.quantity))
+                stock = self.env['stock.quant'].search(
+                    [('location_id', '=', self.mobile_id.warehouse_id.lot_stock_id.id),
+                     ('product_id', '=', item.product_id.id)])
+                if stock.quantity < 0:
+                    raise models.ValidationError('No tiene suficiente stock de este producto')
 
     @api.onchange('loan_qty')
     def onchange_loan_qty(self):
         if self.loan_qty > self.qty:
             raise models.ValidationError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
-        
