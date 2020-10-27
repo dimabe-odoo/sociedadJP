@@ -30,6 +30,7 @@ class StockPicking(models.Model):
                 if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
                         loan_reception_id = self.env['stock.picking'].create({
+                            'state': 'assigned',
                             'name': 'LOAN/{}'.format(self.name),
                             'picking_type_id': self.env['stock.picking.type'].search([
                                 ('warehouse_id.id', '=', self.picking_type_id.warehouse_id.id),
@@ -41,7 +42,6 @@ class StockPicking(models.Model):
                             ]).loan_location_id.id,
                             'move_type': 'direct',
                             'picking_type_code': 'incoming',
-                            'state': 'assigned',
                             'date_done': datetime.datetime.now(),
                             'company_id': self.env.user.company_id.id,
                             'origin': 'Entrada de {}'.format(self.name),
