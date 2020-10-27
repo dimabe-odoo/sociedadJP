@@ -111,7 +111,7 @@ class StockPicking(models.Model):
                                 'date':datetime.datetime.now(),
                                 'product_id': stock_move.product_id.id,
                                 'product_uom_id':stock_move.product_uom.id,
-                                'location_id': stock_move.location_id,
+                                'location_id': stock_move.location_id.id,
                                 'location_dest_id':stock_move.location_dest_id.id,
                                 'qty_done': move.loan_supply
                             })
