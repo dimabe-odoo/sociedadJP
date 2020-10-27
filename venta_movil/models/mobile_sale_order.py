@@ -129,4 +129,9 @@ class MobileSaleOrder(models.Model):
             stock.write({
                 'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty
             })
+        if self.is_loan:
+            for move in self.sale_id.picking_ids[0].move_ids_without_package:
+                move.write({
+                    'loan_supply':self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty
+                })
         self.sale_id.picking_ids[0].button_validate()
