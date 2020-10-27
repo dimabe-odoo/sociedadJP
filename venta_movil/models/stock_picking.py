@@ -50,7 +50,6 @@ class StockPicking(models.Model):
                         self.write({
                             'loan_reception_id': loan_reception_id.id
                         })
-                        item.loan_reception_id.action_confirm()
                     reception = self.env['stock.picking'].create({
                         'name': 'IN/' + item.name,
                         'picking_type_code': 'incoming',
@@ -147,6 +146,7 @@ class StockPicking(models.Model):
                             'date_expected': item.scheduled_date
                         })
                 if item.sale_id.loan_supply:
+                    item.loan_reception_id.action_confirm()
                     item.loan_reception_id.button_validate()
                 item.write({
                     'supply_dispatch_id': dispatch.id,
