@@ -93,7 +93,7 @@ class StockPicking(models.Model):
                             })
                         if item.sale_id.loan_supply:
                             qty = move.product_uom_qty - move.loan_supply
-                            self.env['stock.move'].create({
+                            stock_move = self.env['stock.move'].create({
                                 'picking_id': loan_reception_id.id,
                                 'name': 'MOVE/' + item.name,
                                 'location_id': loan_reception_id.location_id.id,
@@ -105,6 +105,15 @@ class StockPicking(models.Model):
                                 'quantity_done': move.loan_supply,
                                 'product_uom': move.product_id.supply_id.uom_id.id,
                                 'date_expected': item.scheduled_date
+                            })
+                            self.env['stock.move.line'].create({
+                                'move_id':stock_move.id,
+                                'date':datetime.datetime.now(),
+                                'product_id': stock_move.product_id.id,
+                                'product_uom_id':stock_move.product_uom.id,
+                                'location_id': stock_move.location_id,
+                                'location_dest_id':stock_move.location_dest_id.id,
+                                'qty': move.loan_supply
                             })
                 item.supply_dispatch_id.button_validate()
                 return super(StockPicking, self).button_validate()
