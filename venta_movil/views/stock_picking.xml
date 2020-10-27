@@ -11,7 +11,6 @@
                     <field name="supply_dispatch_id"
                            widget="many2onebutton" readonly="1" attrs="{'invisible':[('show_supply','=',False)]}"/>
                     <field name="loan_reception_id" readonly="1" attrs="{'invisible':[('show_supply','=',False)]}"/>
-                    <field name="have_supply" attrs="{'invisible':[('show_supply','=',False)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='location_dest_id']" position="after">
                     <field name="purchase_without_supply" attrs="{'invisible':[('picking_type_code','in',('outgoing','internal'))]}"/>

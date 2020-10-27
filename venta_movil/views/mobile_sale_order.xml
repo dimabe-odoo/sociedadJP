@@ -1,49 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
-       <record id="mobile_sale_order_form_view" model="ir.ui.view">
+
+        <record id="mobile_sale_order_form_view" model="ir.ui.view">
             <field name="name">mobile_sale_order_form_view</field>
             <field name="model">mobile.sale.order</field>
             <field name="arch" type="xml">
                 <form>
-                <header>
-                    <button type="object" string="Marcar como hecho" name="make_done" attrs="{'invisible':[('state','=','done')]}"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,progress,done" />
-                </header>
-                <sheet>
-                    <div class="oe_title">
-                        <label for="name"/>
-                        <h1>
-                            <field name="name" placeholder="Nombre"/>
-                        </h1>
-                    </div>
-                    <group>
+                    <header>
+                        <button type="object" string="Cancelar" name="cancel_order" attrs="{'invisible':[('state','=','cancel')]}"/>
+                        <button type="object" string="Marcar como hecho" name="make_done"
+                                attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
+                        <button type="object" string="Confirmar" name="button_confirm"
+                                attrs="{'invisible':[('state','!=','draft')]}"
+                        />
+                        <button type="object" string="Despachar" name="button_dispatch"
+                                attrs="{'invisible':[('state','!=','confirm')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="cancel,draft,confirm,onroute,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Nombre" attrs="{'invisible':[('name','=',None)]}"/>
+                            </h1>
+                        </div>
                         <group>
-                            <field name="customer_id"/>
+                            <group>
+                                <field name="customer_id" widget="res_partner_many2one"
+                                       domain="[('type','!=','other'),('customer_rank','!=',0)]"
+                                />
+                                <field name="address_id"
+                                       context="{'default_parent_id': customer_id,'form_view_ref': 'venta_movil.new_address_form','default_type': 'other'}"
+                                       attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"
+                                />
+                                <field name="is_loan" widget="boolean_toggle" attrs="{'readonly':[('state','=','done')]}"/>
+                                <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
+                            </group>
+                            <group>
+                                <field name="saleman_id"
+                                       attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
+                                <field name="warehouse_id" required="1"/>
+                                <field name="location_id" attrs="{'invisible':[('state','!=','confirm')]}"/>
+                            </group>
                         </group>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="is_loan"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page name="products" string="Productos">
-                            <field name="mobile_lines">
-                                <tree>
-                                    <field name="product_id"/>
-                                    <field name="price"/>
-                                    <field name="qty"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
+                        <field name="price_list_id" invisible="1"/>
+                        <notebook>
+                            <page name="products" string="Productos">
+                                <field name="mobile_lines" widget="one2many_list" required="1">
+                                    <tree editable="true" create="true" delete="true">
+                                        <field name="product_id" attrs="{'readonly':[('parent.state','=','done')]}"
+                                               required="1"/>
+                                        <field name="price" attrs="{'readonly':[('parent.state','=','done')]}"
+                                               required="1"/>
+                                        <field name="loan_qty"
+                                               attrs="{'required':[('parent.is_loan','=',True)],'invisible':[('parent.is_loan','=',False)],'readonly':[('parent.state','=','done')]}"/>
+                                        <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
+                                    </tree>
+                                </field>
+                                <strong style="float:right;font-size:20px;">
+                                    <span>Total: </span><field widget="monetary" name="total_sale" readonly="1"/>
+                                </strong>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>
-
         <record id="mobile_sale_order_tree_view" model="ir.ui.view">
             <field name="name">mobile_sale_order_tree_view</field>
             <field name="model">mobile.sale.order</field>
@@ -51,7 +74,10 @@
                 <tree>
                     <field name="name"/>
                     <field name="customer_id" widget="many2onebutton"/>
-                    <field name="total_sale" />
+                    <field name="address_id" widget="many2onebutton"/>
+                    <field name="sale_id" widget="many2onebutton"/>
+                    <field name="total_sale"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -60,11 +86,11 @@
             <field name="name">Pedido a domicilio</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">mobile.sale.order</field>
-            <field name="view_id" ref="mobile_sale_order_tree_view"/>     
+            <field name="view_id" ref="mobile_sale_order_tree_view"/>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Pedido a domicilio" id="mobile_sale_order_menu" parent="sale.sale_order_menu" action="mobile_sale_order_act_window"/>
-
+        <menuitem name="Pedido a domicilio" id="mobile_sale_order_menu" parent="sale.sale_order_menu"
+                  action="mobile_sale_order_act_window"/>
     </data>
 </odoo>
