@@ -28,20 +28,22 @@
                         <group>
                             <group>
                                 <field name="customer_id" widget="res_partner_many2one"
-                                       domain="[('type','!=','other'),('customer_rank','!=',0)]"
+                                       domain="[('type','!=','other')]"
                                 />
                                 <field name="address_id"
+                                       string="Direccion Opcional"
                                        context="{'default_parent_id': customer_id,'form_view_ref': 'venta_movil.new_address_form','default_type': 'other'}"
                                        attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"
+                                       required="1"
                                 />
                                 <field name="is_loan" widget="boolean_toggle" attrs="{'readonly':[('state','=','done')]}"/>
                                 <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
                             </group>
                             <group>
-                                <field name="saleman_id"
+                                <field name="saleman_id" string="Conductor"
                                        attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
-                                <field name="warehouse_id" required="1"/>
-                                <field name="location_id" attrs="{'invisible':[('state','!=','confirm')]}"/>
+                                <field name="warehouse_id"/>
+                                <field name="location_id" string="Camion" attrs="{'invisible':[('state','!=','confirm')]}"/>
                             </group>
                         </group>
                         <field name="price_list_id" invisible="1"/>
@@ -59,7 +61,7 @@
                                     </tree>
                                 </field>
                                 <strong style="float:right;font-size:20px;">
-                                    <span>Total: </span><field widget="monetary" name="total_sale" readonly="1"/>
+                                    <span>Total: $ </span><field widget="monetary" name="total_sale" readonly="1"/>
                                 </strong>
                             </page>
                         </notebook>
