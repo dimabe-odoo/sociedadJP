@@ -146,8 +146,8 @@ class StockPicking(models.Model):
                             'date_expected': item.scheduled_date
                         })
                 if item.sale_id.loan_supply:
-                    item.loan_reception_id.action_confirm()
-                    item.loan_reception_id.button_validate()
+                    item.loan_reception_id.sudo().action_confirm()
+                    item.loan_reception_id.sudo().button_validate()
                 item.write({
                     'supply_dispatch_id': dispatch.id,
                     'purchase_without_supply': True
