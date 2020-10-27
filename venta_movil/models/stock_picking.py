@@ -50,7 +50,7 @@ class StockPicking(models.Model):
                         self.write({
                             'loan_reception_id': loan_reception_id.id
                         })
-                        self.loan_reception_id.action_confirm()
+                        item.loan_reception_id.action_confirm()
                     reception = self.env['stock.picking'].create({
                         'name': 'IN/' + item.name,
                         'picking_type_code': 'incoming',
@@ -107,16 +107,6 @@ class StockPicking(models.Model):
                                 'product_uom': move.product_id.supply_id.uom_id.id,
                                 'date_expected': item.scheduled_date
                             })
-                            self.env['stock.move.line'].create({
-                                'move_id':stock_move.id,
-                                'date':datetime.datetime.now(),
-                                'product_id': stock_move.product_id.id,
-                                'product_uom_id':stock_move.product_uom.id,
-                                'location_id': stock_move.location_id.id,
-                                'location_dest_id':stock_move.location_dest_id.id,
-                                'qty_done': move.loan_supply
-                            })
-
                 item.supply_dispatch_id.button_validate()
                 return super(StockPicking, self).button_validate()
             if item.picking_type_code == 'incoming':
