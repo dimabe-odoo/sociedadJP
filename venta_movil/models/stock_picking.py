@@ -113,7 +113,7 @@ class StockPicking(models.Model):
                                 'product_uom_id':stock_move.product_uom.id,
                                 'location_id': stock_move.location_id,
                                 'location_dest_id':stock_move.location_dest_id.id,
-                                'qty': move.loan_supply
+                                'qty_done': move.loan_supply
                             })
                 item.supply_dispatch_id.button_validate()
                 return super(StockPicking, self).button_validate()
