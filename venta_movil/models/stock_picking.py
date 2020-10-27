@@ -49,7 +49,7 @@ class StockPicking(models.Model):
                         self.write({
                             'loan_reception_id': loan_reception_id.id
                         })
-                    if item.move_ids_without_package.filtered(lambda a: (a.loan - a.qty) != 0)
+                    if item.move_ids_without_package.filtered(lambda a: (a.loan - a.qty) != 0):
                         reception = self.env['stock.picking'].create({
                             'name': 'IN/' + item.name,
                             'picking_type_code': 'incoming',
