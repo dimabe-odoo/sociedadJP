@@ -41,7 +41,7 @@ class StockPicking(models.Model):
                             ]).loan_location_id.id,
                             'move_type': 'direct',
                             'picking_type_code': 'incoming',
-                            'state': 'confirmed',
+                            'state': 'assigned',
                             'date_done': datetime.datetime.now(),
                             'company_id': self.env.user.company_id.id,
                             'origin': 'Entrada de {}'.format(self.name),
