@@ -21,7 +21,7 @@ odoo.define('pos_discount.andes', function (require) {
                     })
                 })
             }
-            console.log(this.screens)
+            console.log(this.pos)
             return json;
         }
     })
