@@ -25,6 +25,8 @@ odoo.define('pos_discount.andes', function (require) {
             console.log(this.pos)
             console.log('POS.GUI')
             console.log(this.pos.gui)
+            console.log('POS.GUI.CURRENT_SCREEN')
+            console.log(this.pos.gui.current_screen)
             return json;
         }
     })
