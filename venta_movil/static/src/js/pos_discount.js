@@ -21,7 +21,6 @@ odoo.define('pos_discount.andes', function (require) {
                     })
                 })
             }
-            console.log(self.line[0])
             console.log(json)
             return json;
         }
