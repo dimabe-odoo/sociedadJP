@@ -53,14 +53,14 @@ class MobileSaleOrder(models.Model):
                 total.append(line.price * line.qty)
             item.total_sale = sum(total)
 
-    @api.onchange('')
-    def onchange_warehouse(self):
-        res = {
-            'domain': {
-                'location_id': [('id', 'in', self.warehouse_id.truck_ids.mapped('id'))]
-            }
-        }
-        return res
+    @api.onchange('paid')
+    def compute_change(self):
+        for item in self:
+            change = item.paid - item.total_sale
+            if change > 0:
+                item.change = change
+            else:
+                item.change = 0
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
