@@ -8,7 +8,8 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button type="object" string="Cancelar" name="cancel_order" attrs="{'invisible':[('state','=','cancel')]}"/>
+                        <button type="object" string="Cancelar" name="cancel_order"
+                                attrs="{'invisible':[('state','=','cancel')]}"/>
                         <button type="object" string="Marcar como hecho" name="make_done"
                                 attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                         <button type="object" string="Confirmar" name="button_confirm"
@@ -34,7 +35,8 @@
                                        context="{'default_parent_id': customer_id,'form_view_ref': 'venta_movil.new_address_form','default_type': 'other'}"
                                        attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"
                                 />
-                                <field name="is_loan" widget="boolean_toggle" attrs="{'readonly':[('state','=','done')]}"/>
+                                <field name="is_loan" widget="boolean_toggle"
+                                       attrs="{'readonly':[('state','=','done')]}"/>
                                 <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
                             </group>
                             <group>
@@ -59,9 +61,11 @@
                                     </tree>
                                 </field>
                                 <strong style="float:right;font-size:20px;">
-                                    <span>Total: $</span><field widget="monetary" name="total_sale" readonly="1"/>
-                                    <span>Pagado: $</span><field name="paid"/>
-                                    <span>Vuelto: $</span><field name="change" readonly="1"/>
+                                    <group>
+                                        <field widget="monetary" name="total_sale" readonly="1"/>
+                                        <field name="paid"/>
+                                        <field name="change" readonly="1"/>
+                                    </group>
                                 </strong>
                             </page>
                         </notebook>
