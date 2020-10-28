@@ -42,7 +42,7 @@ odoo.define('pos_discount.andes', function (require) {
                             })
                         } else {
                             this.pos['loan'] = loan;
-                            console.log(self)
+                            console.log(self.line[0])
                             this.pos['selected_product'] = order.selected_orderline.product.id
                         }
                     }
