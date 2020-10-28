@@ -33,6 +33,10 @@ class MobileSaleOrder(models.Model):
 
     sale_id = fields.Many2one('sale.order', 'Venta Interna')
 
+    paid = fields.Float('Pagado con')
+
+    change = fields.Float('Vuelto')
+
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
     location_id = fields.Many2one('stock.location', 'Ubicacion', domain=[('is_truck', '=', True)])
@@ -49,7 +53,7 @@ class MobileSaleOrder(models.Model):
                 total.append(line.price * line.qty)
             item.total_sale = sum(total)
 
-    @api.onchange('warehouse_id')
+    @api.onchange('')
     def onchange_warehouse(self):
         res = {
             'domain': {
