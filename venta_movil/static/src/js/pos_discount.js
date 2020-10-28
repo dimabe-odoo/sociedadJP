@@ -21,7 +21,7 @@ odoo.define('pos_discount.andes', function (require) {
                     })
                 })
             }
-            console.log(json)
+            console.log(self.screens)
             return json;
         }
     })
@@ -53,7 +53,6 @@ odoo.define('pos_discount.andes', function (require) {
                     body: ('Debe seleccionar un producto para realizar prestamo')
                 })
             }
-            console.log(self.line[0])
         },
 
     })
