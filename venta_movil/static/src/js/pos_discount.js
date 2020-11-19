@@ -1,7 +1,7 @@
 odoo.define('pos_discount.andes', function (require) {
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
-    screens.ProductListWidget.include({
+    screens.ProductListWidget.extend({
         render_product: function(product){
             var current_pricelist = this._get_active_pricelist();
             var cache_key = this.calculate_cache_key(product, current_pricelist);
