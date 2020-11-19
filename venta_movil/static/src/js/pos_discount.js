@@ -67,7 +67,7 @@ odoo.define('pos_discount.andes', function (require) {
             console.log(this.pos.gui)
             console.log('POS.GUI.CURRENT_SCREEN')
             if(this.pos.gui.pos.gui.current_screen){
-                this.pos.gui.pos.gui.current_screen.ProductListWidget.product_list.forEach(element => {
+                this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
                     console.log(element)
                 });
             }
