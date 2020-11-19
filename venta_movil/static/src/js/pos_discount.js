@@ -10,12 +10,13 @@ odoo.define('pos_discount.andes', function (require) {
         export_as_JSON: function () {
             var self = this;
             var json = _super_order.export_as_JSON.apply(this, arguments);
-            if (json.lines) {json.lines.forEach(function (e) {
-                    if(self.pos.loan){
+            if (json.lines) {
+                json.lines.forEach(function (e) {
+                    if (self.pos.loan) {
                         json.is_loan = true;
                     }
                     e.forEach(function (a) {
-                        if(a.product_id === self.pos.selected_product){
+                        if (a.product_id === self.pos.selected_product) {
                             a.loan = self.pos.loan
                         }
                     })
@@ -26,7 +27,12 @@ odoo.define('pos_discount.andes', function (require) {
             console.log('POS.GUI')
             console.log(this.pos.gui)
             console.log('POS.GUI.CURRENT_SCREEN')
-            await new Promise(r => setTimeout(r, 2000));
+            var start = new Date().getTime();
+            for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > 2000) {
+                    break;
+                }
+            }
             console.log(this.pos.gui.pos.gui.current_screen)
             return json;
         }
