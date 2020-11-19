@@ -2,9 +2,9 @@ odoo.define('pos_discount.andes', function (require) {
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
     screens.ProductListWidget.extend({
-        init: function (parent, options) {
+        init: function(parent, options) {
             var self = this;
-            this._super(parent, options);
+            this._super(parent,options);
             this.model = options.model;
             console.log(options.model)
             this.productwidgets = [];
@@ -12,13 +12,13 @@ odoo.define('pos_discount.andes', function (require) {
             this.show_scale = options.show_scale || false;
             this.next_screen = options.next_screen || false;
             this.search_word = false;
-
-            this.click_product_handler = function () {
+    
+            this.click_product_handler = function(){
                 var product = self.pos.db.get_product_by_id(this.dataset.productId);
                 options.click_product_action(product);
             };
-
-            this.keypress_product_handler = function (ev) {
+    
+            this.keypress_product_handler = function(ev){
                 // React only to SPACE to avoid interfering with warcode scanner which sends ENTER
                 if (ev.which != 32) {
                     return;
@@ -27,14 +27,14 @@ odoo.define('pos_discount.andes', function (require) {
                 var product = self.pos.db.get_product_by_id(this.dataset.productId);
                 options.click_product_action(product);
             };
-
+    
             this.product_list = options.product_list || [];
             this.product_cache = new DomCache();
-
+    
             this.pos.get('orders').bind('add remove change', function () {
                 self.renderElement();
             }, this);
-
+    
             this.pos.bind('change:selectedOrder', function () {
                 this.renderElement();
             }, this);
@@ -66,10 +66,12 @@ odoo.define('pos_discount.andes', function (require) {
             console.log('POS.GUI')
             console.log(this.pos.gui)
             console.log('POS.GUI.CURRENT_SCREEN')
-            if (this.pos.gui.pos.gui.current_screen) {
-                this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
-                    console.log((element.standard_price * 0.19) + element.standard_price)
+            if(this.pos.gui.pos.gui.current_screen){
+                this.pos.gui.pos.gui.current_screen.ProductListWidget.product_list.forEach(element => {
+                    let f = (element.standard_price * 0.19) + element.standard_price
+                    console.log(f)
                 });
+            }
             return json;
         }
     })
