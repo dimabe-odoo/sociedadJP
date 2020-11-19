@@ -2,27 +2,42 @@ odoo.define('pos_discount.andes', function (require) {
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
     screens.ProductListWidget.extend({
-        render_product: function(product){
-            var current_pricelist = this._get_active_pricelist();
-            var cache_key = this.calculate_cache_key(product, current_pricelist);
-            var cached = this.product_cache.get_node(cache_key);
-            if(!cached){
-                var image_url = this.get_product_image_url(product);
-                var product_html = QWeb.render('Product',{ 
-                        widget:  this, 
-                        product: product,
-                        pricelist: current_pricelist,
-                        image_url: this.get_product_image_url(product),
-                    });
-                console.log(product)
-                var product_node = document.createElement('div');
-                product_node.innerHTML = product_html;
-                product_node = product_node.childNodes[1];
-                this.product_cache.cache_node(cache_key,product_node);
-                return product_node;
-            }
-            return cached;
-        }
+        init: function(parent, options) {
+            var self = this;
+            this._super(parent,options);
+            this.model = options.model;
+            this.productwidgets = [];
+            this.weight = options.weight || 0;
+            this.show_scale = options.show_scale || false;
+            this.next_screen = options.next_screen || false;
+            this.search_word = false;
+    
+            this.click_product_handler = function(){
+                var product = self.pos.db.get_product_by_id(this.dataset.productId);
+                options.click_product_action(product);
+            };
+    
+            this.keypress_product_handler = function(ev){
+                // React only to SPACE to avoid interfering with warcode scanner which sends ENTER
+                if (ev.which != 32) {
+                    return;
+                }
+                ev.preventDefault();
+                var product = self.pos.db.get_product_by_id(this.dataset.productId);
+                options.click_product_action(product);
+            };
+    
+            this.product_list = options.product_list || [];
+            this.product_cache = new DomCache();
+    
+            this.pos.get('orders').bind('add remove change', function () {
+                self.renderElement();
+            }, this);
+    
+            this.pos.bind('change:selectedOrder', function () {
+                this.renderElement();
+            }, this);
+        },
     });
     var _super_order = models.Order.prototype;
     var loan = 0
