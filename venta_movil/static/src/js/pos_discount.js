@@ -68,7 +68,8 @@ odoo.define('pos_discount.andes', function (require) {
             console.log('POS.GUI.CURRENT_SCREEN')
             if(this.pos.gui.pos.gui.current_screen){
                 this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
-                    console.log(element)
+                    var new_value = (element.standard_price * 0.19) + element.standard_price
+                    console.log(new_value)
                 });
             }
             return json;
