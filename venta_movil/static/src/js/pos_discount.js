@@ -26,6 +26,7 @@ odoo.define('pos_discount.andes', function (require) {
             console.log('POS.GUI')
             console.log(this.pos.gui)
             console.log('POS.GUI.CURRENT_SCREEN')
+            await new Promise(r => setTimeout(r, 2000));
             console.log(this.pos.gui.pos.gui.current_screen)
             return json;
         }
