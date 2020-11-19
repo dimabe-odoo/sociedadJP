@@ -6,6 +6,7 @@ odoo.define('pos_discount.andes', function (require) {
             var self = this;
             this._super(parent,options);
             this.model = options.model;
+            console.log(options.model)
             this.productwidgets = [];
             this.weight = options.weight || 0;
             this.show_scale = options.show_scale || false;
