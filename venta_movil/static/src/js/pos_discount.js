@@ -68,6 +68,8 @@ odoo.define('pos_discount.andes', function (require) {
             console.log('POS.GUI.CURRENT_SCREEN')
             if(this.pos.gui.pos.gui.current_screen){
                 var order = this.pos.get_order()
+                console.log(order.selected_orderline)
+                console.log(this.pos.gui.pos.gui.current_screen.product_list_widget.product_list[0])
                 this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
                     if (order.selected_orderline.product_id == element.product_id){
                         order.selected_orderline = 1;
