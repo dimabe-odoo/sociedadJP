@@ -29,7 +29,6 @@ odoo.define('pos_discount.andes', function (require) {
     
             this.product_list = options.product_list || [];
             this.product_cache = new DomCache();
-            console.log(this.product_list)
             this.pos.get('orders').bind('add remove change', function () {
                 self.renderElement();
             }, this);
@@ -39,6 +38,7 @@ odoo.define('pos_discount.andes', function (require) {
             }, this);
         },
         set_product_list: function(product_list, search_word){
+            console.log(product_list)
             this.product_list = product_list;
             this.search_word = !!search_word ? search_word : false;
             this.renderElement();
