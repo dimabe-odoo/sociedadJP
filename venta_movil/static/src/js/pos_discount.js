@@ -73,6 +73,7 @@ odoo.define('pos_discount.andes', function (require) {
                 this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
                     if(order.selected_orderline){
                         if (order.selected_orderline.product.id == element.id){
+                            console.log(element.standard_price)
                             order.selected_orderline.price = element.standard_price;
                         }
                     }
