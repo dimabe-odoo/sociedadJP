@@ -1,6 +1,7 @@
 odoo.define('pos_discount.andes', function (require) {
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
+    console.log(screens)
     var _super_order = models.Order.prototype;
     var loan = 0
     models.Order = models.Order.extend({
@@ -27,12 +28,6 @@ odoo.define('pos_discount.andes', function (require) {
             console.log('POS.GUI')
             console.log(this.pos.gui)
             console.log('POS.GUI.CURRENT_SCREEN')
-            var start = new Date().getTime();
-            for (var i = 0; i < 1e7; i++) {
-                if ((new Date().getTime() - start) > 2000) {
-                    break;
-                }
-            }
             console.log(this.pos.gui.pos.gui.current_screen)
             return json;
         }
