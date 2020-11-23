@@ -72,8 +72,7 @@ odoo.define('pos_discount.andes', function (require) {
                                     if (item.product_tmpl_id[0] == element.id) {
                                         var price_with_taxes = order.selected_orderline.price;
                                         var price_without_taxes = parseFloat(item.price.split(" ")[0].split(".")[0])
-                                        console.log(price_with_taxes)
-                                        console.log(price_without_taxes)
+                                        console.log(order.selected_orderline)
                                         order.selected_orderline.price = (price_with_taxes - price_without_taxes) 
                                     }
                                 })
