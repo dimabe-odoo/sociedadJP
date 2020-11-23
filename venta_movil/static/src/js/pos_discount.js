@@ -134,11 +134,6 @@ odoo.define('pos_discount.andes', function (require) {
                                             
                                             order.selected_orderline.price = order.selected_orderline.price - price;
                                             order.selected_orderline.product.taxes_id = []
-                                            var el_str  = QWeb.render('OrderWidget',{widget:this, order:order, orderlines:orderlines});
-
-                                            var el_node = document.createElement('div');
-                                                el_node.innerHTML = _.str.trim(el_str);
-                                                el_node = el_node.childNodes[0];
                                             console.log(order.selected_orderline)
                                         }
                                     })
