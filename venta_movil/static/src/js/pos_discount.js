@@ -121,28 +121,7 @@ odoo.define('pos_discount.andes', function (require) {
             if (this.pos.gui.pos.gui.current_screen) {
                 var order = this.pos.get_order()
                 if(order){
-                    this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
-                        if (order.selected_orderline) {
-                            if (order.selected_orderline.product.id == element.id) {
-                                if (order.pricelist) {
-                                    var price = 0
-                                    
-                                    order.pricelist.items.forEach(item => {
-                                        if (item.product_tmpl_id[0] == element.id) {
-                                            var price = ((19 / 100) * parseFloat(item.price.split(' ')[0].split(".")[0]))
-                                            console.log(document.getElementsByClassName("price"))
-                                            document.getElementsByClassName("price").innerText = order.selected_orderline.price - price
-                                            document.getElementsByClassName("subentry").innerHTML = price
-                                        }
-                                    })
-                                    // var price = order.pricelist.items.filter(function (product) {
-                                    //     return product[1].id == element.id;
-                                    // }).fixed_price
-                                   
-                                }
-                            }
-                        }
-                    });
+                    console.log(this.pos)
                 }
                 }
                 
