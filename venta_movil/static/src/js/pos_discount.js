@@ -139,7 +139,7 @@ odoo.define('pos_discount.andes', function (require) {
                                             var el_node = document.createElement('div');
                                                 el_node.innerHTML = _.str.trim(el_str);
                                                 el_node = el_node.childNodes[0];
-                                            
+                                            console.log(order.selected_orderline)
                                         }
                                     })
                                     // var price = order.pricelist.items.filter(function (product) {
