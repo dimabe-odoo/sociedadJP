@@ -70,7 +70,6 @@ odoo.define('pos_discount.andes', function (require) {
                             if(order.pricelist){
                                 console.log("ELEMENT")
                                 console.log(element)
-                                
                                 console.log(order.pricelist.items[0])
                                 // var price = order.pricelist.items.filter(function (product) {
                                 //     return product[1].id == element.id;
