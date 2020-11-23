@@ -1,6 +1,8 @@
 odoo.define('pos_discount.andes', function (require) {
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
+    var core = require('web.core');
+    var QWeb = core.qweb;
     screens.ProductListWidget.extend({
         init: function (parent, options) {
             var self = this;
