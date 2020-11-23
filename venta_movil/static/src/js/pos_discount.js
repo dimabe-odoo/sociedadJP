@@ -120,8 +120,8 @@ odoo.define('pos_discount.andes', function (require) {
                                             var el_node = document.createElement('div');
                                                 el_node.innerHTML = _.str.trim(el_str);
                                                 el_node = el_node.childNodes[0];
-
-                                            this.el.querySelector('.summary .total .subentry .value').textContent = this.format_currency(taxes);
+                                                this.el.querySelector('.summary .total > .value').textContent = this.format_currency(order.selected_orderline + price);
+                                            this.el.querySelector('.summary .total .subentry .value').textContent = this.format_currency(3040);
                                         }
                                     })
                                     // var price = order.pricelist.items.filter(function (product) {
