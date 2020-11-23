@@ -41,6 +41,12 @@ odoo.define('pos_discount.andes', function (require) {
     });
     var _super_order = models.Order.prototype;
     var loan = 0
+    models.OrderLine = models.Orderline.extend({
+        get_display_price: function(){
+            return this.get_base_price();
+            }
+        },
+    ),
     models.Order = models.Order.extend({
         initialize: function () {
             _super_order.initialize.apply(this, arguments);
