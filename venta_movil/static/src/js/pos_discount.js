@@ -42,11 +42,44 @@ odoo.define('pos_discount.andes', function (require) {
     var _super_order = models.Order.prototype;
     var loan = 0
     models.OrderLine = models.Orderline.extend({
-        get_display_price: function(){
-            return this.get_base_price();
+        get_base_price:    function(){
+            var rounding = this.pos.currency.rounding;
+            console.log(rounding)
+            return round_pr(this.get_unit_price() * this.get_quantity() * (1 - this.get_discount()/100), rounding);
+
+        },
+        get_display_price_one: function(){
+            var rounding = this.pos.currency.rounding;
+            var price_unit = this.get_unit_price();
+            if (this.pos.config.iface_tax_included !== 'total') {
+                return round_pr(price_unit * (1.0 - (this.get_discount() / 100.0)), rounding);
+            } else {
+                var product =  this.get_product();
+                var taxes_ids = product.taxes_id;
+                var taxes =  this.pos.taxes;
+                var product_taxes = [];
+                console.log(product)
+                _(taxes_ids).each(function(el){
+                    product_taxes.push(_.detect(taxes, function(t){
+                        return t.id === el;
+                    }));
+                });
+    
+                var all_taxes = this.compute_all(product_taxes, price_unit, 1, this.pos.currency.rounding);
+    
+                return round_pr(all_taxes.total_included * (1 - this.get_discount()/100), rounding);
             }
         },
-    ),
+        get_display_price: function(){
+            if (this.pos.config.iface_tax_included === 'total') {
+                console.log(this)
+                return this.get_price_with_tax();
+            } else {
+                console.log(this.pos.config)
+                return this.get_base_price();
+            }
+        },
+    }),
     models.Order = models.Order.extend({
         initialize: function () {
             _super_order.initialize.apply(this, arguments);
