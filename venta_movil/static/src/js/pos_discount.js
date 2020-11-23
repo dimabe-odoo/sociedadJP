@@ -114,7 +114,7 @@ odoo.define('pos_discount.andes', function (require) {
                                         if (item.product_tmpl_id[0] == element.id) {
                                             var price = ((19 / 100) * parseFloat(item.price.split(' ')[0].split(".")[0]))
                                             console.log(order.selected_orderline)
-                                            
+                                            var orderlines = order.get_orderlines();
                                             order.selected_orderline.price = order.selected_orderline.price - price;
                                             order.selected_orderline.product.taxes_id = []
                                             var el_str  = QWeb.render('OrderWidget',{widget:this, order:order, orderlines:orderlines});
