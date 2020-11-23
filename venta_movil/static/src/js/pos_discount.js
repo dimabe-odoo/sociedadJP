@@ -73,7 +73,7 @@ odoo.define('pos_discount.andes', function (require) {
                                         var price_with_taxes = order.selected_orderline.price;
                                         var price_without_taxes = parseFloat(item.price.split(" ")[0].split(".")[0])
                                         order.selected_orderline.price = (price_without_taxes)
-                                        order.selected_orderline.taxes_id = []
+                                        order.selected_orderline.product.taxes_id = []
                                     }
                                 })
                                 // var price = order.pricelist.items.filter(function (product) {
