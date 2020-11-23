@@ -2,22 +2,22 @@ odoo.define('pos_discount.andes', function (require) {
     var screens = require('point_of_sale.screens');
     var models = require('point_of_sale.models');
     screens.ProductListWidget.extend({
-        init: function(parent, options) {
+        init: function (parent, options) {
             var self = this;
-            this._super(parent,options);
+            this._super(parent, options);
             this.model = options.model;
             this.productwidgets = [];
             this.weight = options.weight || 0;
             this.show_scale = options.show_scale || false;
             this.next_screen = options.next_screen || false;
             this.search_word = false;
-    
-            this.click_product_handler = function(){
+
+            this.click_product_handler = function () {
                 var product = self.pos.db.get_product_by_id(this.dataset.productId);
                 options.click_product_action(product);
             };
-    
-            this.keypress_product_handler = function(ev){
+
+            this.keypress_product_handler = function (ev) {
                 // React only to SPACE to avoid interfering with warcode scanner which sends ENTER
                 if (ev.which != 32) {
                     return;
@@ -26,14 +26,14 @@ odoo.define('pos_discount.andes', function (require) {
                 var product = self.pos.db.get_product_by_id(this.dataset.productId);
                 options.click_product_action(product);
             };
-    
+
             this.product_list = options.product_list || [];
             this.product_cache = new DomCache();
-    
+
             this.pos.get('orders').bind('add remove change', function () {
                 self.renderElement();
             }, this);
-    
+
             this.pos.bind('change:selectedOrder', function () {
                 this.renderElement();
             }, this);
@@ -60,22 +60,24 @@ odoo.define('pos_discount.andes', function (require) {
                     })
                 })
             }
-            if(this.pos.gui.pos.gui.current_screen){
+            if (this.pos.gui.pos.gui.current_screen) {
                 var order = this.pos.get_order()
                 this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
-                    if(order.selected_orderline){
-                        if (order.selected_orderline.product.id == element.id){
-                            if(order.pricelist){
+                    if (order.selected_orderline) {
+                        if (order.selected_orderline.product.id == element.id) {
+                            if (order.pricelist) {
                                 order.pricelist.items.forEach(item => {
-                                    console.log("ITEM")
-                                    console.log(item)
-                                    console.log("ELEMENT")
-                                    console.log(element)
+                                    if (item.product_tmpl_id[0] == element.id) {
+                                        console.log("ITEM")
+                                        console.log(item)
+                                        console.log("ELEMENT")
+                                        console.log(element)
+                                    }
                                 })
                                 // var price = order.pricelist.items.filter(function (product) {
                                 //     return product[1].id == element.id;
                                 // }).fixed_price
-                                
+
                             }
                         }
                     }
