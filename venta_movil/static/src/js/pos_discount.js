@@ -115,7 +115,13 @@ odoo.define('pos_discount.andes', function (require) {
                                             
                                             order.selected_orderline.price = order.selected_orderline.price - price;
                                             order.selected_orderline.product.taxes_id = []
-                                            this.el.querySelector('.summary .total .subentry .value').textContent = 3040;
+                                            var el_str  = QWeb.render('OrderWidget',{widget:this, order:order, orderlines:orderlines});
+
+                                            var el_node = document.createElement('div');
+                                                el_node.innerHTML = _.str.trim(el_str);
+                                                el_node = el_node.childNodes[0];
+
+                                            this.el.querySelector('.summary .total .subentry .value').textContent = this.format_currency(taxes);
                                         }
                                     })
                                     // var price = order.pricelist.items.filter(function (product) {
