@@ -112,7 +112,10 @@ odoo.define('pos_discount.andes', function (require) {
                                         if (item.product_tmpl_id[0] == element.id) {
                                             var price = ((19 / 100) * parseFloat(item.price.split(' ')[0].split(".")[0]))
                                             console.log(order.selected_orderline)
-                                            order.selected_orderline.price = order.selected_orderline.price - price
+                                            
+                                            order.selected_orderline.price = order.selected_orderline.price - price;
+                                            order.selected_orderline.product.taxes_id = []
+                                            this.el.querySelector('.summary .total .subentry .value').textContent = 3040;
                                         }
                                     })
                                     // var price = order.pricelist.items.filter(function (product) {
