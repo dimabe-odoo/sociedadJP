@@ -6,7 +6,6 @@ odoo.define('pos_discount.andes', function (require) {
             var self = this;
             this._super(parent,options);
             this.model = options.model;
-            console.log(options.model)
             this.productwidgets = [];
             this.weight = options.weight || 0;
             this.show_scale = options.show_scale || false;
@@ -63,15 +62,15 @@ odoo.define('pos_discount.andes', function (require) {
             }
             if(this.pos.gui.pos.gui.current_screen){
                 var order = this.pos.get_order()
-                console.log(this.pos.gui.pos.gui.current_screen.product_list_widget.product_list[0])
                 this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
                     if(order.selected_orderline){
                         if (order.selected_orderline.product.id == element.id){
                             if(order.pricelist){
                                 order.pricelist.items.forEach(item => {
-                                    if(item.product_tmpl_id == element.id){
-                                        console.log(item.price)
-                                    }
+                                    console.log("ITEM")
+                                    console.log(item)
+                                    console.log("ELEMENT")
+                                    console.log(element)
                                 })
                                 // var price = order.pricelist.items.filter(function (product) {
                                 //     return product[1].id == element.id;
