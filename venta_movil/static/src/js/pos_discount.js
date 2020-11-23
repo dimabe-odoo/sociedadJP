@@ -71,6 +71,7 @@ odoo.define('pos_discount.andes', function (require) {
                                 order.pricelist.items.forEach(item => {
                                     if (item.product_tmpl_id[0] == element.id) {
                                         var price = parseInt(item.price.split(" ")[0].split('.')[0])
+                                        console.log(price)
                                         order.selected_orderline.price = price
                                     }
                                 })
