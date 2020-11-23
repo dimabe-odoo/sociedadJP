@@ -70,7 +70,9 @@ odoo.define('pos_discount.andes', function (require) {
                                 
                                 order.pricelist.items.forEach(item => {
                                     if (item.product_tmpl_id[0] == element.id) {
-                                        order.selected_orderline.price = 16000
+                                        var price_with_taxes = order.selected_orderline.price;
+                                        var price_without_taxes = parseFloat(item.price.split(" ")[0].split(".")[0])
+                                        order.selected_orderline.price = (price_with_taxes - price_without_taxes) 
                                     }
                                 })
                                 // var price = order.pricelist.items.filter(function (product) {
