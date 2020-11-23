@@ -111,6 +111,7 @@ odoo.define('pos_discount.andes', function (require) {
                                     order.pricelist.items.forEach(item => {
                                         if (item.product_tmpl_id[0] == element.id) {
                                             var price = ((19 / 100) * parseFloat(item.price.split(' ')[0].split(".")[0]))
+                                            console.log(order.selected_orderline)
                                             order.selected_orderline.price = order.selected_orderline.price - price
                                         }
                                     })
