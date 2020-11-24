@@ -115,25 +115,25 @@ class MobileSaleOrder(models.Model):
                 'product_uom_qty': float(line.qty),
                 'currency_id': line.currency_id.id
             })
-        self.write({
-            'state': 'done',
-            'date_done': datetime.datetime.now(),
-            'sale_id': sale_odoo.id
-        })
-        self.sale_id.action_confirm()
-        self.mobile_lines.write({
-            'state': 'done'
-        })
-        self.sale_id.picking_ids[0].write({
-            'show_supply': True
-        })
-        for stock in self.sale_id.picking_ids[0].move_line_ids_without_package:
-            stock.write({
-                'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty
-            })
-        if self.is_loan:
-            for move in self.sale_id.picking_ids[0].move_ids_without_package:
-                move.write({
-                    'loan_supply':self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty
-                })
-        self.sale_id.picking_ids[0].button_validate()
+        # self.write({
+        #     'state': 'done',
+        #     'date_done': datetime.datetime.now(),
+        #     'sale_id': sale_odoo.id
+        # })
+        # self.sale_id.action_confirm()
+        # self.mobile_lines.write({
+        #     'state': 'done'
+        # })
+        # self.sale_id.picking_ids[0].write({
+        #     'show_supply': True
+        # })
+        # for stock in self.sale_id.picking_ids[0].move_line_ids_without_package:
+        #     stock.write({
+        #         'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty
+        #     })
+        # if self.is_loan:
+        #     for move in self.sale_id.picking_ids[0].move_ids_without_package:
+        #         move.write({
+        #             'loan_supply':self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty
+        #         })
+        # self.sale_id.picking_ids[0].button_validate()
