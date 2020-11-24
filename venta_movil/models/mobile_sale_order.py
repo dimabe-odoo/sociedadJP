@@ -145,3 +145,6 @@ class MobileSaleOrder(models.Model):
             'type':'out_invoice',
             'invoice_origin':self.sale_id.name,
         })
+        self.sale_id.write({
+            'invoice_ids' : [(4,[invoice.id])]
+        })
