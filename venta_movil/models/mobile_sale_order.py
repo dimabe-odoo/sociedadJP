@@ -115,11 +115,11 @@ class MobileSaleOrder(models.Model):
                 'product_uom_qty': float(line.qty),
                 'currency_id': line.currency_id.id
             })
-        # self.write({
-        #     'state': 'done',
-        #     'date_done': datetime.datetime.now(),
-        #     'sale_id': sale_odoo.id
-        # })
+        self.write({
+            'state': 'done',
+            'date_done': datetime.datetime.now(),
+            'sale_id': sale_odoo.id
+        })
         # self.sale_id.action_confirm()
         # self.mobile_lines.write({
         #     'state': 'done'
