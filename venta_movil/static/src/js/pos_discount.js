@@ -41,95 +41,95 @@ odoo.define('pos_discount.andes', function (require) {
     });
     var _super_order = models.Order.prototype;
     var loan = 0
-    models.OrderLine = models.Orderline.extend({
-        export_as_JSON: function() {
-            var pack_lot_ids = [];
-            if (this.has_product_lot){
-                this.pack_lot_lines.each(_.bind( function(item) {
-                    return pack_lot_ids.push([0, 0, item.export_as_JSON()]);
-                }, this));
-            }
-            return {
-                qty: this.get_quantity(),
-                price_unit: this.get_unit_price(),
-                price_subtotal: this.get_price_without_tax(),
-                price_display : this.get_display_price_one(),
-                price_subtotal_incl: this.get_price_with_tax(),
-                discount: this.get_discount(),
-                product_id: this.get_product().id,
-                tax_ids: [[6, false, _.map(this.get_applicable_taxes(), function(tax){ return tax.id; })]],
-                id: this.id,
-                pack_lot_ids: pack_lot_ids
-            };
-        },
-        get_base_price:    function(){
-            var rounding = this.pos.currency.rounding;
-            console.log(rounding)
-            return round_pr(this.get_unit_price() * this.get_quantity() * (1 - this.get_discount()/100), rounding);
-        },
-        get_display_price_one: function(){
-            var rounding = this.pos.currency.rounding;
-            var price_unit = this.get_unit_price();
-            if (this.pos.config.iface_tax_included !== 'total') {
-                return round_pr(price_unit * (1.0 - (this.get_discount() / 100.0)), rounding);
-            } else {
-                var product =  this.get_product();
-                var taxes_ids = product.taxes_id;
-                var taxes =  this.pos.taxes;
-                var product_taxes = [];
-                console.log(product)
-                _(taxes_ids).each(function(el){
-                    product_taxes.push(_.detect(taxes, function(t){
-                        return t.id === el;
-                    }));
-                });
-    
-                var all_taxes = this.compute_all(product_taxes, price_unit, 1, this.pos.currency.rounding);
-    
-                return round_pr(all_taxes.total_included * (1 - this.get_discount()/100), rounding);
-            }
-        },
-        get_display_price: function(){
-            if (this.pos.config.iface_tax_included === 'total') {
-                console.log(this)
-                return this.get_price_with_tax();
-            } else {
-                console.log
-                return this.get_base_price();
-            }
-        },
-    }),
-    models.Order = models.Order.extend({
-        initialize: function () {
-            _super_order.initialize.apply(this, arguments);
-        },
-        export_as_JSON: function () {
-            var self = this;
-            var json = _super_order.export_as_JSON.apply(this, arguments);
-            if (json.lines) {
-                json.lines.forEach(function (e) {
-                    if (self.pos.loan) {
-                        json.is_loan = true;
-                    }
-                    e.forEach(function (a) {
-                        if (a.product_id === self.pos.selected_product) {
-                            a.loan = self.pos.loan
-                        }
-                    })
-                })
-            }
-            if (this.pos.gui.pos.gui.current_screen) {
-                var order = this.pos.get_order()
-                if(order){
-                    this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
-                        element.price = 0
-                    });
-                }
-                }
-                
-            return json;
-        }
-    })
+    // models.OrderLine = models.Orderline.extend({
+    //     export_as_JSON: function() {
+    //         var pack_lot_ids = [];
+    //         if (this.has_product_lot){
+    //             this.pack_lot_lines.each(_.bind( function(item) {
+    //                 return pack_lot_ids.push([0, 0, item.export_as_JSON()]);
+    //             }, this));
+    //         }
+    //         return {
+    //             qty: this.get_quantity(),
+    //             price_unit: this.get_unit_price(),
+    //             price_subtotal: this.get_price_without_tax(),
+    //             price_display : this.get_display_price_one(),
+    //             price_subtotal_incl: this.get_price_with_tax(),
+    //             discount: this.get_discount(),
+    //             product_id: this.get_product().id,
+    //             tax_ids: [[6, false, _.map(this.get_applicable_taxes(), function(tax){ return tax.id; })]],
+    //             id: this.id,
+    //             pack_lot_ids: pack_lot_ids
+    //         };
+    //     },
+    //     get_base_price:    function(){
+    //         var rounding = this.pos.currency.rounding;
+    //         console.log(rounding)
+    //         return round_pr(this.get_unit_price() * this.get_quantity() * (1 - this.get_discount()/100), rounding);
+    //     },
+    //     get_display_price_one: function(){
+    //         var rounding = this.pos.currency.rounding;
+    //         var price_unit = this.get_unit_price();
+    //         if (this.pos.config.iface_tax_included !== 'total') {
+    //             return round_pr(price_unit * (1.0 - (this.get_discount() / 100.0)), rounding);
+    //         } else {
+    //             var product =  this.get_product();
+    //             var taxes_ids = product.taxes_id;
+    //             var taxes =  this.pos.taxes;
+    //             var product_taxes = [];
+    //             console.log(product)
+    //             _(taxes_ids).each(function(el){
+    //                 product_taxes.push(_.detect(taxes, function(t){
+    //                     return t.id === el;
+    //                 }));
+    //             });
+    //
+    //             var all_taxes = this.compute_all(product_taxes, price_unit, 1, this.pos.currency.rounding);
+    //
+    //             return round_pr(all_taxes.total_included * (1 - this.get_discount()/100), rounding);
+    //         }
+    //     },
+    //     get_display_price: function(){
+    //         if (this.pos.config.iface_tax_included === 'total') {
+    //             console.log(this)
+    //             return this.get_price_with_tax();
+    //         } else {
+    //             console.log
+    //             return this.get_base_price();
+    //         }
+    //     },
+    // }),
+    // models.Order = models.Order.extend({
+    //     initialize: function () {
+    //         _super_order.initialize.apply(this, arguments);
+    //     },
+    //     export_as_JSON: function () {
+    //         var self = this;
+    //         var json = _super_order.export_as_JSON.apply(this, arguments);
+    //         if (json.lines) {
+    //             json.lines.forEach(function (e) {
+    //                 if (self.pos.loan) {
+    //                     json.is_loan = true;
+    //                 }
+    //                 e.forEach(function (a) {
+    //                     if (a.product_id === self.pos.selected_product) {
+    //                         a.loan = self.pos.loan
+    //                     }
+    //                 })
+    //             })
+    //         }
+    //         if (this.pos.gui.pos.gui.current_screen) {
+    //             var order = this.pos.get_order()
+    //             if(order){
+    //                 this.pos.gui.pos.gui.current_screen.product_list_widget.product_list.forEach(element => {
+    //                     element.price = 0
+    //                 });
+    //             }
+    //             }
+    //
+    //         return json;
+    //     }
+    // })
     var discount_button = screens.ActionButtonWidget.extend({
         template: 'BtnDiscount',
         button_click: function () {

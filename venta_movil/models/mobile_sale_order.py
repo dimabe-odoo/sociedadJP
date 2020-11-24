@@ -108,6 +108,7 @@ class MobileSaleOrder(models.Model):
             'warehouse_id': self.warehouse_id.id,
             'pricelist_id': self.price_list_id.id
         })
+        raise models.ValidationError(sale_odoo)
         for line in self.mobile_lines:
             self.env['sale.order.line'].create({
                 'name': sale_odoo.name,
