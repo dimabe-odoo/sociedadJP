@@ -137,4 +137,3 @@ class MobileSaleOrder(models.Model):
                     'loan_supply':self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty
                 })
         self.sale_id.picking_ids[0].button_validate()
-        self.sale_id.367()
