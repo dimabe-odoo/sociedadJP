@@ -33,13 +33,15 @@ class MobileSaleOrder(models.Model):
 
     sale_id = fields.Many2one('sale.order', 'Venta Interna')
 
+    paid = fields.Float('Pagado con')
+
+    change = fields.Float('Vuelto')
+
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
     location_id = fields.Many2one('stock.location', 'Ubicacion', domain=[('is_truck', '=', True)])
 
     is_loan = fields.Boolean('Es Prestamo')
-
-    date_done = fields.Datetime('Fecha de Realizado')
 
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
@@ -49,14 +51,14 @@ class MobileSaleOrder(models.Model):
                 total.append(line.price * line.qty)
             item.total_sale = sum(total)
 
-    @api.onchange('warehouse_id')
-    def onchange_warehouse(self):
-        res = {
-            'domain': {
-                'location_id': [('id', 'in', self.warehouse_id.truck_ids.mapped('id'))]
-            }
-        }
-        return res
+    @api.onchange('paid')
+    def compute_change(self):
+        for item in self:
+            change = item.paid - item.total_sale
+            if change > 0:
+                item.change = change
+            else:
+                item.change = 0
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
@@ -118,20 +120,20 @@ class MobileSaleOrder(models.Model):
             'date_done': datetime.datetime.now(),
             'sale_id': sale_odoo.id
         })
-        self.sale_id.action_confirm()
-        self.mobile_lines.write({
-            'state': 'done'
-        })
-        self.sale_id.picking_ids[0].write({
-            'show_supply': True
-        })
-        for stock in self.sale_id.picking_ids[0].move_line_ids_without_package:
-            stock.write({
-                'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty
-            })
-        if self.is_loan:
-            for move in self.sale_id.picking_ids[0].move_ids_without_package:
-                move.write({
-                    'loan_supply':self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty
-                })
-        self.sale_id.picking_ids[0].button_validate()
+        # self.sale_id.action_confirm()
+        # self.mobile_lines.write({
+        #     'state': 'done'
+        # })
+        # self.sale_id.picking_ids[0].write({
+        #     'show_supply': True
+        # })
+        # for stock in self.sale_id.picking_ids[0].move_line_ids_without_package:
+        #     stock.write({
+        #         'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty
+        #     })
+        # if self.is_loan:
+        #     for move in self.sale_id.picking_ids[0].move_ids_without_package:
+        #         move.write({
+        #             'loan_supply':self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty
+        #         })
+        # self.sale_id.picking_ids[0].button_validate()
