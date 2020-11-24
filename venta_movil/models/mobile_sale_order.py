@@ -43,8 +43,6 @@ class MobileSaleOrder(models.Model):
 
     is_loan = fields.Boolean('Es Prestamo')
 
-    date_done = fields.Datetime('Fecha de Realizado')
-
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
@@ -108,7 +106,6 @@ class MobileSaleOrder(models.Model):
             'warehouse_id': self.warehouse_id.id,
             'pricelist_id': self.price_list_id.id
         })
-        raise models.ValidationError(sale_odoo)
         for line in self.mobile_lines:
             self.env['sale.order.line'].create({
                 'name': sale_odoo.name,
