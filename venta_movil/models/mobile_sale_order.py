@@ -137,4 +137,11 @@ class MobileSaleOrder(models.Model):
                     'loan_supply':self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty
                 })
         self.sale_id.picking_ids[0].button_validate()
-        dir(self.sale_id)
+        invoice = self.env['account.move'].create({
+            'currency_id': self.currency_id.id,
+            'date': datetime.datetime.now(),
+            'journal_id': self.env['account.journal'].search([('id','=',1)]).id,
+            'state':'draft',
+            'type':'out_invoice',
+            'invoice_origin':self.sale_id.name,
+        })
