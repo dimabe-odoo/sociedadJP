@@ -104,23 +104,8 @@ class MobileSaleOrder(models.Model):
             'warehouse_id': self.warehouse_id.id,
             'pricelist_id': self.price_list_id.id
         })
-        invoice = self.env['account.move'].create({
-            'currency_id': self.currency_id.id,
-            'date': datetime.datetime.now(),
-            'journal_id': self.env['account.journal'].search([('id', '=', 1)]).id,
-            'state': 'draft',
-            'type': 'out_invoice',
-            'invoice_origin': sale_odoo.name,
-            'partner_id': self.customer_id.id,
-            'invoice_partner_bank_id': self.env['res.partner.bank'].search([('id', '=', 1)]).id,
-        })
-        raise models.ValidationError(invoice)
-        for line in self.mobile_lines:
-            self.env['account.move.line'].create({
-                'move_id': invoice.id,
-                'product_id': line.product_id.id,
-                'account_id': 1,
-            })
+        action = self.env['ir.action.actions'].search([('id','=',367)])
+        action.execute()
         self.sale_id.action_confirm()
         self.sale_id.picking_ids[0].write({
             'show_supply': True
