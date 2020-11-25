@@ -111,11 +111,13 @@ class MobileSaleOrder(models.Model):
             'type':'out_invoice',
             'invoice_origin':self.sale_id.name,
             'partner_id':self.customer_id.id,
+            'account_id':self.env['res.partner.bank'].search([('id','=',1)]).id,
         })
         for line in self.mobile_lines:
             self.env['account.move.line'].create({
                 'move_id':invoice.id,
                 'product_id':line.product_id.id,
+                'account_id': invoice.account_id.id,
             })
         self.sale_id.action_confirm()
         self.sale_id.picking_ids[0].write({
