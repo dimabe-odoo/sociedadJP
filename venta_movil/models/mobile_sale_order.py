@@ -110,7 +110,7 @@ class MobileSaleOrder(models.Model):
             'journal_id': self.env['account.journal'].search([('id', '=', 1)]).id,
             'state': 'draft',
             'type': 'out_invoice',
-            'invoice_origin': self.sale_id.name,
+            'invoice_origin': sale_odoo.name,
             'partner_id': self.customer_id.id,
             'invoice_partner_bank_id': self.env['res.partner.bank'].search([('id', '=', 1)]).id,
         })
