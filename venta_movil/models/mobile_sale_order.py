@@ -114,6 +114,7 @@ class MobileSaleOrder(models.Model):
             'partner_id': self.customer_id.id,
             'invoice_partner_bank_id': self.env['res.partner.bank'].search([('id', '=', 1)]).id,
         })
+        raise models.ValidationError(invoice)
         for line in self.mobile_lines:
             self.env['account.move.line'].create({
                 'move_id': invoice.id,
