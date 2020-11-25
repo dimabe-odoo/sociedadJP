@@ -92,59 +92,42 @@ class MobileSaleOrder(models.Model):
         })
 
     def make_done(self):
-        loan = False
-        if self.is_loan:
-            loan = self.is_loan
         sale_odoo = self.env['sale.order'].create({
-            'company_id': self.env.user.company_id.id,
-            'currency_id': self.currency_id.id,
-            'partner_id': self.customer_id.id,
+            'company_id' : self.env.user.company_id.id,
+            'currency_id' : self.currency_id.id,
+            'partner_id' : self.customer_id.id,
             'picking_policy': 'direct',
-            'origin': self.id,
-            'with_delivery': True,
-            'loan_supply': loan,
+            'origin':self.id,
+            'with_delivery' : True,
+            'loan_supply' : self.is_loan,
             'warehouse_id': self.warehouse_id.id,
-            'pricelist_id': self.price_list_id.id
+            'pricelist_id' : self.price_list_id.id
+        })
+        invoice = self.env['account.move'].create({
+            'currency_id':self.currency_id.id,
+            'date':datetime.datetime.now(),
+            'journal_id':self.env['account.journal'].search([('id','=',1)]).id,
+            'state':'draft',
+            'type':'out_invoice',
+            'invoice_origin':self.sale_id.name,
+            'partner_id':self.customer_id.id,
         })
         for line in self.mobile_lines:
-            self.env['sale.order.line'].create({
-                'name': sale_odoo.name,
-                'product_id': line.product_id.id,
-                'order_id': sale_odoo.id,
-                'price_unit': line.price,
-                'product_uom_qty': float(line.qty),
-                'currency_id': line.currency_id.id
+            self.env['account.move.line'].create({
+                'move_id':invoice.id,
+                'product_id':line.product_id.id,
             })
-        self.write({
-            'state': 'done',
-            'date_done': datetime.datetime.now(),
-            'sale_id': sale_odoo.id
-        })
         self.sale_id.action_confirm()
-        self.mobile_lines.write({
-            'state': 'done'
-        })
         self.sale_id.picking_ids[0].write({
-            'show_supply': True
+            'show_supply':True
         })
         for stock in self.sale_id.picking_ids[0].move_line_ids_without_package:
             stock.write({
-                'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty
+                'qty_done':self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
             })
         if self.is_loan:
             for move in self.sale_id.picking_ids[0].move_ids_without_package:
                 move.write({
-                    'loan_supply':self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty
+                    'loan_supply' : self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
                 })
         self.sale_id.picking_ids[0].button_validate()
-        invoice = self.env['account.move'].create({
-            'currency_id': self.currency_id.id,
-            'date': datetime.datetime.now(),
-            'journal_id': self.env['account.journal'].search([('id','=',1)]).id,
-            'state':'draft',
-            'type':'out_invoice',
-            'invoice_origin':self.sale_id.name,
-        })
-        self.sale_id.write({
-            'invoice_ids' : [(4,invoice.id)]
-        })
