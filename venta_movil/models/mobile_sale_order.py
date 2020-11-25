@@ -104,7 +104,7 @@ class MobileSaleOrder(models.Model):
             'warehouse_id': self.warehouse_id.id,
             'pricelist_id': self.price_list_id.id
         })
-        action = self.env['ir.action.actions'].search([('id','=',367)])
+        action = self.env['ir.actions.actions'].search([('id','=',367)])
         action.execute()
         self.sale_id.action_confirm()
         self.sale_id.picking_ids[0].write({
