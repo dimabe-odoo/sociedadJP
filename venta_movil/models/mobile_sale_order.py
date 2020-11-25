@@ -117,7 +117,7 @@ class MobileSaleOrder(models.Model):
             self.env['account.move.line'].create({
                 'move_id':invoice.id,
                 'product_id':line.product_id.id,
-                'account_id': invoice.account_id.id,
+                'account_id': invoice.invoice_partner_bank_id.id,
             })
         self.sale_id.action_confirm()
         self.sale_id.picking_ids[0].write({
