@@ -104,8 +104,13 @@ class MobileSaleOrder(models.Model):
             'warehouse_id': self.warehouse_id.id,
             'pricelist_id': self.price_list_id.id
         })
-        action = self.env['ir.actions.actions'].search([('id','=',367)])
-        action.execute()
+        invoice_id = self.env['account.move'].create({
+            'currency_id': self.currency_id.id,
+            'partner_id': self.customer_id.id,
+            'invoice_date': datetime.date.today(),
+            'invoice_origin': sale_odoo.name,
+        })
+
         self.sale_id.action_confirm()
         self.sale_id.picking_ids[0].write({
             'show_supply': True
@@ -120,3 +125,8 @@ class MobileSaleOrder(models.Model):
                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
                 })
         self.sale_id.picking_ids[0].button_validate()
+        for line in self.mobile_lines:
+            self.env['account.move.line'].create({
+                'move_id': invoice_id.id,
+                'product_id': line.product_id.id,
+            })
