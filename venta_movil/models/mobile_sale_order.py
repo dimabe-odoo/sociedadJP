@@ -107,8 +107,12 @@ class MobileSaleOrder(models.Model):
         invoice_id = self.env['account.move'].create({
             'currency_id': self.currency_id.id,
             'partner_id': self.customer_id.id,
+            'date':datetime.date.today(),
+            'journal_id': self.env['account.journal'].search([('id','=',1)]).id,
             'invoice_date': datetime.date.today(),
             'invoice_origin': sale_odoo.name,
+            'extract_state':'done',
+            'type':'out_invoice',
             'invoice_partner_bank_id': self.env['res.partner.bank'].search([('id', '=', 1)]).id
         })
         for line in self.mobile_lines:
