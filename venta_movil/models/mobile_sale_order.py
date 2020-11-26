@@ -145,6 +145,7 @@ class MobileSaleOrder(models.Model):
                 'quantity': line.qty,
                 'price_unit': line.price,
                 'price_subtotal': line.price * line.qty,
+                'credit': line.price,
                 'exclude_from_invoice_tab': False
             })
             line_invoice = self.env['account.move.line'].create({
@@ -154,6 +155,7 @@ class MobileSaleOrder(models.Model):
                 'quantity': line.qty,
                 'price_unit': line.price,
                 'price_subtotal': (line.price * line.qty) * -1,
+                'debit':(line * -1),
                 'exclude_from_invoice_tab': True
             })
             sale_odoo.order_line.filtered(lambda a : a.product_id.id == line.product_id).write({
