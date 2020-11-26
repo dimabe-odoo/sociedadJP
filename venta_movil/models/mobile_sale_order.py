@@ -110,10 +110,19 @@ class MobileSaleOrder(models.Model):
             'invoice_date': datetime.date.today(),
             'invoice_origin': sale_odoo.name,
         })
+        for line in self.mobile_lines:
+            self.env['stock.move.line'].create({
+                'product_id': line.product_id.id,
+                'order_id': sale_odoo.id,
+                'customer_lead': 1,
+                'name': sale_odoo.name,
+                'price_unit':line.price,
+                'product_uom_qty':line.qty,
+            })
         sale_odoo.action_confirm()
-        # sale_odoo.picking_ids[0].write({
-        #     'show_supply': True
-        # })
+        sale_odoo.picking_ids[0].write({
+            'show_supply': True
+        })
         # for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
         #     stock.write({
         #         'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
