@@ -24,7 +24,7 @@ class StockPicking(models.Model):
 
     def button_validate(self):
         for item in self:
-            if ('Entrada' in item.origin) or ('Salida' in item.origin):
+            if ('Entrada' in item.origin) or ('Salida' in item.origin) or ('' == item.origin) or (not item.origin):
                 return super(StockPicking, self).button_validate()
             if item.purchase_id or item.sale_id:
                 if item.picking_type_code == 'outgoing':
