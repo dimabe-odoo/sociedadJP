@@ -43,7 +43,8 @@
                             <group>
                                 <field name="seller_id" attrs="{'invisible':[('state','=','draft')]}"/>
                                 <field name="warehouse_id" attrs="{'invisible':[('state','=','draft')]}" />
-                                <field name="location_id" attrs="{'invisible':[('state','=','draft')]}" />
+                                <field name="truck_ids" invisible="1"/>
+                                <field name="location_id" attrs="{'invisible':[('state','=','draft')],'domain':[('id','in',trucks)]}" />
                             </group>
                         </group>
                         <notebook>

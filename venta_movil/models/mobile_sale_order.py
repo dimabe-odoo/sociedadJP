@@ -39,6 +39,8 @@ class MobileSaleOrder(models.Model):
 
     location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)])
 
+    truck_ids = fields.Many2many('Camiones','stock.location',compute='compute_truck_ids')
+
     is_loan = fields.Boolean('Es Prestamo')
 
     @api.onchange('mobile_lines')
@@ -59,18 +61,11 @@ class MobileSaleOrder(models.Model):
                     item.warehouse_id = ware
                     break
 
-    @api.onchange('state')
-    def on_change_state(self):
+    def compute_truck_ids(self):
         products_line = self.mobile_lines.mapped('product_id').mapped('id')
         stock_quant = self.env['stock.quant'].search([('product_id.id', 'in', products_line)]).mapped(
-            'location_id').filtered(lambda a: a.is_truck).mapped('id')
-        raise models.UserError('{}'.format(stock_quant))
-        res = {
-            'domain': {
-                'location_id': ['id', 'in', stock_quant]
-            }
-        }
-        return res
+            'location_id').filtered(lambda a: a.is_truck)
+        self.truck_ids = stock_quant
 
     @api.onchange('paid')
     def compute_change(self):
