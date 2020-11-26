@@ -113,7 +113,7 @@ class MobileSaleOrder(models.Model):
 
             })
         sale_odoo.action_confirm()
-        sale_odoo._create_invoices()
+
         sale_odoo.picking_ids[0].write({
             'show_supply': True
         })
@@ -127,6 +127,7 @@ class MobileSaleOrder(models.Model):
                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
                 })
         sale_odoo.picking_ids[0].button_validate()
+        sale_odoo._create_invoices()
         self.write({
             'sale_id': sale_odoo.id
         })
