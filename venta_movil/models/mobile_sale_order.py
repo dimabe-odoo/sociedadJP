@@ -39,7 +39,7 @@ class MobileSaleOrder(models.Model):
 
     location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)])
 
-    truck_ids = fields.Many2many('Camiones','stock.location',compute='compute_truck_ids')
+    truck_ids = fields.Many2many('stock.location','Camiones',compute='compute_truck_ids')
 
     is_loan = fields.Boolean('Es Prestamo')
 
