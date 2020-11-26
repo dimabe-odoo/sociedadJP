@@ -143,7 +143,9 @@ class MobileSaleOrder(models.Model):
             self.env['account.move.line'].create({
                 'move_id': invoice_id.id,
                 'product_id': line.product_id.id,
-                'account_id': self.env['account.account'].search([('id', '=', 131)]).id
+                'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
+                'quantity': line.qty,
+                'price_unit':line.price
             })
         self.write({
             'sale_id': sale_odoo.id
