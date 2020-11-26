@@ -112,6 +112,7 @@ class MobileSaleOrder(models.Model):
             'warehouse_id': self.warehouse_id.id,
             'pricelist_id': self.price_list_id.id
         })
+
         for line in self.mobile_lines:
             self.env['sale.order.line'].create({
                 'product_id': line.product_id.id,
