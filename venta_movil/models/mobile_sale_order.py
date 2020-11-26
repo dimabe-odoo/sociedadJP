@@ -151,7 +151,6 @@ class MobileSaleOrder(models.Model):
                 'product_id': line.product_id.id,
                 'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
                 'quantity': line.qty,
-                'price_unit': line.price,
                 'debit':(line * -1),
                 'exclude_from_invoice_tab': True
             })
