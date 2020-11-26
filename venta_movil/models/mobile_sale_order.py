@@ -140,12 +140,15 @@ class MobileSaleOrder(models.Model):
                 })
         sale_odoo.picking_ids[0].button_validate()
         for line in self.mobile_lines:
-            self.env['account.move.line'].create({
+            line_invoice = self.env['account.move.line'].create({
                 'move_id': invoice_id.id,
                 'product_id': line.product_id.id,
                 'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
                 'quantity': line.qty,
                 'price_unit':line.price
+            })
+            sale_odoo.order_line.filtered(lambda a : a.product_id.id == line.product_id).write({
+                'invoice_lines': [4,line_invoice.id]
             })
         self.write({
             'sale_id': sale_odoo.id
