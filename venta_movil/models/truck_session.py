@@ -11,3 +11,5 @@ class TruckSession(models.Model):
     truck_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)])
 
     active = fields.Boolean('Activo')
+
+    employee_id = fields.Many2one('hr.employee','Empleado')
