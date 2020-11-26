@@ -154,7 +154,7 @@ class MobileSaleOrder(models.Model):
                 'quantity': line.qty,
                 'price_unit': line.price,
                 'price_subtotal': (line.price * line.qty) * -1,
-                'exclude_from_invoice_tab': False
+                'exclude_from_invoice_tab': True
             })
             sale_odoo.order_line.filtered(lambda a : a.product_id.id == line.product_id).write({
                 'invoice_lines': [4,line_invoice.id]
