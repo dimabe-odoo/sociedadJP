@@ -59,7 +59,7 @@ class MobileSaleOrder(models.Model):
                     item.warehouse_id = ware
                     break
 
-    @api.onchange('state', 'warehouse_id')
+    @api.onchange('state')
     def on_change_state(self):
         products_line = self.mobile_lines.mapped('product_id').mapped('id')
         stock_quant = self.env['stock.quant'].search([('product_id.id', 'in', products_line)]).mapped(
