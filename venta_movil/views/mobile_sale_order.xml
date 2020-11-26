@@ -43,7 +43,7 @@
                                 <field name="saleman_id"
                                        attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                                 <field name="warehouse_id"/>
-                                <field name="location_id" attrs="{'invisible':[('state','!=','confirm')]}"/>
+                                <field name="location_id" attrs="{'invisible':[('state','=','draft')]}"/>
                             </group>
                         </group>
                         <field name="price_list_id" invisible="1"/>
@@ -63,8 +63,8 @@
                                 <strong style="float:right;font-size:20px;">
                                     <group>
                                         <field widget="monetary" name="total_sale" readonly="1"/>
-                                        <field name="paid"/>
-                                        <field name="change" readonly="1"/>
+                                        <field name="paid" attrs="{'invisible':[('state','!=','onroute')]}"/>
+                                        <field name="change" attrs="{'invisible':[('state','!=','onroute')]}" readonly="1"/>
                                     </group>
                                 </strong>
                             </page>

@@ -40,7 +40,7 @@ class MobileSaleOrder(models.Model):
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
-    location_id = fields.Many2one('stock.location', 'Ubicacion', domain=[('is_truck', '=', True)])
+    location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)])
 
     is_loan = fields.Boolean('Es Prestamo')
 
@@ -51,6 +51,16 @@ class MobileSaleOrder(models.Model):
             for line in item.mobile_lines:
                 total.append(line.price * line.qty)
             item.total_sale = sum(total)
+
+    @api.onchange('location_id')
+    def onchange_location_id(self):
+        for item in self:
+            warehouses = self.env['stock.warehouse'].search([])
+            for ware in warehouses:
+                trucks = ware.mapped('truck_ids').mapped('id')
+                if item.location_id.id in trucks:
+                    item.warehouse_id = ware
+                    break
 
     @api.onchange('paid')
     def compute_change(self):
@@ -110,10 +120,8 @@ class MobileSaleOrder(models.Model):
                 'name': sale_odoo.name,
                 'price_unit': line.price,
                 'product_uom_qty': line.qty,
-
             })
         sale_odoo.action_confirm()
-
         sale_odoo.picking_ids[0].write({
             'show_supply': True
         })
