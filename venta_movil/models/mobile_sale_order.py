@@ -109,6 +109,7 @@ class MobileSaleOrder(models.Model):
             'partner_id': self.customer_id.id,
             'invoice_date': datetime.date.today(),
             'invoice_origin': sale_odoo.name,
+            'invoice_partner_bank_id': self.env['res.partner.bank'].search([('id', '=', 1)]).id
         })
         for line in self.mobile_lines:
             self.env['sale.order.line'].create({
@@ -116,8 +117,9 @@ class MobileSaleOrder(models.Model):
                 'order_id': sale_odoo.id,
                 'customer_lead': 1,
                 'name': sale_odoo.name,
-                'price_unit':line.price,
-                'product_uom_qty':line.qty,
+                'price_unit': line.price,
+                'product_uom_qty': line.qty,
+                'account_id': self.env['account.account'].search([('id', '=', 1)]).id
             })
         sale_odoo.action_confirm()
         sale_odoo.picking_ids[0].write({
@@ -137,7 +139,8 @@ class MobileSaleOrder(models.Model):
             self.env['account.move.line'].create({
                 'move_id': invoice_id.id,
                 'product_id': line.product_id.id,
+
             })
         self.write({
-            'sale_id':sale_odoo.id
+            'sale_id': sale_odoo.id
         })
