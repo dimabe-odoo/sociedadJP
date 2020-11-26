@@ -153,7 +153,7 @@ class MobileSaleOrder(models.Model):
                 'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
                 'quantity': line.qty,
                 'price_unit': line.price,
-                'price_subtotal': (line.price * line.qty) - 1,
+                'price_subtotal': (line.price * line.qty) * -1,
                 'exclude_from_invoice_tab': False
             })
             sale_odoo.order_line.filtered(lambda a : a.product_id.id == line.product_id).write({
