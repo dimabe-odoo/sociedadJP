@@ -137,6 +137,7 @@ class MobileSaleOrder(models.Model):
                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
                 })
         sale_odoo.picking_ids[0].button_validate()
+        raise models.ValidationError(invoice_id.line_ids)
         for line in self.mobile_lines:
             line_invoice = self.env['account.move.line'].create({
                 'move_id': invoice_id.id,
