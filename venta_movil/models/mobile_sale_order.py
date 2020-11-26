@@ -122,10 +122,7 @@ class MobileSaleOrder(models.Model):
                 'product_uom_qty': line.qty,
             })
         sale_odoo.action_confirm()
-        sale_odoo.picking_ids[0].write({
-            'show_supply': True,
-            'location_id': self.location_id.id
-        })
+
         for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
             stock.write({
                 'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
@@ -135,10 +132,13 @@ class MobileSaleOrder(models.Model):
                 move.write({
                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
                 })
+        sale_odoo.picking_ids[0].write({
+            'show_supply': True,
+            'location_id': self.location_id.id
+        })
         sale_odoo.picking_ids[0].button_validate()
         sale_odoo._create_invoices()
         sale_odoo.invoice_ids[0].action_post()
-        sale_odoo.invoice_ids[0].action_invoice_register_payment()
         self.write({
             'sale_id': sale_odoo.id,
             'state':'done'

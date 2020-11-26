@@ -31,6 +31,7 @@
                                 <field name="customer_id" widget="res_partner_many2one"
                                        domain="[('type','!=','other')]"
                                 />
+                                <field name="price_list_id"/>
                                 <field name="address_id"
                                        context="{'default_parent_id': customer_id,'form_view_ref': 'venta_movil.new_address_form','default_type': 'other'}"
                                        attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"
@@ -46,7 +47,6 @@
                                 <field name="location_id" attrs="{'invisible':[('state','=','draft')]}"/>
                             </group>
                         </group>
-                        <field name="price_list_id" invisible="1"/>
                         <notebook>
                             <page name="products" string="Productos">
                                 <field name="mobile_lines" widget="one2many_list" required="1">
