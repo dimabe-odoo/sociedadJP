@@ -40,7 +40,7 @@
                                 <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
                             </group>
                             <group>
-                                <field name="saleman_id"
+                                <field name="seller_id"
                                        attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
                                 <field name="warehouse_id"/>
                                 <field name="location_id" attrs="{'invisible':[('state','=','draft')]}"/>
