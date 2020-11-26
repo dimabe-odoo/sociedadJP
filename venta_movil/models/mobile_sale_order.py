@@ -111,7 +111,7 @@ class MobileSaleOrder(models.Model):
             'invoice_origin': sale_odoo.name,
         })
         for line in self.mobile_lines:
-            self.env['stock.move.line'].create({
+            self.env['sale.order.line'].create({
                 'product_id': line.product_id.id,
                 'order_id': sale_odoo.id,
                 'customer_lead': 1,
