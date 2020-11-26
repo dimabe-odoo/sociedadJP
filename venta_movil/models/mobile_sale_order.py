@@ -127,7 +127,6 @@ class MobileSaleOrder(models.Model):
                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
                 })
         sale_odoo.picking_ids[0].button_validate()
-        for line in self.mobile_lines:
         self.write({
             'sale_id': sale_odoo.id
         })
