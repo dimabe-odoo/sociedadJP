@@ -111,24 +111,24 @@ class MobileSaleOrder(models.Model):
             'invoice_origin': sale_odoo.name,
         })
         sale_odoo.action_confirm()
-        sale_odoo.picking_ids[0].write({
-            'show_supply': True
-        })
-        for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
-            stock.write({
-                'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
-            })
-        if self.is_loan:
-            for move in sale_odoo.picking_ids[0].move_ids_without_package:
-                move.write({
-                    'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
-                })
-        sale_odoo.picking_ids[0].button_validate()
-        for line in self.mobile_lines:
-            self.env['account.move.line'].create({
-                'move_id': invoice_id.id,
-                'product_id': line.product_id.id,
-            })
-        self.write({
-            'sale_id':sale_odoo.id
-        })
+        # sale_odoo.picking_ids[0].write({
+        #     'show_supply': True
+        # })
+        # for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
+        #     stock.write({
+        #         'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
+        #     })
+        # if self.is_loan:
+        #     for move in sale_odoo.picking_ids[0].move_ids_without_package:
+        #         move.write({
+        #             'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
+        #         })
+        # sale_odoo.picking_ids[0].button_validate()
+        # for line in self.mobile_lines:
+        #     self.env['account.move.line'].create({
+        #         'move_id': invoice_id.id,
+        #         'product_id': line.product_id.id,
+        #     })
+        # self.write({
+        #     'sale_id':sale_odoo.id
+        # })
