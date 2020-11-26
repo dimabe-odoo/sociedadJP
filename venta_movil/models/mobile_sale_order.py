@@ -143,8 +143,6 @@ class MobileSaleOrder(models.Model):
                 'product_id': line.product_id.id,
                 'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
                 'quantity': line.qty,
-                'price_unit': line.price,
-                'price_subtotal': line.price * line.qty,
                 'credit': line.price,
                 'exclude_from_invoice_tab': False
             })
@@ -154,7 +152,6 @@ class MobileSaleOrder(models.Model):
                 'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
                 'quantity': line.qty,
                 'price_unit': line.price,
-                'price_subtotal': (line.price * line.qty) * -1,
                 'debit':(line * -1),
                 'exclude_from_invoice_tab': True
             })
