@@ -102,17 +102,6 @@ class MobileSaleOrder(models.Model):
             'warehouse_id': self.warehouse_id.id,
             'pricelist_id': self.price_list_id.id
         })
-        invoice_id = self.env['account.move'].create({
-            'currency_id': self.currency_id.id,
-            'partner_id': self.customer_id.id,
-            'date':datetime.date.today(),
-            'journal_id': self.env['account.journal'].search([('id','=',1)]).id,
-            'invoice_date': datetime.date.today(),
-            'invoice_origin': sale_odoo.name,
-            'extract_state':'done',
-            'type':'out_invoice',
-            'invoice_partner_bank_id': self.env['res.partner.bank'].search([('id', '=', 1)]).id
-        })
         for line in self.mobile_lines:
             self.env['sale.order.line'].create({
                 'product_id': line.product_id.id,
@@ -124,6 +113,7 @@ class MobileSaleOrder(models.Model):
 
             })
         sale_odoo.action_confirm()
+        sale_odoo._create_invoices()
         sale_odoo.picking_ids[0].write({
             'show_supply': True
         })
@@ -138,25 +128,6 @@ class MobileSaleOrder(models.Model):
                 })
         sale_odoo.picking_ids[0].button_validate()
         for line in self.mobile_lines:
-            line_invoice = self.env['account.move.line'].create({
-                'move_id': invoice_id.id,
-                'product_id': line.product_id.id,
-                'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
-                'quantity': line.qty,
-                'credit': line.price,
-                'exclude_from_invoice_tab': False
-            })
-            line_invoice = self.env['account.move.line'].create({
-                'move_id': invoice_id.id,
-                'product_id': line.product_id.id,
-                'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
-                'quantity': line.qty,
-                'debit':(line * -1),
-                'exclude_from_invoice_tab': True
-            })
-            sale_odoo.order_line.filtered(lambda a : a.product_id.id == line.product_id).write({
-                'invoice_lines': [4,line_invoice.id]
-            })
         self.write({
             'sale_id': sale_odoo.id
         })
