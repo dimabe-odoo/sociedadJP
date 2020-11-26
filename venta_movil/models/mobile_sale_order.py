@@ -138,6 +138,7 @@ class MobileSaleOrder(models.Model):
         sale_odoo.picking_ids[0].button_validate()
         sale_odoo._create_invoices()
         sale_odoo.invoice_ids[0].action_post()
+        sale_odoo.invoice_ids[0].action_invoice_register_payment()
         self.write({
             'sale_id': sale_odoo.id,
             'state':'done'
