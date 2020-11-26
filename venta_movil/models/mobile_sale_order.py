@@ -21,7 +21,7 @@ class MobileSaleOrder(models.Model):
     price_list_id = fields.Many2one('product.pricelist', 'Lista de Precio del Cliente',
                                     related='customer_id.property_product_pricelist')
 
-    seller_id = fields.Many2one('truck.session', 'Vendedor')
+    seller_id = fields.Many2one('truck.session', 'Vendedor',domain=[('active','=',True)])
 
     date_done = fields.Datetime('Fecha de entrega')
 
