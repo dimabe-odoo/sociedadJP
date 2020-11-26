@@ -145,7 +145,6 @@ class MobileSaleOrder(models.Model):
                 'product_id': line.product_id.id,
                 'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
                 'quantity': line.qty,
-                'price_unit':line.price
             })
             sale_odoo.order_line.filtered(lambda a : a.product_id.id == line.product_id).write({
                 'invoice_lines': [4,line_invoice.id]
