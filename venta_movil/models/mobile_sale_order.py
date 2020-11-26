@@ -64,6 +64,7 @@ class MobileSaleOrder(models.Model):
         products_line = self.mobile_lines.mapped('product_id').mapped('id')
         stock_quant = self.env['stock.quant'].search([('product_id.id', 'in', products_line)]).mapped(
             'location_id').filtered(lambda a: a.is_truck).mapped('id')
+        raise models.UserError('{},{}'.format(stock_quant))
         res = {
             'domain': {
                 'location_id': ['id', 'in', stock_quant]
