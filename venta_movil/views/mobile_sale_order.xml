@@ -56,7 +56,7 @@
                                         <field name="price" attrs="{'readonly':[('parent.state','=','done')]}"
                                                required="1"/>
                                         <field name="loan_qty"
-                                               attrs="{'required':[('parent.is_loan','=',True)],'invisible':[('parent.is_loan','=',False)],'readonly':[('parent.state','=','done')]}"/>
+                                               attrs="{'required':[('parent.is_loan','=',True)],'readonly':[('parent.state','=','done')]}"/>
                                         <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
                                     </tree>
                                 </field>
