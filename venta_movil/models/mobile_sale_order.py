@@ -1,5 +1,3 @@
-import datetime
-
 from odoo import fields, models, api
 
 
@@ -20,7 +18,7 @@ class MobileSaleOrder(models.Model):
 
     price_list_id = fields.Many2one('product.pricelist', 'Lista de Precio del Cliente')
 
-    seller_id = fields.Many2one('truck.session', 'Vendedor',domain=[('active','=',True)])
+    seller_id = fields.Many2one('truck.session', 'Vendedor', domain=[('active', '=', True)])
 
     date_done = fields.Datetime('Fecha de entrega')
 
@@ -60,6 +58,18 @@ class MobileSaleOrder(models.Model):
                 if item.location_id.id in trucks:
                     item.warehouse_id = ware
                     break
+
+    @api.onchange('state', 'warehouse_id')
+    def on_change_state(self):
+        products_line = self.mobile_lines.mapped('product_id').mapped('id')
+        stock_quant = self.env['stock.quant'].search([('product_id.id', 'in', products_line)]).mapped(
+            'location_id').filtered(lambda a: a.is_truck).mapped('id')
+        res = {
+            'domain': {
+                'location_id': ['id', 'in', stock_quant]
+            }
+        }
+        return res
 
     @api.onchange('paid')
     def compute_change(self):
@@ -141,5 +151,5 @@ class MobileSaleOrder(models.Model):
         sale_odoo.invoice_ids[0].action_post()
         self.write({
             'sale_id': sale_odoo.id,
-            'state':'done'
+            'state': 'done'
         })
