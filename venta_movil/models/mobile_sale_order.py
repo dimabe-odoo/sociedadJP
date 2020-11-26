@@ -137,14 +137,14 @@ class MobileSaleOrder(models.Model):
                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
                 })
         sale_odoo.picking_ids[0].button_validate()
-        raise models.ValidationError(invoice_id.line_ids)
         for line in self.mobile_lines:
             line_invoice = self.env['account.move.line'].create({
                 'move_id': invoice_id.id,
                 'product_id': line.product_id.id,
                 'account_id': self.env['account.account'].search([('id', '=', 131)]).id,
                 'quantity': line.qty,
-                'price_unit':line.price
+                'price_unit': line.price,
+                'exclude_from_invoice_tab':False
             })
             sale_odoo.order_line.filtered(lambda a : a.product_id.id == line.product_id).write({
                 'invoice_lines': [4,line_invoice.id]
