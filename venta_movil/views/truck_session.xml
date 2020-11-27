@@ -16,7 +16,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="active"/>
+                                <field name="is_login"/>
                             </group>
                             <group>
                                 <field name="truck_id"/>
