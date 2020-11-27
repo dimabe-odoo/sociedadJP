@@ -48,7 +48,7 @@ class MobileSaleOrder(models.Model):
         for item in self:
             total = []
             for line in item.mobile_lines:
-                total.append(line.price * line.qty)
+                total.append(line.subtotal)
             item.total_sale = sum(total)
 
     @api.onchange('location_id')

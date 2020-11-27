@@ -30,8 +30,8 @@ class MobileSaleLine(models.Model):
         for item in self.mobile_id.price_list_id.item_ids:
             if item.product_tmpl_id.id == self.product_id.id:
                 if item.product_tmpl_id.taxes_id:
-                    price =  item.fixed_price - (item.fixed_price * (item.product_tmpl_id.taxes_id[0].amount /100))
-                    subtotal = item.fixed_price
+                    price = item.fixed_price - (item.fixed_price * (item.product_tmpl_id.taxes_id[0].amount /100))
+                    subtotal = item.fixed_price * self.qty
                 else:
                     price = item.fixed_price
         self.price = price
