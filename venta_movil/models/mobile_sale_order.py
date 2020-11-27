@@ -60,6 +60,7 @@ class MobileSaleOrder(models.Model):
                 trucks = ware.mapped('truck_ids').mapped('id')
                 if item.location_id.id in trucks:
                     item.warehouse_id = ware
+                    item.location_id = item.seller_id.truck_id
                     break
 
     def compute_truck_ids(self):
