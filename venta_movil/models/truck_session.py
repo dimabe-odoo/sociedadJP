@@ -30,7 +30,9 @@ class TruckSession(models.Model):
                     'is_login': True,
                     'login_datetime':datetime.datetime.now()
                 })
-            return None
+                values = []
+                res = super(TruckSession, self).create(values)
+                return res
         else:
             res = super(TruckSession, self).create(values)
             return res
