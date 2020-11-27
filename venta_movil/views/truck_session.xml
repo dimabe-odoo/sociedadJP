@@ -36,7 +36,7 @@
                     <field name="employee_id"/>
                     <field name="truck_id"/>
                     <field name="is_login"/>
-                    <field name="uid"/>
+                    <field name="create_uid"/>
                 </tree>
             </field>
         </record>
