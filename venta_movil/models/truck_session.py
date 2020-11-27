@@ -1,6 +1,6 @@
 import datetime
 
-from odoo import models, fields
+from odoo import models, fields , api
 
 
 class TruckSession(models.Model):
