@@ -73,9 +73,7 @@ class MobileSaleOrder(models.Model):
         for item in self:
             change = item.paid - item.total_sale
             if change > 0:
-                item.write({
-                    'change':change
-                })
+                item.change = change
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
