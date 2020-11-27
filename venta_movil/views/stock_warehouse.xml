@@ -12,11 +12,13 @@
                     <field name="loan_location_id"/>
                 </xpath>
                 <xpath expr="//group[@name='group_resupply']" position="after">
-                    <field name="truck_ids">
-                        <tree>
-                            <field name="name"/>
-                        </tree>
-                    </field>
+                    <group name="group_truck" string="Camiones">
+                        <field name="truck_ids">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </group>
                 </xpath>
             </field>
         </record>
