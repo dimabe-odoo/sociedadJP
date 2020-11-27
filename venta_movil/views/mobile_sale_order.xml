@@ -43,10 +43,10 @@
                                 <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
                             </group>
                             <group>
-                                <field name="seller_id" attrs="{'invisible':[('state','=','draft')]}"/>
-                                <field name="warehouse_id" attrs="{'invisible':[('state','=','draft')]}" />
+                                <field name="seller_id" attrs="{'invisible':[('state','in',('draft','cancel'))]}"/>
+                                <field name="warehouse_id" attrs="{'invisible':[('state','in',('draft','cancel'))]}" />
                                 <field name="truck_ids" invisible="1"/>
-                                <field name="location_id" attrs="{'invisible':[('state','=','draft')]}" domain="[('id','in',truck_ids)]" />
+                                <field name="location_id" attrs="{'invisible':[('state','in',('draft','cancel'))]}" domain="[('id','in',truck_ids)]" />
                             </group>
                         </group>
                         <notebook>
@@ -60,6 +60,8 @@
                                         <field name="loan_qty"
                                                attrs="{'required':[('parent.is_loan','=',True)],'invisible':[('parent.is_loan','=',False)],'readonly':[('parent.state','=','done')]}"/>
                                         <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
+                                        <field name="subtotal" attrs="{'readonly':[('parent.state','=','done')]}"
+                                               required="1"/>
                                     </tree>
                                 </field>
                                 <strong style="float:right;font-size:20px;">
