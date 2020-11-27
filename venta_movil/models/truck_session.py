@@ -18,3 +18,12 @@ class TruckSession(models.Model):
     employee_id = fields.Many2one('hr.employee', 'Empleado',required=True)
 
     state = fields.Char()
+
+
+    @api.model
+    def create(self,values):
+        truck = self.env['truck.session'].search([('truck_id.id','=',values['truck_id']),('is_login','=',True)])
+        if truck:
+            raise models.UserError()
+        else:
+            return super(TruckSession,self).create(values)
