@@ -30,5 +30,5 @@ class TruckSession(models.Model):
         else:
             values['state'] = 'draft'
             values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order')
-            res = super(MobileSaleOrder, self).create(values)
+            res = super(TruckSession, self).create(values)
             return res
