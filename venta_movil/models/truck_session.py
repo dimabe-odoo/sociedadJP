@@ -27,7 +27,7 @@ class TruckSession(models.Model):
                 raise models.ValidationError('Ya existe un sesion activa para este camion')
             elif not truck.is_login:
                 truck.write({
-                    'is_login': True
+                    'is_login': True,
                     'login_datetime':datetime.datetime.now()
                 })
             return null
