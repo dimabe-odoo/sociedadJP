@@ -38,7 +38,7 @@ class MobileSaleOrder(models.Model):
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
-    location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)],rel='seller_id.truck_id')
+    location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)],related='seller_id.truck_id')
 
     truck_ids = fields.Many2many('stock.location', 'Camiones', compute='compute_truck_ids')
 
@@ -52,7 +52,7 @@ class MobileSaleOrder(models.Model):
                 total.append(line.subtotal)
             item.total_sale = sum(total)
 
-    @api.onchange('location_id')
+    @api.onchange('seller_id')
     def onchange_location_id(self):
         for item in self:
             warehouses = self.env['stock.warehouse'].search([])
