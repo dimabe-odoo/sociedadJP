@@ -31,12 +31,11 @@
             <field name="name">truck_session.tree</field>
             <field name="model">truck.session</field>
             <field name="arch" type="xml">
-                <tree string="Sesiones" editable="bottom"
-                  create="1" edit="1">
+                <tree string="Sesiones" editable="bottom" edit="1">
                     <field name="login_datetime"/>
                     <field name="user_id"/>
                     <field name="employee_id"/>
-                    <field name="active"/>
+                    <field name="is_login"/>
                 </tree>
             </field>
         </record>
