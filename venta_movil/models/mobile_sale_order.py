@@ -38,7 +38,7 @@ class MobileSaleOrder(models.Model):
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
-    location_id = fields.Many2one(comodel_name='stock.location',string='Camion', domain=[('is_truck', '=', True)],rel='seller_id.truck_id.id')
+    location_id = fields.Many2one(comodel_name='stock.location',string='Camion', domain=[('is_truck', '=', True)])
 
     truck_ids = fields.Many2many('stock.location', 'Camiones', compute='compute_truck_ids')
 
@@ -54,7 +54,8 @@ class MobileSaleOrder(models.Model):
 
 
     @api.onchange('seller_id')
-    def onchange_location_id(self):
+    def onchange_location_id(self):}
+        self.location_id = self.seller_id.truck_id
         for item in self:
             warehouses = self.env['stock.warehouse'].search([])
             for ware in warehouses:
