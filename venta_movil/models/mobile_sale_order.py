@@ -56,12 +56,13 @@ class MobileSaleOrder(models.Model):
     def onchange_location_id(self):
         for item in self:
             warehouses = self.env['stock.warehouse'].search([])
-            item.location_id = item.seller_id.truck_id
+            item.write({
+                'location_id': item.seller_id.truck_id.id,
+            })
             for ware in warehouses:
                 trucks = ware.mapped('truck_ids').mapped('id')
                 if item.location_id.id in trucks:
                     item.warehouse_id = ware
-
                     break
 
     def compute_truck_ids(self):
