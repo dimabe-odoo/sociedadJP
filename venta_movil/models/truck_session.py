@@ -3,6 +3,7 @@ from odoo import models, fields
 
 class TruckSession(models.Model):
     _name = 'truck.session'
+    _rec_name = 'employee_id'
 
     login_datetime = fields.Datetime('Fecha de ultimo ingreso')
 
