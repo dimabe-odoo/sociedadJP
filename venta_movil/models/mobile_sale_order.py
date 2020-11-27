@@ -25,7 +25,7 @@ class MobileSaleOrder(models.Model):
 
     mobile_lines = fields.One2many('mobile.sale.line', 'mobile_id', 'Productos')
 
-    total_sale = fields.Monetary('Total')
+    total_sale = fields.Monetary('Total',compute='onchange_mobile_line')
 
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
@@ -34,7 +34,7 @@ class MobileSaleOrder(models.Model):
 
     paid = fields.Float('Pagado con')
 
-    change = fields.Float('Vuelto')
+    change = fields.Float('Vuelto',compute='compute_change')
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
@@ -50,9 +50,7 @@ class MobileSaleOrder(models.Model):
             total = []
             for line in item.mobile_lines:
                 total.append(line.subtotal)
-            item.write({
-                'total_sale': sum(total)
-            })
+            item.total_sale = sum(total)
 
     @api.onchange('location_id')
     def onchange_location_id(self):
