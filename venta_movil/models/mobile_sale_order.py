@@ -38,21 +38,11 @@ class MobileSaleOrder(models.Model):
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
-    location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)],compute='compute_location')
+    location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)],rel='seller_id.truck_id')
 
     truck_ids = fields.Many2many('stock.location', 'Camiones', compute='compute_truck_ids')
 
     is_loan = fields.Boolean('Es Prestamo')
-
-    @api.onchange('seller_id')
-    def compute_location(self):
-        self.location_id = self.seller_id.truck_id
-        warehouses = self.env['stock.warehouse'].search([])
-        for ware in warehouses:
-            trucks = ware.mapped('truck_ids').mapped('id')
-            if self.location_id.id in trucks:
-                self.warehouse_id = ware
-                break
 
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
