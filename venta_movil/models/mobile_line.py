@@ -6,7 +6,7 @@ class MobileSaleLine(models.Model):
 
     reference = fields.Char('Referencia', rel='mobile_id.name')
 
-    product_image = fields.Bynary('#',rel='product_id.image_128')
+    product_image = fields.Binary('#',rel='product_id.image_128')
 
     product_id = fields.Many2one('product.product', 'Producto')
 
