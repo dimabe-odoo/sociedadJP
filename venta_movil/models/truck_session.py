@@ -17,6 +17,8 @@ class TruckSession(models.Model):
 
     employee_id = fields.Many2one('hr.employee', 'Empleado',required=True)
 
+    state = fields.Char()
+
     @api.model
     def create(self, values):
         truck = self.env['truck.session'].search([('truck_id','=',values['truck_id'])])
@@ -28,7 +30,5 @@ class TruckSession(models.Model):
                     'is_login': True
                 })
         else:
-            values['state'] = 'draft'
-            values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order')
             res = super(TruckSession, self).create(values)
             return res
