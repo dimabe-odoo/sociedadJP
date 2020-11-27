@@ -34,7 +34,7 @@ class MobileSaleOrder(models.Model):
 
     paid = fields.Float('Pagado con')
 
-    change = fields.Float('Vuelto',compute='compute_change')
+    change = fields.Float('Vuelto')
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
