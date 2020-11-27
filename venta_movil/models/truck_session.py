@@ -24,6 +24,6 @@ class TruckSession(models.Model):
     def create(self,values):
         truck = self.env['truck.session'].search([('truck_id.id','=',values['truck_id']),('is_login','=',True)])
         if truck:
-            raise models.UserError()
+            raise models.UserError('Hay existe un sesion activa')
         else:
             return super(TruckSession,self).create(values)
