@@ -25,12 +25,6 @@ class TruckSession(models.Model):
         if truck:
             if truck.is_login:
                 raise models.ValidationError('Ya existe un sesion activa para este camion')
-            elif not truck.is_login:
-                truck.write({
-                    'is_login': True,
-                    'login_datetime':datetime.datetime.now()
-                })
-
         else:
             res = super(TruckSession, self).create(values)
             return res
