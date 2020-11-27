@@ -14,7 +14,8 @@ class MobileSaleOrder(models.Model):
 
     address_id = fields.Many2one('res.partner', 'Direccion de envio')
 
-    address_ids = fields.Many2many(comodel_name='res.partner',string='Direcciones del cliente',rel='address_id.child_ids')
+    address_ids = fields.Many2many(comodel_name='res.partner', string='Direcciones del cliente',
+                                   rel='address_id.child_ids')
 
     price_list_id = fields.Many2one('product.pricelist', 'Lista de Precio del Cliente')
 
@@ -24,7 +25,7 @@ class MobileSaleOrder(models.Model):
 
     mobile_lines = fields.One2many('mobile.sale.line', 'mobile_id', 'Productos')
 
-    total_sale = fields.Monetary('Total', compute='onchange_mobile_line')
+    total_sale = fields.Monetary('Total')
 
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
@@ -39,7 +40,7 @@ class MobileSaleOrder(models.Model):
 
     location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)])
 
-    truck_ids = fields.Many2many('stock.location','Camiones',compute='compute_truck_ids')
+    truck_ids = fields.Many2many('stock.location', 'Camiones', compute='compute_truck_ids')
 
     is_loan = fields.Boolean('Es Prestamo')
 
@@ -49,7 +50,9 @@ class MobileSaleOrder(models.Model):
             total = []
             for line in item.mobile_lines:
                 total.append(line.subtotal)
-            item.total_sale = sum(total)
+            item.write({
+                'total_sale': sum(total)
+            })
 
     @api.onchange('location_id')
     def onchange_location_id(self):
@@ -72,7 +75,9 @@ class MobileSaleOrder(models.Model):
         for item in self:
             change = item.paid - item.total_sale
             if change > 0:
-                item.change = change
+                item.write({
+                    'change':change
+                })
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
