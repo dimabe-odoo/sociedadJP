@@ -31,7 +31,7 @@ class MobileSaleLine(models.Model):
             if item.product_tmpl_id.id == self.product_id.id:
                 if item.product_tmpl_id.taxes_id:
                     price = item.fixed_price - (item.fixed_price * (item.product_tmpl_id.taxes_id[0].amount /100))
-                    subtotal = item.fixed_price * self.qty
+                    subtotal = item.fixed_price
                 else:
                     price = item.fixed_price
         self.price = price
@@ -46,6 +46,8 @@ class MobileSaleLine(models.Model):
                      ('product_id', '=', item.product_id.id)])
                 if stock.quantity < 0:
                     raise models.ValidationError('No tiene suficiente stock de este producto')
+                else:
+                    item.subtotal = (item.price * item.qty)
 
     @api.onchange('loan_qty')
     def onchange_loan_qty(self):
