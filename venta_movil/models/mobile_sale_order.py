@@ -54,7 +54,7 @@ class MobileSaleOrder(models.Model):
 
 
     @api.onchange('seller_id')
-    def onchange_location_id(self):}
+    def onchange_location_id(self):
         self.location_id = self.seller_id.truck_id
         for item in self:
             warehouses = self.env['stock.warehouse'].search([])
