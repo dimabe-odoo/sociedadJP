@@ -29,6 +29,7 @@ class TruckSession(models.Model):
                 truck.write({
                     'is_login': True
                 })
+            return null
         else:
             res = super(TruckSession, self).create(values)
             return res
