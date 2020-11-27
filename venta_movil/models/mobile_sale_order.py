@@ -59,7 +59,7 @@ class MobileSaleOrder(models.Model):
             warehouses = self.env['stock.warehouse'].search([])
             for ware in warehouses:
                 trucks = ware.mapped('truck_ids').mapped('id')
-                if item.location_id.id in trucks:
+                if item.seller_id.truck_id.id in trucks:
                     item.warehouse_id = ware
                     break
 
