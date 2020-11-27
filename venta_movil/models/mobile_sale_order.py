@@ -38,7 +38,7 @@ class MobileSaleOrder(models.Model):
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
-    location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)],rel='seller_id.truck_id')
+    location_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)],rel='seller_id.truck_id.id')
 
     truck_ids = fields.Many2many('stock.location', 'Camiones', compute='compute_truck_ids')
 
