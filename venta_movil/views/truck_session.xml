@@ -44,7 +44,7 @@
         <record id="truck_session_act_window" model="ir.actions.act_window">
             <field name="name">Sesiones</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">truck_session</field>
+            <field name="res_model">truck.session</field>
             <field name="view_id" ref="truck_session_tree_view"/>
             <field name="view_mode">tree,form</field>
         </record>
