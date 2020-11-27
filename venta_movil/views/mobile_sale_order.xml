@@ -32,9 +32,11 @@
                                        domain="[('type','!=','other')]"
                                 />
                                 <field name="price_list_id"/>
+                                <field name="address_ids" invisible="1"/>
                                 <field name="address_id"
                                        context="{'default_parent_id': customer_id,'form_view_ref': 'venta_movil.new_address_form','default_type': 'other'}"
                                        attrs="{'readonly':[('state','=','done')],'invisible':[('customer_id','=',None)]}"
+                                       domain="[('id','=',address_ids)]"
                                 />
                                 <field name="is_loan" widget="boolean_toggle"
                                        attrs="{'readonly':[('state','=','done')]}"/>
