@@ -21,7 +21,7 @@ class TruckSession(models.Model):
 
     @api.model
     def create(self, values):
-        truck = self.env['truck.session'].search([('truck_id','=',values['truck_id']),('employee_id','=',values['employee_id'])])
+        truck = self.env['truck.session'].search([('employee_id','=',values['employee_id'])])
         if truck:
             if truck.is_login:
                 raise models.ValidationError('Ya existe un sesion activa para este camion')
@@ -30,9 +30,7 @@ class TruckSession(models.Model):
                     'is_login': True,
                     'login_datetime':datetime.datetime.now()
                 })
-                values = []
-                res = super(TruckSession, self).create(values)
-                return res
+
         else:
             res = super(TruckSession, self).create(values)
             return res
