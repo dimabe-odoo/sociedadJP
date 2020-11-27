@@ -71,9 +71,10 @@ class MobileSaleOrder(models.Model):
     @api.onchange('paid')
     def compute_change(self):
         for item in self:
-            change = item.paid - item.total_sale
-            if change > 0:
-                item.change = change
+            if item.state == 'onroute':
+                change = item.paid - item.total_sale
+                if change > 0:
+                    item.change = change
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
