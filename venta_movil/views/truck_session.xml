@@ -35,6 +35,7 @@
                     <field name="login_datetime"/>
                     <field name="user_id"/>
                     <field name="employee_id"/>
+                    <field name="truck_id"/>
                     <field name="is_login"/>
                 </tree>
             </field>
