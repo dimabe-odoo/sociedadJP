@@ -55,11 +55,12 @@ class MobileSaleOrder(models.Model):
 
     @api.onchange('seller_id')
     def onchange_location_id(self):
-        stock_quant = self.env['stock.quant'].search([('location_id.id','=',self.seller_id.truck_id.id)])
-        if stock_quant:
-            self.location_id = self.seller_id.truck_id
-        else:
-            raise models.ValidationError('Este camion no tiene stock suficiente')
+        if self.seller_id:
+            stock_quant = self.env['stock.quant'].search([('location_id.id','=',self.seller_id.truck_id.id)])
+            if stock_quant:
+                self.location_id = self.seller_id.truck_id
+            else:
+                raise models.ValidationError('Este camion no tiene stock suficiente')
         for item in self:
             warehouses = self.env['stock.warehouse'].search([])
             for ware in warehouses:
