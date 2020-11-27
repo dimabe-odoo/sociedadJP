@@ -14,7 +14,7 @@ class MobileSaleOrder(models.Model):
 
     address_id = fields.Many2one('res.partner', 'Direccion de envio')
 
-    address_ids = fields.Many2many('res.partner', 'Direcciones del cliente', compute='compute_address_ids')
+    address_ids = fields.Many2many('res.partner', 'Direcciones del cliente',rel='address_id.child_ids')
 
     price_list_id = fields.Many2one('product.pricelist', 'Lista de Precio del Cliente')
 
@@ -106,17 +106,30 @@ class MobileSaleOrder(models.Model):
         })
 
     def make_done(self):
-        sale_odoo = self.env['sale.order'].create({
-            'company_id': self.env.user.company_id.id,
-            'currency_id': self.currency_id.id,
-            'partner_id': self.customer_id.id,
-            'picking_policy': 'direct',
-            'origin': self.id,
-            'with_delivery': True,
-            'loan_supply': self.is_loan,
-            'warehouse_id': self.warehouse_id.id,
-            'pricelist_id': self.price_list_id.id
-        })
+        if self.address_id:
+            sale_odoo = self.env['sale.order'].create({
+                'company_id': self.env.user.company_id.id,
+                'currency_id': self.currency_id.id,
+                'partner_id': self.address_id.id,
+                'picking_policy': 'direct',
+                'origin': self.id,
+                'with_delivery': True,
+                'loan_supply': self.is_loan,
+                'warehouse_id': self.warehouse_id.id,
+                'pricelist_id': self.price_list_id.id
+            })
+        else:
+            sale_odoo = self.env['sale.order'].create({
+                'company_id': self.env.user.company_id.id,
+                'currency_id': self.currency_id.id,
+                'partner_id': self.customer_id.id,
+                'picking_policy': 'direct',
+                'origin': self.id,
+                'with_delivery': True,
+                'loan_supply': self.is_loan,
+                'warehouse_id': self.warehouse_id.id,
+                'pricelist_id': self.price_list_id.id
+            })
 
         for line in self.mobile_lines:
             self.env['sale.order.line'].create({

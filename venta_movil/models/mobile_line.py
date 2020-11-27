@@ -21,6 +21,8 @@ class MobileSaleLine(models.Model):
 
     mobile_id = fields.Many2one('mobile.sale.order', auto_join=True)
 
+    subtotal = fields.Monetary('SubTotal',)
+
     @api.onchange('product_id')
     def onchange_product_id(self):
         price = 0
