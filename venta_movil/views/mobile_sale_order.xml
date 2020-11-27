@@ -51,12 +51,13 @@
                             <page name="products" string="Productos">
                                 <field name="mobile_lines" widget="one2many_list" required="1" >
                                     <tree editable="true" create="true" delete="true">
+                                        <field name="product_image" widget="image"/>
                                         <field name="product_id" attrs="{'readonly':[('parent.state','=','done')]}"
                                                required="1"/>
                                         <field name="price" attrs="{'readonly':[('parent.state','=','done')]}"
                                                required="1"/>
                                         <field name="loan_qty"
-                                               attrs="{'required':[('parent.is_loan','=',True)],'invisible':[('parent.is_loan','=',True)],'readonly':[('parent.state','=','done')]}"/>
+                                               attrs="{'required':[('parent.is_loan','=',True)],'invisible':[('parent.is_loan','=',False)],'readonly':[('parent.state','=','done')]}"/>
                                         <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
                                     </tree>
                                 </field>
