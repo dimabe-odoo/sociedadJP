@@ -184,9 +184,9 @@ class MobileSaleOrder(models.Model):
             'location_dest_id':self.location_id.id,
 
         })
+        sale_odoo.picking_ids[0].loan_reception_id.action_confirm()
+        sale_odoo.picking_ids[0].loan_reception_id.button_validate()
         for mobile in self.mobile_lines:
-            sale_odoo.picking_ids[0].loan_reception_id.action_confirm()
-            sale_odoo.picking_ids[0].loan_reception_id.button_validate()
             sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == mobile.product_id.supply_id.id).write({
                 'qty_done' : sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == mobile.product_id.supply_id.id).qty_done - mobile.loan_qty
             })
