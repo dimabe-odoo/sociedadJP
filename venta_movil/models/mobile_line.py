@@ -23,6 +23,9 @@ class MobileSaleLine(models.Model):
 
     subtotal = fields.Monetary('Subtotal')
 
+    def compute_subtotal(self):
+        for item in self:
+            item.subtotal = item.price * item.qty
 
     @api.onchange('product_id')
     def onchange_product_id(self):
@@ -42,12 +45,6 @@ class MobileSaleLine(models.Model):
                          ('product_id', '=', item.product_id.id)])
                     if stock.quantity < 0:
                         raise models.ValidationError('No tiene suficiente stock de este producto')
-                    else:
-                        if item.subtotal == 0:
-                            item.write({
-                                'subtotal': (item.price * item.qty)
-                            })
-
 
     @api.onchange('loan_qty')
     def onchange_loan_qty(self):
