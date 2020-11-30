@@ -25,7 +25,7 @@ class MobileSaleOrder(models.Model):
 
     mobile_lines = fields.One2many('mobile.sale.line', 'mobile_id', 'Productos')
 
-    total_sale = fields.Monetary('Total',compute='onchange_mobile_line')
+    total_sale = fields.Monetary('Total')
 
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
