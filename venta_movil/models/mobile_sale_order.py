@@ -52,6 +52,14 @@ class MobileSaleOrder(models.Model):
                 total.append(line.subtotal)
             item.total_sale = sum(total)
 
+    @api.onchage('price_list_id')
+    def onchange_product_price(self):
+        for item in self.price_list_id.item_ids:
+            if item.product_tmpl_id.id == self.product_id.id:
+                self.mobile_lines.filtered(lambda a: item.product_tmpl_id.id == a.product_id.id).write({
+                    'price':item.fixed_price
+                })
+
 
     @api.onchange('seller_id')
     def onchange_location_id(self):
