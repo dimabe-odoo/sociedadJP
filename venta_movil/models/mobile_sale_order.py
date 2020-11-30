@@ -46,14 +46,14 @@ class MobileSaleOrder(models.Model):
 
     products = fields.Many2many('product.template','available_in_pos')
 
-    @api.onchange('mobile_lines')
-    def onchange_mobile_line(self):
-        for item in self:
-            if item.state != 'done':
-                total = []
-                for line in item.mobile_lines:
-                    total.append(line.subtotal)
-                item.total_sale = sum(total)
+    # @api.onchange('mobile_lines')
+    # def onchange_mobile_line(self):
+    #     for item in self:
+    #         if item.state != 'done':
+    #             total = []
+    #             for line in item.mobile_lines:
+    #                 total.append(line.subtotal)
+    #             item.total_sale = sum(total)
 
     @api.onchange('seller_id')
     def onchange_location_id(self):
