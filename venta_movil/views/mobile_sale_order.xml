@@ -49,7 +49,7 @@
                                 <field name="location_id"
                                        attrs="{'invisible':[('state','in',('draft','cancel'))],'required':[('state','=','confirm')]}"
                                        domain="[('id','in',truck_ids)]"/>
-                                <field name="subtotal" readonly="1" />
+
                             </group>
                         </group>
                         <notebook>
@@ -63,6 +63,7 @@
                                         <field name="loan_qty"
                                                attrs="{'required':[('parent.is_loan','=',True)],'invisible':[('parent.is_loan','=',False)],'readonly':[('parent.state','=','done')]}"/>
                                         <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
+                                        <field name="subtotal" readonly="1" />
                                     </tree>
                                 </field>
                                 <strong style="float:right;font-size:20px;">
