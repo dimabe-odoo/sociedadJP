@@ -25,7 +25,7 @@ class MobileSaleOrder(models.Model):
 
     mobile_lines = fields.One2many('mobile.sale.line', 'mobile_id', 'Productos')
 
-    total_sale = fields.Monetary('Total')
+    total_sale = fields.Monetary('Total',compute='onchange_mobile_line')
 
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
@@ -46,17 +46,17 @@ class MobileSaleOrder(models.Model):
 
     products = fields.Many2many('product.template','available_in_pos')
 
-    # @api.onchange('mobile_lines')
-    # def onchange_mobile_line(self):
-    #     for item in self:
-    #         if item.state != 'done' and len(item.mobile_lines) > 0:
-    #             total = []
-    #             for line in item.mobile_lines:
-    #                 total.append((line.price * line.qty))
-    #             if len(total) > 0:
-    #                 item.total_sale = sum(total)
-    #             else:
-    #                 item.total_sale = 0
+    @api.onchange('mobile_lines')
+    def onchange_mobile_line(self):
+        for item in self:
+            if item.state != 'done' and len(item.mobile_lines) > 0:
+                total = []
+                for line in item.mobile_lines:
+                    total.append((line.price * line.qty))
+                if len(total) > 0:
+                    item.total_sale = sum(total)
+                else:
+                    item.total_sale = 0
 
     @api.onchange('seller_id')
     def onchange_location_id(self):
