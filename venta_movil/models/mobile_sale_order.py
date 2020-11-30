@@ -48,11 +48,12 @@ class MobileSaleOrder(models.Model):
 
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
-        for item in self:
-            total = []
-            for line in item.mobile_lines:
-                total.append(line.subtotal)
-            item.total_sale = sum(total)
+        if self.state != 'done':
+            for item in self:
+                total = []
+                for line in item.mobile_lines:
+                    total.append(line.subtotal)
+                item.total_sale = sum(total)
 
     @api.onchange('price_list_id')
     def onchange_product_price(self):
