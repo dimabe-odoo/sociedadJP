@@ -171,6 +171,7 @@ class MobileSaleOrder(models.Model):
                 move.write({
                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
                 })
+
         sale_odoo.picking_ids[0].write({
             'show_supply': True,
             'location_id': self.location_id.id
@@ -179,6 +180,14 @@ class MobileSaleOrder(models.Model):
         sale_odoo.picking_ids[0].supply_dispatch_id.write({
             'location_dest_id':self.location_id.id,
         })
+        sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.write({
+            'location_dest_id':self.location_id.id,
+
+        })
+        for mobile in self.mobile_lines:
+            sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == mobile.product_id.id).write({
+                'qty_done' : sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == mobile.product_id.id).qty_done - mobile.loan_qty
+            })
         sale_odoo._create_invoices()
         sale_odoo.invoice_ids[0].action_post()
         self.write({
