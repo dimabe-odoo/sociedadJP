@@ -80,14 +80,14 @@ class MobileSaleOrder(models.Model):
             'location_id').filtered(lambda a: a.is_truck)
         self.truck_ids = stock_quant
 
-    # @api.onchange('paid')
-    # def compute_change(self):
-    #     for item in self:
-    #         if item.state == 'onroute':
-    #             if item.total_sale > 0:
-    #                 change = item.paid - item.total_sale
-    #                 if change > 0:
-    #                     item.change = change
+    @api.onchange('paid')
+    def compute_change(self):
+        for item in self:
+            if item.state == 'onroute':
+                if item.total_sale > 0:
+                    change = item.paid - item.total_sale
+                    if change > 0:
+                        item.change = change
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
