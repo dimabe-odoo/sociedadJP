@@ -48,8 +48,8 @@ class MobileSaleOrder(models.Model):
 
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
-        if self.state != 'done':
-            for item in self:
+        for item in self:
+            if item.state != 'done'
                 total = []
                 for line in item.mobile_lines:
                     total.append(line.subtotal)
