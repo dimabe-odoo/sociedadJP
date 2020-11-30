@@ -21,7 +21,7 @@ class MobileSaleLine(models.Model):
 
     mobile_id = fields.Many2one('mobile.sale.order', auto_join=True)
 
-    subtotal = fields.Monetary('Subtotal')
+    subtotal = fields.Monetary('Subtotal',compute='compute_subtotal')
 
     def compute_subtotal(self):
         for item in self:
