@@ -33,7 +33,7 @@ class MobileSaleLine(models.Model):
     @api.onchange('qty')
     def onchange_qty(self):
         for item in self:
-            if item.mobile_id.state != 'done' and item.subtotal > 0:
+            if item.mobile_id.state != 'done':
                 if item.qty > 0:
                     stock = self.env['stock.quant'].search(
                         [('location_id', '=', self.mobile_id.warehouse_id.lot_stock_id.id),
