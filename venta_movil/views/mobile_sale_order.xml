@@ -49,6 +49,7 @@
                                 <field name="location_id"
                                        attrs="{'invisible':[('state','in',('draft','cancel'))],'required':[('state','=','confirm')]}"
                                        domain="[('id','in',truck_ids)]"/>
+                                <field name="subtotal" readonly="1" />
                             </group>
                         </group>
                         <notebook>

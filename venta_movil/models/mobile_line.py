@@ -21,6 +21,8 @@ class MobileSaleLine(models.Model):
 
     mobile_id = fields.Many2one('mobile.sale.order', auto_join=True)
 
+    subtotal = fields.Monetary('Subtotal')
+
 
     @api.onchange('product_id')
     def onchange_product_id(self):
@@ -40,6 +42,8 @@ class MobileSaleLine(models.Model):
                          ('product_id', '=', item.product_id.id)])
                     if stock.quantity < 0:
                         raise models.ValidationError('No tiene suficiente stock de este producto')
+                    else:
+                        item.subtotal = (item.price * item.qty)
 
 
     @api.onchange('loan_qty')
