@@ -34,14 +34,15 @@ class MobileSaleLine(models.Model):
     @api.onchange('qty')
     def onchange_qty(self):
         for item in self:
-            if item.qty > 0:
-                stock = self.env['stock.quant'].search(
-                    [('location_id', '=', self.mobile_id.warehouse_id.lot_stock_id.id),
-                     ('product_id', '=', item.product_id.id)])
-                if stock.quantity < 0:
-                    raise models.ValidationError('No tiene suficiente stock de este producto')
-                else:
-                    item.subtotal = (item.price * item.qty)
+            if item.mobile_id.state != 'done':
+                if item.qty > 0:
+                    stock = self.env['stock.quant'].search(
+                        [('location_id', '=', self.mobile_id.warehouse_id.lot_stock_id.id),
+                         ('product_id', '=', item.product_id.id)])
+                    if stock.quantity < 0:
+                        raise models.ValidationError('No tiene suficiente stock de este producto')
+                    else:
+                        item.subtotal = (item.price * item.qty)
 
     @api.onchange('loan_qty')
     def onchange_loan_qty(self):
