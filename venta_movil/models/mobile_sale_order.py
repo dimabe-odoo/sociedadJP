@@ -52,7 +52,7 @@ class MobileSaleOrder(models.Model):
                 total.append(line.subtotal)
             item.total_sale = sum(total)
 
-    @api.onchage('price_list_id')
+    @api.onchange('price_list_id')
     def onchange_product_price(self):
         for item in self.price_list_id.item_ids:
             if item.product_tmpl_id.id == self.product_id.id:
