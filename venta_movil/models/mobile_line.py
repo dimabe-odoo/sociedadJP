@@ -44,7 +44,7 @@ class MobileSaleLine(models.Model):
                         raise models.ValidationError('No tiene suficiente stock de este producto')
                     else:
                         item.write({
-                            'subtotal': (line.price * line.qty)
+                            'subtotal': (item.price * item.qty)
                         })
 
 
