@@ -52,7 +52,6 @@ class MobileSaleOrder(models.Model):
             if item.state != 'done' and len(item.mobile_lines) > 0:
                 total = []
                 for line in item.mobile_lines:
-                    raise models.ValidationError(item.mobile_lines)
                     total.append((line.price * line.qty))
                 if len(total) > 0:
                     item.total_sale = sum(total)
@@ -85,9 +84,10 @@ class MobileSaleOrder(models.Model):
     def compute_change(self):
         for item in self:
             if item.state == 'onroute':
-                change = item.paid - item.total_sale
-                if change > 0:
-                    item.change = change
+                if item.total_sale > 0:
+                    change = item.paid - item.total_sale
+                    if change > 0:
+                        item.change = change
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
