@@ -43,9 +43,10 @@ class MobileSaleLine(models.Model):
                     if stock.quantity < 0:
                         raise models.ValidationError('No tiene suficiente stock de este producto')
                     else:
-                        item.write({
-                            'subtotal': (item.price * item.qty)
-                        })
+                        if item.subtotal == 0:
+                            item.write({
+                                'subtotal': (item.price * item.qty)
+                            })
 
 
     @api.onchange('loan_qty')
