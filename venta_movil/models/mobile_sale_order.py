@@ -53,7 +53,10 @@ class MobileSaleOrder(models.Model):
                 total = []
                 for line in item.mobile_lines:
                     total.append(line.subtotal)
-                item.total_sale = sum(total)
+                if len(total) > 0:
+                    item.total_sale = sum(total)
+                else:
+                    item.total_sale = 0
 
     @api.onchange('seller_id')
     def onchange_location_id(self):
