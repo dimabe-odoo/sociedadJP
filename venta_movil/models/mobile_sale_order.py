@@ -44,6 +44,8 @@ class MobileSaleOrder(models.Model):
 
     is_loan = fields.Boolean('Es Prestamo')
 
+    products = fields.Many2many('product.template','available_in_pos',string='Productos')
+
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:

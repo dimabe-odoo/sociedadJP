@@ -72,6 +72,18 @@
                                     </group>
                                 </strong>
                             </page>
+                            <page>
+                                <field name="products" mode="kanban">
+                                    <kanban>
+                                        <field name="display_name"/>
+                                        <tempates>
+                                            <t t-name="kanban-box">
+                                                <field name="price"/>
+                                            </t>
+                                        </tempates>
+                                    </kanban>
+                                </field>
+                            </page>
                         </notebook>
                     </sheet>
                 </form>

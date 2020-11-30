@@ -19,7 +19,6 @@ class TruckSession(models.Model):
 
     state = fields.Char()
 
-
     @api.model
     def create(self,values):
         truck = self.env['truck.session'].search([('truck_id.id','=',values['truck_id']),('is_login','=',True)])
