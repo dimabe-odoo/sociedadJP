@@ -52,6 +52,7 @@ class MobileSaleOrder(models.Model):
             if item.state != 'done' and len(item.mobile_lines) > 0:
                 total = []
                 for line in item.mobile_lines:
+                    raise models.ValidationError(item.mobile_lines)
                     total.append((line.price * line.qty))
                 if len(total) > 0:
                     item.total_sale = sum(total)
