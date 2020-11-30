@@ -49,7 +49,7 @@ class MobileSaleOrder(models.Model):
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
-            if item.state != 'done' and len(item.mobile_lines) > 0:
+            if item.state not in ('done','onroute') and len(item.mobile_lines) > 0:
                 total = []
                 for line in item.mobile_lines:
                     total_value = line.price * line.qty
