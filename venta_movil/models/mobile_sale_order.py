@@ -34,6 +34,12 @@ class MobileSaleOrder(models.Model):
 
     paid = fields.Float('Pagado con')
 
+    draft_to_confirm = fields.Datetime('Borrador a Confirmado')
+
+    confirm_to_onroute = fields.Datetime('Confirmado a En Ruta')
+
+    onroute_to_finish = fields.Datetime('En Ruta a Finalizado')
+
     change = fields.Float('Vuelto')
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
