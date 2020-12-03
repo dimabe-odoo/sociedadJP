@@ -36,7 +36,9 @@ class MobileSaleOrder(models.Model):
     paid = fields.Float('Pagado con')
 
     confirm_date = fields.Datetime('Fecha Confirmado')
+
     onroute_date = fields.Datetime('Fecha En Ruta')
+
     finish_date = fields.Datetime('Fecha Finalizado')
 
     draft_to_confirm = fields.Char('Borrador a Confirmado')
@@ -44,6 +46,8 @@ class MobileSaleOrder(models.Model):
     confirm_to_onroute = fields.Char('Confirmado a En Ruta')
 
     onroute_to_finish = fields.Char('En Ruta a Finalizado')
+
+    payment_method = fields.Many2one('pos.payment.method','Metodo de Pago')
 
     change = fields.Float('Vuelto')
 
