@@ -68,6 +68,10 @@ class MobileSaleOrder(models.Model):
                     'total_sale': 0
                 })
 
+    @api.onchange('customer_id')
+    def onchange_customer_id(self):
+        self.price_list_id = self.customer_id.property_product_pricelist
+
     @api.onchange('seller_id')
     def onchange_location_id(self):
         if self.seller_id:
