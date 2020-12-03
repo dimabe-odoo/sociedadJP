@@ -117,8 +117,7 @@ class MobileSaleOrder(models.Model):
         self.write({
             'state': 'confirm'
         })
-        dt = datetime.now()
-        self.draft_to_confirm = dt
+        self.draft_to_confirm = datetime.datetime.now()
 
     @api.model
     def create(self, values):
@@ -131,8 +130,7 @@ class MobileSaleOrder(models.Model):
         self.write({
             'state': 'onroute'
         })
-        dt = datetime.now()
-        self.confirm_to_onroute = dt
+        self.confirm_to_onroute = datetime.datetime.now()
 
     def cancel_order(self):
         self.write({
@@ -211,5 +209,4 @@ class MobileSaleOrder(models.Model):
             'sale_id': sale_odoo.id,
             'state': 'done'
         })
-        dt = datetime.now()
-        self.onroute_to_finish = dt
+        self.onroute_to_finish = datetime.datetime.now()
