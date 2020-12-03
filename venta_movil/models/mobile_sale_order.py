@@ -132,19 +132,19 @@ class MobileSaleOrder(models.Model):
             strdate = '{} años'.format(datedif.years)
 
         if datedif.months != 0:
-            strdate = '{}, {} meses,'.format(strdate, datedif.months)
+            strdate = '{} {} meses'.format(strdate, datedif.months)
 
         if datedif.days != 0:
-            strdate = '{}, {} dias,'.format(strdate, datedif.days)
+            strdate = '{} {} dias'.format(strdate, datedif.days)
 
         if datedif.hours != 0:
-            strdate = '{}, {} hr,'.format(strdate, datedif.hours)
+            strdate = '{} {} hr'.format(strdate, datedif.hours)
 
         if datedif.minutes != 0:
-            strdate = '{}, {} min,'.format(strdate, datedif.minutes)
+            strdate = '{} {} min'.format(strdate, datedif.minutes)
 
         if datedif.seconds != 0:
-            strdate = '{}, {} seg,'.format(strdate, datedif.seconds)
+            strdate = '{} {} seg'.format(strdate, datedif.seconds)
 
         self.draft_to_confirm = strdate
 
@@ -166,19 +166,19 @@ class MobileSaleOrder(models.Model):
             strdate = '{} años'.format(datedif.years)
 
         if datedif.months != 0:
-            strdate = '{}, {} meses,'.format(strdate, datedif.months)
+            strdate = '{} {} meses'.format(strdate, datedif.months)
 
         if datedif.days != 0:
-            strdate = '{}, {} dias,'.format(strdate, datedif.days)
+            strdate = '{} {} dias'.format(strdate, datedif.days)
 
         if datedif.hours != 0:
-            strdate = '{}, {} hr,'.format(strdate, datedif.hours)
+            strdate = '{} {} hr'.format(strdate, datedif.hours)
 
         if datedif.minutes != 0:
-            strdate = '{}, {} min,'.format(strdate, datedif.minutes)
+            strdate = '{} {} min'.format(strdate, datedif.minutes)
 
         if datedif.seconds != 0:
-            strdate = '{}, {} seg,'.format(strdate, datedif.seconds)
+            strdate = '{} {} seg'.format(strdate, datedif.seconds)
 
         self.confirm_to_onroute = strdate
 
@@ -266,19 +266,19 @@ class MobileSaleOrder(models.Model):
             strdate = '{} años'.format(datedif.years)
 
         if datedif.months != 0:
-            strdate = '{}, {} meses,'.format(strdate, datedif.months)
+            strdate = '{} {} meses'.format(strdate, datedif.months)
 
         if datedif.days != 0:
-            strdate = '{}, {} dias,'.format(strdate, datedif.days)
+            strdate = '{} {} dias'.format(strdate, datedif.days)
 
         if datedif.hours != 0:
-            strdate = '{}, {} hr,'.format(strdate, datedif.hours)
+            strdate = '{} {} hr'.format(strdate, datedif.hours)
 
         if datedif.minutes != 0:
-            strdate = '{}, {} min,'.format(strdate, datedif.minutes)
+            strdate = '{} {} min'.format(strdate, datedif.minutes)
 
         if datedif.seconds != 0:
-            strdate = '{}, {} seg,'.format(strdate, datedif.seconds)
+            strdate = '{} {} seg'.format(strdate, datedif.seconds)
         self.onroute_to_finish = strdate
 
 
