@@ -126,8 +126,8 @@ class MobileSaleOrder(models.Model):
             'state': 'confirm'
         })
         self.confirm_date = datetime.datetime.now()
-        datedif = self.confirm_date - self.create_date
-        self.draft_to_confirm = datedif.strftime('%Y-%m-%d %H:%M:%S')
+        datedif = self.confirm_date.strftime('%Y-%m-%d %H:%M:%S') - self.create_date.strftime('%Y-%m-%d %H:%M:%S')
+        self.draft_to_confirm = datedif
 
     @api.model
     def create(self, values):
@@ -141,10 +141,8 @@ class MobileSaleOrder(models.Model):
             'state': 'onroute'
         })
         self.onroute_date = datetime.datetime.now()
-        datedif =  self.onroute_date - self.confirm_date
-        self.confirm_to_onroute = datedif.strftime('%Y-%m-%d %H:%M:%S')
-
-
+        datedif =  self.onroute_date.strftime('%Y-%m-%d %H:%M:%S') - self.confirm_date.strftime('%Y-%m-%d %H:%M:%S')
+        self.confirm_to_onroute = datedif
 
     def cancel_order(self):
         self.write({
@@ -224,6 +222,6 @@ class MobileSaleOrder(models.Model):
             'state': 'done'
         })
         self.finish_date = datetime.datetime.now()
-        datedif = self.finish_date - self.onroute_date
-        self.onroute_to_finish = datedif.strftime('%Y-%m-%d %H:%M:%S')
+        datedif = self.finish_date.strftime('%Y-%m-%d %H:%M:%S') - self.onroute_date.strftime('%Y-%m-%d %H:%M:%S')
+        self.onroute_to_finish = datedif
 
