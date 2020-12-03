@@ -35,16 +35,15 @@ class MobileSaleOrder(models.Model):
 
     paid = fields.Float('Pagado con')
 
-    draft_date = fields.Datetime('Fecha Borrador')
     confirm_date = fields.Datetime('Fecha Confirmado')
     onroute_date = fields.Datetime('Fecha En Ruta')
     finish_date = fields.Datetime('Fecha Finalizado')
 
-    draft_to_confirm = fields.Datetime('Borrador a Confirmado')
+    draft_to_confirm = fields.Char('Borrador a Confirmado')
 
-    confirm_to_onroute = fields.Datetime('Confirmado a En Ruta')
+    confirm_to_onroute = fields.Char('Confirmado a En Ruta')
 
-    onroute_to_finish = fields.Datetime('En Ruta a Finalizado')
+    onroute_to_finish = fields.Char('En Ruta a Finalizado')
 
     change = fields.Float('Vuelto')
 
@@ -123,8 +122,6 @@ class MobileSaleOrder(models.Model):
             'state': 'confirm'
         })
         self.confirm_date = datetime.datetime.now()
-        test = self.confirm_date - self.create_date
-        raise models.UserError("creado: {} - Ahora: {} = {}".format(self.create_date,self.confirm_date,test))
         self.draft_to_confirm = self.confirm_date - self.create_date
 
     @api.model
