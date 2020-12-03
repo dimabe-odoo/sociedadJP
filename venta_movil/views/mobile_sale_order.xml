@@ -93,6 +93,7 @@
                     <field name="confirm_to_onroute"/>
                     <field name="onroute_to_finish"/>
                     <field name="sale_id" widget="many2onebutton"/>
+                    <field name="payment_method"/>
                     <field name="total_sale"/>
                     <field name="state"/>
                 </tree>
