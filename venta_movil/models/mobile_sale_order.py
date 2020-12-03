@@ -66,7 +66,7 @@ class MobileSaleOrder(models.Model):
         for item in self:
             total = []
             for line in item.mobile_lines:
-                total_value = (line.price * line.qty * 1.19
+                total_value = (line.price * line.qty * 1.19)
                 total.append(total_value)
             if len(total) > 0:
                 item.write({
