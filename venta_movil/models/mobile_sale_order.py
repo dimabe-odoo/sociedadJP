@@ -35,6 +35,11 @@ class MobileSaleOrder(models.Model):
 
     paid = fields.Float('Pagado con')
 
+    draft_date = fields.Datetime('Fecha Borrador')
+    confirm_date = fields.Datetime('Fecha Confirmado')
+    onroute_date = fields.Datetime('Fecha En Ruta')
+    finish_date = fields.Datetime('Fecha Finalizado')
+
     draft_to_confirm = fields.Datetime('Borrador a Confirmado')
 
     confirm_to_onroute = fields.Datetime('Confirmado a En Ruta')
@@ -117,7 +122,10 @@ class MobileSaleOrder(models.Model):
         self.write({
             'state': 'confirm'
         })
-        self.draft_to_confirm = datetime.datetime.now()
+        self.confirm_date = datetime.datetime.now()
+        test = self.confirm_date - self.create_date
+        raise models.UserError(type(test))
+        self.draft_to_confirm = self.confirm_date - self.create_date
 
     @api.model
     def create(self, values):
@@ -130,7 +138,8 @@ class MobileSaleOrder(models.Model):
         self.write({
             'state': 'onroute'
         })
-        self.confirm_to_onroute = datetime.datetime.now()
+        self.onroute_date = datetime.datetime.now()
+        self.confirm_to_onroute = self.onroute_date - self.confirm_date
 
     def cancel_order(self):
         self.write({
@@ -209,4 +218,5 @@ class MobileSaleOrder(models.Model):
             'sale_id': sale_odoo.id,
             'state': 'done'
         })
-        self.onroute_to_finish = datetime.datetime.now()
+        self.finish_date = datetime.datetime.now()
+        self.onroute_to_finish = self.finish_date - self.onroute_date
