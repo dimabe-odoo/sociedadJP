@@ -123,7 +123,7 @@ class MobileSaleOrder(models.Model):
         })
         self.confirm_date = datetime.datetime.now()
         datedif = self.confirm_date - self.create_date
-        self.draft_to_confirm = ("{}/{}/{} {}:{}:{}".format(datedif.year,datedif.month,datedif.day,datedif.hour, datedif.minute, datedif.seconds))
+        self.draft_to_confirm = datedif
 
     @api.model
     def create(self, values):
@@ -138,7 +138,7 @@ class MobileSaleOrder(models.Model):
         })
         self.onroute_date = datetime.datetime.now()
         datedif =  self.onroute_date - self.confirm_date
-        self.confirm_to_onroute = ("{}/{}/{} {}:{}:{}".format(datedif.year,datedif.month,datedif.day,datedif.hour, datedif.minute, datedif.seconds))
+        self.confirm_to_onroute = datedif
 
 
 
@@ -221,5 +221,5 @@ class MobileSaleOrder(models.Model):
         })
         self.finish_date = datetime.datetime.now()
         datedif = self.finish_date - self.onroute_date
-        self.onroute_to_finish = ("{}/{}/{} {}:{}:{}".format(datedif.year,datedif.month,datedif.day,datedif.hour, datedif.minute, datedif.seconds))
+        self.onroute_to_finish = datedif
 
