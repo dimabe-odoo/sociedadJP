@@ -127,12 +127,26 @@ class MobileSaleOrder(models.Model):
         })
         self.confirm_date = datetime.datetime.now()
         datedif = relativedelta(self.confirm_date, self.create_date)
-        self.draft_to_confirm = '{} años, {} meses, {} dias  - {} hr, {} min, {} seg'.format(datedif.years
-                                                                                             ,datedif.months
-                                                                                             ,datedif.days
-                                                                                             ,datedif.hours
-                                                                                             ,datedif.minutes
-                                                                                             ,datedif.seconds)
+        strdate = ""
+        if datedif.years != 0:
+            strdate = '{} años'.format(datedif.years)
+
+        if datedif.months != 0:
+            strdate = '{}, {} meses,'.format(strdate, datedif.months)
+
+        if datedif.days != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.days)
+
+        if datedif.hours != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.hours)
+
+        if datedif.minutes != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.minutes)
+
+        if datedif.seconds != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.seconds)
+
+        self.draft_to_confirm = strdate
 
     @api.model
     def create(self, values):
@@ -147,12 +161,26 @@ class MobileSaleOrder(models.Model):
         })
         self.onroute_date = datetime.datetime.now()
         datedif =  relativedelta(self.onroute_date, self.confirm_date)
-        self.confirm_to_onroute = '{} años, {} meses, {} dias  - {} hr, {} min, {} seg'.format(datedif.years
-                                                                                             ,datedif.months
-                                                                                             ,datedif.days
-                                                                                             ,datedif.hours
-                                                                                             ,datedif.minutes
-                                                                                             ,datedif.seconds)
+        strdate = ""
+        if datedif.years != 0:
+            strdate = '{} años'.format(datedif.years)
+
+        if datedif.months != 0:
+            strdate = '{}, {} meses,'.format(strdate, datedif.months)
+
+        if datedif.days != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.days)
+
+        if datedif.hours != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.hours)
+
+        if datedif.minutes != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.minutes)
+
+        if datedif.seconds != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.seconds)
+
+        self.confirm_to_onroute = strdate
 
     def cancel_order(self):
         self.write({
@@ -233,12 +261,25 @@ class MobileSaleOrder(models.Model):
         })
         self.finish_date = datetime.datetime.now()
         datedif = relativedelta(self.finish_date, self.onroute_date)
-        self.onroute_to_finish = '{} años, {} meses, {} dias  - {} hr, {} min, {} seg'.format(datedif.years
-                                                                                             ,datedif.months
-                                                                                             ,datedif.days
-                                                                                             ,datedif.hours
-                                                                                             ,datedif.minutes
-                                                                                             ,datedif.seconds)
+        strdate = ""
+        if datedif.years != 0:
+            strdate = '{} años'.format(datedif.years)
+
+        if datedif.months != 0:
+            strdate = '{}, {} meses,'.format(strdate, datedif.months)
+
+        if datedif.days != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.days)
+
+        if datedif.hours != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.hours)
+
+        if datedif.minutes != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.minutes)
+
+        if datedif.seconds != 0:
+            strdate = '{}, {} dias,'.format(strdate, datedif.seconds)
+        self.onroute_to_finish = strdate
 
 
 
