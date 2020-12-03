@@ -124,7 +124,7 @@ class MobileSaleOrder(models.Model):
         })
         self.confirm_date = datetime.datetime.now()
         test = self.confirm_date - self.create_date
-        raise models.UserError(type(test))
+        raise models.UserError(str(test))
         self.draft_to_confirm = self.confirm_date - self.create_date
 
     @api.model
