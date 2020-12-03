@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+import datetime
 
 
 class MobileSaleOrder(models.Model):
@@ -12,7 +13,7 @@ class MobileSaleOrder(models.Model):
 
     customer_id = fields.Many2one('res.partner', 'Cliente', required=True)
 
-    address_id = fields.Many2one('res.partner', 'Direccion de envio')
+    address_id = fields.Many2one('res.partner', 'Otra Direccion de envio')
 
     address_ids = fields.Many2many(comodel_name='res.partner', string='Direcciones del cliente',
                                    rel='address_id.child_ids')
@@ -116,6 +117,7 @@ class MobileSaleOrder(models.Model):
         self.write({
             'state': 'confirm'
         })
+        self.draft_to_confirm = datetime.now()
 
     @api.model
     def create(self, values):
@@ -128,6 +130,7 @@ class MobileSaleOrder(models.Model):
         self.write({
             'state': 'onroute'
         })
+        self.confirm_to_onroute = datetime.now()
 
     def cancel_order(self):
         self.write({
@@ -206,3 +209,4 @@ class MobileSaleOrder(models.Model):
             'sale_id': sale_odoo.id,
             'state': 'done'
         })
+        self.onroute_to_finish = datetime.now()
