@@ -88,9 +88,9 @@
                     <field name="name"/>
                     <field name="customer_id" widget="many2onebutton"/>
                     <field name="address_id" widget="many2onebutton"/>
-                    <field name="draft_to_confirm" widget="many2onebutton"/>
-                    <field name="confirm_to_onroute" widget="many2onebutton"/>
-                    <field name="onroute_to_finish" widget="many2onebutton"/>
+                    <field name="draft_to_confirm"/>
+                    <field name="confirm_to_onroute"/>
+                    <field name="onroute_to_finish"/>
                     <field name="sale_id" widget="many2onebutton"/>
                     <field name="total_sale"/>
                     <field name="state"/>
