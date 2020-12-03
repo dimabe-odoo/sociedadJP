@@ -122,8 +122,7 @@ class MobileSaleOrder(models.Model):
             'state': 'confirm'
         })
         self.confirm_date = datetime.datetime.now()
-        difdate = self.confirm_date - self.create_date
-        self.draft_to_confirm = difdate.strftime(%Y/%B/%D - %H:%M:%S")
+        self.draft_to_confirm = (self.confirm_date - self.create_date)
 
     @api.model
     def create(self, values):
