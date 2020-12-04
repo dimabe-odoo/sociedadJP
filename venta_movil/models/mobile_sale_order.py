@@ -68,10 +68,12 @@ class MobileSaleOrder(models.Model):
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
-            total = []
+            #total = []
             total_untax = []
             total_tax = []
             for line in item.mobile_lines:
+                total_untax = []
+                total_tax = []
                 for tx in line.tax_ids:
                     total_untax.append(line.price * line.qty)
                     total_tax.append((tx.amount/100) * line.price * line.qty)
