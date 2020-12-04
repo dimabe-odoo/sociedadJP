@@ -72,10 +72,8 @@ class MobileSaleOrder(models.Model):
             total_untax = []
             total_tax = []
             for line in item.mobile_lines:
-                total_untax = []
-                total_tax = []
+                total_untax.append(line.price * line.qty)
                 for tx in line.tax_ids:
-                    total_untax.append(line.price * line.qty)
                     total_tax.append((tx.amount/100) * line.price * line.qty)
                 #taxes = line.product_id.taxes_id[0].amount / 100
                 #total_value = (line.price * line.qty * (1 + taxes))
