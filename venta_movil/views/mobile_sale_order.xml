@@ -64,7 +64,7 @@
                                         <field name="loan_qty"
                                                attrs="{'required':[('parent.is_loan','=',True)],'invisible':[('parent.is_loan','=',False)],'readonly':[('parent.state','=','done')]}"/>
                                         <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
-                                        <field name="tax_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                        <field name="tax_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('type_tax_use','=','sale')]"/>
                                         <field name="subtotal" readonly="1" invisible="1"/>
                                     </tree>
                                 </field>
