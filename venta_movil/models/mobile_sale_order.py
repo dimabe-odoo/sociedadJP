@@ -245,11 +245,13 @@ class MobileSaleOrder(models.Model):
                 'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
                 'location_id':self.location_id.id,
             })
-        if self.is_loan:
-            for move in sale_odoo.picking_ids[0].move_ids_without_package:
-                move.write({
-                    'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
-                })
+
+        for line in self.mobile_lines:
+            if line.loan_qty > 0:
+                for move in sale_odoo.picking_ids[0].move_ids_without_package:
+                    move.write({
+                        'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
+                    })
 
         sale_odoo.picking_ids[0].write({
             'show_supply': True,
