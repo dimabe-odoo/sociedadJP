@@ -238,7 +238,7 @@ class MobileSaleOrder(models.Model):
                     sale_line.write({
                         'tax_id': [(4, tx.id)]
                     })
-                elif not tx || len(tx) == 0:
+                elif not tx or len(tx) == 0:
                     sale_line.write({
                         'tax_id': []
                     })
