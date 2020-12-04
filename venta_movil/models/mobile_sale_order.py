@@ -69,13 +69,18 @@ class MobileSaleOrder(models.Model):
     def onchange_mobile_line(self):
         for item in self:
             total = []
+            total_untax = []
+            total_tax = []
             for line in item.mobile_lines:
-                taxes = line.product_id.taxes_id[0].amount / 100
-                total_value = (line.price * line.qty * (1 + taxes))
-                total.append(total_value)
-            if len(total) > 0:
+                for tx in line.tax_ids:
+                    total_untax.append(line.price * line.qty)
+                    total_tax.append((tx.amount/100) * line.price * line.qty)
+                #taxes = line.product_id.taxes_id[0].amount / 100
+                #total_value = (line.price * line.qty * (1 + taxes))
+                #total.append(total_value)
+            if len(total_untax) > 0:
                 item.write({
-                    'total_sale': sum(total)
+                    'total_sale': sum(total_untax) + sum(total_tax)
                 })
             else:
                 item.write({
