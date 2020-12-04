@@ -23,6 +23,8 @@ class MobileSaleLine(models.Model):
 
     subtotal = fields.Monetary('Subtotal',compute='compute_subtotal')
 
+    tax_ids = fields.Many2Many('account.tax', string='Impuestos')
+
     def compute_subtotal(self):
         for item in self:
             item.subtotal = item.price * item.qty
