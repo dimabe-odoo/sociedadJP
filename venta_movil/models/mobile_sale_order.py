@@ -238,6 +238,11 @@ class MobileSaleOrder(models.Model):
                     sale_line.write({
                         'tax_id': [(4, tx.id)]
                     })
+                elif not tx:
+                    sale_line.write({
+                        'tax_id': [(5)]
+                    })
+
         sale_odoo.action_confirm()
 
         for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
