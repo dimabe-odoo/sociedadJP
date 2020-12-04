@@ -40,7 +40,7 @@
                                 />
                                 <field name="is_loan" widget="boolean_toggle"
                                        attrs="{'readonly':[('state','=','done')]}"/>
-                                <field name="payment_method" />
+                                <field name="payment_method" attrs="{'required':[('state','=','onroute')]}"/>
                                 <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
                             </group>
                             <group>
