@@ -61,17 +61,23 @@ class MobileSaleOrder(models.Model):
 
     products = fields.Many2many('product.template','available_in_pos')
 
+    total_untaxed = fields.Monetary('Base Imponible', compute='compute_total_untaxed')
+
+    total_taxes = fields.Monetary('Impuestos', compute='compute_total_taxes')
+
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
             total = []
+            total_untaxed = []
+            total_taxes = []
             for line in item.mobile_lines:
                 taxes = line.product_id.taxes_id[0].amount / 100
                 total_value = (line.price * line.qty * (1 + taxes))
                 total.append(total_value)
             if len(total) > 0:
                 item.write({
-                    'total_sale':sum(total)
+                    'total_sale': sum(total)
                 })
             else:
                 item.write({
@@ -103,6 +109,16 @@ class MobileSaleOrder(models.Model):
         stock_quant = self.env['stock.quant'].search([('product_id.id', 'in', products_line)]).mapped(
             'location_id').filtered(lambda a: a.is_truck)
         self.truck_ids = stock_quant
+
+    def compute_total_untaxed(self):
+        tax = self.mobile_lines.mapped('product_id').mapped('taxes_id')[0].amount / 100
+        untaxed = self.total_sale / ( 1 + tax)
+        self.total_untaxed = untaxed
+
+    def compute_total_taxes(self):
+        tax = self.mobile_lines.mapped('product_id').mapped('taxes_id')[0].amount / 100
+        taxes = self.total_untaxed * tax
+        self.total_taxes = taxes
 
     @api.onchange('paid')
     def compute_change(self):
