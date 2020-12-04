@@ -234,14 +234,15 @@ class MobileSaleOrder(models.Model):
                 'product_uom_qty': line.qty,
             })
             for tx in line.tax_ids:
-                if tx.id not in sale_line.mapped('tax_id').mapped('id'):
+                if not tx or len(tx) == 0 or tx == None:
+                    sale_line.write({
+                        'tax_id': [(5)]
+                    })
+                elif tx.id not in sale_line.mapped('tax_id').mapped('id'):
                     sale_line.write({
                         'tax_id': [(4, tx.id)]
                     })
-                elif not tx or len(tx) == 0:
-                    sale_line.write({
-                        'tax_id': []
-                    })
+
 
         sale_odoo.action_confirm()
 
