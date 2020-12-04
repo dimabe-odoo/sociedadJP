@@ -36,6 +36,7 @@ class MobileSaleLine(models.Model):
             if item.product_tmpl_id.id == self.product_id.id:
                 price = item.fixed_price
         self.price = price
+        self.tax_ids = self.product_id.taxes_id
 
     @api.onchange('qty')
     def onchange_qty(self):
