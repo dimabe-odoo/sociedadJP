@@ -68,16 +68,12 @@ class MobileSaleOrder(models.Model):
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
-            #total = []
             total_untax = []
             total_tax = []
             for line in item.mobile_lines:
                 total_untax.append(line.price * line.qty)
                 for tx in line.tax_ids:
                     total_tax.append((tx.amount/100) * line.price * line.qty)
-                #taxes = line.product_id.taxes_id[0].amount / 100
-                #total_value = (line.price * line.qty * (1 + taxes))
-                #total.append(total_value)
             if len(total_untax) > 0:
                 item.write({
                     'total_sale': sum(total_untax) + sum(total_tax),
@@ -117,17 +113,6 @@ class MobileSaleOrder(models.Model):
             'location_id').filtered(lambda a: a.is_truck)
         self.truck_ids = stock_quant
 
-    # @api.onchange('total_sale')
-    # def compute_total_untaxed(self):
-    #     tax = self.mobile_lines.mapped('product_id').mapped('taxes_id').amount / 100
-    #     untaxed = self.total_sale / ( 1 + tax)
-    #     self.total_untaxed = untaxed
-    #
-    # @api.onchange('total_untaxed')
-    # def compute_total_taxes(self):
-    #     tax = self.mobile_lines.mapped('product_id').mapped('taxes_id').amount / 100
-    #     taxes = self.total_untaxed * tax
-    #     self.total_taxes = taxes
 
     @api.onchange('paid')
     def compute_change(self):
@@ -240,7 +225,7 @@ class MobileSaleOrder(models.Model):
             })
 
         for line in self.mobile_lines:
-            self.env['sale.order.line'].create({
+            sale_line = self.env['sale.order.line'].create({
                 'product_id': line.product_id.id,
                 'order_id': sale_odoo.id,
                 'customer_lead': 1,
@@ -248,6 +233,11 @@ class MobileSaleOrder(models.Model):
                 'price_unit': line.price,
                 'product_uom_qty': line.qty,
             })
+            for tx in line.tax_ids:
+                if tx.id not in sale_line.mapped('tax_id').mapped('id'):
+                    sale_line.write({
+                        'tax_id': [(4, tx.id)]
+                    })
         sale_odoo.action_confirm()
 
         for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
