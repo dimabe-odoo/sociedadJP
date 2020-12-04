@@ -108,13 +108,13 @@ class MobileSaleOrder(models.Model):
             'location_id').filtered(lambda a: a.is_truck)
         self.truck_ids = stock_quant
 
-    @api.onchange('mobile_lines')
+    @api.onchange('total_sale')
     def compute_total_untaxed(self):
         tax = self.mobile_lines.mapped('product_id').mapped('taxes_id')[0].amount / 100
         untaxed = self.total_sale / ( 1 + tax)
         self.total_untaxed = untaxed
 
-    @api.onchange('mobile_lines')
+    @api.onchange('total_sale')
     def compute_total_taxes(self):
         tax = self.mobile_lines.mapped('product_id').mapped('taxes_id')[0].amount / 100
         taxes = self.total_untaxed * tax
