@@ -114,7 +114,7 @@ class MobileSaleOrder(models.Model):
         untaxed = self.total_sale / ( 1 + tax)
         self.total_untaxed = untaxed
 
-    @api.onchange('total_sale')
+    @api.onchange('total_untaxed')
     def compute_total_taxes(self):
         tax = self.mobile_lines.mapped('product_id').mapped('taxes_id').amount / 100
         taxes = self.total_untaxed * tax
