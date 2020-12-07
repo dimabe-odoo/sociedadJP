@@ -47,7 +47,6 @@ class LoginController(http.Controller):
                 'user_id':user.id,
                 'is_login':True,
                 'employee_id':employee_id.id,
-                'truck':truck
             })
 
             return {'user': user[0].name, 'last_order': last_order,'employee_id':employee_id.id,'session_id':session.id,
