@@ -44,7 +44,7 @@ class LoginController(http.Controller):
 
             session = request.env['truck.session'].sudo().create({
                 'login_datetime':datetime.datetime.now(),
-                'user_id':user_id,
+                'user_id':user.id,
                 'is_login':True,
                 'employee_id':employee_id.id
             })
