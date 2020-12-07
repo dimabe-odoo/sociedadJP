@@ -23,7 +23,7 @@ class LoginController(http.Controller):
         else:
             last_order = 'No tiene pedido asociados'
 
-        return {'user': user[0].name, 'last_order': last_order, 'points': user[0].partner_id.loyalty_points,
+        return {'user': user[0].name, 'last_order': last_order,
                 'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
                 'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
 
