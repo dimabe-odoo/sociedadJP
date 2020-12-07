@@ -43,7 +43,7 @@ class MobileSaleController(http.Controller):
 
         return {'mobile_order', mobile_order.name}
 
-    @api.route('/api/mobile_orders',type="json",method=['GET'],auth='public',cors='*')
+    @http.route('/api/mobile_orders',type="json",method=['GET'],auth='public',cors='*')
     def get_orders(self):
         env = request.env['mobile.sale.order'].search([('state','=','confirm')])
         respond = []
