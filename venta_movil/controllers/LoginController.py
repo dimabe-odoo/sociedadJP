@@ -49,7 +49,7 @@ class LoginController(http.Controller):
                 'employee_id':employee_id.id,
             })
 
-            return {'user': user[0].name, 'last_order': last_order,'employee_id':employee_id.id,'session_id':session.id,
+            return {'user': user[0].name,'employee_id':employee_id.id,'session_id':session.id,
                     'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
                     'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
 
