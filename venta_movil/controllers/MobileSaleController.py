@@ -42,3 +42,21 @@ class MobileSaleController(http.Controller):
         mobile_order.write({'state': 'done', 'date_done': datetime.datetime.now})
 
         return {'mobile_order', mobile_order.name}
+
+    @api.route('/api/mobile_orders',type="json",method=['GET'],auth='public',cors='*')
+    def get_orders(self):
+        env = request.env['mobile.sale.order'].search([('state','=','confirm')])
+        respond = []
+
+        for res in env:
+            description = ''
+            array_des = []
+            for product in res.mobile_lines:
+                array_des.append('{}'.format(product.product_id.display_name))
+            description = array_des.join()
+            respond.append({
+                'ClientName':res.customer_id.display_name,
+                'Description':description
+            })
+
+        return respond
