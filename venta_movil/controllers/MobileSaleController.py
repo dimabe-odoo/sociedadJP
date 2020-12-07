@@ -53,11 +53,11 @@ class MobileSaleController(http.Controller):
             array_des = []
             s = ' '
             for product in res.mobile_lines:
-                array_des.append('{}'.format(product.product_id.display_name))
+                array_des.append('{}'.format(product.product_id.name))
             description = s.join(array_des)
             respond.append({
                 'ClientName':res.customer_id.display_name,
-                'Description':description
+                'Description':description,
             })
 
         return respond
