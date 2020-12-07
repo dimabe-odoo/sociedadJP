@@ -70,6 +70,7 @@ class MobileSaleController(http.Controller):
                     })
             description = s.join(array_srt_des)
             respond.append({
+                'id':res.id,
                 'ClientName':res.customer_id.display_name,
                 'ClientAddress':res.customer_id.street,
                 'ClientPhone':res.customer_id.mobile,
