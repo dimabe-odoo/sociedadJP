@@ -1,31 +1,57 @@
 from odoo import http
 from odoo.http import request
 from ..jwt_token import generate_token
-
+import datetime
 
 class LoginController(http.Controller):
     @http.route('/api/login', type='json', auth='public', cors='*')
-    def do_login(self, user, password):
-        uid = request.session.authenticate(
-            request.env.cr.dbname,
-            user,
-            password
-        )
-        if not uid:
-            return self.errcode(code=400, message='incorrect login')
+    def do_login(self, user, password,is_driver= False):
+        if not is_driver:
+            uid = request.session.authenticate(
+                request.env.cr.dbname,
+                user,
+                password
+            )
+            if not uid:
+                return self.errcode(code=400, message='incorrect login')
 
-        token = generate_token(uid)
+            token = generate_token(uid)
 
-        user = request.env['res.users'].browse(uid)[0]
+            user = request.env['res.users'].browse(uid)[0]
 
-        if len(request.env['sale.order'].search([('partner_id', '=', user[0].partner_id.id)])) > 1:
-            last_order = request.env['sale.order'].search([('partner_id', '=', user[0].partner_id.id)])[-1]
+            if len(request.env['sale.order'].search([('partner_id', '=', user[0].partner_id.id)])) > 1:
+                last_order = request.env['sale.order'].search([('partner_id', '=', user[0].partner_id.id)])[-1]
+            else:
+                last_order = 'No tiene pedido asociados'
+
+            return {'user': user[0].name, 'last_order': last_order,
+                    'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
+                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
         else:
-            last_order = 'No tiene pedido asociados'
+            uid = request.session.authenticate(
+                request.env.cr.dbname,
+                user,
+                password
+            )
+            if not uid:
+                return self.errcode(code=400, message='incorrect login')
 
-        return {'user': user[0].name, 'last_order': last_order,
-                'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
-                'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
+            token = generate_token(uid)
+
+            user = request.env['res.users'].browse(uid)[0]
+
+            employee_id = request.env['hr.employee'].sudo().search([('user_id','=',user.id)])
+
+            session = request.env['truck.session'].sudo().create({
+                'login_datetime':datetime.datetime.now(),
+                'user_id':user_id,
+                'is_login':True,
+                'employee_id':employee_id.id
+            })
+
+            return {'user': user[0].name, 'last_order': last_order,'employee_id':employee_id.id,'session_id':session.id,
+                    'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
+                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
 
     @http.route('/api/refresh-token', type='json', auth='public', cors='*')
     def do_refresh_token(self, email):

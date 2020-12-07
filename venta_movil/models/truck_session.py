@@ -11,7 +11,7 @@ class TruckSession(models.Model):
 
     user_id = fields.Many2one('res.users', 'Usuario',rel='employee_id.user_id')
 
-    truck_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)],required=True)
+    truck_id = fields.Many2one('stock.location', 'Camion', domain=[('is_truck', '=', True)])
 
     is_login = fields.Boolean('Activo', default=True)
 
