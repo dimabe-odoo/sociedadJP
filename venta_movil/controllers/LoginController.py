@@ -51,7 +51,7 @@ class LoginController(http.Controller):
         truck = request.env['stock.location'].sudo().search([('name','=',truck)])
         session = request.env['truck.session'].sudo().create({
             'user_id':user,
-            'truck_i':truck.id,
+            'truck_id':truck.id,
             'employee_id':employee,
             'is_login':True,
         })
