@@ -21,7 +21,7 @@ class TruckSession(models.Model):
 
     @api.model
     def create(self,values):
-        if values['truck_id']:
+        if 'truck_id' in values.keys():
             truck = self.env['truck.session'].search(
                 [('truck_id.id', '=', values['truck_id']), ('is_login', '=', True)])
             if truck:
