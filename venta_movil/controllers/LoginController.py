@@ -48,8 +48,8 @@ class LoginController(http.Controller):
 
     @http.route('/api/assign_truck',type="json",method=['GET'],auth='token',cors='*')
     def assign_truck(self,truck,employee):
-        truck = request.env['stock.location'].search([('name','=',truck)])
-        session = request.env['truck.session'].create({
+        truck = request.env['stock.location'].sudo().search([('name','=',truck)])
+        session = request.env['truck.session'].sudo().create({
             'user_id':uid,
             'truck_i':truck.id,
             'employee_id':employee,
