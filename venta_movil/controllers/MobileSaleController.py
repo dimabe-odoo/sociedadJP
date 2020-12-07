@@ -50,14 +50,24 @@ class MobileSaleController(http.Controller):
 
         for res in env:
             description = ''
+            array_srt_des = []
             array_des = []
             s = ' '
             for product in res.mobile_lines:
-                array_des.append('{}'.format(product.product_id.name))
+                if product.qty > 1:
+                    array_des.append('{} {}s'.format(product.qty,product.product_id.name))
+                    array_des.append({
+                        'ProductName':product.product_id.name,
+                        'Qty':product.qty,
+                        'PriceUnit':product.price
+                    })
+                else:
+                    array_des.append('{} {}'.format(product.qty,product.product_id.name))
             description = s.join(array_des)
             respond.append({
                 'ClientName':res.customer_id.display_name,
-                'Description':description,
+                'ShortDescription':description,
+                'Description': array_des
             })
 
         return respond
