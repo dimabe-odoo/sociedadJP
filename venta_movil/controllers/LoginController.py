@@ -5,8 +5,8 @@ import datetime
 
 class LoginController(http.Controller):
     @http.route('/api/login', type='json', auth='public', cors='*')
-    def do_login(self, user, password,is_driver= False):
-        if not is_driver:
+    def do_login(self, user, password,is_driver= False,truck = ''):
+        if not is_driver and truck == '':
             uid = request.session.authenticate(
                 request.env.cr.dbname,
                 user,
@@ -46,7 +46,8 @@ class LoginController(http.Controller):
                 'login_datetime':datetime.datetime.now(),
                 'user_id':user.id,
                 'is_login':True,
-                'employee_id':employee_id.id
+                'employee_id':employee_id.id,
+                'truck':truck
             })
 
             return {'user': user[0].name, 'last_order': last_order,'employee_id':employee_id.id,'session_id':session.id,
