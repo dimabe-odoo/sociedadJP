@@ -62,7 +62,12 @@ class MobileSaleController(http.Controller):
                         'PriceUnit':product.price
                     })
                 else:
-                    array_des.append('{} {}'.format(product.qty,product.product_id.name))
+                    array_srt_des.append('{} {}'.format(product.qty,product.product_id.name))
+                    array_des.append({
+                        'ProductName': product.product_id.name,
+                        'Qty': product.qty,
+                        'PriceUnit': product.price
+                    })
             description = s.join(array_srt_des)
             respond.append({
                 'ClientName':res.customer_id.display_name,
