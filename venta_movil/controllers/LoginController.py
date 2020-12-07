@@ -5,8 +5,8 @@ import datetime
 
 class LoginController(http.Controller):
     @http.route('/api/login', type='json', auth='public', cors='*')
-    def do_login(self, user, password,is_driver= False,truck = ''):
-        if not is_driver and truck == '':
+    def do_login(self, user, password,is_driver= False):
+        if not is_driver:
             uid = request.session.authenticate(
                 request.env.cr.dbname,
                 user,
@@ -42,16 +42,20 @@ class LoginController(http.Controller):
 
             employee_id = request.env['hr.employee'].sudo().search([('user_id','=',user.id)])
 
-            session = request.env['truck.session'].sudo().create({
-                'login_datetime':datetime.datetime.now(),
-                'user_id':user.id,
-                'is_login':True,
-                'employee_id':employee_id.id,
-            })
-
-            return {'user': user[0].name,'employee_id':employee_id.id,'session_id':session.id,
+            return {'user': user[0].name,'employee_id':employee_id.id,
                     'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
                     'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
+
+    @http.route('/api/assign_truck',type="json",method=['GET'],auth='token',cors='*')
+    def assign_truck(self,truck,user,employee):
+        truck = request.env['stock.location'].search([('name','=',truck)])
+        session = request.env['truck.session'].create({
+            'user_id':user,
+            'truck_i':truck.id,
+            'employee_id':employee,
+            'is_login':True,
+        })
+        return {'session_id':session.id}
 
     @http.route('/api/refresh-token', type='json', auth='public', cors='*')
     def do_refresh_token(self, email):
