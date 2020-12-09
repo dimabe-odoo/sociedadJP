@@ -37,7 +37,7 @@ class MobileSaleController(http.Controller):
         mobile_order = request.env['mobile.sale.order'].search([('id', '=', mobile_id)])
         truck_session = request.env['truck.session'].sudo().search([('id','=',session)])
         mobile_order.write({
-            'session_id':session,
+            'seller_id':session,
             'state':'onroute'
         })
         return {'Pedido asignado'}
