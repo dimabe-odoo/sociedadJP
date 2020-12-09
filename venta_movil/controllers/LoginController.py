@@ -46,7 +46,7 @@ class LoginController(http.Controller):
                 'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
 
     @http.route('/api/assign_truck', type="json", method=['GET'], auth='token', cors='*')
-    def assign_truck(self, truck, employee, user, vat):
+    def assign_truck(self, truck, employee, user):
         truck = request.env['stock.location'].sudo().search([('name', '=', truck)])
         if not employee:
             employee_id = request.env['hr.employee'].search([('user_id', '=', user)])
