@@ -2,7 +2,8 @@ from odoo import http
 from odoo.http import request
 import datetime
 import logging
-
+import haversine as hs
+from haversine import Unit
 
 class MobileSaleController(http.Controller):
 
@@ -44,15 +45,18 @@ class MobileSaleController(http.Controller):
         return {'mobile_order', mobile_order.name}
 
     @http.route('/api/mobile_orders',type="json",method=['GET'],auth='public',cors='*')
-    def get_orders(self):
+    def get_orders(self,latitude,longitude):
         env = request.env['mobile.sale.order'].sudo().search([('state','=','confirm')])
         respond = []
+        loc_truck = (latitude,longitude)
 
         for res in env:
             description = ''
             array_srt_des = []
             array_des = []
             s = ' '
+            loc_customer = (res.customer_id.partner_latitude,res.customer_id.partner_longitude)
+            dis = hs.haversine(loc_truck,loc_customer,Unit.METERS)
             for product in res.mobile_lines:
                 if product.qty > 1:
                     array_srt_des.append('{} {}s'.format(product.qty,product.product_id.name))
@@ -75,6 +79,7 @@ class MobileSaleController(http.Controller):
                 'ClientAddress':res.customer_id.street,
                 'ClientPhone':res.customer_id.mobile,
                 'ShortDescription':description,
+                'Distance':dis,
                 'Description': array_des
             })
 
