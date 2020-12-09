@@ -82,5 +82,5 @@ class MobileSaleController(http.Controller):
                 'Distance':dis,
                 'Description': array_des
             })
-        list_sort_by_dis = sorted(lambda d : d['Distance'])
+        list_sort_by_dis = sorted(respond, key = lambda i: i['Distance'])
         return list_sort_by_dis
