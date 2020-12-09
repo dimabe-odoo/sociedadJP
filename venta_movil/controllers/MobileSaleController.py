@@ -79,7 +79,7 @@ class MobileSaleController(http.Controller):
                 'ClientAddress':res.customer_id.street,
                 'ClientPhone':res.customer_id.mobile,
                 'ShortDescription':description,
-                'Distance':dis,
+                'Distance':round(dis,2),
                 'Description': array_des
             })
         list_sort_by_dis = sorted(respond, key = lambda i: i['Distance'])
