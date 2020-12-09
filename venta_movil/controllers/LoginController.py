@@ -42,12 +42,12 @@ class LoginController(http.Controller):
 
             employee_id = request.env['hr.employee'].sudo().search([('user_id','=',user.id)])
 
-            return {'id':user[0].id,'user': user[0].name,'employee_id':employee_id.id,
+            return {'user_id':user[0].id,'user': user[0].name,'employee_id':employee_id.id,
                     'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
                     'mobile': user[0].mobile, 'token': token, 'address': user[0].street}
 
     @http.route('/api/assign_truck',type="json",method=['GET'],auth='token',cors='*')
-    def assign_truck(self,truck,employee,user):
+    def assign_truck(self,truck,employee,user,vat):
         truck = request.env['stock.location'].sudo().search([('name','=',truck)])
         if not employee:
             employee_id = request.env['hr.employee'].search([('user_id','=',user)])
