@@ -5,6 +5,7 @@ import logging
 import haversine as hs
 from haversine import Unit
 
+
 class MobileSaleController(http.Controller):
 
     @http.route('/api/sale/create_sale', type='json', method=['POST'], auth='public', cors='*')
@@ -32,9 +33,14 @@ class MobileSaleController(http.Controller):
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
     @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
-    def take_saleman(self, mobile_id, location_saleman):
+    def take_saleman(self, mobile_id, session):
         mobile_order = request.env['mobile.sale.order'].search([('id', '=', mobile_id)])
-        mobile_order.write('location_id', '=', location_saleman)
+        truck_session = request.env['truck.session'].sudo().search([('id','=',session)])
+        mobile_order.write({
+            'session_id':truck_session.id,
+            'state':'onroute'
+        })
+        return {'Pedido asignado'}
 
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
     def make_done(self, mobile_id):
@@ -44,29 +50,29 @@ class MobileSaleController(http.Controller):
 
         return {'mobile_order', mobile_order.name}
 
-    @http.route('/api/mobile_orders',type="json",method=['GET'],auth='public',cors='*')
-    def get_orders(self,latitude,longitude):
-        env = request.env['mobile.sale.order'].sudo().search([('state','=','confirm')])
+    @http.route('/api/mobile_orders', type="json", method=['GET'], auth='public', cors='*')
+    def get_orders(self, latitude, longitude):
+        env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
         respond = []
-        loc_truck = (longitude,latitude)
+        loc_truck = (longitude, latitude)
 
         for res in env:
             description = ''
             array_srt_des = []
             array_des = []
             s = ' '
-            loc_customer = (res.customer_id.partner_longitude,res.customer_id.partner_latitude)
-            dis = hs.haversine(loc_truck,loc_customer,Unit.METERS)
+            loc_customer = (res.customer_id.partner_longitude, res.customer_id.partner_latitude)
+            dis = hs.haversine(loc_truck, loc_customer, Unit.METERS)
             for product in res.mobile_lines:
                 if product.qty > 1:
-                    array_srt_des.append('{} {}s'.format(product.qty,product.product_id.name))
+                    array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
                     array_des.append({
-                        'ProductName':product.product_id.name,
-                        'Qty':product.qty,
-                        'PriceUnit':product.price
+                        'ProductName': product.product_id.name,
+                        'Qty': product.qty,
+                        'PriceUnit': product.price
                     })
                 else:
-                    array_srt_des.append('{} {}'.format(product.qty,product.product_id.name))
+                    array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
                     array_des.append({
                         'ProductName': product.product_id.name,
                         'Qty': product.qty,
@@ -74,13 +80,13 @@ class MobileSaleController(http.Controller):
                     })
             description = s.join(array_srt_des)
             respond.append({
-                'id':str(res.id),
-                'ClientName':res.customer_id.display_name,
-                'ClientAddress':res.customer_id.street,
-                'ClientPhone':res.customer_id.mobile,
-                'ShortDescription':description,
-                'Distance':round(dis,2),
+                'id': str(res.id),
+                'ClientName': res.customer_id.display_name,
+                'ClientAddress': res.customer_id.street,
+                'ClientPhone': res.customer_id.mobile,
+                'ShortDescription': description,
+                'Distance': round(dis, 2),
                 'Description': array_des
             })
-        list_sort_by_dis = sorted(respond, key = lambda i: i['Distance'])
+        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
         return list_sort_by_dis
