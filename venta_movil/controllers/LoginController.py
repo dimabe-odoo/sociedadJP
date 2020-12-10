@@ -40,7 +40,7 @@ class LoginController(http.Controller):
         user = request.env['res.users'].browse(uid)[0]
 
         employee_id = request.env['hr.employee'].sudo().search([('user_id', '=', user.id)])
-1
+
         session = request.env['truck.session'].sudo().search([('user_id','=',user.id),('is_login','=',True)])
 
         if session:
