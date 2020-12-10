@@ -36,7 +36,7 @@ class MobileSaleController(http.Controller):
     def take_saleman(self, mobile_id, session):
         mobile_order = request.env['mobile.sale.order'].search([('id', '=', mobile_id)])
         truck_session = request.env['truck.session'].sudo().search([('id','=',session)])
-        warehouses = self.env['stock.warehouse'].search([])
+        warehouses = request.env['stock.warehouse'].sudo().search([])
         warehouse_id = 0
         for ware in warehouses:
             trucks = ware.mapped('truck_ids').mapped('id')
