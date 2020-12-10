@@ -38,8 +38,8 @@ class MobileSaleController(http.Controller):
         truck_session = request.env['truck.session'].sudo().search([('id','=',session)])
         mobile_order.write({
             'seller_id':session,
-            'state':'onroute'
         })
+        mobile_order.button_dispatch()
         return {'Pedido asignado'}
 
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
