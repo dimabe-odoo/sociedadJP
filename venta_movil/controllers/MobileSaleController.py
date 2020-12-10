@@ -36,8 +36,17 @@ class MobileSaleController(http.Controller):
     def take_saleman(self, mobile_id, session):
         mobile_order = request.env['mobile.sale.order'].search([('id', '=', mobile_id)])
         truck_session = request.env['truck.session'].sudo().search([('id','=',session)])
+        warehouses = self.env['stock.warehouse'].search([])
+        warehouse_id = 0
+        for ware in warehouses:
+            trucks = ware.mapped('truck_ids').mapped('id')
+            if truck_session.truck_id.id in trucks:
+                warehouse_id = ware.id
+                break
         mobile_order.write({
             'seller_id':session,
+            'location_id': truck_session.truck_id.id,
+            'warehouse_id':warehouse_id
         })
         mobile_order.button_dispatch()
         return {'Pedido asignado'}
