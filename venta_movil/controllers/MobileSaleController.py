@@ -66,7 +66,7 @@ class MobileSaleController(http.Controller):
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
 
-        now = datetime.now()
+        now = datetime.datetime.now()
 
         
         for res in env:
@@ -74,6 +74,7 @@ class MobileSaleController(http.Controller):
             array_srt_des = []
             array_des = []
             s = ' '
+
             dir = gmaps.directions((latitude,longitude),
                        (res.customer_id.partner_latitude, res.customer_id.partner_longitude), mode="driving",
                         departure_time=now)
