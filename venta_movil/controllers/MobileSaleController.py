@@ -35,7 +35,7 @@ class MobileSaleController(http.Controller):
     @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
     def take_saleman(self, mobile_id, session):
         mobile_order = request.env['mobile.sale.order'].search([('id', '=', mobile_id)])
-        truck_session = request.env['truck.session'].sudo().search([('id','=',int(session))])
+        truck_session = request.env['truck.session'].sudo().search([('id', '=', int(session))])
         _logger = logging.getLogger(__name__)
         _logger.error(truck_session)
         warehouses = request.env['stock.warehouse'].sudo().search([])
@@ -46,9 +46,9 @@ class MobileSaleController(http.Controller):
                 warehouse_id = ware.id
                 break
         mobile_order.write({
-            'seller_id':session,
+            'seller_id': session,
             'location_id': truck_session.truck_id.id,
-            'warehouse_id':warehouse_id
+            'warehouse_id': warehouse_id
         })
         mobile_order.button_dispatch()
         return {'Pedido asignado'}
@@ -102,10 +102,9 @@ class MobileSaleController(http.Controller):
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
         return list_sort_by_dis
 
-
-    @http.route('/api/my_orders',type='json',method=['GET'],auth='token',cors='*')
-    def get_my_orders(self,session,latitude,longitude):
-        mobile_orders = request.env['mobile.sale.order'].search([('session_id','=',session)])
+    @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
+    def get_my_orders(self, session, latitude, longitude):
+        mobile_orders = request.env['mobile.sale.order'].search([('session_id', '=', session)])
         respond = []
         loc_truck = (longitude, latitude)
 
