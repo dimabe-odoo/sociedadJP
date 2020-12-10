@@ -2,9 +2,7 @@ from odoo import http
 from odoo.http import request
 import datetime
 import logging
-import haversine as hs
-from haversine import Unit
-
+import googlemaps
 
 class MobileSaleController(http.Controller):
 
@@ -65,15 +63,20 @@ class MobileSaleController(http.Controller):
     def get_orders(self, latitude, longitude):
         env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
         respond = []
-        loc_truck = (latitude,longitude)
+        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
+        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
 
+        now = datetime.now()
+
+        
         for res in env:
             description = ''
             array_srt_des = []
             array_des = []
             s = ' '
-            loc_customer = (res.customer_id.partner_latitude, res.customer_id.partner_longitude)
-            dis = hs.haversine(loc_truck, loc_customer, Unit.METERS)
+            dir = gmaps.directions((latitude,longitude),
+                       (res.customer_id.partner_latitude, res.customer_id.partner_longitude), mode="driving",
+                        departure_time=now)
             for product in res.mobile_lines:
                 if product.qty > 1:
                     array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
