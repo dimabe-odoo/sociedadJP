@@ -61,13 +61,55 @@ class MobileSaleController(http.Controller):
 
         return {'mobile_order', mobile_order.name}
 
-    @http.route('/api/mobile_orders', type="json", method=['GET'], auth='public', cors='*')
+    @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude):
         env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
         respond = []
         loc_truck = (longitude, latitude)
 
         for res in env:
+            description = ''
+            array_srt_des = []
+            array_des = []
+            s = ' '
+            loc_customer = (res.customer_id.partner_longitude, res.customer_id.partner_latitude)
+            dis = hs.haversine(loc_truck, loc_customer, Unit.METERS)
+            for product in res.mobile_lines:
+                if product.qty > 1:
+                    array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
+                    array_des.append({
+                        'ProductName': product.product_id.name,
+                        'Qty': product.qty,
+                        'PriceUnit': product.price
+                    })
+                else:
+                    array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
+                    array_des.append({
+                        'ProductName': product.product_id.name,
+                        'Qty': product.qty,
+                        'PriceUnit': product.price
+                    })
+            description = s.join(array_srt_des)
+            respond.append({
+                'id': str(res.id),
+                'ClientName': res.customer_id.display_name,
+                'ClientAddress': res.customer_id.street,
+                'ClientPhone': res.customer_id.mobile,
+                'ShortDescription': description,
+                'Distance': round(dis, 2),
+                'Description': array_des
+            })
+        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
+        return list_sort_by_dis
+
+
+    @http.route('/api/my_orders',type='json',method=['GET'],auth='token',cors='*')
+    def get_my_orders(self,session,latitude,longitude):
+        mobile_orders = request.env['mobile.sale.order'].search([('session_id','=',session)])
+        respond = []
+        loc_truck = (longitude, latitude)
+
+        for res in mobile_orders:
             description = ''
             array_srt_des = []
             array_des = []
