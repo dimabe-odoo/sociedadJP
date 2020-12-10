@@ -65,14 +65,14 @@ class MobileSaleController(http.Controller):
     def get_orders(self, latitude, longitude):
         env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
         respond = []
-        loc_truck = (longitude, latitude)
+        loc_truck = (latitude,longitude)
 
         for res in env:
             description = ''
             array_srt_des = []
             array_des = []
             s = ' '
-            loc_customer = (res.customer_id.partner_longitude, res.customer_id.partner_latitude)
+            loc_customer = (res.customer_id.partner_latitude, res.customer_id.partner_longitude)
             dis = hs.haversine(loc_truck, loc_customer, Unit.METERS)
             for product in res.mobile_lines:
                 if product.qty > 1:
