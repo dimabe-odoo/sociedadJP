@@ -64,7 +64,6 @@ class MobileSaleController(http.Controller):
         env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
         respond = []
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
-        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
 
         now = datetime.datetime.now()
 
@@ -108,17 +107,22 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
-        mobile_orders = request.env['mobile.sale.order'].search([('session_id', '=', session)])
+        env = request.env['mobile.sale.order'].sudo().search([('seller_id', '=', int(session),('state','=','onroute'))])
         respond = []
-        loc_truck = (longitude, latitude)
+        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
 
-        for res in mobile_orders:
+        now = datetime.datetime.now()
+
+        for res in env:
             description = ''
             array_srt_des = []
             array_des = []
             s = ' '
-            loc_customer = (res.customer_id.partner_longitude, res.customer_id.partner_latitude)
-            dis = hs.haversine(loc_truck, loc_customer, Unit.METERS)
+
+            dir = gmaps.directions((latitude, longitude),
+                                   (res.customer_id.partner_latitude, res.customer_id.partner_longitude),
+                                   mode="driving",
+                                   departure_time=now)
             for product in res.mobile_lines:
                 if product.qty > 1:
                     array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
@@ -141,7 +145,7 @@ class MobileSaleController(http.Controller):
                 'ClientAddress': res.customer_id.street,
                 'ClientPhone': res.customer_id.mobile,
                 'ShortDescription': description,
-                'Distance': round(dis, 2),
+                'Distance': dir[0]['legs'][0]['distance']['text'],
                 'Description': array_des
             })
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
