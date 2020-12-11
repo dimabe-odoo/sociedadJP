@@ -164,7 +164,7 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/paymentmethod',type='json',method=['GET'],auth='token',cors='*')
     def get_paymeth_method(self):
-        respond = request['pos.payment.method'].sudo().search([])
+        respond = request.env['pos.payment.method'].sudo().search([])
         result = []
 
         for res in respond:
