@@ -93,15 +93,26 @@ class MobileSaleController(http.Controller):
                         'PriceUnit': product.price
                     })
             description = s.join(array_srt_des)
-            respond.append({
-                'id': str(res.id),
-                'ClientName': res.customer_id.display_name,
-                'ClientAddress': res.customer_id.street,
-                'ClientPhone': res.customer_id.mobile,
-                'ShortDescription': description,
-                'Distance': dir[0]['legs'][0]['distance']['text'],
-                'Description': array_des
-            })
+            if res.address_id:
+                respond.append({
+                    'id': str(res.id),
+                    'ClientName': res.address_id.display_name,
+                    'ClientAddress': res.address_id.street,
+                    'ClientPhone': res.address_id.mobile,
+                    'ShortDescription': description,
+                    'Distance': dir[0]['legs'][0]['distance']['text'],
+                    'Description': array_des
+                })
+            else:
+                respond.append({
+                    'id': str(res.id),
+                    'ClientName': res.customer_id.display_name,
+                    'ClientAddress': res.customer_id.street,
+                    'ClientPhone': res.customer_id.mobile,
+                    'ShortDescription': description,
+                    'Distance': dir[0]['legs'][0]['distance']['text'],
+                    'Description': array_des
+                })
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
         return list_sort_by_dis
 
