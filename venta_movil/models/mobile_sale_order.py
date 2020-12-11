@@ -245,7 +245,7 @@ class MobileSaleOrder(models.Model):
 
 
         sale_odoo.action_confirm()
-        models._logeer.error(sale_odoo.state)
+        models._logger.error(sale_odoo.state)
         for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
             stock.write({
                 'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
