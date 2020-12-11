@@ -124,6 +124,8 @@ class MobileSaleController(http.Controller):
         env = request.env['mobile.sale.order'].sudo().search(
             [('seller_id', '=', int(session)), ('state', '=', 'onroute')])
         respond = []
+        _logger = logging.getLogger(__name__)
+        _logger.error(latitude)
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
 
         now = datetime.datetime.now()
@@ -177,6 +179,7 @@ class MobileSaleController(http.Controller):
                     'Total': res.total_sale
                 })
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
+        _logger.error(list_sort_by_dis)
         return list_sort_by_dis
 
     @http.route('/api/paymentmethod', type='json', method=['GET'], auth='token', cors='*')
