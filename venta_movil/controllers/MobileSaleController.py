@@ -102,7 +102,8 @@ class MobileSaleController(http.Controller):
                     'ClientPhone': res.address_id.mobile,
                     'ShortDescription': description,
                     'Distance': dir[0]['legs'][0]['distance']['text'],
-                    'Description': array_des
+                    'Description': array_des,
+                    'Total': res.total_sale
                 })
             else:
                 respond.append({
@@ -112,7 +113,8 @@ class MobileSaleController(http.Controller):
                     'ClientPhone': res.customer_id.mobile,
                     'ShortDescription': description,
                     'Distance': dir[0]['legs'][0]['distance']['text'],
-                    'Description': array_des
+                    'Description': array_des,
+                    'Total':res.total_sale
                 })
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
         return list_sort_by_dis
@@ -152,15 +154,28 @@ class MobileSaleController(http.Controller):
                         'PriceUnit': product.price
                     })
             description = s.join(array_srt_des)
-            respond.append({
-                'id': str(res.id),
-                'ClientName': res.customer_id.display_name,
-                'ClientAddress': res.customer_id.street,
-                'ClientPhone': res.customer_id.mobile,
-                'ShortDescription': description,
-                'Distance': dir[0]['legs'][0]['distance']['text'],
-                'Description': array_des
-            })
+            if res.address_id:
+                respond.append({
+                    'id': str(res.id),
+                    'ClientName': res.address_id.display_name,
+                    'ClientAddress': res.address_id.street,
+                    'ClientPhone': res.address_id.mobile,
+                    'ShortDescription': description,
+                    'Distance': dir[0]['legs'][0]['distance']['text'],
+                    'Description': array_des,
+                    'Total': res.total_sale
+                })
+            else:
+                respond.append({
+                    'id': str(res.id),
+                    'ClientName': res.customer_id.display_name,
+                    'ClientAddress': res.customer_id.street,
+                    'ClientPhone': res.customer_id.mobile,
+                    'ShortDescription': description,
+                    'Distance': dir[0]['legs'][0]['distance']['text'],
+                    'Description': array_des,
+                    'Total': res.total_sale
+                })
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
         return list_sort_by_dis
 
