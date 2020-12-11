@@ -253,16 +253,16 @@ class MobileSaleOrder(models.Model):
             })
         models._logger.error('{}'.format(sale_odoo.picking_ids))
         models._logger.error('{},{}'.format(sale_odoo.picking_ids[0].move_line_ids_without_package.mapped('product_id').mapped('display_name')),sale_odoo.picking_ids[0].move_line_ids_without_package.mapped('product_uom_qty'))
-        if self.mobile_lines.filtered(lambda a: a.loan_qty > 0):
-            sale_odoo.write({
-                'loan_supply': True
-            })
-            for line in self.mobile_lines:
-                if line.loan_qty > 0:
-                    for move in sale_odoo.picking_ids[0].move_ids_without_package:
-                        move.write({
-                            'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
-                        })
+        # if self.mobile_lines.filtered(lambda a: a.loan_qty > 0):
+        #     sale_odoo.write({
+        #         'loan_supply': True
+        #     })
+        #     for line in self.mobile_lines:
+        #         if line.loan_qty > 0:
+        #             for move in sale_odoo.picking_ids[0].move_ids_without_package:
+        #                 move.write({
+        #                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
+        #                 })
 
         sale_odoo.picking_ids[0].write({
             'show_supply': True,
