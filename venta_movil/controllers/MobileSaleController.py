@@ -171,7 +171,7 @@ class MobileSaleController(http.Controller):
 
         for res in respond:
             result.append({
-                'Id': res.id,
+                'Id': str(res.id),
                 'Name': res.name
             })
 
