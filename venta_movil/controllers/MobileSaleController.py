@@ -4,6 +4,7 @@ import datetime
 import logging
 import googlemaps
 
+
 class MobileSaleController(http.Controller):
 
     @http.route('/api/sale/create_sale', type='json', method=['POST'], auth='public', cors='*')
@@ -67,16 +68,16 @@ class MobileSaleController(http.Controller):
 
         now = datetime.datetime.now()
 
-        
         for res in env:
             description = ''
             array_srt_des = []
             array_des = []
             s = ' '
 
-            dir = gmaps.directions((latitude,longitude),
-                       (res.customer_id.partner_latitude, res.customer_id.partner_longitude), mode="driving",
-                        departure_time=now)
+            dir = gmaps.directions((latitude, longitude),
+                                   (res.customer_id.partner_latitude, res.customer_id.partner_longitude),
+                                   mode="driving",
+                                   departure_time=now)
             for product in res.mobile_lines:
                 if product.qty > 1:
                     array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
@@ -118,7 +119,8 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
-        env = request.env['mobile.sale.order'].sudo().search([('seller_id', '=', int(session)),('state','=','onroute')])
+        env = request.env['mobile.sale.order'].sudo().search(
+            [('seller_id', '=', int(session)), ('state', '=', 'onroute')])
         respond = []
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
 
@@ -162,15 +164,15 @@ class MobileSaleController(http.Controller):
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
         return list_sort_by_dis
 
-    @http.route('/api/paymentmethod',type='json',method=['GET'],auth='token',cors='*')
+    @http.route('/api/paymentmethod', type='json', method=['GET'], auth='token', cors='*')
     def get_paymeth_method(self):
         respond = request.env['pos.payment.method'].sudo().search([])
         result = []
 
         for res in respond:
-            res.append({
-                'Id':res.id,
-                'Name':res.name
+            result.append({
+                'Id': res.id,
+                'Name': res.name
             })
 
         return result
