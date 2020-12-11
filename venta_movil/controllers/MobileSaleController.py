@@ -53,11 +53,13 @@ class MobileSaleController(http.Controller):
         return {'Pedido asignado'}
 
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
-    def make_done(self, mobile_id):
+    def make_done(self, mobile_id,payment_id):
         mobile_order = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
 
-        mobile_order.write({'state': 'done', 'date_done': datetime.datetime.now})
-
+        mobile_order.write({
+            'payment_method':payment_id,
+        })
+        mobile_order.make_done()
         return {'mobile_order', mobile_order.name}
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
