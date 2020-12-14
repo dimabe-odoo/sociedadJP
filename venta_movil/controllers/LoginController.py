@@ -76,7 +76,7 @@ class LoginController(http.Controller):
     def logout(self,session_id):
         session = request.env['truck.session'].search([('id','=',session_id)])
         session.write({
-            'active':False
+            'is_login':False
         })
         return {'Sesion cerrada exisitosamente'}
 
