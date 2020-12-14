@@ -70,7 +70,7 @@ class LoginController(http.Controller):
                 'employee_id': employee,
                 'is_login': True,
             })
-        return {'session_id': session.id}
+        return {'session_id': str(session.id)}
 
     @http.route('/api/logout',type='json',auth='public',cors='*')
     def logout(self,session_id):
