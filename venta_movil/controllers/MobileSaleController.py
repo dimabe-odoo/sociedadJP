@@ -97,7 +97,7 @@ class MobileSaleController(http.Controller):
                     array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
                     array_des.append({
                         'Id':product.id,
-                        'ImageUrl':'/web/image?model=product.product&field:image_128&id={}'.format(product.product_id.id),
+                        'ImageUrl':'/web/image?model=product.product&field:image_1920&id={}'.format(product.product_id.id),
                         'Product_Id':product.product_id.id,
                         'ProductName': product.product_id.name,
                         'Qty': product.qty,
@@ -155,7 +155,7 @@ class MobileSaleController(http.Controller):
                     array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
                     array_des.append({
                         'Id': product.id,
-                        'ImageUrl': '/web/image?model=product.product&field:image_128&id={}'.format(
+                        'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
                             product.product_id.id),
                         'Product_Id': product.product_id.id,
                         'ProductName': product.product_id.name,
@@ -166,7 +166,7 @@ class MobileSaleController(http.Controller):
                     array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
                     array_des.append({
                         'Id': product.id,
-                        'ImageUrl': '/web/image?model=product.product&field:image_128&id={}'.format(
+                        'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
                             product.product_id.id),
                         'Product_Id': product.product_id.id,
                         'ProductName': product.product_id.name,
