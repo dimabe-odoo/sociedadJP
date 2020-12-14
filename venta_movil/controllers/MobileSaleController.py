@@ -67,8 +67,6 @@ class MobileSaleController(http.Controller):
         respond = []
         _logger = logging.getLogger(__name__)
         _logger.error('Lat {} , Long {}'.format(latitude,longitude))
-        if not latitude or not longitude:
-            return {}
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
 
         now = datetime.datetime.now()
