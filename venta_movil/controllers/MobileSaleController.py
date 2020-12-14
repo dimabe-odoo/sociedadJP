@@ -35,8 +35,7 @@ class MobileSaleController(http.Controller):
     def take_saleman(self, mobile_id, session):
         mobile_order = request.env['mobile.sale.order'].search([('id', '=', mobile_id)])
         truck_session = request.env['truck.session'].sudo().search([('id', '=', int(session))])
-        _logger = logging.getLogger(__name__)
-        _logger.error(truck_session)
+
         warehouses = request.env['stock.warehouse'].sudo().search([])
         warehouse_id = 0
         for ware in warehouses:
@@ -66,6 +65,10 @@ class MobileSaleController(http.Controller):
     def get_orders(self, latitude, longitude):
         env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
         respond = []
+        _logger = logging.getLogger(__name__)
+        _logger.error('Lat {} , Long {}'.format(latitude,longitude))
+        if not latitude or not longitude:
+            return {}
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
 
         now = datetime.datetime.now()
