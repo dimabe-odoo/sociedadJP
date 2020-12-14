@@ -72,6 +72,14 @@ class LoginController(http.Controller):
             })
         return {'session_id': session.id}
 
+    @http.route('/api/logout',type='json',auth='public',cors='*')
+    def logout(self,session_id):
+        session = request.env['truck.session'].search([('id','=',session_id)])
+        session.write({
+            'active':False
+        })
+        return {'Sesion cerrada exisitosamente'}
+
     @http.route('/api/refresh-token', type='json', auth='public', cors='*')
     def do_refresh_token(self, email):
         userId = request.env['res.users'].sudo().search_read([('email', '=', email)], ['id'])
