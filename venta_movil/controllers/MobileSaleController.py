@@ -85,6 +85,8 @@ class MobileSaleController(http.Controller):
                 if product.qty > 1:
                     array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
                     array_des.append({
+                        'Id':product.id,
+                        'Product_Id':product.product_id.id,
                         'ProductName': product.product_id.name,
                         'Qty': product.qty,
                         'PriceUnit': product.price
@@ -92,6 +94,8 @@ class MobileSaleController(http.Controller):
                 else:
                     array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
                     array_des.append({
+                        'Id':product.id,
+                        'Product_Id':product.product_id.id,
                         'ProductName': product.product_id.name,
                         'Qty': product.qty,
                         'PriceUnit': product.price
