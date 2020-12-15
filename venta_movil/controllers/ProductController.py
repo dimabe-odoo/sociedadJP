@@ -28,3 +28,4 @@ class ProductController(http.Controller):
                 'ProductName': res.display_name,
                 'isCat': True if 'Catalitico' in res.display_name else False
             })
+        return data
