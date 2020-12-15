@@ -107,6 +107,7 @@ class MobileSaleController(http.Controller):
             if res.address_id:
                 respond.append({
                     'id': str(res.id),
+                    'OrderName': res.name,
                     'ClientName': res.address_id.display_name,
                     'ClientAddress': res.address_id.street,
                     'ClientPhone': res.address_id.mobile,
@@ -118,6 +119,7 @@ class MobileSaleController(http.Controller):
             else:
                 respond.append({
                     'id': str(res.id),
+                    'OrderName': res.name,
                     'ClientName': res.customer_id.display_name,
                     'ClientAddress': res.customer_id.street,
                     'ClientPhone': res.customer_id.mobile,
@@ -179,6 +181,7 @@ class MobileSaleController(http.Controller):
             if res.address_id:
                 respond.append({
                     'id': str(res.id),
+                    'OrderName':res.name,
                     'ClientName': res.address_id.display_name,
                     'ClientAddress': res.address_id.street,
                     'ClientPhone': res.address_id.mobile,
@@ -191,6 +194,7 @@ class MobileSaleController(http.Controller):
                 respond.append({
                     'id': str(res.id),
                     'ClientName': res.customer_id.display_name,
+                    'OrderName': res.name,
                     'ClientAddress': res.customer_id.street,
                     'ClientPhone': res.customer_id.mobile,
                     'ShortDescription': description,
