@@ -157,6 +157,7 @@ class MobileSaleController(http.Controller):
                         'Id': product.id,
                         'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
                             product.product_id.id),
+                        'Image': res.product_id.image_128,
                         'Product_Id': product.product_id.id,
                         'ProductName': product.product_id.name,
                         'Qty': product.qty,
@@ -168,6 +169,7 @@ class MobileSaleController(http.Controller):
                         'Id': product.id,
                         'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
                             product.product_id.id),
+                        'Image':res.product_id.image_128,
                         'Product_Id': product.product_id.id,
                         'ProductName': product.product_id.name,
                         'Qty': product.qty,
