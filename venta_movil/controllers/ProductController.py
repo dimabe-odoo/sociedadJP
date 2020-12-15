@@ -26,6 +26,6 @@ class ProductController(http.Controller):
             data.append({
                 'Id': res.id,
                 'ProductName': res.display_name,
-                'isCat': True if 'Catalitico' in res.display_name else False
+                'isCat': True if 'Catalítico' in res.display_name else False
             })
         return data
