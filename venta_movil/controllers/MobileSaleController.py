@@ -210,7 +210,7 @@ class MobileSaleController(http.Controller):
                     'Description': array_des,
                     'Total': res.total_sale
                 })
-        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
+        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'],reverse=True)
         _logger.error(list_sort_by_dis)
         return list_sort_by_dis
 
