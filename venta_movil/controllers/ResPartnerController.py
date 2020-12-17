@@ -39,6 +39,6 @@ class ResPartnerController(http.Controller):
                 'Longitude': res.partner_longitude,
                 'Phone': res.mobile,
                 'AnotherDirection': another,
-                'Distance': dir[0]['legs'][0]['distance']['text']
+                'Distance': dir[0]['legs'][0]['distance']['text'] if dir != None else ''
             })
         return result
