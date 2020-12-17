@@ -2,6 +2,7 @@ from odoo import http
 from odoo.http import request
 import datetime
 import logging
+import json
 import googlemaps
 
 
@@ -20,12 +21,12 @@ class MobileSaleController(http.Controller):
         })
 
         for product in product_ids:
-            logging.error('{}'.format(product))
+            product_json = json.load(product)
             line = request.env['mobile.sale.line'].sudo().create({
-                'product_id': product['id'],
-                'price': product['price'],
+                'product_id': product_json['id'],
+                'price': product_json['price'],
                 'state': 'progress',
-                'qty': product['qty'],
+                'qty': product_json['qty'],
                 'mobile_id': sale_order.id
             })
 
@@ -38,11 +39,11 @@ class MobileSaleController(http.Controller):
             'customer_id': customer.id,
         })
         for product in product_ids:
-            logging.error('{}'.format(type(product)))
+            product_json = json.load(product)
             request.env['mobile.sale.line'].sudo().create({
-                'product_id': product['id'],
-                'qty': product['qty'],
-                'price': product['price']
+                'product_id': product_json['id'],
+                'qty': product_json['qty'],
+                'price': product_json['price']
             })
         mobile.button_confirm()
         return {'message': 'Compra realizada satifactoriamente'}
