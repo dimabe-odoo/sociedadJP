@@ -41,6 +41,7 @@ class MobileSaleController(http.Controller):
         for product in product_ids:
             product_json = json.loads(product)
             request.env['mobile.sale.line'].sudo().create({
+                'mobile_id':mobile.id,
                 'product_id': product_json['id'],
                 'qty': product_json['qty'],
                 'price': product_json['price']
