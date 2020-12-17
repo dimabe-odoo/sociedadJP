@@ -39,9 +39,9 @@ class MobileSaleController(http.Controller):
         })
         for product in product_ids:
             request.env['mobile.sale.line'].sudo().create({
-                'product_id': product.id,
-                'qty': product.qty,
-                'price': product.price
+                'product_id': product['id'],
+                'qty': product['qty'],
+                'price': product['price']
             })
         mobile.button_confirm()
         return {'message': 'Compra realizada satifactoriamente'}
