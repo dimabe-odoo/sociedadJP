@@ -52,11 +52,11 @@ class MobileSaleController(http.Controller):
         return {'Pedido asignado'}
 
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
-    def make_done(self, mobile_id,payment_id):
+    def make_done(self, mobile_id, payment_id):
         mobile_order = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
 
         mobile_order.write({
-            'payment_method':payment_id,
+            'payment_method': payment_id,
         })
         mobile_order.make_done()
         return {'mobile_order', mobile_order.name}
@@ -66,7 +66,7 @@ class MobileSaleController(http.Controller):
         env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
         respond = []
         _logger = logging.getLogger(__name__)
-        _logger.error('Lat {} , Long {}'.format(latitude,longitude))
+        _logger.error('Lat {} , Long {}'.format(latitude, longitude))
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
 
         now = datetime.datetime.now()
@@ -85,10 +85,10 @@ class MobileSaleController(http.Controller):
                 if product.qty > 1:
                     array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
                     array_des.append({
-                        'Id':product.id,
+                        'Id': product.id,
                         'ImageUrl': '/web/image?model=product.template&field:image_1920&id={}'.format(
                             product.product_id.product_tmpl_id.id),
-                        'Product_Id':product.product_id.id,
+                        'Product_Id': product.product_id.id,
                         'ProductName': product.product_id.name,
                         'Qty': product.qty,
                         'PriceUnit': product.price
@@ -96,9 +96,10 @@ class MobileSaleController(http.Controller):
                 else:
                     array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
                     array_des.append({
-                        'Id':product.id,
-                        'ImageUrl':'/web/image?model=product.product&field:image_1920&id={}'.format(product.product_id.id),
-                        'Product_Id':product.product_id.id,
+                        'Id': product.id,
+                        'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
+                            product.product_id.id),
+                        'Product_Id': product.product_id.id,
                         'ProductName': product.product_id.name,
                         'Qty': product.qty,
                         'PriceUnit': product.price
@@ -124,15 +125,15 @@ class MobileSaleController(http.Controller):
                     'OrderName': res.name,
                     'ClientName': res.customer_id.display_name,
                     'ClientAddress': res.customer_id.street,
-                    'ClientLatitude':res.customer_id.partner_latitude,
-                    'ClientLongiutude':res.customer_id.partner_longitude,
+                    'ClientLatitude': res.customer_id.partner_latitude,
+                    'ClientLongiutude': res.customer_id.partner_longitude,
                     'ClientPhone': res.customer_id.mobile,
                     'ShortDescription': description,
                     'Distance': dir[0]['legs'][0]['distance']['text'],
                     'Description': array_des,
-                    'Total':res.total_sale
+                    'Total': res.total_sale
                 })
-        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'])
+        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'], reverse=True)
         return list_sort_by_dis
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
@@ -175,7 +176,7 @@ class MobileSaleController(http.Controller):
                         'Id': product.id,
                         'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
                             product.product_id.id),
-                        'Image':product.product_id.image_128,
+                        'Image': product.product_id.image_128,
                         'Product_Id': product.product_id.id,
                         'ProductName': product.product_id.name,
                         'Qty': product.qty,
@@ -185,7 +186,7 @@ class MobileSaleController(http.Controller):
             if res.address_id:
                 respond.append({
                     'id': str(res.id),
-                    'OrderName':res.name,
+                    'OrderName': res.name,
                     'ClientName': res.address_id.display_name,
                     'ClientAddress': res.address_id.street,
                     'ClientPhone': res.address_id.mobile,
@@ -210,7 +211,7 @@ class MobileSaleController(http.Controller):
                     'Description': array_des,
                     'Total': res.total_sale
                 })
-        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'],reverse=True)
+        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'], reverse=True)
         _logger.error(list_sort_by_dis)
         return list_sort_by_dis
 
