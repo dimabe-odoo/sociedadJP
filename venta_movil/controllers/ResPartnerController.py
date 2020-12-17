@@ -21,7 +21,7 @@ class ResPartnerController(http.Controller):
                     price_another.append({
                         'Product_Id': pr.product_tmpl_id.id,
                         'Product_Name': pr.product_tmpl_id.name,
-                        'isCat': True if 'Catalítico' in res.display_name else False,
+                        'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
                         'Price': pr.fixed_price
                     })
                 another.append({
@@ -38,7 +38,7 @@ class ResPartnerController(http.Controller):
                 price.append({
                     'Product_Id': pr.product_tmpl_id.id,
                     'Product_Name': pr.product_tmpl_id.name,
-                    'isCat': True if 'Catalítico' in res.display_name else False,
+                    'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
                     'Price': pr.fixed_price
                 })
 
