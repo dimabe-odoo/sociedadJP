@@ -22,23 +22,44 @@ class ResPartnerController(http.Controller):
                 dir_another = gmaps.directions((latitude, longitude),
                                                (c.partner_latitude, c.partner_longitude),
                                                mode="driving", departure_time=now)
-                another.append({
+                if dir_another:
+                    another.append({
+                        'Id': str(res.id),
+                        'Name': res.name,
+                        'Address': res.street,
+                        'Latitude': res.partner_latitude,
+                        'Longitude': res.partner_longitude,
+                        'Phone': res.mobile,
+                        'Distance': dir_another[0]['legs'][0]['distance']['text']
+                    })
+                else:
+                    another.append({
+                        'Id': str(res.id),
+                        'Name': res.name,
+                        'Address': res.street,
+                        'Latitude': res.partner_latitude,
+                        'Longitude': res.partner_longitude,
+                        'Phone': res.mobile,
+                    })
+            if dir:
+                result.append({
                     'Id': str(res.id),
                     'Name': res.name,
                     'Address': res.street,
                     'Latitude': res.partner_latitude,
                     'Longitude': res.partner_longitude,
                     'Phone': res.mobile,
-                    'Distance': dir_another[0]['legs'][0]['distance']['text']
+                    'AnotherDirection': another,
+                    'Distance': dir[0]['legs'][0]['distance']['text']
                 })
-            result.append({
-                'Id': str(res.id),
-                'Name': res.name,
-                'Address': res.street,
-                'Latitude': res.partner_latitude,
-                'Longitude': res.partner_longitude,
-                'Phone': res.mobile,
-                'AnotherDirection': another,
-                'Distance': dir[0]['legs'][0]['distance']['text'] if dir != None else ''
-            })
+            else:
+                result.append({
+                    'Id': str(res.id),
+                    'Name': res.name,
+                    'Address': res.street,
+                    'Latitude': res.partner_latitude,
+                    'Longitude': res.partner_longitude,
+                    'Phone': res.mobile,
+                    'AnotherDirection': another
+                })
         return result
