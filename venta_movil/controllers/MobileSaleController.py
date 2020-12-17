@@ -38,7 +38,7 @@ class MobileSaleController(http.Controller):
             'customer_id': customer.id,
         })
         for product in product_ids:
-            logging.error('{}'.format(product['id']))
+            logging.error('{}'.format(type(product)))
             request.env['mobile.sale.line'].sudo().create({
                 'product_id': product['id'],
                 'qty': product['qty'],
