@@ -12,16 +12,19 @@ class ResPartnerController(http.Controller):
         respond = request.env['res.partner'].search([])
         result = []
         now = datetime.datetime.now()
+        _logger = logging.getLogger(__name__)
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
         for res in respond:
             dir = gmaps.directions((latitude, longitude),
                                    (res.partner_latitude, res.partner_longitude),
                                    mode="driving", departure_time=now)
+            _logger.error("PartnerId : {} Dir : {}".format(res.id,dir))
             another = []
             for c in res.child_ids:
                 dir_another = gmaps.directions((latitude, longitude),
                                                (c.partner_latitude, c.partner_longitude),
                                                mode="driving", departure_time=now)
+                _logger.error("AnotherId : {} Dir : {}".format(c.id, dir))
                 if dir_another:
                     another.append({
                         'Id': str(res.id),
