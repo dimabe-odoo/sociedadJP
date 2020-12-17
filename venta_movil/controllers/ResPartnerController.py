@@ -19,8 +19,8 @@ class ResPartnerController(http.Controller):
                 price_another = []
                 for pr in res.property_product_pricelist.item_ids:
                     price_another.append({
-                        'Product_Id': pr.product_tmlp_id.id,
-                        'Product_Name': pr.product_tmlp_id.display_name,
+                        'Product_Id': pr.product_tmpl_id.id,
+                        'Product_Name': pr.product_tmpl_id.display_name,
                         'Price': pr.fixed_price
                     })
                 another.append({
@@ -35,7 +35,7 @@ class ResPartnerController(http.Controller):
             price = []
             for pr in res.property_product_pricelist.item_ids:
                 price.append({
-                    'Product_Id': pr.product_tmlp_id.id,
+                    'Product_Id': pr.product_tmpl_id.id,
                     'Product_Name': pr.product_tmpl_id.display_name,
                     'Price': pr.fixed_price
                 })
