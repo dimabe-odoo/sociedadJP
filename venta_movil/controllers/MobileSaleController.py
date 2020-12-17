@@ -33,12 +33,12 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
     def create_sale(self, customer_id, product_ids):
-        customer = request.env['res.partner'].search([('id', '=', customer_id)])
-        mobile = request.env['mobile.sale.order'].create({
+        customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
+        mobile = request.env['mobile.sale.order'].sudo().create({
             'customer_id': customer.id,
         })
         for product in product_ids:
-            request.env['mobile.sale.line'].create({
+            request.env['mobile.sale.line'].sudo().create({
                 'product_id': product.id,
                 'qty': product.qty,
                 'price': product.price
