@@ -36,6 +36,7 @@ class MobileSaleController(http.Controller):
     def create_sale(self, customer_id, product_ids):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
         mobile = request.env['mobile.sale.order'].sudo().create({
+            'state':'draft',
             'customer_id': customer.id,
         })
         for product in product_ids:
