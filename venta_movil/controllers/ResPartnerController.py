@@ -20,7 +20,7 @@ class ResPartnerController(http.Controller):
                 for pr in res.property_product_pricelist.item_ids:
                     price_another.append({
                         'Product_Id': pr.product_tmpl_id.id,
-                        'Product_Name': pr.product_tmpl_id.display_name,
+                        'Product_Name': pr.product_tmpl_id.name,
                         'Price': pr.fixed_price
                     })
                 another.append({
@@ -36,7 +36,7 @@ class ResPartnerController(http.Controller):
             for pr in res.property_product_pricelist.item_ids:
                 price.append({
                     'Product_Id': pr.product_tmpl_id.id,
-                    'Product_Name': pr.product_tmpl_id.display_name,
+                    'Product_Name': pr.product_tmpl_id.name,
                     'Price': pr.fixed_price
                 })
 
