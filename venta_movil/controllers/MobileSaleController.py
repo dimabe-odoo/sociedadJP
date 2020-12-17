@@ -31,6 +31,12 @@ class MobileSaleController(http.Controller):
 
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
+    @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
+    def create_sale(self,customer_id,product_ids):
+        _logger = logging.getLogger(__name__)
+        _logger.error('Lat {} , Long {}'.format(customer_id, product_ids))
+        return {'message': 'Compra realizada satifactoriamente'}
+
     @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
     def take_saleman(self, mobile_id, session):
         mobile_order = request.env['mobile.sale.order'].search([('id', '=', mobile_id)])
