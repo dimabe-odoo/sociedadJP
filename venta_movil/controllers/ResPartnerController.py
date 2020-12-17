@@ -8,61 +8,29 @@ import googlemaps
 class ResPartnerController(http.Controller):
 
     @http.route('/api/clients', type='json', method=['GET'], auth='token', cors='*')
-    def get_clients(self, latitude, longitude):
+    def get_clients(self):
         respond = request.env['res.partner'].search([])
         result = []
         now = datetime.datetime.now()
         _logger = logging.getLogger(__name__)
-        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
         for res in respond:
-            dir = gmaps.directions((latitude, longitude),
-                                   (res.partner_latitude, res.partner_longitude),
-                                   mode="driving", departure_time=now)
-            _logger.error("PartnerId : {} Dir : {}".format(res.id,dir))
             another = []
             for c in res.child_ids:
-                dir_another = gmaps.directions((latitude, longitude),
-                                               (c.partner_latitude, c.partner_longitude),
-                                               mode="driving", departure_time=now)
-                _logger.error("AnotherId : {} Dir : {}".format(c.id, dir))
-                if dir_another:
-                    another.append({
-                        'Id': str(res.id),
-                        'Name': res.name,
-                        'Address': res.street,
-                        'Latitude': res.partner_latitude,
-                        'Longitude': res.partner_longitude,
-                        'Phone': res.mobile,
-                        'Distance': dir_another[0]['legs'][0]['distance']['text']
-                    })
-                else:
-                    another.append({
-                        'Id': str(res.id),
-                        'Name': res.name,
-                        'Address': res.street,
-                        'Latitude': res.partner_latitude,
-                        'Longitude': res.partner_longitude,
-                        'Phone': res.mobile,
-                    })
-            if dir:
-                result.append({
+                another.append({
                     'Id': str(res.id),
-                    'Name': res.name,
-                    'Address': res.street,
-                    'Latitude': res.partner_latitude,
-                    'Longitude': res.partner_longitude,
-                    'Phone': res.mobile,
-                    'AnotherDirection': another,
-                    'Distance': dir[0]['legs'][0]['distance']['text']
-                })
-            else:
-                result.append({
-                    'Id': str(res.id),
-                    'Name': res.name,
-                    'Address': res.street,
-                    'Latitude': res.partner_latitude,
-                    'Longitude': res.partner_longitude,
-                    'Phone': res.mobile,
-                    'AnotherDirection': another
+                    'Name': c.name,
+                    'Address': c.street,
+                    'Latitude': c.partner_latitude,
+                    'Longitude': c.partner_longitude,
+                    'Phone': c.mobile,
+                    })
+            result.append({
+                'Id': str(res.id),
+                'Name': res.name,
+                'Address': res.street,
+                'Latitude': res.partner_latitude,
+                'Longitude': res.partner_longitude,
+                'Phone': res.mobile,
+                'AnotherDirection': another
                 })
         return result
