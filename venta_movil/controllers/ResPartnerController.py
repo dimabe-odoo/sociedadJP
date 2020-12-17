@@ -16,6 +16,13 @@ class ResPartnerController(http.Controller):
         for res in respond:
             another = []
             for c in res.child_ids:
+                price_another = []
+                for pr in res.property_product_pricelist.item_ids:
+                    price_another.append({
+                        'Product_Id': pr.product_tmlp_id.id,
+                        'Product_Name': pr.product_tmlp_id.display_name,
+                        'Price': pr.fixed_price
+                    })
                 another.append({
                     'Id': str(res.id),
                     'Name': c.name,
@@ -23,7 +30,16 @@ class ResPartnerController(http.Controller):
                     'Latitude': c.partner_latitude,
                     'Longitude': c.partner_longitude,
                     'Phone': c.mobile,
-                    })
+                    'PriceList': price_another
+                })
+            price = []
+            for pr in res.property_product_pricelist.item_ids:
+                price.append({
+                    'Product_Id': pr.product_tmlp_id.id,
+                    'Product_Name': pr.product_tmlp_id.display_name,
+                    'Price': pr.fixed_price
+                })
+
             result.append({
                 'Id': str(res.id),
                 'Name': res.name,
@@ -31,6 +47,7 @@ class ResPartnerController(http.Controller):
                 'Latitude': res.partner_latitude,
                 'Longitude': res.partner_longitude,
                 'Phone': res.mobile,
-                'AnotherDirection': another
-                })
+                'AnotherDirection': another,
+                'PriceList': price
+            })
         return result
