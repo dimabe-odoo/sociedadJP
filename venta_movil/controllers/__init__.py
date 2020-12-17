@@ -8,3 +8,4 @@ from . import CommuneController
 from . import AddressController
 from . import ProductController
 from . import MobileSaleController
+from . import ResPartnerController
