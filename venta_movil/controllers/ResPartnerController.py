@@ -8,10 +8,10 @@ import googlemaps
 class ResPartnerController(http.Controller):
 
     @http.route('/api/clients', type='json', method=['GET'], auth='token', cors='*')
-    def get_clients(self,truck):
+    def get_clients(self, truck):
         respond = request.env['res.partner'].search([])
-        location = request.env['stock.location'].sudo().search([('name','=',truck)])
-        stock = request.env['stock.quant'].sudo().search([('location_id','=',location.id)])
+        location = request.env['stock.location'].sudo().search([('name', '=', truck)])
+        stock = request.env['stock.quant'].sudo().search([('location_id', '=', location.id)])
         result = []
         now = datetime.datetime.now()
         _logger = logging.getLogger(__name__)
@@ -20,13 +20,15 @@ class ResPartnerController(http.Controller):
             for c in res.child_ids:
                 price_another = []
                 for pr in res.property_product_pricelist.item_ids:
-                    stock_product = stock.filtered(lambda a: a.product_id == pr.product_tmpl_id.id)
+                    product = request.env['product.product'].sudo().search(
+                        [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
+                    stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
                     _logger.error(stock_product)
                     price_another.append({
                         'Product_Id': pr.product_tmpl_id.id,
                         'Product_Name': pr.product_tmpl_id.name,
                         'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
-                        'Stock':stock_product.quantity,
+                        'Stock': stock_product.quantity,
                         'Price': pr.fixed_price
                     })
                 another.append({
@@ -40,8 +42,9 @@ class ResPartnerController(http.Controller):
                 })
             price = []
             for pr in res.property_product_pricelist.item_ids:
-                stock_product = stock.filtered(lambda a: a.product_id == pr.product_tmpl_id.id)
-                _logger.error(stock_product)
+                product = request.env['product.product'].sudo().search(
+                    [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
+                stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
                 price.append({
                     'Product_Id': pr.product_tmpl_id.id,
                     'Product_Name': pr.product_tmpl_id.name,
