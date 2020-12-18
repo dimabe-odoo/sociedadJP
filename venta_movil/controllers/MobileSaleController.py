@@ -39,6 +39,7 @@ class MobileSaleController(http.Controller):
             'state': 'draft',
             'customer_id': customer.id,
         })
+
         for product in product_ids:
             product_json = json.loads(product)
             request.env['mobile.sale.line'].sudo().create({
@@ -125,14 +126,14 @@ class MobileSaleController(http.Controller):
 
         return result
 
-    def get_mobile(self, mobile, latitude, longitude, gmaps=False):
+    def get_mobile(self, mobile, latitude = None, longitude =None, gmaps=False):
         respond = []
         description = ''
         array_srt_des = []
         array_des = []
         s = ' '
         now = datetime.datetime.now()
-        if gmaps:
+        if gmaps and latitude and longitude:
             dir = gmaps.directions((latitude, longitude),
                                    (mobile.customer_id.partner_latitude, mobile.customer_id.partner_longitude),
                                    mode="driving",
