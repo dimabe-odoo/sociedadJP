@@ -48,13 +48,7 @@ class MobileSaleController(http.Controller):
                 'qty': product_json['qty'],
                 'price': product_json['price']
             })
-            line.append({
-                'Id': sale_line.id,
-                'Product_Id': sale_line.product_id.id,
-                'ProductName': sale_line.product_id.name,
-                'Qty': sale_line.qty,
-                'PriceUnit': sale_line.price
-            })
+            line.append(product_json)
 
         respond = {
                     'id': str(mobile.id),
