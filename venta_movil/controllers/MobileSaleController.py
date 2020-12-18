@@ -58,7 +58,8 @@ class MobileSaleController(http.Controller):
                     'ClientLatitude': mobile.customer_id.partner_latitude,
                     'ClientLongiutude': mobile.customer_id.partner_longitude,
                     'ClientPhone': mobile.customer_id.mobile,
-                    'Total': mobile.total_sale
+                    'Total': mobile.total_sale,
+                    'Lines':line
                 }
         return {'message': 'Compra realizada satifactoriamente', 'result': respond}
 
