@@ -100,7 +100,7 @@ class MobileSaleController(http.Controller):
                                    (res.customer_id.partner_latitude, res.customer_id.partner_longitude),
                                    mode="driving",
                                    departure_time=now)
-            _logger.error('Dir : {}'.format(dir))
+            _logger.error('Partner_Name : {} ,Dir : {}'.format(res.customer_id.display_name,dir))
             for product in res.mobile_lines:
                 if product.qty > 1:
                     array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
