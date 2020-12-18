@@ -16,7 +16,7 @@ class ResPartnerController(http.Controller):
         result = []
         now = datetime.datetime.now()
         _logger = logging.getLogger(__name__)
-        _logger.error(stock)
+        _logger.error(stock.mapped('product_id'))
         for res in respond:
             another = []
             for c in res.child_ids:
