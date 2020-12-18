@@ -33,7 +33,7 @@ class MobileSaleController(http.Controller):
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
-    def create_sale(self, customer_id, product_ids):
+    def create_sale(self, customer_id, product_ids,latitude,longitude):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
         mobile = request.env['mobile.sale.order'].sudo().create({
             'state':'draft',
@@ -47,8 +47,9 @@ class MobileSaleController(http.Controller):
                 'qty': product_json['qty'],
                 'price': product_json['price']
             })
-        mobile.button_confirm()
-        return {'message': 'Compra realizada satifactoriamente'}
+        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
+        respond = self.get_mobile(mobile,gmaps,latitude,longitude)
+        return {'message': 'Compra realizada satifactoriamente','result':respond}
 
     @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
     def take_saleman(self, mobile_id, session):
@@ -91,68 +92,7 @@ class MobileSaleController(http.Controller):
         now = datetime.datetime.now()
 
         for res in env:
-            description = ''
-            array_srt_des = []
-            array_des = []
-            s = ' '
-
-            dir = gmaps.directions((latitude, longitude),
-                                   (res.customer_id.partner_latitude, res.customer_id.partner_longitude),
-                                   mode="driving",
-                                   departure_time=now)
-            _logger.error('Partner_Name : {} ,Dir : {}'.format(res.customer_id.display_name,dir))
-            for product in res.mobile_lines:
-                if product.qty > 1:
-                    array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
-                    array_des.append({
-                        'Id': product.id,
-                        'ImageUrl': '/web/image?model=product.template&field:image_1920&id={}'.format(
-                            product.product_id.product_tmpl_id.id),
-                        'Product_Id': product.product_id.id,
-                        'ProductName': product.product_id.name,
-                        'Qty': product.qty,
-                        'PriceUnit': product.price
-                    })
-                else:
-                    array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
-                    array_des.append({
-                        'Id': product.id,
-                        'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
-                            product.product_id.id),
-                        'Product_Id': product.product_id.id,
-                        'ProductName': product.product_id.name,
-                        'Qty': product.qty,
-                        'PriceUnit': product.price
-                    })
-            description = s.join(array_srt_des)
-            if res.address_id:
-                respond.append({
-                    'id': str(res.id),
-                    'OrderName': res.name,
-                    'ClientName': res.address_id.display_name,
-                    'ClientAddress': res.address_id.street,
-                    'ClientLatitude': res.address_id.partner_latitude,
-                    'ClientLongiutude': res.address_id.partner_longitude,
-                    'ClientPhone': res.address_id.mobile,
-                    'ShortDescription': description,
-                    'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
-                    'Description': array_des,
-                    'Total': res.total_sale
-                })
-            else:
-                respond.append({
-                    'id': str(res.id),
-                    'OrderName': res.name,
-                    'ClientName': res.customer_id.display_name,
-                    'ClientAddress': res.customer_id.street,
-                    'ClientLatitude': res.customer_id.partner_latitude,
-                    'ClientLongiutude': res.customer_id.partner_longitude,
-                    'ClientPhone': res.customer_id.mobile,
-                    'ShortDescription': description,
-                    'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
-                    'Description': array_des,
-                    'Total': res.total_sale
-                })
+            respond = self.get_mobile(res, gmaps, latitude, longitude)
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'], reverse=True)
         return list_sort_by_dis
 
@@ -168,69 +108,7 @@ class MobileSaleController(http.Controller):
         now = datetime.datetime.now()
 
         for res in env:
-            description = ''
-            array_srt_des = []
-            array_des = []
-            s = ' '
-
-            dir = gmaps.directions((latitude, longitude),
-                                   (res.customer_id.partner_latitude, res.customer_id.partner_longitude),
-                                   mode="driving",
-                                   departure_time=now)
-            for product in res.mobile_lines:
-                if product.qty > 1:
-                    array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
-                    array_des.append({
-                        'Id': product.id,
-                        'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
-                            product.product_id.id),
-                        'Image': product.product_id.image_128,
-                        'Product_Id': product.product_id.id,
-                        'ProductName': product.product_id.name,
-                        'Qty': product.qty,
-                        'PriceUnit': product.price
-                    })
-                else:
-                    array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
-                    array_des.append({
-                        'Id': product.id,
-                        'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
-                            product.product_id.id),
-                        'Image': product.product_id.image_128,
-                        'Product_Id': product.product_id.id,
-                        'ProductName': product.product_id.name,
-                        'Qty': product.qty,
-                        'PriceUnit': product.price
-                    })
-            description = s.join(array_srt_des)
-            if res.address_id:
-                respond.append({
-                    'id': str(res.id),
-                    'OrderName': res.name,
-                    'ClientName': res.address_id.display_name,
-                    'ClientAddress': res.address_id.street,
-                    'ClientPhone': res.address_id.mobile,
-                    'ClientLatitude': res.address_id.partner_latitude,
-                    'ClientLongiutude': res.address_id.partner_longitude,
-                    'ShortDescription': description,
-                    'Distance': dir[0]['legs'][0]['distance']['text'],
-                    'Description': array_des,
-                    'Total': res.total_sale
-                })
-            else:
-                respond.append({
-                    'id': str(res.id),
-                    'ClientName': res.customer_id.display_name,
-                    'OrderName': res.name,
-                    'ClientAddress': res.customer_id.street,
-                    'ClientLatitude': res.customer_id.partner_latitude,
-                    'ClientLongiutude': res.customer_id.partner_longitude,
-                    'ClientPhone': res.customer_id.mobile,
-                    'ShortDescription': description,
-                    'Distance': dir[0]['legs'][0]['distance']['text'],
-                    'Description': array_des,
-                    'Total': res.total_sale
-                })
+            respond = self.get_mobile(res,gmaps,latitude,longitude)
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'], reverse=True)
         _logger.error(list_sort_by_dis)
         return list_sort_by_dis
@@ -247,3 +125,68 @@ class MobileSaleController(http.Controller):
             })
 
         return result
+
+    def get_mobile(self,mobile,gmaps,latitude,longitude):
+        respond = []
+        description = ''
+        array_srt_des = []
+        array_des = []
+        s = ' '
+        now = datetime.datetime.now()
+        dir = gmaps.directions((latitude, longitude),
+                               (mobile.customer_id.partner_latitude, mobile.customer_id.partner_longitude),
+                               mode="driving",
+                               departure_time=now)
+        for product in mobile.mobile_lines:
+            if product.qty > 1:
+                array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
+                array_des.append({
+                    'Id': product.id,
+                    'ImageUrl': '/web/image?model=product.template&field:image_1920&id={}'.format(
+                        product.product_id.product_tmpl_id.id),
+                    'Product_Id': product.product_id.id,
+                    'ProductName': product.product_id.name,
+                    'Qty': product.qty,
+                    'PriceUnit': product.price
+                })
+            else:
+                array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
+                array_des.append({
+                    'Id': product.id,
+                    'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
+                        product.product_id.id),
+                    'Product_Id': product.product_id.id,
+                    'ProductName': product.product_id.name,
+                    'Qty': product.qty,
+                    'PriceUnit': product.price
+                })
+        description = s.join(array_srt_des)
+        if mobile.address_id:
+            respond.append({
+                'id': str(mobile.id),
+                'OrderName': mobile.name,
+                'ClientName': mobile.address_id.display_name,
+                'ClientAddress': mobile.address_id.street,
+                'ClientLatitude': mobile.address_id.partner_latitude,
+                'ClientLongiutude': mobile.address_id.partner_longitude,
+                'ClientPhone': mobile.address_id.mobile,
+                'ShortDescription': description,
+                'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
+                'Description': array_des,
+                'Total': mobile.total_sale
+            })
+        else:
+            respond.append({
+                'id': str(mobile.id),
+                'OrderName': mobile.name,
+                'ClientName': mobile.customer_id.display_name,
+                'ClientAddress': mobile.customer_id.street,
+                'ClientLatitude': mobile.customer_id.partner_latitude,
+                'ClientLongiutude': mobile.customer_id.partner_longitude,
+                'ClientPhone': mobile.customer_id.mobile,
+                'ShortDescription': description,
+                'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
+                'Description': array_des,
+                'Total': mobile.total_sale
+            })
+        return respond
