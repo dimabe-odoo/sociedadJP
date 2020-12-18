@@ -39,15 +39,23 @@ class MobileSaleController(http.Controller):
             'state': 'draft',
             'customer_id': customer.id,
         })
-
+        line = []
         for product in product_ids:
             product_json = json.loads(product)
-            request.env['mobile.sale.line'].sudo().create({
+            sale_line = request.env['mobile.sale.line'].sudo().create({
                 'mobile_id': mobile.id,
                 'product_id': product_json['id'],
                 'qty': product_json['qty'],
                 'price': product_json['price']
             })
+            line.append({
+                'Id': sale_line.id,
+                'Product_Id': sale_line.product_id.id,
+                'ProductName': sale_line.product_id.name,
+                'Qty': sale_line.qty,
+                'PriceUnit': sale_line.price
+            })
+
         respond = {
                     'id': str(mobile.id),
                     'OrderName': mobile.name,
