@@ -47,7 +47,9 @@ class ResPartnerController(http.Controller):
             for pr in res.property_product_pricelist.item_ids:
                 product = request.env['product.product'].sudo().search(
                     [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
+                _logger.error(product)
                 stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
+                _logger.error(stock_product)
                 price.append({
                     'Product_Id': pr.product_tmpl_id.id,
                     'Product_Name': pr.product_tmpl_id.name,
