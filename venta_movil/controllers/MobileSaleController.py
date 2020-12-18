@@ -226,7 +226,6 @@ class MobileSaleController(http.Controller):
                     'ClientLongiutude': mobile.address_id.partner_longitude,
                     'ClientPhone': mobile.address_id.mobile,
                     'ShortDescription': description,
-                    'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
                     'Description': array_des,
                     'Total': mobile.total_sale
                 })
@@ -240,7 +239,6 @@ class MobileSaleController(http.Controller):
                     'ClientLongiutude': mobile.customer_id.partner_longitude,
                     'ClientPhone': mobile.customer_id.mobile,
                     'ShortDescription': description,
-                    'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
                     'Description': array_des,
                     'Total': mobile.total_sale
                 })
