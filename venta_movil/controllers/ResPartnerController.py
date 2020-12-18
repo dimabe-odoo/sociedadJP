@@ -21,6 +21,7 @@ class ResPartnerController(http.Controller):
                 price_another = []
                 for pr in res.property_product_pricelist.item_ids:
                     stock_product = stock.filtered(lambda a: a.product_id == pr.product_tmpl_id.id)
+                    _logger.error(stock_product)
                     price_another.append({
                         'Product_Id': pr.product_tmpl_id.id,
                         'Product_Name': pr.product_tmpl_id.name,
@@ -40,6 +41,7 @@ class ResPartnerController(http.Controller):
             price = []
             for pr in res.property_product_pricelist.item_ids:
                 stock_product = stock.filtered(lambda a: a.product_id == pr.product_tmpl_id.id)
+                _logger.error(stock_product)
                 price.append({
                     'Product_Id': pr.product_tmpl_id.id,
                     'Product_Name': pr.product_tmpl_id.name,
