@@ -51,16 +51,16 @@ class MobileSaleController(http.Controller):
             line.append(product_json)
 
         respond = {
-                    'id': str(mobile.id),
-                    'OrderName': mobile.name,
-                    'ClientName': mobile.customer_id.display_name,
-                    'ClientAddress': mobile.customer_id.street,
-                    'ClientLatitude': mobile.customer_id.partner_latitude,
-                    'ClientLongiutude': mobile.customer_id.partner_longitude,
-                    'ClientPhone': mobile.customer_id.mobile,
-                    'Total': mobile.total_sale,
-                    'Lines':line
-                }
+            'id': str(mobile.id),
+            'OrderName': mobile.name,
+            'ClientName': mobile.customer_id.display_name,
+            'ClientAddress': mobile.customer_id.street,
+            'ClientLatitude': mobile.customer_id.partner_latitude,
+            'ClientLongiutude': mobile.customer_id.partner_longitude,
+            'ClientPhone': mobile.customer_id.mobile,
+            'Total': mobile.total_sale,
+            'Lines': line
+        }
         return {'message': 'Compra realizada satifactoriamente', 'result': respond}
 
     @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
@@ -138,7 +138,7 @@ class MobileSaleController(http.Controller):
 
         return result
 
-    def get_mobile(self, mobile, latitude = None, longitude =None, gmaps=False):
+    def get_mobile(self, mobile, latitude=None, longitude=None, gmaps=False):
         respond = []
         description = ''
         array_srt_des = []
