@@ -33,7 +33,7 @@ class MobileSaleController(http.Controller):
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
-    def create_sale(self, customer_id, product_ids, latitude, longitude):
+    def create_sale(self, customer_id, product_ids):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
         mobile = request.env['mobile.sale.order'].sudo().create({
             'state': 'draft',
@@ -47,7 +47,7 @@ class MobileSaleController(http.Controller):
                 'qty': product_json['qty'],
                 'price': product_json['price']
             })
-        respond = self.get_mobile(mobile, latitude, longitude)
+        respond = self.get_mobile(mobile)
         return {'message': 'Compra realizada satifactoriamente', 'result': respond}
 
     @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
