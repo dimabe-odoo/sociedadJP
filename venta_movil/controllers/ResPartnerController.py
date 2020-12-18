@@ -12,9 +12,11 @@ class ResPartnerController(http.Controller):
         respond = request.env['res.partner'].search([])
         location = request.env['stock.location'].sudo().search([('name', '=', truck)])
         stock = request.env['stock.quant'].sudo().search([('location_id', '=', location.id)])
+
         result = []
         now = datetime.datetime.now()
         _logger = logging.getLogger(__name__)
+        _logger.error(stock)
         for res in respond:
             another = []
             for c in res.child_ids:
