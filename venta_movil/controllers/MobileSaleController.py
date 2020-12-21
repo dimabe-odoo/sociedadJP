@@ -45,6 +45,7 @@ class MobileSaleController(http.Controller):
                                (mobile.customer_id.partner_latitude, mobile.customer_id.partner_longitude),
                                mode="driving",
                                departure_time=now)
+        logging.error(dir)
         line = []
         for product in product_ids:
             product_json = json.loads(product)
