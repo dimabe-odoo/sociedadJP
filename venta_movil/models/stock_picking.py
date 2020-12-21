@@ -30,7 +30,7 @@ class StockPicking(models.Model):
             else:
                 if ('Entrada' in item.origin) or ('Salida' in item.origin) or ('' == item.origin) or (not item.origin):
                     return super(StockPicking, self).button_validate()
-                if item.purchase_id or item.sale_id:
+                if item.purchase_id or item.sale_id or 'PO' in item.origin:
                     if item.picking_type_code == 'outgoing':
                         if item.sale_id.loan_supply:
                             loan_reception_id = self.env['stock.picking'].create({
