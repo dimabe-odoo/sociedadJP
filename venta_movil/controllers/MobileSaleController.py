@@ -73,8 +73,8 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/confirm_sale',type="json",method=['GET'],auth="token",cors="*")
     def confirm_sale(self,order_id):
-        mobile = request.env['mobile.sale.order'].search([('id','=',int(order_id))])
-        mobile.action_confirm()
+        mobile = request.env['mobile.sale.order'].sudo().search([('id','=',int(order_id))])
+        mobile.button_confirm()
         return {"Pedido Confirmado"}
 
     @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
