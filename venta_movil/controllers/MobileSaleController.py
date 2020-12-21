@@ -32,6 +32,7 @@ class MobileSaleController(http.Controller):
 
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
+
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
     def create_sale(self, customer_id, product_ids, latitude, longitude):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
