@@ -33,12 +33,18 @@ class MobileSaleController(http.Controller):
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
-    def create_sale(self, customer_id, product_ids):
+    def create_sale(self, customer_id, product_ids,latitude,longitude):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
         mobile = request.env['mobile.sale.order'].sudo().create({
             'state': 'draft',
             'customer_id': customer.id,
         })
+        now = datetime.datetime.now()
+        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
+        dir = gmaps.directions((latitude, longitude),
+                               (mobile.customer_id.partner_latitude, mobile.customer_id.partner_longitude),
+                               mode="driving",
+                               departure_time=now)
         line = []
         for product in product_ids:
             product_json = json.loads(product)
@@ -58,6 +64,7 @@ class MobileSaleController(http.Controller):
             'ClientLatitude': mobile.customer_id.partner_latitude,
             'ClientLongiutude': mobile.customer_id.partner_longitude,
             'ClientPhone': mobile.customer_id.mobile,
+            'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
             'Total': mobile.total_sale,
             'Lines': line
         }
