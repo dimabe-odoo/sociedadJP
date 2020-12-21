@@ -39,7 +39,7 @@ class MobileSaleController(http.Controller):
         mobile = request.env['mobile.sale.order'].sudo().create({
             'state': 'draft',
             'customer_id': customer.id,
-            'property_product_pricelist': customer.property_product_pricelist.id
+            'price_list_id': customer.property_product_pricelist.id
         })
         now = datetime.datetime.now()
         gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
