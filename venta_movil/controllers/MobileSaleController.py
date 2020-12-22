@@ -130,23 +130,17 @@ class MobileSaleController(http.Controller):
                     'Qty': stock.quantity
                 })
         for res in env:
-            _logger.error("Cliente Cordenadas {} Mi Cordenadas {}".format((latitude,longitude),(res.customer_id.partner_latitude, res.customer_id.partner_longitude)))
-            if res.customer_id.partner_longitude != 0:
-                my_direction = gmaps.reverse_geocode((latitude,longitude))
-                part_direction = gmaps.reverse_geocode((latitude,longitude))
-                directions_result = gmaps.directions((latitude,longitude),
-                                                     (latitude,longitude),
-                                                     mode="driving",
-                                                     departure_time=now)
-                distance.append(directions_result)
+            url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
+                latitude, longitude, res.customer_id.partner_latitude, res.customer_id.partner_longitude)
             if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                  [stock['Product_id'] for stock in stock_array]):
                 respond.append({
-                    'Order_Name': res.name
+                    'Order_Name': res.name,
+                    "Url_Google":url_google
                 })
             else:
                 continue
-        return {'Session': session, "Truck": truck, "Stock": stock_array,"Distance":distance, "Result": respond}
+        return {'Session': session, "Truck": truck, "Stock": stock_array, "Distance": distance, "Result": respond}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
