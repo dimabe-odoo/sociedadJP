@@ -131,8 +131,8 @@ class MobileSaleController(http.Controller):
                 })
         for res in env:
             if res.customer_id.partner_longitude != 0:
-                dir = gmaps.directions((latitude, longitude),
-                                       (res.customer_id.partner_latitude, res.customer_id.partner_longitude),
+                dir = gmaps.directions([latitude,longitude],
+                                       [res.customer_id.partner_latitude, res.customer_id.partner_longitude],
                                        mode="driving",
                                        departure_time=now)
                 distance.append(dir)
