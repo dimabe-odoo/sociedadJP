@@ -141,6 +141,7 @@ class MobileSaleController(http.Controller):
             if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                  [stock['Product_id'] for stock in stock_array]):
                 respond.append({
+                    'Order_Id': res.id,
                     'Order_Name': res.name,
                     'Distance_Text': distance_text,
                     'Distance_Value': self.round_distance(float(distance_value))
@@ -148,8 +149,9 @@ class MobileSaleController(http.Controller):
             else:
                 continue
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
-        return {'Session': session, "Truck": truck, "Stock": stock_array, "Distance": distance,
-                "Result": list_sort_by_dis}
+        if not env[0].session_id:
+            self.take_saleman(env[0].id,session)
+        return {list_sort_by_dis}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
