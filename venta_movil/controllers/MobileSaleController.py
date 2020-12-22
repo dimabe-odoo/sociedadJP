@@ -120,7 +120,7 @@ class MobileSaleController(http.Controller):
         respond = []
         distance = []
         _logger = logging.getLogger(__name__)
-        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
+        gmaps = googlemaps.Client(key='AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y')
         ##Get Stock of truck
         for stock in truck_stock:
             if stock.quantity > 0:
