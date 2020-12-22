@@ -130,9 +130,10 @@ class MobileSaleController(http.Controller):
                     'Qty': stock.quantity
                 })
         for res in env:
+            _logger.error("Cliente Cordenadas {} Mi Cordenadas {}".format((latitude,longitude),(res.customer_id.partner_latitude, res.customer_id.partner_longitude)))
             if res.customer_id.partner_longitude != 0:
-                dir = gmaps.directions([latitude,longitude],
-                                       [res.customer_id.partner_latitude, res.customer_id.partner_longitude],
+                dir = gmaps.directions((latitude,longitude),
+                                       (res.customer_id.partner_latitude, res.customer_id.partner_longitude),
                                        mode="driving",
                                        departure_time=now)
                 distance.append(dir)
