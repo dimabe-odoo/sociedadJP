@@ -128,18 +128,16 @@ class MobileSaleController(http.Controller):
                     'Qty': stock.quantity
                 })
         for res in env:
-            _logger.error(functools.reduce(lambda x, y: x and y, map(lambda p, q: p == q,
-                                                                     res.mapped('mobile_lines').mapped(
-                                                                         'product_id').mapped('id'),
-                                                                     [stock['Product_id'] for stock in stock_array]),
-                                           True))
-            if res.mapped('mobile_lines').mapped('product_id').mapped('id') not in [stock['Product_id'] for stock in
-                                                                                    stock_array]:
-                continue
-            else:
+            if functools.reduce(lambda x, y: x and y, map(lambda p, q: p == q,
+                                                          res.mapped('mobile_lines').mapped(
+                                                              'product_id').mapped('id'),
+                                                          [stock['Product_id'] for stock in stock_array]),
+                                True):
                 respond.append({
                     'Order_Name': res.name
                 })
+            else:
+                continue
         return {'Session': session, "Truck": truck, "Stock": stock_array, "Result": respond}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
