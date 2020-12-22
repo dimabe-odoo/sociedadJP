@@ -137,13 +137,13 @@ class MobileSaleController(http.Controller):
             respond_google = requests.request("GET",url=url_google)
             json_data = json.loads(respond_google.text)
             distance_text = json_data['routes'][0]["legs"][0]['distance']['text']
-            distance_value = json_data['routes'][0]["legs"][0]['distance']['value']
+            distance_value = json_data['routes'][0]["legs"][0]['distance']['value'] / 1000
             if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                  [stock['Product_id'] for stock in stock_array]):
                 respond.append({
                     'Order_Name': res.name,
                     'Distance_Text': distance_text,
-                    'Distance_Value': self.round_distance((distance_value / 1000))
+                    'Distance_Value': self.round_distance(distance_value)
                 })
             else:
                 continue
@@ -250,4 +250,4 @@ class MobileSaleController(http.Controller):
         if int(value[-1]) >= 5:
             return math.ceil(value)
         else:
-            return round(value)
+            return round(value,1)
