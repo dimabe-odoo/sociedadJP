@@ -5,6 +5,7 @@ import logging
 import json
 import functools
 import googlemaps
+import requests
 
 
 class MobileSaleController(http.Controller):
@@ -132,11 +133,12 @@ class MobileSaleController(http.Controller):
         for res in env:
             url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
                 latitude, longitude, res.customer_id.partner_latitude, res.customer_id.partner_longitude)
+            res = requests.request("GET",url=url_google)
             if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                  [stock['Product_id'] for stock in stock_array]):
                 respond.append({
                     'Order_Name': res.name,
-                    "Url_Google":url_google
+                    "Url_Google":res
                 })
             else:
                 continue
