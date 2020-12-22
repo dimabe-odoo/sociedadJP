@@ -116,9 +116,11 @@ class MobileSaleController(http.Controller):
         truck = request.env['stock.location'].sudo().search([('id', '=', session.truck_id.id)])
         truck_stock = request.env['stock.quant'].sudo().search([('location_id', '=', truck.id)])
         stock_array = []
+        now = datetime.datetime.now
         respond = []
+        distance = []
         _logger = logging.getLogger(__name__)
-
+        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
         ##Get Stock of truck
         for stock in truck_stock:
             if stock.quantity > 0:
@@ -128,6 +130,8 @@ class MobileSaleController(http.Controller):
                     'Qty': stock.quantity
                 })
         for res in env:
+            dir = gmaps.directions((latitude,longitude),(res.customer_id.partner_latitude,res.customer_id.partner_longitude),mode="driving",departure_time=now)
+            distance.append(dir)
             if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                  [stock['Product_id'] for stock in stock_array]):
                 respond.append({
@@ -135,7 +139,7 @@ class MobileSaleController(http.Controller):
                 })
             else:
                 continue
-        return {'Session': session, "Truck": truck, "Stock": stock_array, "Result": respond}
+        return {'Session': session, "Truck": truck, "Stock": stock_array,"Distance":distance, "Result": respond}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
