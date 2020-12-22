@@ -131,7 +131,7 @@ class MobileSaleController(http.Controller):
                 respond.append({
                     'Order_Name': res.name
                 })
-        return {'Session':session,"Truck":truck,"Stock":[stock['Product_id'] for stock in stock_array],"Result":respond}
+        return {'Session':session,"Truck":truck,"Stock":stock_array,"Result":respond}
 
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
