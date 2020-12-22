@@ -134,7 +134,7 @@ class MobileSaleController(http.Controller):
         for res in env:
             url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
                 latitude, longitude, res.customer_id.partner_latitude, res.customer_id.partner_longitude)
-            respond_google = requests.request("GET",url=url_google)
+            respond_google = requests.request("GET", url=url_google)
             json_data = json.loads(respond_google.text)
             distance_text = json_data['routes'][0]["legs"][0]['distance']['text']
             distance_value = json_data['routes'][0]["legs"][0]['distance']['value'] / 1000
@@ -148,7 +148,8 @@ class MobileSaleController(http.Controller):
                 list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'], reverse=True)
             else:
                 continue
-        return {'Session': session, "Truck": truck, "Stock": stock_array, "Distance": distance, "Result": list_sort_by_dis}
+        return {'Session': session, "Truck": truck, "Stock": stock_array, "Distance": distance,
+                "Result": list_sort_by_dis}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
@@ -246,9 +247,9 @@ class MobileSaleController(http.Controller):
                                                           array1,
                                                           array2), True)
 
-    def round_distance(self,value):
+    def round_distance(self, value):
         value_separate = str(value).split('.')
         if int(value_separate[-1]) >= 5:
             return math.ceil(value)
         else:
-            return round(value,1)
+            return round(value, 1)
