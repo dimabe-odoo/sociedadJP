@@ -162,7 +162,13 @@ class MobileSaleController(http.Controller):
                 'warehouse_id':warehouse_id
             })
             mobile_order.button_dispatch()
-            return {"Result": list_sort_by_dis}
+            order_app = {
+                        'Order_Id': res.id,
+                        'Order_Name': res.name,
+                        'Distance_Text': distance_text,
+                        'Distance_Value': self.round_distance(float(distance_value))
+                    }
+            return {"Result": order_app}
         else:
             return {"Message" : "Ya tiene un pedido en curso"}
 
