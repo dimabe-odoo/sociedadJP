@@ -246,8 +246,8 @@ class MobileSaleController(http.Controller):
                                                           array2), True)
 
     def round_distance(self,value):
-        value = str(value).split('.')
-        if int(value[-1]) >= 5:
+        value_separate = str(value).split('.')
+        if int(value_separate[-1]) >= 5:
             return math.ceil(value)
         else:
             return round(value,1)
