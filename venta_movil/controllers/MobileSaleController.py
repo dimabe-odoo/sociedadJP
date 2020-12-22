@@ -125,7 +125,7 @@ class MobileSaleController(http.Controller):
                     'Qty':stock.quantity
                 })
         for res in env:
-            if res.mapped('product_id') in [stock['Product_id'] for stock in stock_array]:
+            if res.mobile_lines.mapped('product_id').mapped('id') in [stock['Product_id'] for stock in stock_array]:
                 continue
             else:
                 respond.append({
