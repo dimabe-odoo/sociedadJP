@@ -171,6 +171,7 @@ class MobileSaleController(http.Controller):
                 'warehouse_id': warehouse_id
             })
             mobile_order.button_dispatch()
+            return {list_sort_by_dis}
         else:
             return {"Message": "Ya tiene un pedido en curso"}
 
