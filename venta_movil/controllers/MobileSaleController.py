@@ -115,10 +115,11 @@ class MobileSaleController(http.Controller):
         truck_stock = request.env['stock.quant'].sudo().search([('location_id','=',truck.id)])
         stock_array = []
         for stock in truck_stock:
-            stock_array.append({
-                'Product':stock.product_id.display_name,
-                'Qty':stock.quantity
-            })
+            if stock.quantity > 0:
+                stock_array.append({
+                    'Product':stock.product_id.display_name,
+                    'Qty':stock.quantity
+                })
         return {'Session':session,"Truck":truck,"Stock":stock_array}
 
 
