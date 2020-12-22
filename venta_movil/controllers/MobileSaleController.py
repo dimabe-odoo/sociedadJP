@@ -156,7 +156,6 @@ class MobileSaleController(http.Controller):
                 'Distance_Text': list_sort_by_dis[0]['Order_Name'],
                 'Distance_Value': list_sort_by_dis[0]['Distance_Value']
             }
-            return {"Result": order_app}
             mobile_order = request.env['mobile.sale.order'].sudo().search([('id','=',list_sort_by_dis[0]['Order_Id'])])
             warehouse = request.env['stock.warehouse'].sudo().search([])
             warehouse_id = 0
