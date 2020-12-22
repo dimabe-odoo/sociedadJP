@@ -134,11 +134,13 @@ class MobileSaleController(http.Controller):
             url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
                 latitude, longitude, res.customer_id.partner_latitude, res.customer_id.partner_longitude)
             respond_google = requests.request("GET",url=url_google)
+            json = json.loads(respond_google.text)
+            distance = json[0]['routes']
             if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                  [stock['Product_id'] for stock in stock_array]):
                 respond.append({
                     'Order_Name': res.name,
-                    "Url_Google":json.loads(respond_google.text)
+                    "Url_Google": distance
                 })
             else:
                 continue
