@@ -150,6 +150,16 @@ class MobileSaleController(http.Controller):
                 else:
                     continue
             list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
+            mobile_order = request.env['mobile.sale.order'].sudo().search([('id','=',list_sort_by_dis[0]['Order_Id'])])
+            warehouse = request.env['stock.warehouse'].sudo().search([])
+            warehouse_id = 0
+            for ware in warehouse:
+                if truck.id in ware.mapped('truck_ids').mapped('id'):
+                    warehouse_id = ware.id
+            mobile_order.sudo().write({
+                'seller_id':session,
+                'location_id':truck.id
+            })
             return {"Result": list_sort_by_dis}
         else:
             return {"Message" : "Ya tiene un pedido en curso"}
