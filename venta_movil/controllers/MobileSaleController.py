@@ -124,8 +124,14 @@ class MobileSaleController(http.Controller):
                     'Product':stock.product_id.display_name,
                     'Qty':stock.quantity
                 })
-
-        return {'Session':session,"Truck":truck,"Stock":[stock['Product_id'] for stock in stock_array]}
+        for res in env:
+            if res.mapped('product_id') in [stock['Product_id'] for stock in stock_array]:
+                continue
+            else:
+                respond.append({
+                    'Order_Name': res.name
+                })
+        return {'Session':session,"Truck":truck,"Stock":[stock['Product_id'] for stock in stock_array],respond}
 
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
