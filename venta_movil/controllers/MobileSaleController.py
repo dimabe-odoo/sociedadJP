@@ -142,7 +142,7 @@ class MobileSaleController(http.Controller):
                 respond.append({
                     'Order_Name': res.name,
                     'Distance_Text': distance_text,
-                    'Distance_Value': distance_value
+                    'Distance_Value': (distance_value / 1000)
                 })
             else:
                 continue
