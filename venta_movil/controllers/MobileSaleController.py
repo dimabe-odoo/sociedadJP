@@ -111,7 +111,8 @@ class MobileSaleController(http.Controller):
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
         session = request.env['truck.session'].sudo().search([('id', '=', session)])
-        return {'Session':session}
+        truck = request.env['stock.location'].sudo().search([('id','=',session.truck)])
+        return {'Session':session,"Truck":truck}
 
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
