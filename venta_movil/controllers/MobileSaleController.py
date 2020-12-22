@@ -3,6 +3,7 @@ from odoo.http import request
 import datetime
 import logging
 import json
+import functools
 import googlemaps
 
 
@@ -110,10 +111,10 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
-        env = request.env['mobile.sale.order'].sudo().search([('state','=','confirm')])
+        env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
         session = request.env['truck.session'].sudo().search([('id', '=', session)])
-        truck = request.env['stock.location'].sudo().search([('id','=',session.truck_id.id)])
-        truck_stock = request.env['stock.quant'].sudo().search([('location_id','=',truck.id)])
+        truck = request.env['stock.location'].sudo().search([('id', '=', session.truck_id.id)])
+        truck_stock = request.env['stock.quant'].sudo().search([('location_id', '=', truck.id)])
         stock_array = []
         respond = []
         _logger = logging.getLogger(__name__)
@@ -122,20 +123,24 @@ class MobileSaleController(http.Controller):
         for stock in truck_stock:
             if stock.quantity > 0:
                 stock_array.append({
-                    'Product_id':stock.product_id.id,
-                    'Product':stock.product_id.display_name,
-                    'Qty':stock.quantity
+                    'Product_id': stock.product_id.id,
+                    'Product': stock.product_id.display_name,
+                    'Qty': stock.quantity
                 })
         for res in env:
-            _logger.error(res.mapped('mobile_lines').mapped('product_id').mapped('id'))
-            if res.mapped('mobile_lines').mapped('product_id').mapped('id') not in [stock['Product_id'] for stock in stock_array]:
+            _logger.error(functools.reduce(lambda x, y: x and y, map(lambda p, q: p == q,
+                                                                     res.mapped('mobile_lines').mapped(
+                                                                         'product_id').mapped('id'),
+                                                                     [stock['Product_id'] for stock in stock_array]),
+                                           True))
+            if res.mapped('mobile_lines').mapped('product_id').mapped('id') not in [stock['Product_id'] for stock in
+                                                                                    stock_array]:
                 continue
             else:
                 respond.append({
                     'Order_Name': res.name
                 })
-        return {'Session':session,"Truck":truck,"Stock":stock_array,"Result":respond}
-
+        return {'Session': session, "Truck": truck, "Stock": stock_array, "Result": respond}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
