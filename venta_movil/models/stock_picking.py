@@ -32,6 +32,7 @@ class StockPicking(models.Model):
                     return super(StockPicking, self).button_validate()
                 if item.purchase_id or item.sale_id or 'PO' in item.origin:
                     if item.picking_type_code == 'outgoing':
+                        models._logger.error(item.name)
                         if item.sale_id.loan_supply:
                             loan_reception_id = self.env['stock.picking'].create({
                                 'name': 'LOAN/{}'.format(self.name),
