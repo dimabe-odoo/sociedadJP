@@ -149,11 +149,12 @@ class MobileSaleController(http.Controller):
             else:
                 continue
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
-        mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', list_sort_by_dis[0]['Order_Id'])])
-        mobile.sudo().write({
-            'seller_id':session
-        })
-        mobile.sudo().button_dispatch()
+        for list in list_sort_by_dis:
+            mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', list['Order_Id'])])
+            mobile.sudo().write({
+                'seller_id': session
+            })
+            mobile.sudo().button_dispatch()
         return {"Result": list_sort_by_dis}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
