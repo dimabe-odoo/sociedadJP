@@ -145,9 +145,9 @@ class MobileSaleController(http.Controller):
                     'Distance_Text': distance_text,
                     'Distance_Value': self.round_distance(float(distance_value))
                 })
-                list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'], reverse=True)
             else:
                 continue
+        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'], reverse=True)
         return {'Session': session, "Truck": truck, "Stock": stock_array, "Distance": distance,
                 "Result": list_sort_by_dis}
 
