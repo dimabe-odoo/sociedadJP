@@ -69,6 +69,7 @@ class StockPicking(models.Model):
                             'supply_dispatch_id': reception.id,
                             'have_supply': True
                         })
+
                     for move in item.move_ids_without_package:
                         if move.product_id.supply_id:
                             quant = self.env['stock.quant'].search(
@@ -107,6 +108,7 @@ class StockPicking(models.Model):
                                 'product_uom': move.product_id.supply_id.uom_id.id,
                                 'date_expected': item.scheduled_date
                             })
+                    return super(StockPicking, self).button_validate()
                 else:
                     reception = self.env['stock.picking'].create({
                         'name': 'OUT/' + item.name,
