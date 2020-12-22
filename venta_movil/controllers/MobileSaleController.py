@@ -138,7 +138,7 @@ class MobileSaleController(http.Controller):
                                  [stock['Product_id'] for stock in stock_array]):
                 respond.append({
                     'Order_Name': res.name,
-                    "Url_Google":respond_google
+                    "Url_Google":json.loads(respond_google.text)
                 })
             else:
                 continue
