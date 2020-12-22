@@ -134,8 +134,8 @@ class MobileSaleController(http.Controller):
             if res.customer_id.partner_longitude != 0:
                 my_direction = gmaps.reverse_geocode((latitude,longitude))
                 part_direction = gmaps.reverse_geocode((latitude,longitude))
-                directions_result = gmaps.directions(my_direction,
-                                                     part_direction,
+                directions_result = gmaps.directions((latitude,longitude),
+                                                     (latitude,longitude),
                                                      mode="transit",
                                                      departure_time=now)
                 distance.append(directions_result)
