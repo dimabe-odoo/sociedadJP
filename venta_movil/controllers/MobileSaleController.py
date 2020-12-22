@@ -141,7 +141,8 @@ class MobileSaleController(http.Controller):
                                  [stock['Product_id'] for stock in stock_array]):
                 respond.append({
                     'Order_Name': res.name,
-                    "Url_Google": distance_text,
+                    'Distance_Text': distance_text,
+                    'Distance_Value': distance_value
                 })
             else:
                 continue
