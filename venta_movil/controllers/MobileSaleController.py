@@ -113,49 +113,46 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
-        env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
-        session = request.env['truck.session'].sudo().search([('id', '=', session)])
-        truck = request.env['stock.location'].sudo().search([('id', '=', session.truck_id.id)])
-        truck_stock = request.env['stock.quant'].sudo().search([('location_id', '=', truck.id)])
-        stock_array = []
-        now = datetime.datetime.now
-        respond = []
-        distance = []
-        _logger = logging.getLogger(__name__)
-        gmaps = googlemaps.Client(key='AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y')
-        ##Get Stock of truck
-        for stock in truck_stock:
-            if stock.quantity > 0:
-                stock_array.append({
-                    'Product_id': stock.product_id.id,
-                    'Product': stock.product_id.display_name,
-                    'Qty': stock.quantity
-                })
-        for res in env:
-            url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
-                latitude, longitude, res.customer_id.partner_latitude, res.customer_id.partner_longitude)
-            respond_google = requests.request("GET", url=url_google)
-            json_data = json.loads(respond_google.text)
-            distance_text = json_data['routes'][0]["legs"][0]['distance']['text']
-            distance_value = json_data['routes'][0]["legs"][0]['distance']['value'] / 1000
-            if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
-                                 [stock['Product_id'] for stock in stock_array]):
-                respond.append({
-                    'Order_Id': res.id,
-                    'Order_Name': res.name,
-                    'Distance_Text': distance_text,
-                    'Distance_Value': self.round_distance(float(distance_value))
-                })
-            else:
-                continue
-        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
-        for list in list_sort_by_dis:
-            mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', list['Order_Id'])])
-            mobile.sudo().write({
-                'seller_id': session
-            })
-            mobile.sudo().button_dispatch()
-        return {"Result": list_sort_by_dis}
+        if not request.env['mobile.sale.order'].search([('seller_id','=',session)]):
+            env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
+            session = request.env['truck.session'].sudo().search([('id', '=', session)])
+            truck = request.env['stock.location'].sudo().search([('id', '=', session.truck_id.id)])
+            truck_stock = request.env['stock.quant'].sudo().search([('location_id', '=', truck.id)])
+            stock_array = []
+            now = datetime.datetime.now
+            respond = []
+            distance = []
+            _logger = logging.getLogger(__name__)
+            gmaps = googlemaps.Client(key='AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y')
+            ##Get Stock of truck
+            for stock in truck_stock:
+                if stock.quantity > 0:
+                    stock_array.append({
+                        'Product_id': stock.product_id.id,
+                        'Product': stock.product_id.display_name,
+                        'Qty': stock.quantity
+                    })
+            for res in env:
+                url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
+                    latitude, longitude, res.customer_id.partner_latitude, res.customer_id.partner_longitude)
+                respond_google = requests.request("GET", url=url_google)
+                json_data = json.loads(respond_google.text)
+                distance_text = json_data['routes'][0]["legs"][0]['distance']['text']
+                distance_value = json_data['routes'][0]["legs"][0]['distance']['value'] / 1000
+                if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
+                                     [stock['Product_id'] for stock in stock_array]):
+                    respond.append({
+                        'Order_Id': res.id,
+                        'Order_Name': res.name,
+                        'Distance_Text': distance_text,
+                        'Distance_Value': self.round_distance(float(distance_value))
+                    })
+                else:
+                    continue
+            list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
+            return {"Result": list_sort_by_dis}
+        else:
+            return {"Message" : "Ya tiene un pedido en curso"}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
