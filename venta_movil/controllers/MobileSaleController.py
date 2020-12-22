@@ -112,7 +112,14 @@ class MobileSaleController(http.Controller):
     def get_orders(self, latitude, longitude, session):
         session = request.env['truck.session'].sudo().search([('id', '=', session)])
         truck = request.env['stock.location'].sudo().search([('id','=',session.truck_id.id)])
-        return {'Session':session,"Truck":truck}
+        truck_stock = request.env['stock.quant'].sudo().search([('location_id','=',truck.id)])
+        stock_array = []
+        for stock in truck_stock:
+            stock_array.append({
+                'Product':stock.product_id.display_name,
+                'Qty':stock.quantity
+            })
+        return {'Session':session,"Truck":truck,}
 
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
