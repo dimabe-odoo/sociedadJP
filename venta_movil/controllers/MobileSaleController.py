@@ -128,11 +128,8 @@ class MobileSaleController(http.Controller):
                     'Qty': stock.quantity
                 })
         for res in env:
-            if functools.reduce(lambda x, y: x and y, map(lambda p, q: p == q,
-                                                          res.mapped('mobile_lines').mapped(
-                                                              'product_id').mapped('id'),
-                                                          [stock['Product_id'] for stock in stock_array]),
-                                True):
+            if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
+                                 [stock['Product_id'] for stock in stock_array]):
                 respond.append({
                     'Order_Name': res.name
                 })
@@ -230,3 +227,8 @@ class MobileSaleController(http.Controller):
             })
 
         return result
+
+    def compare_list(self, array1, array2):
+        return functools.reduce(lambda x, y: x and y, map(lambda p, q: p == q,
+                                                          array1,
+                                                          array2), True)
