@@ -150,6 +150,13 @@ class MobileSaleController(http.Controller):
                 else:
                     continue
             list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
+            order_app = {
+                'Order_Id': list_sort_by_dis[0]['Order_Id'],
+                'Order_Name': list_sort_by_dis[0]['Order_Name'],
+                'Distance_Text': list_sort_by_dis[0]['Order_Name'],
+                'Distance_Value': list_sort_by_dis[0]['Distance_Value']
+            }
+            return {"Result": order_app}
             mobile_order = request.env['mobile.sale.order'].sudo().search([('id','=',list_sort_by_dis[0]['Order_Id'])])
             warehouse = request.env['stock.warehouse'].sudo().search([])
             warehouse_id = 0
@@ -162,13 +169,7 @@ class MobileSaleController(http.Controller):
                 'warehouse_id':warehouse_id
             })
             mobile_order.button_dispatch()
-            order_app = {
-                        'Order_Id': res.id,
-                        'Order_Name': res.name,
-                        'Distance_Text': distance_text,
-                        'Distance_Value': self.round_distance(float(distance_value))
-                    }
-            return {"Result": order_app}
+
         else:
             return {"Message" : "Ya tiene un pedido en curso"}
 
