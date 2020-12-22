@@ -138,7 +138,7 @@ class MobileSaleController(http.Controller):
                                                      part_direction,
                                                      mode="transit",
                                                      departure_time=now)
-                distance.append(dir)
+                distance.append(directions_result)
             if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                  [stock['Product_id'] for stock in stock_array]):
                 respond.append({
