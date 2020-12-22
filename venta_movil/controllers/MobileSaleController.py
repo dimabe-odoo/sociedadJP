@@ -116,6 +116,8 @@ class MobileSaleController(http.Controller):
         truck_stock = request.env['stock.quant'].sudo().search([('location_id','=',truck.id)])
         stock_array = []
         respond = []
+        _logger = logging.getLogger(__name__)
+
         ##Get Stock of truck
         for stock in truck_stock:
             if stock.quantity > 0:
@@ -125,6 +127,7 @@ class MobileSaleController(http.Controller):
                     'Qty':stock.quantity
                 })
         for res in env:
+            _logger.error(res.mapped('mobile_lines').mapped('product_id').mapped('id'))
             if res.mapped('mobile_lines').mapped('product_id').mapped('id') not in [stock['Product_id'] for stock in stock_array]:
                 continue
             else:
