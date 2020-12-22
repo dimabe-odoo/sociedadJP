@@ -136,7 +136,7 @@ class MobileSaleController(http.Controller):
                 part_direction = gmaps.reverse_geocode((latitude,longitude))
                 directions_result = gmaps.directions((latitude,longitude),
                                                      (latitude,longitude),
-                                                     mode="transit",
+                                                     mode="driving",
                                                      departure_time=now)
                 distance.append(directions_result)
             if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
