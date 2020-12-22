@@ -143,7 +143,7 @@ class MobileSaleController(http.Controller):
                 respond.append({
                     'Order_Name': res.name,
                     'Distance_Text': distance_text,
-                    'Distance_Value': math.ceil((distance_value / 1000))
+                    'Distance_Value': self.round_distance((distance_value / 1000))
                 })
             else:
                 continue
@@ -244,3 +244,10 @@ class MobileSaleController(http.Controller):
         return functools.reduce(lambda x, y: x and y, map(lambda p, q: p == q,
                                                           array1,
                                                           array2), True)
+
+    def round_distance(self,value):
+        value = str(value).split('.')
+        if int(value[-1]) >= 5:
+            return math.ceil(value)
+        else:
+            return round(value)
