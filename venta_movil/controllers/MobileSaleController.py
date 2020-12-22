@@ -143,7 +143,7 @@ class MobileSaleController(http.Controller):
                 respond.append({
                     'Order_Name': res.name,
                     'Distance_Text': distance_text,
-                    'Distance_Value': self.round_distance(distance_value)
+                    'Distance_Value': self.round_distance(float(distance_value))
                 })
             else:
                 continue
