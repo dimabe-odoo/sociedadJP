@@ -28,4 +28,45 @@ class StockPicking(models.Model):
             if item.picking_type_code not in ('outgoing','incoming'):
                 return super(StockPicking,self).button_validate()
             else:
-                models._logger.error(self.name)
+                if item.picking_type_code == 'outgoing':
+                    if item.sale_id.loan_supply:
+                        loan_reception_id = self.env['stock.picking'].create({
+                            'name': 'LOAN/{}'.format(self.name),
+                            'picking_type_id': self.env['stock.picking.type'].search([
+                                ('warehouse_id.id', '=', self.picking_type_id.warehouse_id.id),
+                                ('sequence_code', '=', 'IN')
+                            ]).id,
+                            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                            'location_dest_id': self.env['stock.warehouse'].search([
+                                ('id', '=', self.picking_type_id.warehouse_id.id)
+                            ]).loan_location_id.id,
+                            'move_type': 'direct',
+                            'picking_type_code': 'incoming',
+                            'date_done': datetime.datetime.now(),
+                            'company_id': self.env.user.company_id.id,
+                            'origin': 'Entrada de {}'.format(self.name),
+                            'partner_id': self.partner_id.id
+                        })
+                        self.write({
+                            'loan_reception_id': loan_reception_id.id
+                        })
+                    if item.move_ids_without_package.filtered(lambda a: (a.loan_supply - a.product_uom_qty) != 0):
+                        reception = self.env['stock.picking'].create({
+                            'name': 'IN/' + item.name,
+                            'picking_type_code': 'incoming',
+                            'picking_type_id': self.env['stock.picking.type'].search(
+                                [('warehouse_id.id', '=', item.picking_type_id.warehouse_id.id),
+                                 ('sequence_code', '=', 'IN')]).id,
+                            'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                            'location_dest_id': self.env['stock.warehouse'].search(
+                                [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
+                            'state': 'assigned',
+                            'date_done': datetime.datetime.now(),
+                            'origin': 'Entrada de ' + item.origin,
+                            'partner_id': item.partner_id.id
+                        })
+                        self.write({
+                            'supply_dispatch_id': reception.id,
+                            'have_supply': True
+                        })
+
