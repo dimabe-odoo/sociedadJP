@@ -132,7 +132,12 @@ class MobileSaleController(http.Controller):
         for res in env:
             _logger.error("Cliente Cordenadas {} Mi Cordenadas {}".format((latitude,longitude),(res.customer_id.partner_latitude, res.customer_id.partner_longitude)))
             if res.customer_id.partner_longitude != 0:
-                dir = gmaps.reverse_geocode((latitude,longitude))
+                my_direction = gmaps.reverse_geocode((latitude,longitude))
+                part_direction = gmaps.reverse_geocode((latitude,longitude))
+                directions_result = gmaps.directions(my_direction,
+                                                     part_direction,
+                                                     mode="transit",
+                                                     departure_time=now)
                 distance.append(dir)
             if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                  [stock['Product_id'] for stock in stock_array]):
