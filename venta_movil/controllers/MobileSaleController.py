@@ -149,23 +149,12 @@ class MobileSaleController(http.Controller):
             else:
                 continue
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
-        if not env[0].seller_id:
-            truck_session = request.env['truck.session'].sudo().search([('id', '=', int(session))])
-
-            warehouses = request.env['stock.warehouse'].sudo().search([])
-            warehouse_id = 0
-            for ware in warehouses:
-                trucks = ware.mapped('truck_ids').mapped('id')
-                if truck_session.truck_id.id in trucks:
-                    warehouse_id = ware.id
-                    break
-            env[0].write({
-                'seller_id': session,
-                'location_id': truck_session.truck_id.id,
-                'warehouse_id': warehouse_id
-            })
-            env[0].button_dispatch()
-        return {"Result":list_sort_by_dis}
+        mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', list_sort_by_dis[0]['Order_Id'])])
+        mobile.sudo().write({
+            'seller_id':session
+        })
+        mobile.sudo().button_dispatch()
+        return {"Result": list_sort_by_dis}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
