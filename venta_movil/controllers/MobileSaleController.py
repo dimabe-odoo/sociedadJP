@@ -119,7 +119,7 @@ class MobileSaleController(http.Controller):
                 'Product':stock.product_id.display_name,
                 'Qty':stock.quantity
             })
-        return {'Session':session,"Truck":truck,}
+        return {'Session':session,"Truck":truck,"Stock":stock_array}
 
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
