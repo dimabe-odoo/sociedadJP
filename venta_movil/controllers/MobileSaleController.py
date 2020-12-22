@@ -149,7 +149,7 @@ class MobileSaleController(http.Controller):
             else:
                 continue
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
-        if not env[0].session_id:
+        if not env[0].seller_id:
             self.take_saleman(env[0].id,session)
         return {list_sort_by_dis}
 
