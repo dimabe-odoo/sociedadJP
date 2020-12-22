@@ -158,8 +158,10 @@ class MobileSaleController(http.Controller):
                     warehouse_id = ware.id
             mobile_order.sudo().write({
                 'seller_id':session,
-                'location_id':truck.id
+                'location_id':truck.id,
+                'warehouse_id':warehouse_id
             })
+            mobile_order.button_dispatch()
             return {"Result": list_sort_by_dis}
         else:
             return {"Message" : "Ya tiene un pedido en curso"}
