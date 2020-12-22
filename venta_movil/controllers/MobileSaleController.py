@@ -113,7 +113,8 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
-        if not request.env['mobile.sale.order'].search([('seller_id','=',session),('state','=','onroute')]):
+        order_active = request.env['mobile.sale.order'].search([('seller_id','=',session),('state','=','onroute')])
+        if not order_active:
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
             session = request.env['truck.session'].sudo().search([('id', '=', session)])
             truck = request.env['stock.location'].sudo().search([('id', '=', session.truck_id.id)])
@@ -168,7 +169,6 @@ class MobileSaleController(http.Controller):
                 'warehouse_id':warehouse_id
             })
             mobile_order.button_dispatch()
-
         else:
             return {"Message" : "Ya tiene un pedido en curso"}
 
