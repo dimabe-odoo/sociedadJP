@@ -151,7 +151,7 @@ class MobileSaleController(http.Controller):
         list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
         if not env[0].seller_id:
             self.take_saleman(env[0].id,session)
-        return {list_sort_by_dis}
+        return {"Result":list_sort_by_dis}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
