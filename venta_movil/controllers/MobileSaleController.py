@@ -113,7 +113,7 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
-        if not request.env['mobile.sale.order'].search([('seller_id','=',session)]):
+        if not request.env['mobile.sale.order'].search([('seller_id','=',session),('state','=','onroute')]):
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
             session = request.env['truck.session'].sudo().search([('id', '=', session)])
             truck = request.env['stock.location'].sudo().search([('id', '=', session.truck_id.id)])
