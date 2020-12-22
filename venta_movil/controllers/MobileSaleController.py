@@ -113,7 +113,8 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
-        order_active = request.env['mobile.sale.order'].search([('seller_id','=',session),('state','=','onroute')])
+        order_active = request.env['mobile.sale.order'].search(
+            [('seller_id.id', '=', session), ('state', '=', 'onroute')])
         if not order_active:
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
             session = request.env['truck.session'].sudo().search([('id', '=', session)])
@@ -157,20 +158,21 @@ class MobileSaleController(http.Controller):
                 'Distance_Text': list_sort_by_dis[0]['Order_Name'],
                 'Distance_Value': list_sort_by_dis[0]['Distance_Value']
             }
-            mobile_order = request.env['mobile.sale.order'].sudo().search([('id','=',list_sort_by_dis[0]['Order_Id'])])
+            mobile_order = request.env['mobile.sale.order'].sudo().search(
+                [('id', '=', list_sort_by_dis[0]['Order_Id'])])
             warehouse = request.env['stock.warehouse'].sudo().search([])
             warehouse_id = 0
             for ware in warehouse:
                 if truck.id in ware.mapped('truck_ids').mapped('id'):
                     warehouse_id = ware.id
             mobile_order.sudo().write({
-                'seller_id':session,
-                'location_id':truck.id,
-                'warehouse_id':warehouse_id
+                'seller_id': session,
+                'location_id': truck.id,
+                'warehouse_id': warehouse_id
             })
             mobile_order.button_dispatch()
         else:
-            return {"Message" : "Ya tiene un pedido en curso"}
+            return {"Message": "Ya tiene un pedido en curso"}
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
