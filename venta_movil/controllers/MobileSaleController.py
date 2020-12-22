@@ -6,6 +6,7 @@ import json
 import functools
 import googlemaps
 import requests
+import math
 
 
 class MobileSaleController(http.Controller):
@@ -142,7 +143,7 @@ class MobileSaleController(http.Controller):
                 respond.append({
                     'Order_Name': res.name,
                     'Distance_Text': distance_text,
-                    'Distance_Value': round((distance_value / 1000),1)
+                    'Distance_Value': math.ceil((distance_value / 1000))
                 })
             else:
                 continue
