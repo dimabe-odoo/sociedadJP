@@ -168,7 +168,7 @@ class MobileSaleController(http.Controller):
                 mobile_order.button_dispatch()
             order_app = {}
             order_active_2 = request.env['mobile.sale.order'].search(
-                [('seller_id.id', '=', session), ('state', '=', 'onroute')])
+                [('seller_id.id', '=', session.id), ('state', '=', 'onroute')])
             if order_active_2:
                 order_app = {
                     'Order_Id': str(order_active_2.id),
