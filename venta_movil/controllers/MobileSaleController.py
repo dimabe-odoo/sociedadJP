@@ -279,8 +279,7 @@ class MobileSaleController(http.Controller):
             "ClientAddress":order.customer_id.street,
             "ClientLatitude":order.customer_id.partner_latitude,
             "ClientLongitude":order.customer_id.partner_longitude,
-            "Total":order.total_sale,
-            "PolyLine":polyline
+            "Total":order.total_sale
         })
         return respond
 
