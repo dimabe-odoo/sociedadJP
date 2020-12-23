@@ -270,7 +270,7 @@ class MobileSaleController(http.Controller):
         json_data = json.loads(respond_google.text)
         logging.getLogger().error(json_data)
         polyline = []
-        for poly in json_data['route'][0]['legs'][0]['steps']:
+        for poly in json_data['routes'][0]['legs'][0]['steps']:
             polyline.append(poly['polyline'])
 
         distance_text = json_data['routes'][0]['legs'][0]['distance']['text']
