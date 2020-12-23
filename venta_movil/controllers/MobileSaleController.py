@@ -173,7 +173,11 @@ class MobileSaleController(http.Controller):
             mobile_order.button_dispatch()
             return list_sort_by_dis
         else:
-            return {"Message": "Ya tiene un pedido en curso"}
+            order_app = {
+                'Order_Id': order_active[0]['Order_Id'],
+                'Order_Name': order_active[0]['Order_Name']
+            }
+            return order_app
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
