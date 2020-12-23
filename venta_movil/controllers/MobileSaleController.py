@@ -166,10 +166,12 @@ class MobileSaleController(http.Controller):
                     'warehouse_id': warehouse_id
                 })
                 mobile_order.button_dispatch()
-            order_app = {
-                'Order_Id': str(order_active.id),
-                'Order_Name': order_active.name
-            }
+            order_app = {}
+            if order_active:
+                order_app = {
+                    'Order_Id': str(order_active.id),
+                    'Order_Name': order_active.name
+                }
             return order_app
         else:
             order_app = {
