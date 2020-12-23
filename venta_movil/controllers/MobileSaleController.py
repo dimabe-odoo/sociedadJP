@@ -174,8 +174,8 @@ class MobileSaleController(http.Controller):
             return list_sort_by_dis
         else:
             order_app = {
-                'Order_Id': order_active[0]['Order_Id'],
-                'Order_Name': order_active[0]['Order_Name']
+                'Order_Id': str(order_active.id),
+                'Order_Name': order_active.name
             }
             return order_app
 
