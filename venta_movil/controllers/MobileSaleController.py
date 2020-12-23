@@ -257,6 +257,27 @@ class MobileSaleController(http.Controller):
         _logger.error(list_sort_by_dis)
         return list_sort_by_dis
 
+    @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
+    def get_order(self, latitude, longitude, id):
+        order = request.env['mobile.sale.order'].sudo().search([('id', '=', int(id))])
+        respond = []
+        url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
+            latitude, longitude, order.customer_id.partner_latitude, order.customer_id.partner_longitude)
+        respond_google = requests.request("GET",url=url_google)
+        json_data = json.loads(respond_google.text)
+        distance_text = json_data['route'][0]['legs'][0]['distance']['text']
+        respond.append({
+            "OrderId":order.id,
+            "OrderName":order.name,
+            "Distance":distance_text,
+            "ClientName":order.customer_id.display_name,
+            "ClientAddress":order.customer_id.street,
+            "ClientLatitude":order.customer_id.partner_latitude,
+            "ClientLongitude":order.customer_id.partner_longitude,
+            "Total":order.total_sale
+        })
+        return respond
+
     @http.route('/api/paymentmethod', type='json', method=['GET'], auth='token', cors='*')
     def get_paymeth_method(self):
         respond = request.env['pos.payment.method'].sudo().search([])
