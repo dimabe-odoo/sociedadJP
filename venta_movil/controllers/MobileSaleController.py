@@ -152,12 +152,6 @@ class MobileSaleController(http.Controller):
                 else:
                     continue
             list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
-            order_app = {
-                'Order_Id': list_sort_by_dis[0]['Order_Id'],
-                'Order_Name': list_sort_by_dis[0]['Order_Name'],
-                'Distance_Text': list_sort_by_dis[0]['Order_Name'],
-                'Distance_Value': list_sort_by_dis[0]['Distance_Value']
-            }
             mobile_order = request.env['mobile.sale.order'].sudo().search(
                 [('id', '=', list_sort_by_dis[0]['Order_Id'])])
             warehouse = request.env['stock.warehouse'].sudo().search([])
@@ -171,7 +165,11 @@ class MobileSaleController(http.Controller):
                 'warehouse_id': warehouse_id
             })
             mobile_order.button_dispatch()
-            return list_sort_by_dis
+            order_app = {
+                'Order_Id': str(order_active.id),
+                'Order_Name': order_active.name
+            }
+            return order_app
         else:
             order_app = {
                 'Order_Id': str(order_active.id),
