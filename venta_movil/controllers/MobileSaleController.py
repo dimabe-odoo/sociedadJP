@@ -265,6 +265,7 @@ class MobileSaleController(http.Controller):
             latitude, longitude, order.customer_id.partner_latitude, order.customer_id.partner_longitude)
         respond_google = requests.request("GET",url=url_google)
         json_data = json.loads(respond_google.text)
+        logging.getLogger().error(respond_google)
         distance_text = json_data['route'][0]['legs'][0]['distance']['text']
         respond.append({
             "OrderId":order.id,
