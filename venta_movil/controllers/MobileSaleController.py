@@ -275,7 +275,7 @@ class MobileSaleController(http.Controller):
         distance_text = json_data['routes'][0]['legs'][0]['distance']['text']
         lines = []
         for line in order.mobile_lines:
-            line.append({
+            lines.append({
                 "id":line.id,
                 "productId": line.product_id.id,
                 "productName":line.product_id.display_name,
