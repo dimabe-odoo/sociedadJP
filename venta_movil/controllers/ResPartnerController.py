@@ -26,7 +26,7 @@ class ResPartnerController(http.Controller):
                     product = request.env['product.product'].sudo().search(
                         [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
                     _logger.error(product)
-                    stock_product = stock.filtered(lambda a: a.product_id.id == product_another.id)
+                    stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
                     _logger.error(stock_product)
                     price_another.append({
                         'Product_Id': pr.product_tmpl_id.id,
@@ -34,6 +34,7 @@ class ResPartnerController(http.Controller):
                         'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
                         'Stock': stock_product.quantity,
                         'Price': pr.fixed_price,
+                        'ImageBase64':product.image_1920
                     })
                 another.append({
                     'Id': str(res.id),
@@ -51,14 +52,14 @@ class ResPartnerController(http.Controller):
                 _logger.error(product)
                 stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
                 _logger.error(stock_product)
-                price_another.append({
-                        'Product_Id': pr.product_tmpl_id.id,
-                        'Product_Name': pr.product_tmpl_id.name,
-                        'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
-                        'Stock': stock_product.quantity,
-                        'Price': pr.fixed_price,
-                        'ImageBase64':product.image_1920
-                    })
+                price.append({
+                    'Product_Id': pr.product_tmpl_id.id,
+                    'Product_Name': pr.product_tmpl_id.name,
+                    'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
+                    'Stock': stock_product.quantity,
+                    'Price': pr.fixed_price,
+                    'ImageBase64':product.image_1920
+                })
 
             result.append({
                 'Id': str(res.id),
