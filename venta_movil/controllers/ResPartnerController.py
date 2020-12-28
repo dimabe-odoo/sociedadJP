@@ -23,7 +23,7 @@ class ResPartnerController(http.Controller):
             for c in res.child_ids:
                 price_another = []
                 for pr in res.property_product_pricelist.item_ids:
-                    product_another = request.env['product.product'].sudo().search(
+                    product = request.env['product.product'].sudo().search(
                         [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
                     _logger.error(product)
                     stock_product = stock.filtered(lambda a: a.product_id.id == product_another.id)
@@ -34,7 +34,6 @@ class ResPartnerController(http.Controller):
                         'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
                         'Stock': stock_product.quantity,
                         'Price': pr.fixed_price,
-                        'ImageBase64':product_another.image_1920
                     })
                 another.append({
                     'Id': str(res.id),
