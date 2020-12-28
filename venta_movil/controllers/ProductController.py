@@ -6,7 +6,7 @@ class ProductController(http.Controller):
 
     @http.route('/api/get_products', type='json', method='GET', auth='token', cors='*')
     def get_products(self):
-        result = request.env[''].sudo().search([])
+        result = request.env['product.product'].sudo().search([])
         data = []
         for res in result:
             data.append({
