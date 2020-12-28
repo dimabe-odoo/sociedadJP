@@ -36,7 +36,7 @@ class MobileSaleController(http.Controller):
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
-    def create_sale(self, customer_id, product_ids, latitude, longitude):
+    def create_sale(self, customer_id, product_ids, latitude, longitude,session):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
         mobile = request.env['mobile.sale.order'].sudo().create({
             'state': 'draft',
@@ -59,21 +59,18 @@ class MobileSaleController(http.Controller):
                 'qty': product_json['qty'],
                 'price': product_json['price']
             })
-            line.append(product_json)
-
-        respond = {
-            'id': str(mobile.id),
-            'OrderName': mobile.name,
-            'ClientName': mobile.customer_id.display_name,
-            'ClientAddress': mobile.customer_id.street,
-            'ClientLatitude': mobile.customer_id.partner_latitude,
-            'ClientLongiutude': mobile.customer_id.partner_longitude,
-            'ClientPhone': mobile.customer_id.mobile,
-            'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
-            'Total': mobile.total_sale,
-            'Lines': line
-        }
-        return {'message': 'Compra realizada satifactoriamente', 'result': respond}
+        mobile.button_confirm()
+        mobile.sudo().write({
+                    'seller_id': session,
+                    'location_id': truck.id,
+                    'warehouse_id': warehouse_id
+        })
+        mobile.button_dispatch()
+        mobile.sudo().write({
+            'payment_method':1
+        })
+        mobile.make_done()
+        return {'message': 'Compra realizada satifactoriamente'}
 
     @http.route('/api/confirm_sale', type="json", method=['GET'], auth="token", cors="*")
     def confirm_sale(self, order_id):
