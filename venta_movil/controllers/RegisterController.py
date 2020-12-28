@@ -53,10 +53,10 @@ class RegisterController(http.Controller):
 
         if partner:
             partner.write({'name': name, 'email': email, 'mobile': phoneNumber,
-                           'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude})
+                           'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude, 'jp_commune_id': commune_id})
         else:
             partner = request.env['res.partner'].sudo().create(
-                {'name': name, 'email': email, 'mobile': phoneNumber, 'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude})
+                {'name': name, 'email': email, 'mobile': phoneNumber, 'jp_commune_id': commune_id, 'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude})
 
         create_user = request.env['res.users'].sudo().create({
             'name': name,
@@ -64,6 +64,6 @@ class RegisterController(http.Controller):
             'email': email,
             'company_id': 1
             'sel_groups_1_8_9': 8,
-            'partner_id':partner.id
+            'partner_id': partner.id
             'mobile': phoneNumber
         })
