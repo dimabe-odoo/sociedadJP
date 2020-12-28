@@ -64,6 +64,6 @@ class RegisterController(http.Controller):
             'email': email,
             'company_id': 1
             'sel_groups_1_8_9': 8,
-            'partner_id': partner.id
+            'partner_id': partner.id,
             'mobile': phoneNumber
         })
