@@ -12,7 +12,6 @@ class ProductController(http.Controller):
             data.append({
                 'id': res.product_tmpl_id.id,
                 'name': res.product_tmpl_id.name,
-                'price': res.fixed_price,
                 'image_1920':res.image_1920
             })
 
