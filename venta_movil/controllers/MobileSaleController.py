@@ -275,9 +275,10 @@ class MobileSaleController(http.Controller):
             lines.append({
                 "id":line.id,
                 "productId": line.product_id.id,
-                "productName":line.product_id.display_name,
+                "productName":line.product_id.name,
                 "priceUnit":line.price,
-                "qty":line.qty
+                "qty":line.qty,
+                "ImageBase64":line.
             })
         respond.append({
             "OrderId":order.id,
