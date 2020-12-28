@@ -273,6 +273,15 @@ class MobileSaleController(http.Controller):
         logging.getLogger().error(json_data)
 
         distance_text = json_data['routes'][0]['legs'][0]['distance']['text']
+        lines = []
+        for line in order.mobile_lines:
+            line.append({
+                "id":line.id,
+                "productId": line.product_id.id,
+                "productName":line.product_id.display_name,
+                "priceUnit":line.price,
+                "qty":line.qty
+            })
         respond.append({
             "OrderId":order.id,
             "OrderName":order.name,
@@ -281,6 +290,7 @@ class MobileSaleController(http.Controller):
             "ClientAddress":order.customer_id.street,
             "ClientLatitude":order.customer_id.partner_latitude,
             "ClientLongitude":order.customer_id.partner_longitude,
+            "Lines":lines,
             "Total":order.total_sale
         })
         return respond
