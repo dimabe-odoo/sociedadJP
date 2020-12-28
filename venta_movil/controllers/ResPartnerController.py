@@ -7,6 +7,7 @@ import googlemaps
 
 class ResPartnerController(http.Controller):
 
+
     @http.route('/api/clients', type='json', method=['GET'], auth='token', cors='*')
     def get_clients(self, truck):
         respond = request.env['res.partner'].search([])
