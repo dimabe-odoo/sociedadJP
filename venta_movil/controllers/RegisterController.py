@@ -39,7 +39,7 @@ class RegisterController(http.Controller):
 
         return {'message': 'Usuario creado correctamente', 'user': create_user[0].name, 'email': create_user[0].email, 'mobile': create_user[0].mobile, 'address': create_user[0].street, 'token': token}
 
-    @http.route('/api/create_client', type='json', auth='token', cors='*')
+    @http.route('/api/create_client', type='json', method=['POST'], auth='token', cors='*')
     def create_client(self, name, email, phoneNumber, commune_id, address, latitude, longitude):
         email = email.lower()
         user = request.env['res.users'].sudo().search([('login', '=', email)])
