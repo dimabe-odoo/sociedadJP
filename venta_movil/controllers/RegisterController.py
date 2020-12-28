@@ -62,7 +62,7 @@ class RegisterController(http.Controller):
             'name': name,
             'login': email,
             'email': email,
-            'company_id': 1
+            'company_id': 1,
             'sel_groups_1_8_9': 8,
             'partner_id': partner.id,
             'mobile': phoneNumber
