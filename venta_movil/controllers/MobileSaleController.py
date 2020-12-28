@@ -138,6 +138,7 @@ class MobileSaleController(http.Controller):
                 url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
                     latitude, longitude, res.customer_id.partner_latitude, res.customer_id.partner_longitude)
                 respond_google = requests.request("GET", url=url_google)
+                logging.getLogger().error(url_google)
                 json_data = json.loads(respond_google.text)
                 distance_text = json_data['routes'][0]["legs"][0]['distance']['text']
                 distance_value = json_data['routes'][0]["legs"][0]['distance']['value'] / 1000
