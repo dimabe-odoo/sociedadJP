@@ -26,5 +26,6 @@ class ProductController(http.Controller):
                 'Id': res.id,
                 'ProductName': res.display_name,
                 'isCat': True if 'Catalítico' in res.display_name else False
+                'ImageBase64': res.image_1920
             })
         return data
