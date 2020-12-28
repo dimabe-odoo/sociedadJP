@@ -267,6 +267,7 @@ class MobileSaleController(http.Controller):
         respond = []
         url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
             latitude, longitude, order.customer_id.partner_latitude, order.customer_id.partner_longitude)
+        logging.getLogger().error(url_google)
         respond_google = requests.request("GET",url=url_google)
         json_data = json.loads(respond_google.text)
         logging.getLogger().error(json_data)
