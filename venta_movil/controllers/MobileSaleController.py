@@ -43,7 +43,7 @@ class MobileSaleController(http.Controller):
         warehouse_id = 0
         for ware in warehouses:
             trucks = ware.mapped('truck_ids').mapped('id')
-            if truck_session.truck_id.id in trucks:
+            if session.truck_id.id in trucks:
                 warehouse_id = ware.id
                 break
         mobile = request.env['mobile.sale.order'].sudo().create({
