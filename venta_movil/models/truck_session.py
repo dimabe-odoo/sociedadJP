@@ -19,7 +19,7 @@ class TruckSession(models.Model):
 
     state = fields.Char()
 
-    is_present = fields.Boolean('Es Prestente',default=true)
+    is_present = fields.Boolean('Es Prestente',default=True)
 
     @api.model
     def create(self,values):
