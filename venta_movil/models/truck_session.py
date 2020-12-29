@@ -19,6 +19,8 @@ class TruckSession(models.Model):
 
     state = fields.Char()
 
+    is_present = fields.Boolean('Es Prestente',default=true)
+
     @api.model
     def create(self,values):
         if 'truck_id' in values.keys():
