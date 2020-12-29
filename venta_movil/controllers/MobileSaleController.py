@@ -118,6 +118,7 @@ class MobileSaleController(http.Controller):
         session.sudo().write({
             'is_present':False
         })
+        logging.getLogger().error("OrderId {}".format(orderId))
         if orderId:
             order = request.env['mobile.sale.order'].sudo().search([('id','=',orderId)])
             order.sudo().write({
