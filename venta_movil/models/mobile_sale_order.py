@@ -2,6 +2,7 @@ from odoo import fields, models, api
 import datetime
 from dateutil.relativedelta import *
 
+
 class MobileSaleOrder(models.Model):
     _name = 'mobile.sale.order'
 
@@ -26,7 +27,7 @@ class MobileSaleOrder(models.Model):
 
     mobile_lines = fields.One2many('mobile.sale.line', 'mobile_id', 'Productos')
 
-    total_sale = fields.Monetary('Total',compute='onchange_mobile_line')
+    total_sale = fields.Monetary('Total', compute='onchange_mobile_line')
 
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
@@ -47,19 +48,19 @@ class MobileSaleOrder(models.Model):
 
     onroute_to_finish = fields.Char('En Ruta a Finalizado')
 
-    payment_method = fields.Many2one('pos.payment.method','Metodo de Pago')
+    payment_method = fields.Many2one('pos.payment.method', 'Metodo de Pago')
 
     change = fields.Float('Vuelto')
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
-    location_id = fields.Many2one(comodel_name='stock.location',string='Camion', domain=[('is_truck', '=', True)])
+    location_id = fields.Many2one(comodel_name='stock.location', string='Camion', domain=[('is_truck', '=', True)])
 
     truck_ids = fields.Many2many('stock.location', 'Camiones', compute='compute_truck_ids')
 
     is_loan = fields.Boolean('Es Prestamo')
 
-    products = fields.Many2many('product.template','available_in_pos')
+    products = fields.Many2many('product.template', 'available_in_pos')
 
     total_untaxed = fields.Monetary('Base Imponible', compute='onchange_mobile_line')
 
@@ -73,7 +74,7 @@ class MobileSaleOrder(models.Model):
             for line in item.mobile_lines:
                 total_untax.append(line.price * line.qty)
                 for tx in line.tax_ids:
-                    total_tax.append((tx.amount/100) * line.price * line.qty)
+                    total_tax.append((tx.amount / 100) * line.price * line.qty)
             if len(total_untax) > 0:
                 item.write({
                     'total_sale': sum(total_untax) + sum(total_tax),
@@ -94,7 +95,7 @@ class MobileSaleOrder(models.Model):
     @api.onchange('seller_id')
     def onchange_location_id(self):
         if self.seller_id:
-            stock_quant = self.env['stock.quant'].search([('location_id.id','=',self.seller_id.truck_id.id)])
+            stock_quant = self.env['stock.quant'].search([('location_id.id', '=', self.seller_id.truck_id.id)])
             if stock_quant:
                 self.location_id = self.seller_id.truck_id
             else:
@@ -112,7 +113,6 @@ class MobileSaleOrder(models.Model):
         stock_quant = self.env['stock.quant'].search([('product_id.id', 'in', products_line)]).mapped(
             'location_id').filtered(lambda a: a.is_truck)
         self.truck_ids = stock_quant
-
 
     @api.onchange('paid')
     def compute_change(self):
@@ -171,7 +171,7 @@ class MobileSaleOrder(models.Model):
             'state': 'onroute'
         })
         self.onroute_date = datetime.datetime.now()
-        datedif =  relativedelta(self.onroute_date, self.confirm_date)
+        datedif = relativedelta(self.onroute_date, self.confirm_date)
         strdate = ""
         if datedif.years != 0:
             strdate = '{} años'.format(datedif.years)
@@ -243,10 +243,18 @@ class MobileSaleOrder(models.Model):
                         'tax_id': [(4, tx.id)]
                     })
 
-
         sale_odoo.action_confirm()
         models._logger.error(sale_odoo.state)
-        models._logger.error(len(sale_odoo.picking_ids[0].move_line_ids_without_package))
+        if len(sale_odoo.picking_ids[0].move_line_ids_without_package) == 0:
+            for line in self.mobile_lines:
+                self.env['stock.move.line'].create({
+                    'product_id':line.product_id.id,
+                    'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
+                    'location_dest_id': self.env['stock.warehouse'].search(
+                            [('id', '=', self.warehouse_id.id)]).lot_stock_id.id,
+                    'qty_done': line.qty,
+                    'move_id': self.move_ids_without_package.filtered(lambda a: a.product_id == line.product_id.id).id
+                })
         # for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
         #     stock.write({
         #         'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
@@ -310,7 +318,3 @@ class MobileSaleOrder(models.Model):
         if datedif.seconds != 0:
             strdate = '{} {} seg'.format(strdate, datedif.seconds)
         self.onroute_to_finish = strdate
-
-
-
-
