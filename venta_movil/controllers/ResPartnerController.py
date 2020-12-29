@@ -20,9 +20,9 @@ class ResPartnerController(http.Controller):
         _logger.error(stock.mapped('product_id'))
         for res in respond:
             another = []
-            for c in res.child_ids:
+            for c in res.sudo().child_ids:
                 price_another = []
-                for pr in res.property_product_pricelist.item_ids:
+                for pr in res.sudo().property_product_pricelist.item_ids:
                     product = request.env['product.product'].sudo().search(
                         [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
                     _logger.error(product)
@@ -46,7 +46,7 @@ class ResPartnerController(http.Controller):
                     'PriceList': price_another
                 })
             price = []
-            for pr in res.property_product_pricelist.item_ids:
+            for pr in res.sudo().property_product_pricelist.item_ids:
                 product = request.env['product.product'].sudo().search(
                     [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
                 _logger.error(product)
