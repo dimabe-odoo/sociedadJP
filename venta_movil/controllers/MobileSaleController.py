@@ -127,7 +127,7 @@ class MobileSaleController(http.Controller):
             })
 
     @http.route('/api/set_active',type='json',method=['GET'],auth='token',cors='*')
-    def set_active(self.session)
+    def set_active(self,session)
         session = request.env['truck.session'].sudo().search([('id','=',session)])
         session.sudo().write({
             'is_present':True
