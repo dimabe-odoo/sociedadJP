@@ -39,6 +39,7 @@ class MobileSaleController(http.Controller):
     def create_sale(self, customer_id, product_ids,session,payment):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
         session = request.env['truck.session'].sudo().search([('id','=',session)])
+        logging.getLogger().error('Payment {}'.format(payment))
         warehouses = request.env['stock.warehouse'].sudo().search([])
         warehouse_id = 0
         for ware in warehouses:
