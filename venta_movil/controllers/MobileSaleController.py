@@ -115,15 +115,7 @@ class MobileSaleController(http.Controller):
     @http.route('/api/redo_truck',type='json',method=['GET'],auth='token',cors='*')
     def redo_truck(self,session,orderId):
         session = request.env['truck.session'].sudo().search([('id','=',session)])
-        session.sudo().write({
-            'is_present':False
-        })
-        order = request.env['mobile.sale.order'].sudo().search([('id','=',orderId)])
-        order.sudo().write({
-            'seller_id':None,
-            'state':'confirm'
-
-        })
+        logging.getLogger().error(session)
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
