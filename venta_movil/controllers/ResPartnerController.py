@@ -10,7 +10,7 @@ class ResPartnerController(http.Controller):
 
     @http.route('/api/clients', type='json', method=['GET'], auth='token', cors='*')
     def get_clients(self, truck):
-        respond = request.env['res.partner'].search([])
+        respond = request.env['res.partner'].sudo().search([])
         location = request.env['stock.location'].sudo().search([('name', '=', truck)])
         stock = request.env['stock.quant'].sudo().search([('location_id', '=', location.id)])
 
