@@ -39,7 +39,12 @@ class MobileSaleController(http.Controller):
     def create_sale(self, customer_id, product_ids,session):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
         session = request.env['truck.session'].sudo().search([('id','=',session)])
-        warehouse = request.env['stock.warehouse'].sudo().search([(session.truck_id.id,'in','truck_ids')])
+        warehouse_id = 0
+        for ware in warehouses:
+            trucks = ware.mapped('truck_ids').mapped('id')
+            if truck_session.truck_id.id in trucks:
+                warehouse_id = ware.id
+                break
         mobile = request.env['mobile.sale.order'].sudo().create({
             'state': 'draft',
             'customer_id': customer.id,
