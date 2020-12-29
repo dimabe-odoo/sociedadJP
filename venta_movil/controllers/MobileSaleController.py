@@ -118,12 +118,13 @@ class MobileSaleController(http.Controller):
         session.sudo().write({
             'is_present':False
         })
-        order = request.env['mobile.sale.order'].sudo().search([('id','=',orderId)])
-        order.sudo().write({
-            'seller_id':None,
-            'state':'confirm'
+        if orderId:
+            order = request.env['mobile.sale.order'].sudo().search([('id','=',orderId)])
+            order.sudo().write({
+                'seller_id':None,
+                'state':'confirm'
 
-        })
+            })
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
