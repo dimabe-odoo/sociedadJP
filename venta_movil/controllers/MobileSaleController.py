@@ -36,19 +36,16 @@ class MobileSaleController(http.Controller):
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
-    def create_sale(self, customer_id, product_ids, latitude, longitude,session):
+    def create_sale(self, customer_id, product_ids,session):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
+        session = request.env['truck.session'].sudo().search([('id','=',session)])
+        warehouse = request.env['stock.warehouse'].sudo().search([(session.truck_id.id,'in','truck_ids')])
         mobile = request.env['mobile.sale.order'].sudo().create({
             'state': 'draft',
             'customer_id': customer.id,
             'price_list_id': customer.property_product_pricelist.id
         })
         now = datetime.datetime.now()
-        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
-        dir = gmaps.directions((latitude, longitude),
-                               (mobile.customer_id.partner_latitude, mobile.customer_id.partner_longitude),
-                               mode="driving",
-                               departure_time=now)
         logging.error(dir)
         line = []
         for product in product_ids:
@@ -62,7 +59,7 @@ class MobileSaleController(http.Controller):
         mobile.button_confirm()
         mobile.sudo().write({
                     'seller_id': session,
-                    'location_id': truck.id,
+                    'location_id': session.truck_id.id,
                     'warehouse_id': warehouse_id
         })
         mobile.button_dispatch()
