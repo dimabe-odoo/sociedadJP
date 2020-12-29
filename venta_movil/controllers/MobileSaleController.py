@@ -129,8 +129,8 @@ class MobileSaleController(http.Controller):
     def get_orders(self, latitude, longitude, session):
         order_active = request.env['mobile.sale.order'].search(
             [('seller_id.id', '=', session), ('state', '=', 'onroute')])
-        session = request.env['truck.session'].sudo().search([('id','=',session)])
-        if not order_active and session.is_present:
+        session_active = request.env['truck.session'].sudo().search([('id','=',session)])
+        if not order_active and session_active.is_present:
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
             session = request.env['truck.session'].sudo().search([('id', '=', session)])
             truck = request.env['stock.location'].sudo().search([('id', '=', session.truck_id.id)])
