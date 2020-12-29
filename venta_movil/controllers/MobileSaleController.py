@@ -56,6 +56,7 @@ class MobileSaleController(http.Controller):
         line = []
         for product in product_ids:
             product_json = json.loads(product)
+            logging.error(product_json)
             sale_line = request.env['mobile.sale.line'].sudo().create({
                 'mobile_id': mobile.id,
                 'product_id': product_json['id'],
@@ -64,9 +65,9 @@ class MobileSaleController(http.Controller):
             })
         mobile.button_confirm()
         mobile.sudo().write({
-                    'seller_id': session,
-                    'location_id': session.truck_id.id,
-                    'warehouse_id': warehouse_id
+            'seller_id': session,
+            'location_id': session.truck_id.id,
+            'warehouse_id': warehouse_id
         })
         mobile.button_dispatch()
         mobile.sudo().write({
