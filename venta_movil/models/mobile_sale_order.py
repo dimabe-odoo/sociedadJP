@@ -245,58 +245,54 @@ class MobileSaleOrder(models.Model):
 
         sale_odoo.action_confirm()
         models._logger.error(sale_odoo.state)
-        if len(sale_odoo.picking_ids[0].move_line_ids_without_package) == 0:
-            for line in self.mobile_lines:
-                self.env['stock.move.line'].create({
-                    'product_id':line.product_id.id,
-                    'location_id': self.env['stock.location'].search([('name', '=', 'Customers')]).id,
-                    'location_dest_id': self.env['stock.warehouse'].search(
-                            [('id', '=', self.warehouse_id.id)]).lot_stock_id.id,
-                    'qty_done': line.qty,
-                    'move_id': self.move_ids_without_package.filtered(lambda a: a.product_id == line.product_id.id).id
-                })
-        # for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
-        #     stock.write({
-        #         'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
-        #         'location_id':self.location_id.id,
-        #         'move_id':self.move_ids_without_package.filtered(lambda a: a.product_id == stock.product_id.id).id
+
+        for stock in sale_odoo.picking_ids[0].move_ids_without_package:
+            self.env['stock.move.line'].create({
+                'company_id':self.env.user.company_id.id,
+                'date':datetime.date.today(),
+                'location_id':sale_odoo.picking_ids[0].location_id.id,
+                'location_dest_id':sale_odoo.picking_ids[0].location_dest_id.id,
+                'product_uom_id':stock.product_id.uom_id.id,
+                'product_uom_qty':self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
+                'qty_done':self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
+                'move_id':stock.id
+            })
+        models._logger.error('{}'.format(sale_odoo.picking_ids))
+        # if self.mobile_lines.filtered(lambda a: a.loan_qty > 0):
+        #     sale_odoo.write({
+        #         'loan_supply': True
         #     })
-        # models._logger.error('{}'.format(sale_odoo.picking_ids))
-        # # if self.mobile_lines.filtered(lambda a: a.loan_qty > 0):
-        # #     sale_odoo.write({
-        # #         'loan_supply': True
-        # #     })
-        # #     for line in self.mobile_lines:
-        # #         if line.loan_qty > 0:
-        # #             for move in sale_odoo.picking_ids[0].move_ids_without_package:
-        # #                 move.write({
-        # #                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
-        # #                 })
-        #
-        # sale_odoo.picking_ids[0].write({
-        #     'show_supply': True,
-        #     'location_id': self.location_id.id
-        # })
-        # sale_odoo.picking_ids[0].button_validate()
-        # sale_odoo.picking_ids[0].supply_dispatch_id.write({
-        #     'location_dest_id':self.location_id.id,
-        # })
-        # sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.write({
-        #     'location_dest_id':self.location_id.id,
-        #
-        # })
-        # sale_odoo.picking_ids[0].loan_reception_id.action_confirm()
-        # sale_odoo.picking_ids[0].loan_reception_id.button_validate()
-        # for mobile in self.mobile_lines:
-        #     sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == mobile.product_id.supply_id.id).write({
-        #         'qty_done' : sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == mobile.product_id.supply_id.id).qty_done - mobile.loan_qty
-        #     })
-        # sale_odoo._create_invoices()
-        # sale_odoo.invoice_ids[0].action_post()
-        # self.write({
-        #     'sale_id': sale_odoo.id,
-        #     'state': 'done'
-        # })
+        #     for line in self.mobile_lines:
+        #         if line.loan_qty > 0:
+        #             for move in sale_odoo.picking_ids[0].move_ids_without_package:
+        #                 move.write({
+        #                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
+        #                 })
+
+        sale_odoo.picking_ids[0].write({
+            'show_supply': True,
+            'location_id': self.location_id.id
+        })
+        sale_odoo.picking_ids[0].button_validate()
+        sale_odoo.picking_ids[0].supply_dispatch_id.write({
+            'location_dest_id':self.location_id.id,
+        })
+        sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.write({
+            'location_dest_id':self.location_id.id,
+
+        })
+        sale_odoo.picking_ids[0].loan_reception_id.action_confirm()
+        sale_odoo.picking_ids[0].loan_reception_id.button_validate()
+        for mobile in self.mobile_lines:
+            sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == mobile.product_id.supply_id.id).write({
+                'qty_done' : sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.filtered(lambda a: a.product_id.id == mobile.product_id.supply_id.id).qty_done - mobile.loan_qty
+            })
+        sale_odoo._create_invoices()
+        sale_odoo.invoice_ids[0].action_post()
+        self.write({
+            'sale_id': sale_odoo.id,
+            'state': 'done'
+        })
         self.finish_date = datetime.datetime.now()
         datedif = relativedelta(self.finish_date, self.onroute_date)
         strdate = ""
