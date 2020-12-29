@@ -28,6 +28,13 @@ class MobileSaleLine(models.Model):
     def compute_subtotal(self):
         for item in self:
             item.subtotal = item.price * item.qty
+    
+    @api.onchange('qty')
+    def compute_qty(self):
+        for item in self:
+            if item.qty == 0:
+                raise models.ValidationError("No puede ingresar una cantidad en 0")
+
 
     @api.onchange('product_id')
     def onchange_product_id(self):
