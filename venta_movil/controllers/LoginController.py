@@ -2,6 +2,7 @@ from odoo import http
 from odoo.http import request
 from ..jwt_token import generate_token
 import datetime
+import logging
 
 
 class LoginController(http.Controller):
@@ -54,6 +55,7 @@ class LoginController(http.Controller):
 
     @http.route('/api/assign_truck', type="json", method=['GET'], auth='token', cors='*')
     def assign_truck(self, truck, employee, user):
+        logging.getLogger().error("Truck {} , employee {} ,user {}".format(truck,employee,user))
         truck = request.env['stock.location'].sudo().search([('name', '=', truck)])
         if not employee:
             employee_id = request.env['hr.employee'].search([('user_id', '=', user)])

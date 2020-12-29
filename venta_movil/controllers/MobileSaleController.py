@@ -36,7 +36,7 @@ class MobileSaleController(http.Controller):
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
-    def create_sale(self, customer_id, product_ids,session):
+    def create_sale(self, customer_id, product_ids,session,payment):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
         session = request.env['truck.session'].sudo().search([('id','=',session)])
         warehouses = request.env['stock.warehouse'].sudo().search([])
@@ -71,7 +71,7 @@ class MobileSaleController(http.Controller):
         })
         mobile.button_dispatch()
         mobile.sudo().write({
-            'payment_method':1
+            'payment_method':int(payment)
         })
         mobile.make_done()
         return {'message': 'Compra realizada satifactoriamente'}
