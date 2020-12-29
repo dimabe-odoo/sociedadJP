@@ -250,6 +250,7 @@ class MobileSaleOrder(models.Model):
             stock.write({
                 'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
                 'location_id':self.location_id.id,
+                'move_id':self.move_ids_without_package.filtered(lambda a: a.product_id == stock.product_id.id).id
             })
         models._logger.error('{}'.format(sale_odoo.picking_ids))
         # if self.mobile_lines.filtered(lambda a: a.loan_qty > 0):
