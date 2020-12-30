@@ -27,7 +27,7 @@ class ResPartnerController(http.Controller):
                         [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
                     _logger.error(product)
                     stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
-                    _logger.error(stock_product)
+                    _logger.error(stock_product.mapped('taxes_id').mapped('amount'))
                     price_another.append({
                         'Product_Id': pr.product_tmpl_id.id,
                         'Product_Name': pr.product_tmpl_id.name,
