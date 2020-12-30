@@ -52,13 +52,13 @@ class ResPartnerController(http.Controller):
                 _logger.error(product)
                 stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
                 _logger.error(stock_product)
-                _logger.error(int(sum(product.mapped('taxes_id').mapped('amount'))))
+                taxes_amount = (int(sum(product.mapped('taxes_id').mapped('amount'))) / 100) + 1
                 price.append({
                     'Product_Id': pr.product_tmpl_id.id,
                     'Product_Name': pr.product_tmpl_id.name,
                     'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
                     'Stock': stock_product.quantity,
-                    'Price': pr.fixed_price,
+                    'Price': pr.fixed_price * taxes_amount,
                     'ImageBase64':product.image_1920
                 })
 
