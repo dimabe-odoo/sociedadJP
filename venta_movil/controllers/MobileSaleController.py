@@ -84,24 +84,13 @@ class MobileSaleController(http.Controller):
         return {"Pedido Confirmado"}
 
     @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
-    def take_saleman(self, mobile_id, session):
-        mobile_order = request.env['mobile.sale.order'].search([('id', '=', mobile_id)])
-        truck_session = request.env['truck.session'].sudo().search([('id', '=', int(session))])
-
-        warehouses = request.env['stock.warehouse'].sudo().search([])
-        warehouse_id = 0
-        for ware in warehouses:
-            trucks = ware.mapped('truck_ids').mapped('id')
-            if truck_session.truck_id.id in trucks:
-                warehouse_id = ware.id
-                break
-        mobile_order.write({
-            'seller_id': session,
-            'location_id': truck_session.truck_id.id,
-            'warehouse_id': warehouse_id
+    def take_saleman(self, mobile_id, latitude,longitude):
+        mobile = request.env['mobile.sale.order'].search([('id','=',int(mobile_id))])
+        mobile.write({
+            'assigned_latitude':latitude,
+            'assigned_longitude':longitude,
         })
-        mobile_order.button_dispatch()
-        return {'Pedido asignado'}
+        mobile.button_dispatch()
 
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
     def make_done(self, mobile_id, payment_id):
