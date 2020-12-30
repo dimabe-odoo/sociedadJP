@@ -167,6 +167,7 @@ class MobileSaleController(http.Controller):
                 else:
                     continue
             list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
+            logging.getLogger().error(list_sort_by_dis)
             if len(list_sort_by_dis) > 0:
                 mobile_order = request.env['mobile.sale.order'].sudo().search(
                     [('id', '=', list_sort_by_dis[0]['Order_Id'])])
