@@ -51,7 +51,7 @@ class RegisterController(http.Controller):
         partner = request.env['res.partner'].sudo().search(
             [('email', '=', email)])
 
-        commune = request.env['jp_commune'].search([('id', '=', commune_id)])
+        commune = request.env['jp.commune'].search([('id', '=', commune_id)])
 
         if partner:
             partner.write({'name': name, 'email': email, 'mobile': phoneNumber,
