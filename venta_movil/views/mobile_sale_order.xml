@@ -11,7 +11,7 @@
                         <button type="object" string="Cancelar" name="cancel_order"
                                 attrs="{'invisible':[('state','=','cancel')]}"/>
                         <button type="object" string="Marcar como hecho" name="make_done"
-                                attrs="{'invisible':[('state','in',('cancel','draft','confirm','done'))]}"/>
+                                attrs="{'invisible':[('state','in',('cancel','draft','confirm','assigned','done'))]}"/>
                         <button type="object" string="Confirmar" name="button_confirm"
                                 attrs="{'invisible':[('state','!=','draft')]}"
                         />
