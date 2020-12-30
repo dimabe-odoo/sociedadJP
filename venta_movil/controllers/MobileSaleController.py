@@ -36,9 +36,9 @@ class MobileSaleController(http.Controller):
         return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
 
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
-    def create_sale(self, customer_id, product_ids,session,payment):
+    def create_sale(self, customer_id, product_ids, session, payment):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
-        session = request.env['truck.session'].sudo().search([('id','=',session)])
+        session = request.env['truck.session'].sudo().search([('id', '=', session)])
         logging.getLogger().error('Payment {}'.format(payment))
         warehouses = request.env['stock.warehouse'].sudo().search([])
         warehouse_id = 0
@@ -57,7 +57,7 @@ class MobileSaleController(http.Controller):
         line = []
         for product in product_ids:
             product_json = json.loads(product)
-            product_object = request.env['product.product'].sudo().search([('id','=',int(product_json['id']))])
+            product_object = request.env['product.product'].sudo().search([('id', '=', int(product_json['id']))])
             sale_line = request.env['mobile.sale.line'].sudo().create({
                 'mobile_id': mobile.id,
                 'product_id': product_object.id,
@@ -72,7 +72,7 @@ class MobileSaleController(http.Controller):
         })
         mobile.button_dispatch()
         mobile.sudo().write({
-            'payment_method':int(payment)
+            'payment_method': int(payment)
         })
         mobile.make_done()
         return {'message': 'Compra realizada satifactoriamente'}
@@ -113,32 +113,32 @@ class MobileSaleController(http.Controller):
         mobile_order.make_done()
         return {'mobile_order', mobile_order.name}
 
-    @http.route('/api/redo_truck',type='json',method=['GET'],auth='token',cors='*')
-    def redo_truck(self,session,orderId):
-        session = request.env['truck.session'].sudo().search([('id','=',session)])
+    @http.route('/api/redo_truck', type='json', method=['GET'], auth='token', cors='*')
+    def redo_truck(self, session, orderId):
+        session = request.env['truck.session'].sudo().search([('id', '=', session)])
         session.sudo().write({
-            'is_present':False
+            'is_present': False
         })
         if orderId == False:
-            order = request.env['mobile.sale.order'].sudo().search([('id','=',orderId)])
+            order = request.env['mobile.sale.order'].sudo().search([('id', '=', orderId)])
             order.sudo().write({
-                'seller_id':None,
-                'state':'confirm'
+                'seller_id': None,
+                'state': 'confirm'
 
             })
 
-    @http.route('/api/set_active',type='json',method=['GET'],auth='token',cors='*')
-    def set_active(self,session):
-        session = request.env['truck.session'].sudo().search([('id','=',session)])
+    @http.route('/api/set_active', type='json', method=['GET'], auth='token', cors='*')
+    def set_active(self, session):
+        session = request.env['truck.session'].sudo().search([('id', '=', session)])
         session.sudo().write({
-            'is_present':True
+            'is_present': True
         })
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
         order_active = request.env['mobile.sale.order'].search(
             [('seller_id.id', '=', session), ('state', '=', 'onroute')])
-        session_active = request.env['truck.session'].sudo().search([('id','=',session)])
+        session_active = request.env['truck.session'].sudo().search([('id', '=', session)])
         if not order_active and session_active.is_present:
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
             session = request.env['truck.session'].sudo().search([('id', '=', session)])
@@ -188,16 +188,16 @@ class MobileSaleController(http.Controller):
                 mobile_order.sudo().write({
                     'seller_id': session,
                     'location_id': truck.id,
-                    'warehouse_id': warehouse_id
+                    'warehouse_id': warehouse_id,
+                    'state': 'assigned'
                 })
-                mobile_order.button_dispatch()
             order_app = {}
             order_active_2 = request.env['mobile.sale.order'].search(
                 [('seller_id.id', '=', session.id), ('state', '=', 'onroute')])
             if order_active_2:
                 order_app = {
                     'Order_Id': str(order_active_2.id),
-                    'Order_Name': order_active_2.name
+                    'Order_Name': order_active_2.name,
                 }
             return order_app
         else:
@@ -291,8 +291,7 @@ class MobileSaleController(http.Controller):
         respond = []
         url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
             latitude, longitude, order.customer_id.partner_latitude, order.customer_id.partner_longitude)
-        logging.getLogger().error(url_google)
-        respond_google = requests.request("GET",url=url_google)
+        respond_google = requests.request("GET", url=url_google)
         json_data = json.loads(respond_google.text)
         logging.getLogger().error(json_data)
 
@@ -300,22 +299,23 @@ class MobileSaleController(http.Controller):
         lines = []
         for line in order.mobile_lines:
             lines.append({
-                "id":line.id,
+                "id": line.id,
                 "productId": line.product_id.id,
-                "productName":line.product_id.name,
-                "priceUnit":line.price,
-                "qty":line.qty
+                "productName": line.product_id.name,
+                "priceUnit": line.price,
+                "qty": line.qty
             })
         respond.append({
-            "OrderId":order.id,
-            "OrderName":order.name,
-            "Distance":distance_text,
-            "ClientName":order.customer_id.display_name,
-            "ClientAddress":order.customer_id.street,
-            "ClientLatitude":order.customer_id.partner_latitude,
-            "ClientLongitude":order.customer_id.partner_longitude,
-            "Lines":lines,
-            "Total":order.total_sale
+            "OrderId": order.id,
+            "OrderName": order.name,
+            "Distance": distance_text,
+            "ClientName": order.customer_id.display_name,
+            "ClientAddress": order.customer_id.street,
+            "ClientLatitude": order.customer_id.partner_latitude,
+            "ClientLongitude": order.customer_id.partner_longitude,
+            "Lines": lines,
+            'State': order.state,
+            "Total": order.total_sale
         })
         return respond
 
