@@ -20,7 +20,7 @@ class ResPartnerController(http.Controller):
         _logger.error(stock.mapped('product_id'))
         for res in respond:
             result.append({
-                'Id': str(res.id),
+                'Id': res.id,
                 'Name': res.name,
                 'Address': res.street,
                 'Latitude': res.partner_latitude,
