@@ -193,7 +193,8 @@ class MobileSaleController(http.Controller):
                 })
             order_app = {}
             order_active_2 = request.env['mobile.sale.order'].search(
-                [('seller_id.id', '=', session.id), ('state', '=', 'onroute')])
+                [('seller_id.id', '=', session.id), ('state', '=', 'assigned')])
+            logging.getLogger().error('Order {}'.format(order_active_2.name))
             if order_active_2:
                 order_app = {
                     'Order_Id': str(order_active_2.id),
