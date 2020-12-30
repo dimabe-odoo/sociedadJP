@@ -83,8 +83,8 @@ class MobileSaleController(http.Controller):
         mobile.button_confirm()
         return {"Pedido Confirmado"}
 
-    @http.route('/api/sale/take_saleman', type="json", method=['GET'], auth='public', cors='*')
-    def take_saleman(self, mobile_id, latitude,longitude):
+    @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
+    def accept_order(self, mobile_id, latitude,longitude):
         mobile = request.env['mobile.sale.order'].search([('id','=',int(mobile_id))])
         mobile.write({
             'assigned_latitude':latitude,
