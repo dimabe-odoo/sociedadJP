@@ -95,6 +95,7 @@ class MobileSaleController(http.Controller):
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
     def make_done(self, mobile_id, payment_id):
         mobile_order = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
+        logging.getLogger().error(mobile_order.customer_id.display_name)
 
         mobile_order.write({
             'payment_method': payment_id,
