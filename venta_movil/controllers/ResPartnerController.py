@@ -28,3 +28,25 @@ class ResPartnerController(http.Controller):
                 'Phone': res.mobile,
             })
         return result
+
+    @http.route('/api/prices',type='json',method='GET',auth='token',cors='*')
+    def get_prices(self,client_id,truck):
+        client = request.env['res.partner'].sudo().search([('id','=',client_id)])
+        result = []
+        location = request.env['stock.location'].sudo().search([('name', '=', truck)])
+        stock = request.env['stock.quant'].sudo().search([('location_id', '=', location.id)])
+        for pr in client.sudo().property_product_pricelist.item_ids:
+            product = request.env['product.product'].sudo().search(
+                [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
+            stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
+            taxes_amount = (int(sum(product.mapped('taxes_id').mapped('amount'))) / 100) + 1
+            result.append({
+                'Product_Id': pr.product_tmpl_id.id,
+                'Product_Name': pr.product_tmpl_id.name,
+                'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
+                'is_Dist': True if 'Descuento' in pr.product_tmpl_id.display_name or 'Discount' in pr.product_tmpl_id.display_name else False,
+                'Stock': stock_product.quantity,
+                'Price': pr.fixed_price * taxes_amount
+            })
+
+        return result
