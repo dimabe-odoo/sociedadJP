@@ -9,7 +9,8 @@ class MobileSaleOrder(models.Model):
     name = fields.Char('Nombre', readonly=1)
 
     state = fields.Selection(
-        [('cancel', 'Cancelado'), ('draft', 'Borrador'), ('confirm', 'Confirmado'),('assigned','Asignado'), ('onroute', 'En Ruta'),
+        [('cancel', 'Cancelado'), ('draft', 'Borrador'), ('confirm', 'Confirmado'), ('assigned', 'Asignado'),
+         ('onroute', 'En Ruta'),
          ('done', 'Hecha')], default='draft', string='Estado')
 
     customer_id = fields.Many2one('res.partner', 'Cliente', required=True)
@@ -66,6 +67,10 @@ class MobileSaleOrder(models.Model):
 
     total_taxes = fields.Monetary('Impuestos', compute='onchange_mobile_line')
 
+    assigned_latitude = fields.Float('Longitud')
+
+    assigned_longitude = fields.Float('Latitud')
+
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
@@ -91,7 +96,7 @@ class MobileSaleOrder(models.Model):
     def button_asign(self):
         for item in self:
             item.write({
-                'state':'assigned'
+                'state': 'assigned'
             })
 
     @api.onchange('customer_id')
