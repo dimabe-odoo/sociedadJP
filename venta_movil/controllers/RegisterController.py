@@ -37,10 +37,11 @@ class RegisterController(http.Controller):
 
         token = generate_token(create_user[0].id)
 
-        return {'message': 'Usuario creado correctamente', 'user': create_user[0].name, 'email': create_user[0].email, 'mobile': create_user[0].mobile, 'address': create_user[0].street, 'token': token}
+        return {'message': 'Usuario creado correctamente', 'user': create_user[0].name, 'email': create_user[0].email,
+                'mobile': create_user[0].mobile, 'address': create_user[0].street, 'token': token}
 
     @http.route('/api/create_client', type='json', method=['POST'], auth='token', cors='*')
-    def create_client(self, name, email, phoneNumber, commune_id, address, latitude, longitude):
+    def create_client(self, name, email, phoneNumber, commune_id, address, latitude, longitude, vat):
         email = email.lower()
         user = request.env['res.users'].sudo().search([('login', '=', email)])
 
@@ -55,10 +56,13 @@ class RegisterController(http.Controller):
 
         if partner:
             partner.write({'name': name, 'email': email, 'mobile': phoneNumber,
-                           'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude, 'jp_commune_id': commune.id, 'state_id': commune.state_id.id})
+                           'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude,
+                           'jp_commune_id': commune.id, 'state_id': commune.state_id.id})
         else:
             partner = request.env['res.partner'].sudo().create(
-                {'name': name, 'email': email, 'mobile': phoneNumber, 'jp_commune_id': commune.id, 'state_id': commune.state_id.id, 'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude})
+                {'name': name, 'email': email, 'mobile': phoneNumber, 'jp_commune_id': commune.id,
+                 'state_id': commune.state_id.id, 'street': address, 'partner_latitude': latitude,
+                 'partner_longitude': longitude, '	l10n_cl_sii_taxpayer_type': 1, 'vat': vat})
 
         create_user = request.env['res.users'].sudo().create({
             'name': name,
