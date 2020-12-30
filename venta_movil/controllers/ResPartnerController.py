@@ -33,8 +33,7 @@ class ResPartnerController(http.Controller):
                         'Product_Name': pr.product_tmpl_id.name,
                         'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
                         'Stock': stock_product.quantity,
-                        'Price': pr.fixed_price,
-                        'ImageBase64':product.image_1920
+                        'Price': pr.fixed_price
                     })
                 another.append({
                     'Id': str(res.id),
@@ -57,9 +56,9 @@ class ResPartnerController(http.Controller):
                     'Product_Id': pr.product_tmpl_id.id,
                     'Product_Name': pr.product_tmpl_id.name,
                     'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
+                    'is_Dist':True if 'Descuento' in pr.product_tmpl_id.display_name else False,
                     'Stock': stock_product.quantity,
-                    'Price': pr.fixed_price * taxes_amount,
-                    'ImageBase64':product.image_1920
+                    'Price': pr.fixed_price * taxes_amount
                 })
 
             result.append({
