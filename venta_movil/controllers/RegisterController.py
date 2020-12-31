@@ -61,7 +61,7 @@ class RegisterController(http.Controller):
         else:
             partner = request.env['res.partner'].sudo().create(
                 {'name': name, 'email': email, 'mobile': phoneNumber, 'jp_commune_id': commune.id,
-                 'state_id': commune.state_id.id, 'street': address, 'partner_latitude': latitude,
+                 'state_id': commune.state_id.id,'property_product_pricelist':3, 'street': address, 'partner_latitude': latitude,
                  'partner_longitude': longitude, 'l10n_cl_sii_taxpayer_type': '1', 'vat': vat})
 
         create_user = request.env['res.users'].sudo().create({
