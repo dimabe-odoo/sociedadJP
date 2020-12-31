@@ -179,12 +179,12 @@ class MobileSaleController(http.Controller):
             }
             return order_app
 
-    @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
-    def get_my_orders(self, session, latitude, longitude):
-        env = request.env['mobile.sale.order'].sudo().search(
-            [('seller_id', '=', int(session)), ('state', '=', 'done')])
-
-        return list_sort_by_dis
+    # @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
+    # def get_my_orders(self, session, latitude, longitude):
+    #     env = request.env['mobile.sale.order'].sudo().search(
+    #         [('seller_id', '=', int(session)), ('state', '=', 'done')])
+    #
+    #     return list_sort_by_dis
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
