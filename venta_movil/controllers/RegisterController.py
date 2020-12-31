@@ -73,3 +73,5 @@ class RegisterController(http.Controller):
             'partner_id': partner.id,
             'mobile': phoneNumber
         })
+
+        return partner.id
