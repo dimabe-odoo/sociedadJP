@@ -71,6 +71,8 @@ class MobileSaleOrder(models.Model):
 
     assigned_longitude = fields.Float('Latitud')
 
+
+
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
@@ -297,7 +299,8 @@ class MobileSaleOrder(models.Model):
         sale_odoo.invoice_ids[0].action_post()
         self.write({
             'sale_id': sale_odoo.id,
-            'state': 'done'
+            'state': 'done',
+            'date_done':datetime.datetime.now()
         })
         self.finish_date = datetime.datetime.now()
         datedif = relativedelta(self.finish_date, self.onroute_date)

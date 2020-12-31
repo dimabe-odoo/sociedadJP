@@ -11,30 +11,6 @@ import math
 
 class MobileSaleController(http.Controller):
 
-    @http.route('/api/sale/create_sale', type='json', method=['POST'], auth='public', cors='*')
-    def create_sale(self, product_ids, is_loan=False):
-        customer = request.env['res.partner'].sudo().search([('id', '=', request.uid)])
-        name = request.env['ir.sequence'].sudo().next_by_code('mobile.sale.order')
-
-        sale_order = request.env['mobile.sale.order'].sudo().create({
-            'name': name,
-            'customer_id': customer.id,
-            'state': 'progress',
-            'is_loan': is_loan
-        })
-
-        for product in product_ids:
-            product_json = json.load(product)
-            line = request.env['mobile.sale.line'].sudo().create({
-                'product_id': product_json['id'],
-                'price': product_json['price'],
-                'state': 'progress',
-                'qty': product_json['qty'],
-                'mobile_id': sale_order.id
-            })
-
-        return {'message': 'Compra realizada satifactoriamente', 'sale_order': sale_order.id}
-
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
     def create_sale(self, customer_id, product_ids, session, payment):
         customer = request.env['res.partner'].sudo().search([('id', '=', customer_id)])
@@ -77,20 +53,22 @@ class MobileSaleController(http.Controller):
         mobile.make_done()
         return {'message': 'Compra realizada satifactoriamente'}
 
-    @http.route('/api/confirm_sale', type="json", method=['GET'], auth="token", cors="*")
-    def confirm_sale(self, order_id):
-        mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', int(order_id))])
-        mobile.button_confirm()
-        return {"Pedido Confirmado"}
-
     @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
-    def accept_order(self, mobile_id, latitude,longitude):
-        mobile = request.env['mobile.sale.order'].search([('id','=',int(mobile_id))])
+    def accept_order(self, mobile_id, latitude, longitude):
+        mobile = request.env['mobile.sale.order'].search([('id', '=', int(mobile_id))])
         mobile.write({
-            'assigned_latitude':latitude,
-            'assigned_longitude':longitude,
+            'assigned_latitude': latitude,
+            'assigned_longitude': longitude,
         })
         mobile.button_dispatch()
+
+    @http.route('/api/cancel', type="json", method=['GET'], auth="token", cors='*')
+    def cancel_order(self, mobile_id):
+        mobile = request.env['moble.sale.order'].search([('id', '=', mobile_id)])
+        if not mobile_id:
+            return {'No existe este pedido'}
+        mobile.cancel_order()
+        return {'Pedido {} ha sido cancelado'}
 
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
     def make_done(self, mobile_id, payment_id):
@@ -109,13 +87,14 @@ class MobileSaleController(http.Controller):
         session.sudo().write({
             'is_present': False
         })
-        if orderId == False:
+        if not orderId:
             order = request.env['mobile.sale.order'].sudo().search([('id', '=', orderId)])
             order.sudo().write({
                 'seller_id': None,
                 'state': 'confirm'
 
             })
+
 
     @http.route('/api/set_active', type='json', method=['GET'], auth='token', cors='*')
     def set_active(self, session):
@@ -127,7 +106,7 @@ class MobileSaleController(http.Controller):
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
         order_active = request.env['mobile.sale.order'].search(
-            [('seller_id.id', '=', session), ('state', 'in', ('assigned','onroute'))])
+            [('seller_id.id', '=', session), ('state', 'in', ('assigned', 'onroute'))])
         session_active = request.env['truck.session'].sudo().search([('id', '=', session)])
         if not order_active and session_active.is_present:
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
@@ -203,79 +182,8 @@ class MobileSaleController(http.Controller):
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, session, latitude, longitude):
         env = request.env['mobile.sale.order'].sudo().search(
-            [('seller_id', '=', int(session)), ('state', '=', 'onroute')])
-        respond = []
-        _logger = logging.getLogger(__name__)
-        _logger.error(latitude)
-        gmaps = googlemaps.Client(key='AIzaSyByqie1H_p7UUW2u6zTIynXgmvJUdIZWx0')
+            [('seller_id', '=', int(session)), ('state', '=', 'done')])
 
-        now = datetime.datetime.now()
-
-        for res in env:
-            respond = []
-            description = ''
-            array_srt_des = []
-            array_des = []
-            s = ' '
-            now = datetime.datetime.now()
-            dir = gmaps.directions((latitude, longitude),
-                                   (res.customer_id.partner_latitude, res.customer_id.partner_longitude),
-                                   mode="driving",
-                                   departure_time=now)
-            for product in res.mobile_lines:
-                if product.qty > 1:
-                    array_srt_des.append('{} {}s'.format(product.qty, product.product_id.name))
-                    array_des.append({
-                        'Id': product.id,
-                        'ImageUrl': '/web/image?model=product.template&field:image_1920&id={}'.format(
-                            product.product_id.product_tmpl_id.id),
-                        'Product_Id': product.product_id.id,
-                        'ProductName': product.product_id.name,
-                        'Qty': product.qty,
-                        'PriceUnit': product.price
-                    })
-                else:
-                    array_srt_des.append('{} {}'.format(product.qty, product.product_id.name))
-                    array_des.append({
-                        'Id': product.id,
-                        'ImageUrl': '/web/image?model=product.product&field:image_1920&id={}'.format(
-                            product.product_id.id),
-                        'Product_Id': product.product_id.id,
-                        'ProductName': product.product_id.name,
-                        'Qty': product.qty,
-                        'PriceUnit': product.price
-                    })
-            description = s.join(array_srt_des)
-            if res.address_id:
-                respond.append({
-                    'id': str(res.id),
-                    'OrderName': res.name,
-                    'ClientName': res.address_id.display_name,
-                    'ClientAddress': res.address_id.street,
-                    'ClientLatitude': res.address_id.partner_latitude,
-                    'ClientLongiutude': res.address_id.partner_longitude,
-                    'ClientPhone': res.address_id.mobile,
-                    'ShortDescription': description,
-                    'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
-                    'Description': array_des,
-                    'Total': res.total_sale
-                })
-            else:
-                respond.append({
-                    'id': str(res.id),
-                    'OrderName': res.name,
-                    'ClientName': res.customer_id.display_name,
-                    'ClientAddress': res.customer_id.street,
-                    'ClientLatitude': res.customer_id.partner_latitude,
-                    'ClientLongiutude': res.customer_id.partner_longitude,
-                    'ClientPhone': res.customer_id.mobile,
-                    'ShortDescription': description,
-                    'Distance': dir[0]['legs'][0]['distance']['text'] if len(dir) > 0 else '',
-                    'Description': array_des,
-                    'Total': res.total_sale
-                })
-        list_sort_by_dis = sorted(respond, key=lambda i: i['Distance'], reverse=True)
-        _logger.error(list_sort_by_dis)
         return list_sort_by_dis
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
