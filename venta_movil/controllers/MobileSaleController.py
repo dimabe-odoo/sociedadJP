@@ -188,37 +188,40 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
-        order = request.env['mobile.sale.order'].sudo().search([('id', '=', int(id))])
-        respond = []
-        url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
-            latitude, longitude, order.customer_id.partner_latitude, order.customer_id.partner_longitude)
-        respond_google = requests.request("GET", url=url_google)
-        json_data = json.loads(respond_google.text)
-        logging.getLogger().error(json_data)
+        if id != 0:
+            order = request.env['mobile.sale.order'].sudo().search([('id', '=', int(id))])
+            respond = []
+            url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
+                latitude, longitude, order.customer_id.partner_latitude, order.customer_id.partner_longitude)
+            respond_google = requests.request("GET", url=url_google)
+            json_data = json.loads(respond_google.text)
+            logging.getLogger().error(json_data)
 
-        distance_text = json_data['routes'][0]['legs'][0]['distance']['text']
-        lines = []
-        for line in order.mobile_lines:
-            lines.append({
-                "id": line.id,
-                "productId": line.product_id.id,
-                "productName": line.product_id.name,
-                "priceUnit": line.price,
-                "qty": line.qty
+            distance_text = json_data['routes'][0]['legs'][0]['distance']['text']
+            lines = []
+            for line in order.mobile_lines:
+                lines.append({
+                    "id": line.id,
+                    "productId": line.product_id.id,
+                    "productName": line.product_id.name,
+                    "priceUnit": line.price,
+                    "qty": line.qty
+                })
+            respond.append({
+                "OrderId": order.id,
+                "OrderName": order.name,
+                "Distance": distance_text,
+                "ClientName": order.customer_id.display_name,
+                "ClientAddress": order.customer_id.street,
+                "ClientLatitude": order.customer_id.partner_latitude,
+                "ClientLongitude": order.customer_id.partner_longitude,
+                "Lines": lines,
+                'State': order.state,
+                "Total": order.total_sale
             })
-        respond.append({
-            "OrderId": order.id,
-            "OrderName": order.name,
-            "Distance": distance_text,
-            "ClientName": order.customer_id.display_name,
-            "ClientAddress": order.customer_id.street,
-            "ClientLatitude": order.customer_id.partner_latitude,
-            "ClientLongitude": order.customer_id.partner_longitude,
-            "Lines": lines,
-            'State': order.state,
-            "Total": order.total_sale
-        })
-        return respond
+            return respond
+        else:
+            return []
 
     @http.route('/api/paymentmethod', type='json', method=['GET'], auth='token', cors='*')
     def get_paymeth_method(self):
