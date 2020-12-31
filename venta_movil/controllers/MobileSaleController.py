@@ -188,7 +188,7 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
-        if id != 0:
+        if id:
             order = request.env['mobile.sale.order'].sudo().search([('id', '=', int(id))])
             respond = []
             url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
