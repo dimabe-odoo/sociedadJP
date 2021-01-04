@@ -181,8 +181,9 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, employee):
+        session = request.env['truck.session'].sudo().search((['employee_id','=',employee]))
         env = request.env['mobile.sale.order'].sudo().search(
-            [('employee_id', '=', int(employee)), ('state', '=', 'done')])
+            [('seller_id', 'in', session.mapped('id')), ('state', '=', 'done')])
         result = []
         for res in env:
             result.append({
