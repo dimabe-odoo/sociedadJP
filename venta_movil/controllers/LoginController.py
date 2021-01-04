@@ -42,12 +42,13 @@ class LoginController(http.Controller):
 
         employee_id = request.env['hr.employee'].sudo().search([('user_id', '=', user.id)])
 
-        session = request.env['truck.session'].sudo().search([('user_id','=',user.id),('is_login','=',True)])
+        session = request.env['truck.session'].sudo().search([('user_id', '=', user.id), ('is_login', '=', True)])
 
         if session:
             return {'user_id': str(user[0].id), 'user': user[0].name, 'employee_id': str(employee_id.id),
-                    'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,'truck':session.truck_id.name,
-                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street,'session':str(session.id)}
+                    'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
+                    'truck': session.truck_id.name,
+                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street, 'session': str(session.id)}
         else:
             return {'user_id': str(user[0].id), 'user': user[0].name, 'employee_id': str(employee_id.id),
                     'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
@@ -57,9 +58,9 @@ class LoginController(http.Controller):
     def assign_truck(self, truck, employee, user):
         truck = truck.strip()
         truck_location = request.env['stock.location'].sudo().search([('name', '=', truck)])
-        session = request.env['truck.session'].sudo().search([('truck_id.id','=',truck_location.id)])
+        session = request.env['truck.session'].sudo().search([('truck_id.id', '=', truck_location.id)])
         if session.is_login:
-            return "Ya existe un sesion activa con el camion {}".format(truck)
+            return "Ya existe una sesion activa con el camion {}".format(truck)
         if truck_location:
             if not employee:
                 employee_id = request.env['hr.employee'].search([('user_id', '=', user)])
@@ -80,11 +81,11 @@ class LoginController(http.Controller):
         else:
             return "El camion {} no existe".format(truck)
 
-    @http.route('/api/logout',type='json',auth='public',cors='*')
-    def logout(self,session_id):
-        session = request.env['truck.session'].search([('id','=',session_id)])
-        session.write({
-            'is_login':False
+    @http.route('/api/logout', type='json', auth='public', cors='*')
+    def logout(self, session_id):
+        session = request.env['truck.session'].sudo().search([('id', '=', session_id)])
+        session.sudo().write({
+            'is_login': False
         })
         return {'Sesion cerrada exisitosamente'}
 
