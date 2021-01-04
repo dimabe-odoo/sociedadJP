@@ -1,7 +1,9 @@
 from odoo import http
 from odoo.http import request
+import json
 import datetime
 import logging
+from odoo.tools import date_utils
 import googlemaps
 
 
@@ -28,6 +30,13 @@ class ResPartnerController(http.Controller):
                 'Phone': res.mobile,
             })
         return result
+
+    @http.route('/api/client',type='json',method=['GET'],auth='token',cors='*')
+    def get_client(self,client):
+        client = request.env['res.partner'].search([('id','=',client)])
+        raw_data = client.read()
+        json_data = json.dumps(raw_data,default=date_utils.json_default)
+        return json_data
 
     @http.route('/api/prices',type='json',method='GET',auth='token',cors='*')
     def get_prices(self,client_id,truck):
