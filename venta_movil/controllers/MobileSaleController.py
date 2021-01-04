@@ -55,7 +55,7 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
     def accept_order(self, mobile_id, latitude, longitude):
-        mobile = request.env['mobile.sale.order'].search([('id', '=', int(mobile_id))])
+        mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', int(mobile_id))])
         mobile.write({
             'assigned_latitude': latitude,
             'assigned_longitude': longitude,
@@ -183,8 +183,13 @@ class MobileSaleController(http.Controller):
     # def get_my_orders(self, session, latitude, longitude):
     #     env = request.env['mobile.sale.order'].sudo().search(
     #         [('seller_id', '=', int(session)), ('state', '=', 'done')])
-    #
-    #     return list_sort_by_dis
+    #     result = []
+    #     for res in env:
+    #         result.append({
+    #             "Name":res.name,
+    #             ""
+    #         })
+    #     return result
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
