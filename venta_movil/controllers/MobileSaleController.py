@@ -187,8 +187,10 @@ class MobileSaleController(http.Controller):
         result = []
         for res in env:
             result.append({
+                "id":res.id,
                 "name":res.name,
                 "customerName":res.customer_id.display_name,
+                "address":res.customer_id.street,
                 "total":res.total_sale
             })
         return result
