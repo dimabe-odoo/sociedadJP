@@ -68,7 +68,7 @@ class MobileSaleController(http.Controller):
         if not mobile_id:
             return {'No existe este pedido'}
         mobile.cancel_order()
-        return {'Pedido {} ha sido cancelado'}
+        return {'Pedido {} ha sido cancelado'.format(mobile.name)}
 
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
     def make_done(self, mobile_id, payment_id):
@@ -107,6 +107,7 @@ class MobileSaleController(http.Controller):
     def get_orders(self, latitude, longitude, session):
         order_active = request.env['mobile.sale.order'].search(
             [('seller_id.id', '=', session), ('state', 'in', ('assigned', 'onroute'))])
+        return order_active.state
         session_active = request.env['truck.session'].sudo().search([('id', '=', session)])
         if not order_active and session_active.is_present:
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
