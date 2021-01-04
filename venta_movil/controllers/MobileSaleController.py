@@ -189,7 +189,7 @@ class MobileSaleController(http.Controller):
             result.append({
                 "name":res.name,
                 "customerName":res.customer_id.display_name,
-                "total":res.total
+                "total":res.total_sale
             })
         return result
 
