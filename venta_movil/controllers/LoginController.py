@@ -57,22 +57,28 @@ class LoginController(http.Controller):
     def assign_truck(self, truck, employee, user):
         logging.getLogger().error("Truck {} , employee {} ,user {}".format(truck,employee,user))
         truck = request.env['stock.location'].sudo().search([('name', '=', truck)])
-        if not employee:
-            employee_id = request.env['hr.employee'].search([('user_id', '=', user)])
-            session = request.env['truck.session'].sudo().create({
-                'user_id': user,
-                'truck_id': truck.id,
-                'employee_id': employee_id.id,
-                'is_login': True,
-            })
+        session = request.env['truck.session'].sudo().search([('truck_id.id','=',truck.id)])
+        if session.is_login:
+            return "Ya existe un sesion activa con el camion {}".format(truck)
+        if truck:
+            if not employee:
+                employee_id = request.env['hr.employee'].search([('user_id', '=', user)])
+                session = request.env['truck.session'].sudo().create({
+                    'user_id': user,
+                    'truck_id': truck.id,
+                    'employee_id': employee_id.id,
+                    'is_login': True,
+                })
+            else:
+                session = request.env['truck.session'].sudo().create({
+                    'user_id': user,
+                    'truck_id': truck.id,
+                    'employee_id': employee,
+                    'is_login': True,
+                })
+            return {'session_id': str(session.id)}
         else:
-            session = request.env['truck.session'].sudo().create({
-                'user_id': user,
-                'truck_id': truck.id,
-                'employee_id': employee,
-                'is_login': True,
-            })
-        return {'session_id': str(session.id)}
+            return "El camion {} no existe".format(truck)
 
     @http.route('/api/logout',type='json',auth='public',cors='*')
     def logout(self,session_id):
