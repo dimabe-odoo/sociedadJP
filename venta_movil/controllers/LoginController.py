@@ -66,14 +66,14 @@ class LoginController(http.Controller):
                 employee_id = request.env['hr.employee'].search([('user_id', '=', user)])
                 session = request.env['truck.session'].sudo().create({
                     'user_id': user,
-                    'truck_id': truck.id,
+                    'truck_id': truck_location.id,
                     'employee_id': employee_id.id,
                     'is_login': True,
                 })
             else:
                 session = request.env['truck.session'].sudo().create({
                     'user_id': user,
-                    'truck_id': truck.id,
+                    'truck_id': truck_location.id,
                     'employee_id': employee,
                     'is_login': True,
                 })
