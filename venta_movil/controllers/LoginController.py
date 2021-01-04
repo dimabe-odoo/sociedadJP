@@ -56,11 +56,11 @@ class LoginController(http.Controller):
     @http.route('/api/assign_truck', type="json", method=['GET'], auth='token', cors='*')
     def assign_truck(self, truck, employee, user):
         logging.getLogger().error("Truck {} , employee {} ,user {}".format(truck,employee,user))
-        truck = request.env['stock.location'].sudo().search([('name', '=', truck)])
-        session = request.env['truck.session'].sudo().search([('truck_id.id','=',truck.id)])
+        truck_location = request.env['stock.location'].sudo().search([('name', '=', truck)])
+        session = request.env['truck.session'].sudo().search([('truck_id.id','=',truck_location.id)])
         if session.is_login:
             return "Ya existe un sesion activa con el camion {}".format(truck)
-        if truck:
+        if truck_location:
             if not employee:
                 employee_id = request.env['hr.employee'].search([('user_id', '=', user)])
                 session = request.env['truck.session'].sudo().create({
