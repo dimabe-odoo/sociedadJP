@@ -95,7 +95,6 @@ class MobileSaleController(http.Controller):
 
             })
 
-
     @http.route('/api/set_active', type='json', method=['GET'], auth='token', cors='*')
     def set_active(self, session):
         session = request.env['truck.session'].sudo().search([('id', '=', session)])
@@ -180,17 +179,18 @@ class MobileSaleController(http.Controller):
             }
             return order_app
 
-    # @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
-    # def get_my_orders(self, session, latitude, longitude):
-    #     env = request.env['mobile.sale.order'].sudo().search(
-    #         [('seller_id', '=', int(session)), ('state', '=', 'done')])
-    #     result = []
-    #     for res in env:
-    #         result.append({
-    #             "Name":res.name,
-    #             ""
-    #         })
-    #     return result
+    @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
+    def get_my_orders(self, session):
+        env = request.env['mobile.sale.order'].sudo().search(
+            [('seller_id', '=', int(session)), ('state', '=', 'done')])
+        result = []
+        for res in env:
+            result.append({
+                "name":res.name,
+                "customerName":res.customer_id.display_name,
+                "total":res.total
+            })
+        return result
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
