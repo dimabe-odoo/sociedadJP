@@ -64,7 +64,7 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/cancel', type="json", method=['GET'], auth="token", cors='*')
     def cancel_order(self, mobile_id):
-        mobile = request.env['moble.sale.order'].search([('id', '=', mobile_id)])
+        mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
         if not mobile_id:
             return {'No existe este pedido'}
         mobile.cancel_order()
