@@ -36,7 +36,8 @@ class ResPartnerController(http.Controller):
         client = request.env['res.partner'].sudo().search([('id','=',client)])
         raw_data = client.read()
         json_data = json.dumps(raw_data,default=date_utils.json_default)
-        return type(json_data)
+        json_dict = json.loads(json_data)
+        return type(json_dict)
 
     @http.route('/api/prices',type='json',method='GET',auth='token',cors='*')
     def get_prices(self,client_id,truck):
