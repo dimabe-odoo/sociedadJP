@@ -187,7 +187,7 @@ class MobileSaleController(http.Controller):
     def get_my_orders(self, employee):
         session = request.env['truck.session'].sudo().search([('employee_id', '=', employee)])
         env = request.env['mobile.sale.order'].sudo().search(
-            [('seller_id', 'in', session.mapped('id')), ('state', '=', 'done')])
+            [('seller_id', 'in', session.mapped('id')), ('state', '=', 'done')],order="date_done desc")
         result = []
         for res in env:
             result.append({
