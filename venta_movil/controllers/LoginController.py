@@ -59,6 +59,7 @@ class LoginController(http.Controller):
         truck = truck.strip()
         truck_location = request.env['stock.location'].sudo().search([('name', '=', truck)])
         session = request.env['truck.session'].sudo().search([('truck_id.id', '=', truck_location.id)])
+        logging.getLogger().error(session.mapped('is_login'))
         if session.mapped('is_login'):
             return "Ya existe una sesion activa con el camion {}".format(truck)
         if truck_location:
