@@ -9,7 +9,6 @@ import googlemaps
 
 class ResPartnerController(http.Controller):
 
-
     @http.route('/api/clients', type='json', method=['GET'], auth='token', cors='*')
     def get_clients(self, truck):
         respond = request.env['res.partner'].sudo().search([])
@@ -31,17 +30,17 @@ class ResPartnerController(http.Controller):
             })
         return result
 
-    @http.route('/api/client',type='json',method=['GET'],auth='token',cors='*')
-    def get_client(self,client):
-        client = request.env['res.partner'].sudo().search([('id','=',client)])
+    @http.route('/api/client', type='json', method=['GET'], auth='token', cors='*')
+    def get_client(self, client):
+        client = request.env['res.partner'].sudo().search([('id', '=', client)])
         raw_data = client.read()
-        json_data = json.dumps(raw_data,default=date_utils.json_default)
+        json_data = json.dumps(raw_data, default=date_utils.json_default)
         json_dict = json.loads(json_data)
         return json_dict[0]
 
-    @http.route('/api/prices',type='json',method='GET',auth='token',cors='*')
-    def get_prices(self,client_id,truck):
-        client = request.env['res.partner'].sudo().search([('id','=',client_id)])
+    @http.route('/api/prices', type='json', method='GET', auth='token', cors='*')
+    def get_prices(self, client_id, truck):
+        client = request.env['res.partner'].sudo().search([('id', '=', client_id)])
         result = []
         location = request.env['stock.location'].sudo().search([('name', '=', truck)])
         stock = request.env['stock.quant'].sudo().search([('location_id', '=', location.id)])
@@ -59,4 +58,14 @@ class ResPartnerController(http.Controller):
                 'Price': pr.fixed_price * taxes_amount
             })
 
+        return result
+
+    def get_image(self):
+        list_products = request.env['product.product'].sudo().search([])
+        result = []
+        for product in list_products:
+            result.append({
+                "name": product.name,
+                "image1902": product.image_1920
+            })
         return result
