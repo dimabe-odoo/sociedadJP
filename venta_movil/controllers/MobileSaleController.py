@@ -38,7 +38,8 @@ class MobileSaleController(http.Controller):
                 'mobile_id': mobile.id,
                 'product_id': product_object.id,
                 'qty': product_json['qty'],
-                'price': product_json['price']
+                'price': product_json['price'],
+                'tax_ids': product_object.taxes_id
             })
         mobile.button_confirm()
         mobile.sudo().write({
@@ -181,17 +182,17 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, employee):
-        session = request.env['truck.session'].sudo().search([('employee_id','=',employee)])
+        session = request.env['truck.session'].sudo().search([('employee_id', '=', employee)])
         env = request.env['mobile.sale.order'].sudo().search(
             [('seller_id', 'in', session.mapped('id')), ('state', '=', 'done')])
         result = []
         for res in env:
             result.append({
-                "id":res.id,
-                "name":res.name,
-                "customerName":res.customer_id.display_name,
-                "address":res.customer_id.street,
-                "total":res.total_sale
+                "id": res.id,
+                "name": res.name,
+                "customerName": res.customer_id.display_name,
+                "address": res.customer_id.street,
+                "total": res.total_sale
             })
         return result
 
