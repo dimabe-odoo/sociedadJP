@@ -70,6 +70,6 @@ class ResPartnerController(http.Controller):
             if "Cilindro" not in product.name:
                 result.append({
                     "name": product.name,
-                    "image1902": image
+                    "image1902": image if product.image_1920 else product.image_1920
                 })
         return result
