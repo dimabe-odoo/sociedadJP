@@ -46,7 +46,7 @@ class RegisterController(http.Controller):
         user = request.env['res.users'].sudo().search([('login', '=', email)])
 
         if user:
-            raise 'el email {} ya se encuentra registrado'.format(email)
+            return 'el email {} ya se encuentra registrado'.format(email)
 
         partner = request.env['res.partner'].sudo().search(
             [('email', '=', email)])
