@@ -34,6 +34,7 @@ class MobileSaleController(http.Controller):
         for product in product_ids:
             product_json = json.loads(product)
             product_object = request.env['product.product'].sudo().search([('id', '=', int(product_json['id']))])
+            logging.getLogger().error(customer.property_product_pricelist.item_ids.filtered(lambda a: a.product_tmpl_id.id == product_object.product_tmpl_id).fixed_price)
             sale_line = request.env['mobile.sale.line'].sudo().create({
                 'mobile_id': mobile.id,
                 'product_id': product_object.id,
