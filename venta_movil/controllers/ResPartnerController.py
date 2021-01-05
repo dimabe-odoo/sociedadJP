@@ -65,8 +65,9 @@ class ResPartnerController(http.Controller):
         list_products = request.env['product.product'].sudo().search([])
         result = []
         for product in list_products:
-            result.append({
-                "name": product.name,
-                "image1902": product.image_1920
-            })
+            if "Cilindro" not in product.name:
+                result.append({
+                    "name": product.name,
+                    "image1902": product.image_1920
+                })
         return result
