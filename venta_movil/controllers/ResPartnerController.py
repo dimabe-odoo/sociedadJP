@@ -60,6 +60,7 @@ class ResPartnerController(http.Controller):
 
         return result
 
+    @http.route('/api/images',type='json',method=['GET'],auth='public',cors='*')
     def get_image(self):
         list_products = request.env['product.product'].sudo().search([])
         result = []
