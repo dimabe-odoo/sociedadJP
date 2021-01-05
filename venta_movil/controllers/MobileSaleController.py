@@ -34,12 +34,12 @@ class MobileSaleController(http.Controller):
         for product in product_ids:
             product_json = json.loads(product)
             product_object = request.env['product.product'].sudo().search([('id', '=', int(product_json['id']))])
-            logging.getLogger().error(customer.property_product_pricelist.item_ids.filtered(lambda a: a.product_tmpl_id.id == product_object.product_tmpl_id.id).fixed_price)
+            logging.getLogger().error(product_object.taxes_id)
             sale_line = request.env['mobile.sale.line'].sudo().create({
                 'mobile_id': mobile.id,
                 'product_id': product_object.id,
                 'qty': product_json['qty'],
-                'price': customer.property_product_pricelist.item_ids.filtered(lambda a: a.product_tmpl_id.id == product_object.product_tmpl_id).fixed_price,
+                'price': customer.property_product_pricelist.item_ids.filtered(lambda a: a.product_tmpl_id.id == product_object.product_tmpl_id.id).fixed_price,
                 'tax_ids': product_object.taxes_id
             })
         mobile.button_confirm()
