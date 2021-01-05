@@ -38,7 +38,7 @@ class MobileSaleController(http.Controller):
                 'mobile_id': mobile.id,
                 'product_id': product_object.id,
                 'qty': product_json['qty'],
-                'price': product_json['price'],
+                'price': customer.property_product_pricelist.item_ids.filtered(lambda a: a.product_tmpl_id.id == product_object.product_tmpl_id).fixed_price,
                 'tax_ids': product_object.taxes_id
             })
         mobile.button_confirm()
