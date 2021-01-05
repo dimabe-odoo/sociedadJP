@@ -40,8 +40,10 @@ class MobileSaleController(http.Controller):
                 'product_id': product_object.id,
                 'qty': product_json['qty'],
                 'price': customer.property_product_pricelist.item_ids.filtered(lambda a: a.product_tmpl_id.id == product_object.product_tmpl_id.id).fixed_price,
-                'tax_ids': product_object.taxes_id
+
             })
+            for tax in product_object.taxes_id:
+                sale_line.write({'tax_ids':[(4,[tax.id])]})
         mobile.button_confirm()
         mobile.sudo().write({
             'seller_id': session,
