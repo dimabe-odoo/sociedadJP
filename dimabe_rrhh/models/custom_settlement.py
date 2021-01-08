@@ -14,11 +14,11 @@ class CustomSettlement(models.Model):
         required=True
         )
 
-    company_id = fields.Many2one(
-        'res.partner',
-        string='Compañia',
-        related='employee_id.address_id'
-        )
+    # company_id = fields.Many2one(
+    #     'res.partner',
+    #     string='Compañia',
+    #     related='employee_id.address_id'
+    #     )
 
     contract_id = fields.Many2one(
         'hr.contract',
