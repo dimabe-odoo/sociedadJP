@@ -32,7 +32,7 @@ class CustomSettlement(models.Model):
 
     article_causal = fields.Selection('Articulo',related='fired_id.article')
 
-    date_start = fields.Date('Fecha inicio contracto',related='contract_id.date_start')
+    # date_start = fields.Date('Fecha inicio contracto',related='contract_id.date_start')
 
     date_notification = fields.Date('Fecha notification de despido',default=date.today())
 
