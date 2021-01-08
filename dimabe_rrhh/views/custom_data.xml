@@ -17,7 +17,6 @@
 
         <record id="custom_data_act_window" model="ir.actions.act_window">
             <field name="name">Tramos</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="res_model">custom.data</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
