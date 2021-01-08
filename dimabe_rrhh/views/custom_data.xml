@@ -30,7 +30,6 @@
         <record id="custom_data_action" model="ir.actions.act_window">
             <field name="name">custom_data_action</field>
             <field name="res_model">custom.data</field>
-            <field name="view_type">form</field>
             <field name="view_id" ref="custom_data_tree"/>
             <field name="view_mode">tree,form</field>
         </record>
