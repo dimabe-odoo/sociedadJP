@@ -48,7 +48,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="AFP" id="custom_afp_menu" action="cs_act_window"/>
+        <menuitem name="AFP" id="custom_afp_menu" parent="hr_payroll.menu_hr_payroll_root" action="cs_act_window"/>
 
     </data>
 </odoo>
