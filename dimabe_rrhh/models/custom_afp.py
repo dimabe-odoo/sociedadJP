@@ -13,4 +13,5 @@ class CustomAfp(models.Model):
 
     sis = fields.Float('Aporte Empresa',required=True)
 
+
     independent = fields.Float('Independientes',required=True)
