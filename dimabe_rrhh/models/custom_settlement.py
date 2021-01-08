@@ -55,7 +55,7 @@ class CustomSettlement(models.Model):
         string='Moneda',
         )
 
-    wage = fields.Monetary('Sueldo Base',related='contract_id.wage',current_field='currency_id',digits=dp.get_precision('Paypoll'))
+    # wage = fields.Monetary('Sueldo Base',related='contract_id.wage',current_field='currency_id',digits=dp.get_precision('Paypoll'))
 
     reward_selection = fields.Selection([
         ('Yes', 'Si'),
