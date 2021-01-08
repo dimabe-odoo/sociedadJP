@@ -31,7 +31,7 @@
             <field name="name">dimabe_rrhh.custom_afp.tree</field>
             <field name="model">custom.afp</field>
             <field name="arch" type="xml">
-                <tree string="ModelTitle">
+                <tree>
                     <field name="code"/>
                     <field name="name"/>
                     <field name="vat"/>
