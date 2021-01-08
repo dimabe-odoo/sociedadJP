@@ -36,7 +36,7 @@
         <menuitem
             id="custom_data_menu"
             action="custom_data_action"
-            parent="hr_payroll.menu_hr_payroll_configuration"
+            parent="hr.menu_human_resources_configuration"
             sequence="10"/>
     </data>
 </odoo>
