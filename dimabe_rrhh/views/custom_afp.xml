@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="custom_afp_form_view" model="ir.ui.view">
             <field name="name">dimabe_rrhh.custom_afp.form</field>
             <field name="model">custom.afp</field>
