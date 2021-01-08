@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="custom_data_tree" model="ir.ui.view">
+            <field name="name">Tramos</field>
+            <field name="model">custom.data</field>
+            <field name="arch" type="xml">
+                <tree delete="false" editable="bottom" create="false">
+                    <field name="name"/>
+                    <field name="value"/>
+                </tree>
+            </field>
+        </record>
+        <record id="custom_data_form" model="ir.ui.view">
+            <field name="name">custom_data.form</field>
+            <field name="model">customdata</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="value"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="custom_data_action" model="ir.actions.act_window">
+            <field name="name">custom_data_action</field>
+            <field name="res_model">custom.data</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="custom_data_tree"/>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem
+            id="custom_data_menu"
+            action="custom_data_action"
+            parent="hr_payroll.menu_hr_payroll_configuration"
+            sequence="10"/>
+    </data>
+</odoo>
