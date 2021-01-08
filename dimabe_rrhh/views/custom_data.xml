@@ -35,6 +35,7 @@
         </record>
         <menuitem
             id="custom_data_menu"
+            string="Tramos"
             action="custom_data_action"
             parent="hr.menu_human_resources_configuration"
             sequence="10"/>
