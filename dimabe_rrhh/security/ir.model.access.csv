@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dimabe_rrhh_dimabe_rrhh,dimabe_rrhh.dimabe_rrhh,model_dimabe_rrhh_dimabe_rrhh,base.group_user,1,1,1,1

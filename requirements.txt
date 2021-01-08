@@ -2,3 +2,5 @@ pyjwt
 simplejson
 python-dateutil
 googlemaps
+XlsxWriter
+pandas
