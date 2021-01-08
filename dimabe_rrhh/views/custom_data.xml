@@ -15,7 +15,7 @@
         </record>
 
 
-        <record model="ir.actions.act_window" id="action_action">
+        <record model="ir.actions.act_window" id="custom_data_act_window">
             <field name="name">Tramos</field>
             <field name="res_model">custom.data</field>
             <field name="view_mode">tree</field>
