@@ -4,7 +4,7 @@
         <field name="name">custom_data.tree</field>
         <field name="model">custom.data</field>
         <field name="arch" type="xml">
-            <tree delete="false" editable="bottom" create="false">
+            <tree>
                 <field name="name"/>
                 <field name="value"/>
                 <field name="data_type_id"/>
