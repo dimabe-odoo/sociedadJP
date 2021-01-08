@@ -1,4 +1,4 @@
-import odoo import models,fields
+from odoo import models,fields
 
 class CustomHolidays(models.Model):
     _name = 'custom.holidays'
