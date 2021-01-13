@@ -10,4 +10,14 @@ class CustomIndicators(models.Model):
     def get_data(self):
         link = 'https://www.previred.com/web/previred/indicadores-previsionales'
         data = requests.get(link)
-        raise models.ValidationError(bs4.BeautifulSoup(data.text).find_all('table'))
+        soup = bs4.BeautifulSoup(data.text)
+        tables = soup.find_all('table')
+        raise models.ValidationError(tables[0].select("strong")[0].get_text())
+
+    def clear_string(self,cad):
+        cad = cad.replace(".", '').replace("$", '').replace(" ", '')
+        cad = cad.replace("Renta", '').replace("<", '').replace(">", '')
+        cad = cad.replace("=", '').replace("R", '').replace("I", '').replace("%", '')
+        cad = cad.replace(",", '.')
+        cad = cad.replace("1ff8", "")
+        return cad
