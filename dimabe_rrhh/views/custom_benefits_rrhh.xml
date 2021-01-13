@@ -41,8 +41,8 @@
 
         <record id="custom_benefits_rrhh_act_window" model="ir.actions.act_window">
             <field name="name">Beneficios RRHH</field>
+            <field name="type">ir.actions.act_window</field>
             <field name="res_model">custom.benefits.rrhh</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
 
