@@ -14,6 +14,7 @@ class CustomIndicators(models.Model):
         data = requests.get(link)
         soup = bs4.BeautifulSoup(data.text)
         tables = soup.find_all('table')
+        raise models.UserError(float(tables[0].select("strong")[1].get_text().replace('$ ','').replace('.','').replace(',','')))
         uf = self.env['custom.data'].sudo().create({
             'name':tables[0].select("strong")[0].get_text(),
             'value':float(tables[0].select("strong")[1].get_text().replace('$ ','').replace('.','').replace(',',''))
