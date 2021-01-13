@@ -16,7 +16,7 @@ class CustomIndicators(models.Model):
         tables = soup.find_all('table')
         uf = self.env['custom.data'].sudo().create({
             'name':tables[0].select("strong")[0].get_text(),
-            'value':tables[0].select("strong")[1].get_text().replace('$ ','').replace('.','').replace(',','')
+            'value':float(tables[0].select("strong")[1].get_text().replace('$ ','').replace('.','').replace(',',''))
         })
         self.write({
             'data_ids':[(4,uf.id)]
