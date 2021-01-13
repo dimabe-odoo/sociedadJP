@@ -3,8 +3,8 @@ from odoo import models,fields
 class CustomBenefitsRRHH(models.Model):
     _name = 'custom.benefits.rrhh'
 
-    code = fields.Char('Codigo',required=True)
+    code = fields.Char(string='Codigo',required=True)
 
-    name = fields.Char('Nombre',required=True)
+    name = fields.Char(string='Nombre',required=True)
 
     data_type_id = fields.Many2one('custom.data.type')
