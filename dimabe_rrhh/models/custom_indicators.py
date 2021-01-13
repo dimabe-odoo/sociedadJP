@@ -7,11 +7,20 @@ class CustomIndicators(models.Model):
 
     name = fields.Char('Nombre')
 
+    data_ids = fields.Many2many('custom.data')
+
     def get_data(self):
         link = 'https://www.previred.com/web/previred/indicadores-previsionales'
         data = requests.get(link)
         soup = bs4.BeautifulSoup(data.text)
         tables = soup.find_all('table')
+        uf = self.env['custom.data'].sudo().create({
+            'name':tables[0].select("strong")[0].get_text(),
+            'value':tables[0].select("strong")[1].get_text()
+        })
+        self.write({
+            'data_ids':[(4,uf.id)]
+        })
         raise models.ValidationError(tables[0].select("strong")[1].get_text())
 
     def clear_string(self,cad):
