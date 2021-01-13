@@ -7,4 +7,4 @@ class CustomBenefitsRRHH(models.Model):
 
     name = fields.Char('Nombre',required=True)
 
-    data_type_id = fields.Many2one('custom.data.type','Tipo de Dato')
+    data_type_id = fields.Many2one('custom.data.type')
