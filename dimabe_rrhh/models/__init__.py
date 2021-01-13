@@ -9,3 +9,4 @@ from . import custom_settlement
 from . import custom_afp
 from . import custom_benefits_rrhh
 from . import custom_isapre
+from . import custom_indicators

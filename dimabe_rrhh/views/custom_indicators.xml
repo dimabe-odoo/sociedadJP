@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="custom_indicators_form_view" model="ir.ui.view">
+            <field name="name">custom_indicators.form</field>
+            <field name="model">custom.indicators</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <button type="object" name="get_data" string="Datos"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="custom_indicators_tree_view" model="ir.ui.view">
+            <field name="name">custom_indicators.tree</field>
+            <field name="model">custom.indicators</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="custom_indicators_act_window" model="ir.actions.act_window">
+            <field name="name">ModelTitle</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">custom.indicators</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem string="Indicadores" id="custom_indicators_menu" parent="hr_payroll.menu_hr_payroll_root" action="custom_indicators_act_window"/>
+
+    </data>
+</odoo>
