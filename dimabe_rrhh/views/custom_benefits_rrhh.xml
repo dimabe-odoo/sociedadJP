@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="custom_benefits_rrhh_form_view" model="ir.ui.view">
             <field name="name">custom_benefits_rrhh.form</field>
             <field name="model">custom.benefits.rrhh</field>
@@ -26,19 +25,17 @@
                 </form>
             </field>
         </record>
-
         <record id="custom_benefits_rrhh_tree_view" model="ir.ui.view">
             <field name="name">custom_benefits_rrhh.tree</field>
             <field name="model">custom.benefits.rrhh</field>
             <field name="arch" type="xml">
-                <tree string="ModelTitle">
+                <tree>
                     <field name="code"/>
                     <field name="name"/>
                     <field name="data_type_id"/>
                 </tree>
             </field>
         </record>
-
         <record id="custom_benefits_rrhh_act_window" model="ir.actions.act_window">
             <field name="name">Beneficios RRHH</field>
             <field name="type">ir.actions.act_window</field>
@@ -46,7 +43,8 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem string="Beneficios RRHH" id="custom_benefits_rrhh_menu" parent="hr_payroll.menu_hr_payroll_configuration" action="custom_benefits_rrhh_act_window"/>
+        <menuitem string="Beneficios RRHH" id="custom_benefits_rrhh_menu"
+                  parent="hr_payroll.menu_hr_payroll_configuration" action="custom_benefits_rrhh_act_window"/>
 
     </data>
 </odoo>
