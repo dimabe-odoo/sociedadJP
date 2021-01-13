@@ -12,7 +12,7 @@ class CustomIndicators(models.Model):
         data = requests.get(link)
         soup = bs4.BeautifulSoup(data.text)
         tables = soup.find_all('table')
-        raise models.ValidationError(tables[0].select("strong")[0].get_text())
+        raise models.ValidationError(tables[0].select("strong")[1].get_text())
 
     def clear_string(self,cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
