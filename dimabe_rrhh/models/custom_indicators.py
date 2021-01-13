@@ -10,4 +10,4 @@ class CustomIndicators(models.Model):
     def get_data(self):
         link = 'https://www.previred.com/web/previred/indicadores-previsionales'
         data = requests.get(link)
-        raise models.ValidationError(bs4.BeautifulSoup(data.text))
+        raise models.ValidationError(bs4.BeautifulSoup(data.text).find_all('table'))
