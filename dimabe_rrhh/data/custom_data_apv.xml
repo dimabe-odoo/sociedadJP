@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_ohio">
+            <field name="name">Ohio National Seguros de Vida S.A.</field>
+            <field name="code"> </field>
+            <field name="data_type_id">1</field>
+        </record>
+        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_MBI">
+            <field name="name">MBI Corredores de Bolsa S.A.</field>
+            <field name="code"> </field>
+            <field name="data_type_id">1</field>
+        </record>
+        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_bice">
+            <field name="name">BICE VIDA COMPAÑIA DE SEGUROS S.A.</field>
+            <field name="code"> </field>
+            <field name="data_type_id">1</field>
+        </record>
+        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_sura">
+            <field name="name">Seguros de Vida SURA S.A.</field>
+            <field name="code"> </field>
+            <field name="data_type_id">1</field>
+        </record>
+        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_principal">
+            <field name="name">PRINCIPAL COMPAÑIA DE SEGURO DE VIDA CHILE S.A.</field>
+            <field name="code"> </field>
+            <field name="data_type_id">1</field>
+        </record>
+    </data>
+</odoo>
