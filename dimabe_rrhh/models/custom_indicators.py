@@ -13,7 +13,12 @@ class CustomIndicators(models.Model):
     def get_data(self):
         indicators = self.get_data_from_url()
         for indi in indicators:
-            models._logger.error(indi)
+            for ind in indi['data']:
+                if ind['data'] != 0 or ind['data'] != '':
+                    self.env['custom.data'].create({
+                        'name': f"{indi['title']} {ind['title']}",
+                        'value': f"{ind['value']}"
+                    })
 
     def clear_string(self, cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
