@@ -13,8 +13,8 @@
         <record model="custom.data.type" id="custom_data_initial_complementary">
             <field name="name">Seguro Complementario</field>
         </record>
-        <record model="custom.data.type" id="custom_data_initial_uf">
-            <field name="name">UF</field>
+        <record model="custom.data.type" id="custom_data_initial_indicators">
+            <field name="name">Indicadores</field>
         </record>
     </data>
 </odoo>

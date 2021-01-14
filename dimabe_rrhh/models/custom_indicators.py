@@ -17,7 +17,6 @@ class CustomIndicators(models.Model):
         tables = soup.find_all('table')
         uf = tables[0].select("strong")[1].get_text()
         uf_last = tables[0].select("strong")[2].get_text()
-        raise models.ValidationError(self.clear_string(uf_last))
         indicadors_ids = []
         uf_data = self.env['custom.data'].create({
             'name': 'Valor de Mes',
@@ -25,6 +24,13 @@ class CustomIndicators(models.Model):
             'data_type_id': 1
         })
         indicadors_ids.append(uf_data.id)
+        uf_last_data = self.env['custom.data'].create({
+            'name':"Valor Mes Anterior",
+            'value': float(self.clear_string(uf_last)),
+            'data_type_id' : 1
+        })
+        indicadors_ids.append(uf_last_data.id)
+
 
 
 
