@@ -31,17 +31,30 @@ class CustomIndicators(models.Model):
         indicators = []
         values = []
         title = ''
+        subtitle = ''
+        value = ''
         for table in tables:
             if table == tables[0]:
-                for strong_value in table.select('strong'):
-                    if strong_value == table.select('strong')[0]:
-                        title = strong_value.get_text()
-                    else:
-                        value = float(self.clear_string(strong_value.get_text()))
-                        values.append(value)
-                indicators.append({
-                    'title': title,
-                    'data': values
-                })
+                if table == tables[0]:
+                    for str in table.find_all('td'):
+                        if str == table.select('td')[0]:
+                            title = str.get_text()
+                        else:
+                            if '$' in str.get_text():
+                                value = float(self.clear_string(str.get_text()))
+                            else:
+                                subtitle = str.get_text()
+                            if value == 0.0:
+                                continue
+                            values.append({
+                                'title': subtitle,
+                                'data': value
+                            })
+                            value = 0.0
+                            subtitle = ''
+                    indicators.append({
+                        'title': title,
+                        'data': data
+                    })
 
         return indicators
