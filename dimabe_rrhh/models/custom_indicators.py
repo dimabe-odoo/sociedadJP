@@ -54,7 +54,7 @@ class CustomIndicators(models.Model):
                             subtitle = ''
                     indicators.append({
                         'title': title,
-                        'data': data
+                        'data': values
                     })
 
         return indicators
