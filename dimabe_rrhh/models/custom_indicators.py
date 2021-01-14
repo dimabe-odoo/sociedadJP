@@ -17,7 +17,7 @@ class CustomIndicators(models.Model):
                 for value in indicator['data']:
                     ind = self.env['custom.data'].create({
                         'name': value['title'].capitalize(),
-                        'value': value['data'],
+                        'value': value['value'],
                         'data_type_id': 5
                     })
                     self.write({
