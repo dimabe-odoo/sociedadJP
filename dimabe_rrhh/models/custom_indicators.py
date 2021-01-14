@@ -14,11 +14,7 @@ class CustomIndicators(models.Model):
         indicators = self.get_data_from_url()
         for indicator in indicators:
             for d in indicator['data']:
-                self.env['custom.data'].create({
-                    'name': f"{indicator['title']} {d['title']}",
-                    'value': d['data'],
-                    'data_type_id': 5
-                })
+                models._logger.error(d)
 
     def clear_string(self,cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
@@ -35,30 +31,93 @@ class CustomIndicators(models.Model):
         tables = soup.find_all('table')
         indicators = []
         values = []
-        title = ''
         for table in tables:
-            value = 0.0
-            subtitle = ''
             if table == tables[0]:
-                for td in table.find_all('td'):
-                    if td == table.select('td')[0]:
-                        title = td.get_text()
-                    else:
-                        if '$' in td.get_text():
-                            value = float(self.clear_string(td.get_text()))
-                        else:
-                            subtitle = td.get_text()
-                        if value == 0.0:
-                            continue
-                        values.append({
-                            'title': subtitle,
-                            'data': value
-                        })
-                        value = 0.0
-                        subtitle = ''
+                uf_value = self.get_table_type_1(table)
                 indicators.append({
-                    'title': title,
-                    'data': values
+                    'title': 'UF',
+                    'data': uf_value
+                })
+            elif table == tables[1]:
+                indicators.append({
+                    'title': 'UTM UTA',
+                    'data': self.get_utm_uta(table)
+                })
+            elif table == tables[2]:
+                indicators.append({
+                    'title': 'TOPES IMPONIBLES',
+                    'data': self.get_table_type_1(table)
+                })
+            elif table == tables[3]:
+                table_data = self.get_table_type_1(table)
+                indicators.append({
+                    'title': 'RENTAS MINIMAS',
+                    'data': table_data
+                })
+            elif table == tables[4]:
+                table_data = self.get_table_type_1(table)
+                indicators.append({
+                    'title': 'APV',
+                    'data': table_data
+                })
+            elif table == tables[5]:
+                table_data = self.get_table_type_1(table)
+                indicators.append({
+                    'title': 'DEPÓSITO CONVENIDO',
+                    'data': table_data
                 })
 
         return indicators
+
+    def get_safe(self,table):
+        for td in table.find_all('td'):
+            print(td.get_text())
+
+    def get_utm_uta(self,table):
+        title_principal = f"{table.find_all('td')[0].get_text()} {table.find_all('td')[3].get_text()}"
+        list = []
+        title = ''
+        value = 0.0
+        for td in table.find_all('td'):
+            if td == table.find_all('td')[0] or td == table.find_all('td')[3]:
+                continue
+            else:
+                if self.clear_string(td.get_text()).isdigit():
+                    value = float(self.clear_string(td.get_text()))
+                else:
+                    title = self.clear_string(td.get_text())
+                if value != 0.0:
+                    list.append({
+                        'title': title,
+                        'value': value
+                    })
+
+        return {'title': title_principal, 'data': list}
+
+    def get_table_type_1(self,table):
+        values = []
+        uf = []
+        title = ''
+        value = 0.0
+        subtitle = ''
+        for td in table.find_all('td'):
+            if td == table.select('td')[0]:
+                title = td.get_text()
+            else:
+                if '$' in td.get_text():
+                    value = float(self.clear_string(td.get_text()))
+                else:
+                    subtitle = td.get_text()
+                if value == 0.0:
+                    continue
+                values.append({
+                    'title': subtitle,
+                    'data': value
+                })
+                value = 0.0
+                subtitle = ''
+        uf.append({
+            'title': title,
+            'data': values
+        })
+        return uf
