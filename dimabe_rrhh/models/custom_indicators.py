@@ -14,7 +14,7 @@ class CustomIndicators(models.Model):
         indicators = self.get_data_from_url()
         for indicator in indicators:
             for data in indicator['data']:
-                for d in data['data']:
+                for d in data:
                     models._logger.error(d)
 
     def clear_string(self,cad):
