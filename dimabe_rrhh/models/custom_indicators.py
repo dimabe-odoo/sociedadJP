@@ -13,11 +13,26 @@ class CustomIndicators(models.Model):
     def get_data(self):
         indicators = self.get_data_from_url()
         for indicator in indicators:
-            for data in indicator['data']:
-                for d in data:
-                    models._logger.error(d)
+            if isinstance(indicator, dict):
+                for value in indicator['data']:
+                    ind = self.env['custom.data'].create({
+                        'name':value['title'].capitalize(),
+                        'value':value['value'],
+                        'data_type_id': 5
+                    })
+                    self.write({
+                        'data_ids':[(4,ind.id)]
+                    })
+            else:
+                for data in indicator:
+                    for value in data['data']:
+                        ind = self.env['custom.data'].create({
+                            'name':f"{data['title'].capitalize()} {value['title'].lower()}",
+                            'value':value['data'],
+                            'data_type_id': 5
+                        })
 
-    def clear_string(self,cad):
+    def clear_string(self, cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
         cad = cad.replace("Renta", '').replace("<", '').replace(">", '')
         cad = cad.replace("=", '').replace("R", '').replace("I", '').replace("%", '')
@@ -70,11 +85,11 @@ class CustomIndicators(models.Model):
 
         return indicators
 
-    def get_safe(self,table):
+    def get_safe(self, table):
         for td in table.find_all('td'):
             print(td.get_text())
 
-    def get_utm_uta(self,table):
+    def get_utm_uta(self, table):
         title_principal = f"{table.find_all('td')[0].get_text()} {table.find_all('td')[3].get_text()}"
         list = []
         title = ''
@@ -95,7 +110,7 @@ class CustomIndicators(models.Model):
 
         return {'title': title_principal, 'data': list}
 
-    def get_table_type_1(self,table):
+    def get_table_type_1(self, table):
         values = []
         uf = []
         title = ''
