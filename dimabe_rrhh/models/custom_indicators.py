@@ -16,7 +16,7 @@ class CustomIndicators(models.Model):
         soup = bs4.BeautifulSoup(data.text)
         tables = soup.find_all('table')
         uf = tables[0].select("strong")[1].get_text()
-        raise models.ValidationError(uf)
+        raise models.ValidationError(self.clear_string(uf))
 
     def clear_string(self, cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
