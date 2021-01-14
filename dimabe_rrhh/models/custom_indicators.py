@@ -41,14 +41,14 @@ class CustomIndicators(models.Model):
         for table in tables:
             if table == tables[0]:
                 if table == tables[0]:
-                    for str in table.find_all('td'):
-                        if str == table.select('td')[0]:
-                            title = str.get_text()
+                    for td in table.find_all('td'):
+                        if td == table.select('td')[0]:
+                            title = td.get_text()
                         else:
-                            if '$' in str.get_text():
-                                value = float(self.clear_string(str.get_text()))
+                            if '$' in td.get_text():
+                                value = float(self.clear_string(td.get_text()))
                             else:
-                                subtitle = str.get_text()
+                                subtitle = td.get_text()
                             if value == 0.0:
                                 continue
                             values.append({
