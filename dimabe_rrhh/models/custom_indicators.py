@@ -94,7 +94,7 @@ class CustomIndicators(models.Model):
                         'title': title,
                         'value': value
                     })
-
+        list[0]['title'] = 'UTM'
         return {'title': title_principal, 'data': list}
 
     def get_table_type_1(self, table):
