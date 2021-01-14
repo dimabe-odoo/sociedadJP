@@ -37,7 +37,8 @@ class CustomIndicators(models.Model):
                     if strong_value == table.select('strong')[0]:
                         title = strong_value.get_text()
                     else:
-                        values.append(strong_value.get_text())
+                        value = float(self.clear_string(strong_value.get_text()))
+                        values.append(value)
                 indicators.append({
                     'title': title,
                     'data': values
