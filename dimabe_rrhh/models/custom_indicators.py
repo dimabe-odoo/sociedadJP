@@ -33,11 +33,11 @@ class CustomIndicators(models.Model):
         title = ''
         for table in tables:
             if table == tables[0]:
-                for str in table.select('strong'):
-                    if str == table.select('strong')[0]:
-                        title = str.get_text()
+                for strong_value in table.select('strong'):
+                    if strong_value == table.select('strong')[0]:
+                        title = strong_value.get_text()
                     else:
-                        values.append(str.get_text())
+                        values.append(strong_value.get_text())
                 indicators.append({
                     'title': title,
                     'data': data
