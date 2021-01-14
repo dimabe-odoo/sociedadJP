@@ -2,6 +2,7 @@ from odoo import fields, models, api
 import requests
 import bs4 as bs4
 
+
 class CustomIndicators(models.Model):
     _name = 'custom.indicators'
 
@@ -14,17 +15,10 @@ class CustomIndicators(models.Model):
         data = requests.get(link)
         soup = bs4.BeautifulSoup(data.text)
         tables = soup.find_all('table')
-        uf_value = float(tables[0].select("strong")[1].get_text().replace('$ ','').replace('.','').replace(',','.'))
-        uf = self.env['custom.data'].sudo().create({
-            'name':tables[0].select("strong")[0].get_text(),
-            'value':uf_value
-        })
-        self.write({
-            'data_ids':[(4,uf.id)]
-        })
-        raise models.ValidationError(tables[0].select("strong")[1].get_text())
+        uf = self.clear_string(tables[0].select("strong")[0].get_text())
+        raise models.ValidationError(uf)
 
-    def clear_string(self,cad):
+    def clear_string(self, cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
         cad = cad.replace("Renta", '').replace("<", '').replace(">", '')
         cad = cad.replace("=", '').replace("R", '').replace("I", '').replace("%", '')
