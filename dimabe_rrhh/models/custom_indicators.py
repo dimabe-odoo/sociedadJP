@@ -16,20 +16,23 @@ class CustomIndicators(models.Model):
             if isinstance(indicator, dict):
                 for value in indicator['data']:
                     ind = self.env['custom.data'].create({
-                        'name':value['title'].capitalize(),
-                        'value':value['value'],
+                        'name': value['title'].capitalize(),
+                        'value': value['value'],
                         'data_type_id': 5
                     })
                     self.write({
-                        'data_ids':[(4,ind.id)]
+                        'data_ids': [(4, ind.id)]
                     })
             else:
                 for data in indicator:
                     for value in data['data']:
                         ind = self.env['custom.data'].create({
-                            'name':f"{data['title'].capitalize()} {value['title'].lower()}",
-                            'value':value['data'],
+                            'name': f"{data['title'].capitalize()} {value['title'].lower()}",
+                            'value': value['data'],
                             'data_type_id': 5
+                        })
+                        self.write({
+                            'data_ids': [(4, ind.id)]
                         })
 
     def clear_string(self, cad):
