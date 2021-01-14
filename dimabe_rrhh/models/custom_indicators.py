@@ -53,38 +53,22 @@ class CustomIndicators(models.Model):
         for table in tables:
             if table == tables[0]:
                 uf_value = self.get_table_type_1(table)
-                indicators.append({
-                    'title': 'UF',
-                    'data': uf_value
-                })
+                indicators.append(uf_value)
             elif table == tables[1]:
-                indicators.append({
-                    'title': 'UTM UTA',
-                    'data': self.get_utm_uta(table)
-                })
+                table_data = self.get_utm_uta(table)
+                indicators.append(table_data)
             elif table == tables[2]:
-                indicators.append({
-                    'title': 'TOPES IMPONIBLES',
-                    'data': self.get_table_type_1(table)
-                })
+                table_data = self.get_table_type_1(table)
+                indicators.append(table_data)
             elif table == tables[3]:
                 table_data = self.get_table_type_1(table)
-                indicators.append({
-                    'title': 'RENTAS MINIMAS',
-                    'data': table_data
-                })
+                indicators.append(table_data)
             elif table == tables[4]:
                 table_data = self.get_table_type_1(table)
-                indicators.append({
-                    'title': 'APV',
-                    'data': table_data
-                })
+                indicators.append(table_data)
             elif table == tables[5]:
                 table_data = self.get_table_type_1(table)
-                indicators.append({
-                    'title': 'DEPÓSITO CONVENIDO',
-                    'data': table_data
-                })
+                indicators.append(table_data)
 
         return indicators
 
