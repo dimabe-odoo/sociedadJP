@@ -14,7 +14,8 @@ class CustomIndicators(models.Model):
         indicators = self.get_data_from_url()
         for indicator in indicators:
             for data in indicator['data']:
-                models._logger.error(len(data))
+                for d in data['data']:
+                    models._logger.error(d)
 
     def clear_string(self,cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
