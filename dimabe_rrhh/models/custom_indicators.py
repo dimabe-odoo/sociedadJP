@@ -40,7 +40,7 @@ class CustomIndicators(models.Model):
                         values.append(strong_value.get_text())
                 indicators.append({
                     'title': title,
-                    'data': data
+                    'data': values
                 })
 
         return indicators
