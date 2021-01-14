@@ -12,7 +12,7 @@ class CustomIndicators(models.Model):
 
     def get_data(self):
         indicators = self.get_data_from_url()
-        raise models.ValidationError(indicators)
+        raise models.ValidationError(list(indicators))
 
     def clear_string(self, cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
