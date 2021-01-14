@@ -16,13 +16,17 @@ class CustomIndicators(models.Model):
         soup = bs4.BeautifulSoup(data.text)
         tables = soup.find_all('table')
         uf = tables[0].select("strong")[1].get_text()
+        uf_last = tables[0].select("strong")[2].get_text()
+        raise models.ValidationError(self.clear_string(uf_last))
+        indicadors_ids = []
         uf_data = self.env['custom.data'].create({
             'name': 'Valor de Mes',
-            'value': float(self.clear_string(uf))
+            'value': float(self.clear_string(uf)),
+            'data_type_id': 1
         })
-        self.write({
-            "data_ids": [(4, uf_data.id)]
-        })
+        indicadors_ids.append(uf_data.id)
+
+
 
     def clear_string(self, cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
