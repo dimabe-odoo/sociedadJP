@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 import requests
-import bs4 as bs4
+from bs4 import BeautifulSoup
 
 
 class CustomIndicators(models.Model):
@@ -12,15 +12,15 @@ class CustomIndicators(models.Model):
 
     def get_data(self):
         indicators = self.get_data_from_url()
-        for indi in indicators:
-            for ind in indi['data']:
-                if ind['data'] != 0 or ind['data'] != '':
-                    self.env['custom.data'].create({
-                        'name': f"{indi['title']} {ind['title']}",
-                        'value': f"{ind['data']}"
-                    })
+        for indicator in indicators:
+            for d in indicator['data']:
+                self.env['custom.data'].create({
+                    'name': f"{indicator['title']} {d['title']}",
+                    'value': d['data'],
+                    'data_type_id': 5
+                })
 
-    def clear_string(self, cad):
+    def clear_string(self,cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
         cad = cad.replace("Renta", '').replace("<", '').replace(">", '')
         cad = cad.replace("=", '').replace("R", '').replace("I", '').replace("%", '')
@@ -31,35 +31,34 @@ class CustomIndicators(models.Model):
     def get_data_from_url(self):
         link = 'https://www.previred.com/web/previred/indicadores-previsionales'
         data = requests.get(link)
-        soup = bs4.BeautifulSoup(data.text)
+        soup = BeautifulSoup(data.text, 'html.parser')
         tables = soup.find_all('table')
         indicators = []
         values = []
         title = ''
-        subtitle = ''
-        value = ''
         for table in tables:
+            value = 0.0
+            subtitle = ''
             if table == tables[0]:
-                if table == tables[0]:
-                    for td in table.find_all('td'):
-                        if td == table.select('td')[0]:
-                            title = td.get_text()
+                for td in table.find_all('td'):
+                    if td == table.select('td')[0]:
+                        title = td.get_text()
+                    else:
+                        if '$' in td.get_text():
+                            value = float(self.clear_string(td.get_text()))
                         else:
-                            if '$' in td.get_text():
-                                value = float(self.clear_string(td.get_text()))
-                            else:
-                                subtitle = td.get_text()
-                            if value == 0.0:
-                                continue
-                            values.append({
-                                'title': subtitle,
-                                'data': value
-                            })
-                            value = 0.0
-                            subtitle = ''
-                    indicators.append({
-                        'title': title,
-                        'data': values
-                    })
+                            subtitle = td.get_text()
+                        if value == 0.0:
+                            continue
+                        values.append({
+                            'title': subtitle,
+                            'data': value
+                        })
+                        value = 0.0
+                        subtitle = ''
+                indicators.append({
+                    'title': title,
+                    'data': values
+                })
 
         return indicators
