@@ -17,7 +17,7 @@ class CustomIndicators(models.Model):
                 if ind['data'] != 0 or ind['data'] != '':
                     self.env['custom.data'].create({
                         'name': f"{indi['title']} {ind['title']}",
-                        'value': f"{ind['value']}"
+                        'value': f"{ind['data']}"
                     })
 
     def clear_string(self, cad):
