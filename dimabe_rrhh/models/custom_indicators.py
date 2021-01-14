@@ -15,7 +15,7 @@ class CustomIndicators(models.Model):
         data = requests.get(link)
         soup = bs4.BeautifulSoup(data.text)
         tables = soup.find_all('table')
-        uf = tables[0].select("strong")[0].get_text()
+        uf = tables[0].select("strong")[1].get_text()
         raise models.ValidationError(uf)
 
     def clear_string(self, cad):
