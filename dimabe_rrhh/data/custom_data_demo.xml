@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
+    <data noupdate="1">
         <record model="custom.data.type" id="custom_data_initial_apv">
             <field name="name">APV</field>
         </record>

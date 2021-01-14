@@ -11,28 +11,8 @@ class CustomIndicators(models.Model):
     data_ids = fields.Many2many('custom.data')
 
     def get_data(self):
-        link = 'https://www.previred.com/web/previred/indicadores-previsionales'
-        data = requests.get(link)
-        soup = bs4.BeautifulSoup(data.text)
-        tables = soup.find_all('table')
-        uf = tables[0].select("strong")[1].get_text()
-        uf_last = tables[0].select("strong")[2].get_text()
-        indicadors_ids = []
-        uf_data = self.env['custom.data'].create({
-            'name': 'Valor de Mes',
-            'value': float(self.clear_string(uf)),
-            'data_type_id': 1
-        })
-        indicadors_ids.append(uf_data.id)
-        uf_last_data = self.env['custom.data'].create({
-            'name':"Valor Mes Anterior",
-            'value': float(self.clear_string(uf_last)),
-            'data_type_id' : 1
-        })
-        indicadors_ids.append(uf_last_data.id)
-
-
-
+        indicators = self.get_data_from_url()
+        raise models.ValidationError(indicators)
 
     def clear_string(self, cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
@@ -41,3 +21,25 @@ class CustomIndicators(models.Model):
         cad = cad.replace(",", '.')
         cad = cad.replace("1ff8", "")
         return cad
+
+    def get_data_from_url(self):
+        link = 'https://www.previred.com/web/previred/indicadores-previsionales'
+        data = requests.get(link)
+        soup = bs4.BeautifulSoup(data.text)
+        tables = soup.find_all('table')
+        indicators = []
+        values = []
+        title = ''
+        for table in tables:
+            if table == tables[0]:
+                for str in table.select('strong'):
+                    if str == table.select('strong')[0]:
+                        title = str.get_text()
+                    else:
+                        values.append(str.get_text())
+                indicators.append({
+                    'title': title,
+                    'data': data
+                })
+
+        return indicators
