@@ -29,7 +29,7 @@
                             <field name="currency_isapre_id" attrs="{'invisible':[('is_fonasa','=',True)]}"/>
                         </group>
                         <group string="CCAF">
-                            <field name="having_saving_ccaf"/>
+                            <field name="have_saving_ccaf"/>
                             <field name="saving_ccaf" attrs="{'invisible':[('have_saving_ccaf','=',False)]}"/>
                         </group>
                         <group string="Seguro Complementario">
