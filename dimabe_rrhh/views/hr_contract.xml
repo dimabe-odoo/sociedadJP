@@ -9,8 +9,16 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='information']" position="after">
+                    <page string="Carga Familiar">
+                        <group style="width:50%;">
+                            <field name="frame_id"/>
+                            <field name="simple_charge"/>
+                            <field name="maternal_charge"/>
+                            <field name="disability_charge"/>
+                        </group>
+                    </page>
                     <page string="AFP" name="afp_page">
-                        <group width="50%%">
+                        <group style="width:50%;">
                             <field name="afp_id"/>
                             <field name="is_pensionary"/>
                             <field name="type_pensionary" attrs="{'invisible':[('is_pensionary','=',False)]}"/>

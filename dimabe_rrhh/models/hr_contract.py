@@ -8,7 +8,15 @@ class HrContract(models.Model):
 
     isapre_id = fields.Many2one('custom.isapre', 'Isapre')
 
-    apv_id = fields.Many2one('custom.data', domain=[('data_type_id', '=', 1)])
+    frame_id = fields.Many2one('custom.data','Tramo',domain=[('data_type_id','=',6)])
+
+    simple_charge = fields.Integer('Carga Simple')
+
+    maternal_charge = fields.Integer('Carga Materna')
+
+    disability_charge = fields.Integer('Carga Invalidez')
+
+    apv_id = fields.Many2one('custom.data','APV', domain=[('data_type_id', '=', 1)])
 
     currency_isapre_id = fields.Many2one('res.currency', 'Moneda', domain=[('id', 'in', (171, 173))])
 
