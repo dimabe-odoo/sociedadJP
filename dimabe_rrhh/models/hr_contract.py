@@ -15,5 +15,6 @@ class HrContract(models.Model):
     is_pensionary = fields.Boolean('Pensionado')
 
     type_pensionary = fields.Selection(
-        [(1, 'Pensíon de Vejez'), (2, 'Pension de Invalidez'), (3, 'Pension de Sobreviviencia'), (4, 'No Pensionado')]
-    ,default=4,string='Tipo de Pension')
+        [('old', 'Pensíon de Vejez'), ('disability', 'Pension de Invalidez'), ('survival', 'Pension de Sobreviviencia'),
+         ('no', 'No Pensionado')]
+        , default='no', string='Tipo de Pension')
