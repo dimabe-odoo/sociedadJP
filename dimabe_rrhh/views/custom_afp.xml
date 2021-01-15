@@ -5,7 +5,7 @@
             <field name="name">dimabe_rrhh.custom_afp.form</field>
             <field name="model">custom.afp</field>
             <field name="arch" type="xml">
-                <form string="">
+                <form string="AFP">
                     <sheet>
                         <div class="oe_title">
                             <label for="name"/>
