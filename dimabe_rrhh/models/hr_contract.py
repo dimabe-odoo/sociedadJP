@@ -32,7 +32,7 @@ class HrContract(models.Model):
 
     not_afp_sis = fields.Boolean('No Cotiza AFP SIS')
 
-    have_saving_ccaf = fields.Boolean('Tiene Ahorro CCAF00')
+    have_saving_ccaf = fields.Boolean('Tiene Ahorro CCAF')
 
     saving_ccaf = fields.Float('Ahorro CCAF')
 
