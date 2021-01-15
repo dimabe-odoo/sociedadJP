@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record model="custom.afp" id="custom_afp_cuprum">
+            <field name="name">Cuprum</field>
+            <field name="code">003</field>
+            <field name="vat">76.240.079-0</field>
+            <field name="rate">11.44</field>
+            <field name="independent">13.74</field>
+            <field name="sis">2.3</field>
+        </record>
+    </data>
+</odoo>
