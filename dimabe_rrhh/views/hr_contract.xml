@@ -23,7 +23,7 @@
                             <field name="not_afp_sis"/>
                             <field name="afp_id" attrs="{'invisible':[('not_afp','=',True)]}"/>
                             <field name="is_pensionary" attrs="{'invisible':[('not_afp','=',True)]}"/>
-                            <field name="type_pensionary" attrs="{'invisible':[('is_pensionary','=',False),('not_afp','=',True)]}"/>
+                            <field name="type_pensionary" attrs="{'invisible':['|',('is_pensionary','=',False),('not_afp','=',True)]}"/>
                         </group>
                         <group string="Salud" style="width:50%;">
                             <field name="is_fonasa"/>
