@@ -20,8 +20,6 @@ class HrContract(models.Model):
 
     disability_charge = fields.Integer('Carga Invalidez')
 
-    apv_id = fields.Many2one('custom.data', 'APV', domain=[('data_type_id', '=', 1)])
-
     isapre_agreed_quotes_uf = fields.Float('Cotizacion Pactada')
 
     fun_number = fields.Integer('Numero FUN')
@@ -33,6 +31,8 @@ class HrContract(models.Model):
     not_afp = fields.Boolean('No Cotiza AFP')
 
     not_afp_sis = fields.Boolean('No Cotiza AFP SIS')
+
+    have_saving_ccaf = fields.Boolean('Tiene Ahorro CCAF00')
 
     saving_ccaf = fields.Float('Ahorro CCAF')
 

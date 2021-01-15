@@ -28,6 +28,15 @@
                             <field name="isapre_id" attrs="{'invisible':[('is_fonasa','=',True)]}"/>
                             <field name="currency_isapre_id" attrs="{'invisible':[('is_fonasa','=',True)]}"/>
                         </group>
+                        <group string="CCAF">
+                            <field name="having_saving_ccaf"/>
+                            <field name="saving_ccaf" attrs="{'invisible':[('have_saving_ccaf','=',False)]}"/>
+                        </group>
+                        <group string="Seguro Complementario">
+                            <field name="supplementary_insurance_id"/>
+                            <field name="currency_supplementary_insurance_id" />
+                            <field name="supplementary_insurance_agreed_quotes_uf"/>
+                        </group>
                     </page>
                 </xpath>
             </field>
