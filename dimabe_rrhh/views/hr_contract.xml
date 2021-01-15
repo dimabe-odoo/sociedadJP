@@ -13,6 +13,7 @@
                         <group>
                             <field name="afp_id"/>
                             <field name="is_pensionary"/>
+                            <field name="type_pensionary" attrs="{'invisible':[('is_pensionary','=',False)]}"/>
                         </group>
                     </page>
                 </xpath>
