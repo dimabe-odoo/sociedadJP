@@ -19,5 +19,8 @@
         <record model="custom.data.type" id="custom_data_initial_frame">
             <field name="name">Tramo</field>
         </record>
+        <record model="custom.data.type" id="custom_data_employee_type">
+            <field name="name">Tipo de Empleado</field>
+        </record>
     </data>
 </odoo>
