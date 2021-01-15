@@ -12,6 +12,7 @@
                     <page string="AFP" name="afp_page">
                         <group>
                             <field name="afp_id"/>
+                            <field name="is_pensionary"/>
                         </group>
                     </page>
                 </xpath>
