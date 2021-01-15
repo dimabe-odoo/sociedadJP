@@ -10,7 +10,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='information']" position="after">
                     <page string="AFP" name="afp_page">
-                        <group>
+                        <group width="50%%">
                             <field name="afp_id"/>
                             <field name="is_pensionary"/>
                             <field name="type_pensionary" attrs="{'invisible':[('is_pensionary','=',False)]}"/>
