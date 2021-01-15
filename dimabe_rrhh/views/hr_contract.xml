@@ -18,10 +18,15 @@
                         </group>
                     </page>
                     <page string="Datos Previsionales" name="afp_page">
-                        <group style="width:50%;" string="AFP">
+                        <group string="AFP">
                             <field name="afp_id"/>
                             <field name="is_pensionary"/>
                             <field name="type_pensionary" attrs="{'invisible':[('is_pensionary','=',False)]}"/>
+                        </group>
+                        <group string="Salud">
+                            <field name="is_fonasa"/>
+                            <field name="isapre_id" attrs="{'invisible':[('is_fonasa','=',True)]}"/>
+                            <field name="currency_isapre_id" attrs="{'invisible':[('is_fonasa','=',True)]}"/>
                         </group>
                     </page>
                 </xpath>
