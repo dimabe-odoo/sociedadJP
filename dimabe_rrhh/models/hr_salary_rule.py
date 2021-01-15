@@ -13,6 +13,6 @@ class HrSalaryRule(models.Model):
             self.write({
                 'condition_select':'python',
                 'condition_python':f'result = (inputs.{self.code} and inputs.{self.code}.amount > 0)',
-                'amount_select':'python',
+                'amount_select':'code',
                 'amount_python_compute':f'result = inputs.{self.code}.amount'
             })
