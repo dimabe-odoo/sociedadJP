@@ -31,7 +31,8 @@
         'views/templates.xml',
         'views/custom_data.xml',
         'views/custom_benefits_rrhh.xml',
-        'views/custom_indicators.xml'
+        'views/custom_indicators.xml',
+        'views/hr_contract.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
