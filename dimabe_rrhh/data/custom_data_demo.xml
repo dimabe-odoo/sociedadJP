@@ -16,5 +16,8 @@
         <record model="custom.data.type" id="custom_data_initial_indicators">
             <field name="name">Indicadores</field>
         </record>
+        <record model="custom.data.type" id="custom_data_initial_frame">
+            <field name="name">Tramo</field>
+        </record>
     </data>
 </odoo>
