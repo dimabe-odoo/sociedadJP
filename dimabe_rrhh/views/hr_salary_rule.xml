@@ -11,6 +11,9 @@
                 <xpath expr="//field[@name='active']" position="after">
                     <field name='is_bonus'/>
                 </xpath>
+                <xpath expr="//page[@name='general']" position="attributes">
+                    <attribute name="groups">base.group_no_one</attribute>
+                </xpath>
             </field>
         </record>
     </data>
