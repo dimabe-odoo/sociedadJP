@@ -8,4 +8,4 @@ class HrContract(models.Model):
 
     isapre_id = fields.Many2one('custom.isapre', 'Isapre')
 
-    apv_id = fields.Many2one('custom.data', domain=[('data_type_id', '=', 6)])
+    apv_id = fields.Many2one('custom.data', domain=[('data_type_id', '=', 1)])
