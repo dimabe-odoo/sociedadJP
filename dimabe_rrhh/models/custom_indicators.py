@@ -10,21 +10,7 @@ class CustomIndicators(models.Model):
 
     name = fields.Char('Nombre')
 
-    uf_data_ids = fields.Many2many('custom.indicators.data')
-
-    utm_uta_data_ids = fields.Many2many('custom.indicators.data')
-
-    top_taxable_data_ids = fields.Many2many('custom.indicators.data')
-
-    taxable_income_data_ids = fields.Many2many('custom.indicators.data')
-
-    apv_data_ids = fields.Many2many('custom.indicators.data')
-
-    afc_data_ids = fields.Many2many('custom.indicators.data')
-
-    afp_data_ids = fields.Many2many('custom.indicators.data')
-
-
+    data_ids = fields.Many2many('custom.indicators.data')
     month = fields.Selection(
         [('jan', 'Enero'), ('feb', 'Febrero'), ('mar', 'Marzo'), ('apr', 'Abril'), ('may', 'Mayo'), ('jun', 'Junio'),
          ('jul', 'Julio'), ('aug', 'Agosto'), ('sep', 'Septiembre'), ('oct', 'Octubre'), ('nov', 'Noviembre'),
@@ -80,8 +66,8 @@ class CustomIndicators(models.Model):
         for table in tables:
             if table == tables[0]:
                 uf_value = self.get_table_type_1(table)
-                for uf in uf_value:
-                    raise models.UserError(type(uf))
+                for item in uf_value:
+                    raise models.ValidationError(type(item))
             elif table == tables[1]:
                 table_data = self.get_utm_uta(table)
                 indicators.append(table_data)
