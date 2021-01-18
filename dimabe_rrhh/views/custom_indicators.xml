@@ -20,7 +20,6 @@
                                 <tree>
                                     <field name="name"/>
                                     <field name="value"/>
-                                    <field name="data_type_id" widget="many2onebutton"/>
                                 </tree>
                             </field>
                         </group>
