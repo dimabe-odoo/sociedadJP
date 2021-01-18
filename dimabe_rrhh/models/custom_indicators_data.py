@@ -10,7 +10,7 @@ class CustomIndicators(models.Model):
 
     type = fields.Selection(
         [('1', 'UF'), ('2', 'UTM'), ('3', 'UTA'), ('4', 'Topes'), ('5', 'Renta Minima Imponible'), ('6', 'APV'),
-         ('7', 'Deposito Convenido'), ('8', 'AFC'), ('9', 'AFP')])
+         ('7', 'Deposito Convenido'), ('8', 'AFC'), ('9', 'AFP')],string='Tipo')
 
     last_month = fields.Boolean('Ultimo Mes')
 
