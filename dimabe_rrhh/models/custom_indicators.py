@@ -17,11 +17,12 @@ class CustomIndicators(models.Model):
          ('jul', 'Julio'), ('aug', 'Agosto'), ('sep', 'Septiembre'), ('oct', 'Octubre'), ('nov', 'Noviembre'),
          ('dec', 'Diciembre')])
 
-    year = fields.Float('Año',default=datetime.now().strftime('%Y'),digits=dp.get_precision('Year'))
+    year = fields.Float('Año', default=datetime.now().strftime('%Y'), digits=dp.get_precision('Year'))
 
     @api.model
-    def create(self,vals):
-        raise models.ValidationError(vals['month'])
+    def create(self, vals):
+        vals['name'] = f'{self.get_month(vals["month"])} {vals["year"]}'
+        return super(CustomIndicators,self).create(vals)
 
     def get_data(self):
         indicators = self.get_data_from_url()
@@ -137,5 +138,28 @@ class CustomIndicators(models.Model):
         })
         return uf
 
-    def get_month(self,month):
-        raise models.ValidationError(month)
+    def get_month(self, month):
+        if 'jan' == month:
+            return 'Enero'
+        elif 'feb' == month:
+            return 'Febrero'
+        elif 'mar' == month:
+            return 'Marzo'
+        elif 'apr' == month:
+            return 'Abril'
+        elif 'may' == month:
+            return 'Mayo'
+        elif 'jun' == month:
+            return 'Junio'
+        elif 'jul' == month:
+            return 'Julio'
+        elif 'aug' == month:
+            return 'Agosto'
+        elif 'sep' == month:
+            return 'Septiembre'
+        elif 'oct' == month:
+            return 'Octubre'
+        elif 'nov' == month:
+            return 'Noviembre'
+        elif 'dec' == month:
+            return 'Diciembre'
