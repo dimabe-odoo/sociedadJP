@@ -67,13 +67,16 @@ class CustomIndicators(models.Model):
             if table == tables[0]:
                 uf_value = self.get_table_type_1(table)
                 for item in uf_value:
+                    row = 0
                     for d in item['data']:
                         self.env['custom.indicators.data'].create({
                             'name':d['title'],
                             'value':d['data'],
                             'type':'1',
+                            'last_month': row == 1,
                             'indicator_id':self.id
                         })
+                        row +=1
             elif table == tables[1]:
                 table_data = self.get_utm_uta(table)
                 self.env['custom.indicators.data'].create({
