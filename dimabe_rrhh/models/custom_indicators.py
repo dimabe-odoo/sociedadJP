@@ -23,7 +23,7 @@ class CustomIndicators(models.Model):
         vals['name'] = f'{self.get_month(vals["month"])} {vals["year"]}'
         return super(CustomIndicators, self).create(vals)
 
-    def get_data(self):
+    def get_data_from_url(self):
         indicators = self.get_data_from_url()
         for indicator in indicators:
             if isinstance(indicator, dict):
@@ -56,7 +56,7 @@ class CustomIndicators(models.Model):
         cad = cad.replace("1ff8", "")
         return cad
 
-    def get_data_from_url(self):
+    def get_data(self):
         link = 'https://www.previred.com/web/previred/indicadores-previsionales'
         data = requests.get(link)
         soup = BeautifulSoup(data.text, 'html.parser')
@@ -67,7 +67,15 @@ class CustomIndicators(models.Model):
             if table == tables[0]:
                 uf_value = self.get_table_type_1(table)
                 for item in uf_value:
-                    raise models.ValidationError(f'key {item.keys()} values {item.values()}')
+                    for d in item['data']:
+                        da = self.env['custom.indicators.data'].create({
+                            'name':d['title'],
+                            'value':d['value'],
+                            'type':'1'
+                        })
+                        self.write({
+                            'data_ids': [(4, da.id)]
+                        })
             elif table == tables[1]:
                 table_data = self.get_utm_uta(table)
                 indicators.append(table_data)
