@@ -19,8 +19,9 @@ class CustomIndicators(models.Model):
 
     year = fields.Float('Año',default=datetime.now().strftime('%Y'),digits=dp.get_precision('Year'))
 
-    def create(self,values):
-        raise models.ValidationError(values.keys())
+    @api.model
+    def create(self,vals):
+        raise models.ValidationError(vals.keys())
 
     def get_data(self):
         indicators = self.get_data_from_url()
