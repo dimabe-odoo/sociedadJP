@@ -86,20 +86,20 @@ class CustomIndicators(models.Model):
             elif table == tables[6]:
                 data = []
                 contract_undefined_employer = {'title': 'Contracto Plazo Indefinido Empleador',
-                                               'data': self.clear_string(table.select("strong")[5].get_text())}
+                                               'value': self.clear_string(table.select("strong")[5].get_text())}
                 data.append(contract_undefined_employer)
                 contract_undefined_employee = {'title': 'Contracto Plazo Indefinido Trabajador',
-                                               'data': self.clear_string(table.select("strong")[6].get_text())}
+                                               'value': self.clear_string(table.select("strong")[6].get_text())}
                 data.append(contract_undefined_employee)
                 contract_fixed_term_employer = {'title': 'Contracto Plazo Fijo Empleador',
-                                                'data': self.clear_string(table.select("strong")[7].get_text())}
+                                                'value': self.clear_string(table.select("strong")[7].get_text())}
                 data.append(contract_fixed_term_employer)
                 contract_undefined_employer_other = {'title': 'Contacto Plazo Empleador Otro',
-                                                     'data': self.clear_string(table.select("strong")[9].get_text())}
+                                                     'value': self.clear_string(table.select("strong")[9].get_text())}
                 data.append(contract_undefined_employer_other)
                 table_data ={
                     'title':'Seguro de Cesantia (AFC)',
-                    'value': data
+                    'data': data
                 }
                 indicators.append(table_data)
         return indicators
