@@ -10,7 +10,7 @@ class CustomIndicators(models.Model):
 
     name = fields.Char('Nombre')
 
-    data_ids = fields.Many2many('custom.indicators.data','indicator_id',string='Datos')
+    data_ids = fields.One2many('custom.indicators.data','indicator_id',string='Datos')
     month = fields.Selection(
         [('jan', 'Enero'), ('feb', 'Febrero'), ('mar', 'Marzo'), ('apr', 'Abril'), ('may', 'Mayo'), ('jun', 'Junio'),
          ('jul', 'Julio'), ('aug', 'Agosto'), ('sep', 'Septiembre'), ('oct', 'Octubre'), ('nov', 'Noviembre'),
