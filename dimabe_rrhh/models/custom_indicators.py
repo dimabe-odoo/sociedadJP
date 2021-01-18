@@ -17,7 +17,7 @@ class CustomIndicators(models.Model):
          ('jul', 'Julio'), ('aug', 'Agosto'), ('sep', 'Septiembre'), ('oct', 'Octubre'), ('nov', 'Noviembre'),
          ('dec', 'Diciembre')])
 
-    year = fields.Float('Año',default=datetime.now().strtime('%Y'),digits=dp.get_precision('Year'))
+    year = fields.Float('Año',default=datetime.now().strftime('%Y'),digits=dp.get_precision('Year'))
 
     def get_data(self):
         indicators = self.get_data_from_url()
