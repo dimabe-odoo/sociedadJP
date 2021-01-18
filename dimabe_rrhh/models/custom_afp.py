@@ -10,8 +10,8 @@ class CustomAfp(models.Model):
 
     vat = fields.Char('RUT', required=True)
 
-    rate = fields.Float('Tasa', required=True)
+    rate = fields.Float('Tasa')
 
-    sis = fields.Float('Aporte Empresa', required=True)
+    sis = fields.Float('Aporte Empresa')
 
-    independent = fields.Float('Independientes', required=True)
+    independent = fields.Float('Independientes')
