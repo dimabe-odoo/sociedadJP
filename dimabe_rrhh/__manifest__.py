@@ -26,7 +26,7 @@
     'data': [
         'data/custom_data_demo.xml',
         'data/custom_data_apv.xml',
-        #'data/custom_data_afp.xml',
+        'data/custom_data_afp.xml',
         'data/custom_data_hr_payslip.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
