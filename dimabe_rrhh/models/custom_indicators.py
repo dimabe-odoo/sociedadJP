@@ -104,12 +104,19 @@ class CustomIndicators(models.Model):
                         self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
-                            'type': '4',
+                            'type': '6',
                             'indicator_id':self.id
                         })
             elif table == tables[5]:
                 table_data = self.get_table_type_1(table)
-                indicators.append(table_data)
+                for item in table_data:
+                    for d in item['data']:
+                        self.env['custom.indicators.data'].create({
+                            'name': d['title'],
+                            'value': d['data'],
+                            'type': '7',
+                            'indicator_id': self.id
+                        })
             elif table == tables[6]:
                 data = self.get_safe(table)
                 table_data ={

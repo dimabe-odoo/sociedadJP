@@ -19,6 +19,7 @@
                             <field name="data_ids">
                                 <tree>
                                     <field name="name"/>
+                                    <field name="type"/>
                                     <field name="value"/>
                                 </tree>
                             </field>
