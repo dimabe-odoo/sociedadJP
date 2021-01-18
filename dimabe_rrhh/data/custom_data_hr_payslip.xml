@@ -50,5 +50,15 @@
             <field name="name">SubTotal</field>
             <field name="code">SUBT</field>
         </record>
+        <record id="custom_hr_salary_rule_wage_cl" model="hr.salary.rule">
+            <field name="name">Sueldo Base</field>
+            <field name="code">SUELDO</field>
+            <field name="category_id" ref="custom_hr_salary_rule_category_taxable" />
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+                result = round((contract.wage / 30) * worked_days.WORK100.number_of_days)
+            </field>
+        </record>
     </data>
 </odoo>
