@@ -22,7 +22,7 @@ class CustomIndicators(models.Model):
     @api.model
     def create(self, vals):
         vals['name'] = f'{self.get_month(vals["month"])} {vals["year"]}'
-        return super(CustomIndicators,self).create(vals)
+        return super(CustomIndicators, self).create(vals)
 
     def get_data(self):
         indicators = self.get_data_from_url()
@@ -82,6 +82,25 @@ class CustomIndicators(models.Model):
                 indicators.append(table_data)
             elif table == tables[5]:
                 table_data = self.get_table_type_1(table)
+                indicators.append(table_data)
+            elif table == tables[6]:
+                data = []
+                contract_undefined_employer = {'title': 'Contracto Plazo Indefinido Empleador',
+                                               'data': self.clear_string(table.select("strong")[5].get_text())}
+                data.append(contract_undefined_employer)
+                contract_undefined_employee = {'title': 'Contracto Plazo Indefinido Trabajador',
+                                               'data': self.clear_string(table.select("strong")[6].get_text())}
+                data.append(contract_undefined_employee)
+                contract_fixed_term_employer = {'title': 'Contracto Plazo Fijo Empleador',
+                                                'data': self.clear_string(table.select("strong")[7].get_text())}
+                data.append(contract_fixed_term_employer)
+                contract_undefined_employer_other = {'title': 'Contacto Plazo Empleador Otro',
+                                                     'data': self.clear_string(table.select("strong")[9].get_text())}
+                data.append(contract_undefined_employer_other)
+                table_data ={
+                    'title':'Seguro de Cesantia (AFC)',
+                    'data': data
+                }
                 indicators.append(table_data)
         return indicators
 
