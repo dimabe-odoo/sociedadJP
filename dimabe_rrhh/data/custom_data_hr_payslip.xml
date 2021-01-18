@@ -18,5 +18,37 @@
             <field name="type_id" ref="custom_hr_payroll_structure_type_cl"/>
             <field name="country_id">46</field>
         </record>
+        <record id="custom_hr_salary_rule_category_taxable" model="hr.salary.rule.category">
+            <field name="name">Imponible</field>
+            <field name="code">IMP</field>
+        </record>
+        <record id="custom_hr_salary_rule_category_not_taxable" model="hr.salary.rule.category">
+            <field name="name">No Imponible</field>
+            <field name="code">NOTIMP</field>
+        </record>
+        <record id="custom_hr_salary_rule_category_discount" model="hr.salary.rule.category">
+            <field name="name">Descuentos</field>
+            <field name="code">DES</field>
+        </record>
+        <record id="custom_hr_salary_rule_category_other_discount" model="hr.salary.rule.category">
+            <field name="name">Otros Descuentos</field>
+            <field name="code">ODES</field>
+        </record>
+        <record id="custom_hr_salary_rule_category_company_contribution" model="hr.salary.rule.category">
+            <field name="name">Aporte Empresa</field>
+            <field name="code">COM</field>
+        </record>
+        <record id="custom_hr_salary_rule_forecast" model="hr.salary.rule.category">
+            <field name="name">Prevision</field>
+            <field name="code">PREV</field>
+        </record>
+        <record id="custom_hr_salary_rule_health" model="hr.salary.rule.category">
+            <field name="name">Salud</field>
+            <field name="code">SAL</field>
+        </record>
+        <record id="custom_hr_salary_rule_subtotal" model="hr.salary.rule.category">
+            <field name="name">SubTotal</field>
+            <field name="code">SUBT</field>
+        </record>
     </data>
 </odoo>
