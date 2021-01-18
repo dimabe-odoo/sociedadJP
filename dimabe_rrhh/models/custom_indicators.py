@@ -71,7 +71,7 @@ class CustomIndicators(models.Model):
                 indicators.append(table_data)
             elif table == tables[6]:
                 table_data = self.get_table_type_1(table)
-                raise models.ValidationError(table_data)
+                raise models.ValidationError(list(table_data))
         return indicators
 
     def get_safe(self, table):
