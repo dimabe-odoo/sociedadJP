@@ -34,7 +34,8 @@
         'views/custom_benefits_rrhh.xml',
         'views/custom_indicators.xml',
         'views/hr_contract.xml',
-        'views/hr_salary_rule.xml'
+        'views/hr_salary_rule.xml',
+        'views/hr_payslip.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
