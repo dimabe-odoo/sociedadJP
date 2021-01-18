@@ -10,6 +10,13 @@ class CustomIndicators(models.Model):
 
     data_ids = fields.Many2many('custom.data')
 
+    month = fields.Selection(
+        [('jan', 'Enero'), ('feb', 'Febrero'), ('mar', 'Marzo'), ('apr', 'Abril'), ('may', 'Mayo'), ('jun', 'Junio'),
+         ('jul', 'Julio'), ('aug', 'Agosto'), ('sep', 'Septiembre'), ('oct', 'Octubre'), ('nov', 'Noviembre'),
+         ('dec', 'Diciembre')])
+
+    year = fields.Float()
+
     def get_data(self):
         indicators = self.get_data_from_url()
         for indicator in indicators:
@@ -69,10 +76,6 @@ class CustomIndicators(models.Model):
             elif table == tables[5]:
                 table_data = self.get_table_type_1(table)
                 indicators.append(table_data)
-            elif table == tables[6]:
-                table_data = self.get_table_type_1(table)
-                for t in table_data:
-                    models.logger.error(t)
         return indicators
 
     def get_safe(self, table):
