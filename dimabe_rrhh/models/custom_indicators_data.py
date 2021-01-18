@@ -13,3 +13,5 @@ class CustomIndicators(models.Model):
          ('7', 'Deposito Convenido'), ('8', 'AFC'), ('9', 'AFP')])
 
     last_month = fields.Boolean('Ultimo Mes')
+
+    indicator_id = fields.Many2one('custom.indicators','Indicador')

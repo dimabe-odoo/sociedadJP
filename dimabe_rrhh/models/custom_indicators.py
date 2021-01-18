@@ -10,11 +10,11 @@ class CustomIndicators(models.Model):
 
     name = fields.Char('Nombre')
 
-    data_ids = fields.Many2many('custom.indicators.data')
+    data_ids = fields.Many2many('custom.indicators.data','indicator_id',string='Datos')
     month = fields.Selection(
         [('jan', 'Enero'), ('feb', 'Febrero'), ('mar', 'Marzo'), ('apr', 'Abril'), ('may', 'Mayo'), ('jun', 'Junio'),
          ('jul', 'Julio'), ('aug', 'Agosto'), ('sep', 'Septiembre'), ('oct', 'Octubre'), ('nov', 'Noviembre'),
-         ('dec', 'Diciembre')])
+         ('dec', 'Diciembre')],string='Mes')
 
     year = fields.Float('Año', default=datetime.now().strftime('%Y'), digits=dp.get_precision('Year'))
 
@@ -68,13 +68,11 @@ class CustomIndicators(models.Model):
                 uf_value = self.get_table_type_1(table)
                 for item in uf_value:
                     for d in item['data']:
-                        da = self.env['custom.indicators.data'].create({
+                        self.env['custom.indicators.data'].create({
                             'name':d['title'],
                             'value':d['data'],
-                            'type':'1'
-                        })
-                        self.write({
-                            'data_ids': [(4, da.id)]
+                            'type':'1',
+                            'indicator_id':self.id
                         })
             elif table == tables[1]:
                 table_data = self.get_utm_uta(table)
@@ -83,37 +81,31 @@ class CustomIndicators(models.Model):
                 table_data = self.get_table_type_1(table)
                 for item in table_data:
                     for d in item['data']:
-                        da = self.env['custom.indicators.data'].create({
+                        self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
-                            'type': '4'
-                        })
-                        self.write({
-                            'data_ids': [(4, da.id)]
+                            'type': '4',
+                            'indicator_id':self.id
                         })
             elif table == tables[3]:
                 table_data = self.get_table_type_1(table)
                 for item in table_data:
                     for d in item['data']:
-                        da = self.env['custom.indicators.data'].create({
+                        self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
-                            'type': '5'
-                        })
-                        self.write({
-                            'data_ids': [(4, da.id)]
+                            'type': '5',
+                            'indicator_id':self.id
                         })
             elif table == tables[4]:
                 table_data = self.get_table_type_1(table)
                 for item in table_data:
                     for d in item['data']:
-                        da = self.env['custom.indicators.data'].create({
+                        self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
-                            'type': '4'
-                        })
-                        self.write({
-                            'data_ids': [(4, da.id)]
+                            'type': '4',
+                            'indicator_id':self.id
                         })
             elif table == tables[5]:
                 table_data = self.get_table_type_1(table)
