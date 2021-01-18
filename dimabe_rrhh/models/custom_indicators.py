@@ -76,7 +76,8 @@ class CustomIndicators(models.Model):
                         })
             elif table == tables[1]:
                 table_data = self.get_utm_uta(table)
-                indicators.append(table_data)
+                for item in table_data:
+                    raise models.ValidationError(f'{item} {type(item)}')
             elif table == tables[2]:
                 table_data = self.get_table_type_1(table)
                 for item in table_data:
