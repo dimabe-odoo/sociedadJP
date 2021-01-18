@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <record name="hr.payroll.structure" id="custom_data_struct_cl">
-            <field name="name">Mensual</field>
-            <field name="wage_type">monthly</field>
+        <record id="custom_work_entry_cl" model="hr.work.entry.type">
+            <field name="name">Tipo Entrada Chile</field>
+            <field name="code">CL</field>
+            <field name="round_days">NO</field>
         </record>
 
     </data>
