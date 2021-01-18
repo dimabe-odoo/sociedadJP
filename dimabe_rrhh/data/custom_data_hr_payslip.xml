@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
-        <field name="hr.payroll.structure" id="custom_data_struct_cl">
+        <record name="hr.payroll.structure" id="custom_data_struct_cl">
             <field name="name">Mensual</field>
             <field name="wage_type">monthly</field>
-        </field>
+        </record>
 
     </data>
 </odoo>
