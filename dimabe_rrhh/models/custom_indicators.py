@@ -76,8 +76,18 @@ class CustomIndicators(models.Model):
                         })
             elif table == tables[1]:
                 table_data = self.get_utm_uta(table)
-                for item in table_data['data']:
-                    raise models.ValidationError(f'{item} {type(item)}')
+                self.env['custom.indicators.data'].create({
+                    'name':table_data['data'][0]['title'],
+                    'value':table_data['data'][0]['value'],
+                    'type':'2',
+                    'indicator_id':self.id
+                })
+                self.env['custom.indicators.data'].create({
+                    'name': table_data['data'][1]['title'],
+                    'value': table_data['data'][1]['value'],
+                    'type': '3',
+                    'indicator_id': self.id
+                })
             elif table == tables[2]:
                 table_data = self.get_table_type_1(table)
                 for item in table_data:
