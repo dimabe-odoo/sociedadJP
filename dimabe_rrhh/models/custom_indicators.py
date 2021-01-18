@@ -68,6 +68,7 @@ class CustomIndicators(models.Model):
                 uf_value = self.get_table_type_1(table)
                 for item in uf_value:
                     for d in item['data']:
+                        raise models.ValidationError(type(d))
                         da = self.env['custom.indicators.data'].create({
                             'name':d['title'],
                             'value':d['value'],
