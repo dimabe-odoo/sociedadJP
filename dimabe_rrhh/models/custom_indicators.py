@@ -2,6 +2,7 @@ from odoo import fields, models, api
 import requests
 from bs4 import BeautifulSoup
 from odoo.addons import decimal_precision as dp
+from datetime import datetime
 
 
 class CustomIndicators(models.Model):
@@ -16,7 +17,7 @@ class CustomIndicators(models.Model):
          ('jul', 'Julio'), ('aug', 'Agosto'), ('sep', 'Septiembre'), ('oct', 'Octubre'), ('nov', 'Noviembre'),
          ('dec', 'Diciembre')])
 
-    year = fields.Float('Año',digits=dp.get_precision('Year'))
+    year = fields.Float('Año',default=datetime.now().strtime('%Y'),digits=dp.get_precision('Year'))
 
     def get_data(self):
         indicators = self.get_data_from_url()
