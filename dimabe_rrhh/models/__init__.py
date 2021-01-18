@@ -12,3 +12,4 @@ from . import custom_isapre
 from . import custom_indicators
 from . import hr_contract
 from . import hr_salary_rule
+from . import hr_payslip
