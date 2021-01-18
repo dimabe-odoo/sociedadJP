@@ -21,7 +21,7 @@ class CustomIndicators(models.Model):
 
     @api.model
     def create(self,vals):
-        raise models.ValidationError(self.month)
+        raise models.ValidationError(f'Keys {vals.keys()} Values {vals.values()}')
 
     def get_data(self):
         indicators = self.get_data_from_url()
