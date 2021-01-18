@@ -99,7 +99,7 @@ class CustomIndicators(models.Model):
                 data.append(contract_undefined_employer_other)
                 table_data ={
                     'title':'Seguro de Cesantia (AFC)',
-                    'data': data
+                    'value': data
                 }
                 indicators.append(table_data)
         return indicators
