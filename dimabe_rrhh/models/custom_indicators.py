@@ -83,21 +83,38 @@ class CustomIndicators(models.Model):
                 table_data = self.get_table_type_1(table)
                 for item in table_data:
                     for d in item['data']:
-                        raise models.ValidationError(f' {d.keys()} {d.values()}')
                         da = self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
-                            'type': '1'
+                            'type': '4'
                         })
                         self.write({
                             'data_ids': [(4, da.id)]
                         })
             elif table == tables[3]:
                 table_data = self.get_table_type_1(table)
-                indicators.append(table_data)
+                for item in table_data:
+                    for d in item['data']:
+                        da = self.env['custom.indicators.data'].create({
+                            'name': d['title'],
+                            'value': d['data'],
+                            'type': '5'
+                        })
+                        self.write({
+                            'data_ids': [(4, da.id)]
+                        })
             elif table == tables[4]:
                 table_data = self.get_table_type_1(table)
-                indicators.append(table_data)
+                for item in table_data:
+                    for d in item['data']:
+                        da = self.env['custom.indicators.data'].create({
+                            'name': d['title'],
+                            'value': d['data'],
+                            'type': '4'
+                        })
+                        self.write({
+                            'data_ids': [(4, da.id)]
+                        })
             elif table == tables[5]:
                 table_data = self.get_table_type_1(table)
                 indicators.append(table_data)
