@@ -6,7 +6,7 @@
             <field name="code">CL</field>
             <field name="round_days">NO</field>
         </record>
-        <record id="custom_hr_payroll_structure_type_cl" model="hr.payslip.structure.type">
+        <record id="custom_hr_payroll_structure_type_cl" model="hr.payroll.structure.type">
             <field name="name">Codigo del Trabajo Chile</field>
             <field name="country_id">46</field>
             <field name="wage_type">monthly</field>
