@@ -26,7 +26,7 @@ class HrContract(models.Model):
 
     own_account_isapre = fields.Boolean('Cuenta propia isapre')
 
-    supplementary_insurance_id = fields.Many2one('custom.data', domain=['data_type_id', '=', 4])
+    supplementary_insurance_id = fields.Many2one('custom.data',string='Seguro Complementario', domain=['data_type_id', '=', 4])
 
     not_afp = fields.Boolean('No Cotiza AFP')
 
