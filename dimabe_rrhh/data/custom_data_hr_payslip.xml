@@ -57,7 +57,10 @@
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((contract.wage / 30) * worked_days.WORK100.number_of_days)
+            <field name="amount_python_compute">if(contract.type_id.code == 4):
+                result = contract.wage
+                else:
+                result = round((contract.wage / 30) * worked_days.WORK100.number_of_days)
             </field>
         </record>
     </data>
