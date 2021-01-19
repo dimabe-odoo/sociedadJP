@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data noupdate="1">
-        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_ohio">
-            <field name="name">Ohio National Seguros de Vida S.A.</field>
-            <field name="code"> </field>
+    <data>
+        <record id="custom_apv_cuprum_afp_cuprum" model="custom.benefits.rrhh">
+            <field name="name">Cuprum</field>
+            <field name="code">003</field>
             <field name="data_type_id">1</field>
         </record>
-        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_MBI">
-            <field name="name">MBI Corredores de Bolsa S.A.</field>
-            <field name="code"> </field>
+        <record id="custom_apv_cuprum_afp_habitat" model="custom.benefits.rrhh">
+            <field name="name">Habitat</field>
+            <field name="code">005</field>
             <field name="data_type_id">1</field>
         </record>
-        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_bice">
-            <field name="name">BICE VIDA COMPAÑIA DE SEGUROS S.A.</field>
-            <field name="code"> </field>
+        <record id="custom_apv_cuprum_afp_provida" model="custom.benefits.rrhh">
+            <field name="name">Provida</field>
+            <field name="code">008</field>
             <field name="data_type_id">1</field>
         </record>
-        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_sura">
-            <field name="name">Seguros de Vida SURA S.A.</field>
-            <field name="code"> </field>
+        <record id="custom_apv_cuprum_afp_planvital" model="custom.benefits.rrhh">
+            <field name="name">PlanVital</field>
+            <field name="code">029</field>
             <field name="data_type_id">1</field>
         </record>
-        <record model="custom.benefits.rrhh" id="custom_benefits_rrhh_principal">
-            <field name="name">PRINCIPAL COMPAÑIA DE SEGURO DE VIDA CHILE S.A.</field>
-            <field name="code"> </field>
+        <record id="custom_apv_cuprum_afp_capital" model="custom.benefits.rrhh">
+            <field name="name">Capital</field>
+            <field name="code">033</field>
+            <field name="data_type_id">1</field>
+        </record>
+        <record id="custom_apv_cuprum_afp_modelo" model="custom.benefits.rrhh">
+            <field name="name">Modelo</field>
+            <field name="code">034</field>
+            <field name="data_type_id">1</field>
+        </record>
+        <record id="custom_apv_cuprum_afp_uno" model="custom.benefits.rrhh">
+            <field name="name">Uno</field>
+            <field name="code">035</field>
             <field name="data_type_id">1</field>
         </record>
     </data>
