@@ -57,11 +57,17 @@
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">if(contract.type_id.code == 4):
-                result = contract.wage
-                else:
-                result = round((contract.wage / 30) * worked_days.WORK100.number_of_days)
+            <field name="amount_python_compute">result = round((contract.wage / 30) * worked_days.WORK100.number_of_days)
             </field>
+        </record>
+        <record id="custom_hr_salary_rule_wage_adjustment" model="hr.salary.rule">
+            <field name="name">Ajuste Sueldo Base</field>
+            <field name="code">AJU</field>
+            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.indicators_id.mapped('data_ids').filtered(lambda a : a.type == '5')[0].value > contract.wage</field>
+            <field name="amount_select">code</field>
+            <field name="amount_select">result = round(((payslip.indicators_id.mapped('data_ids').filtered(lambda a : a.type == '5')[0].value - contract.wage) / 30) * worked_days.WORK100.number_of_days)</field>
         </record>
     </data>
 </odoo>
