@@ -78,7 +78,7 @@
             <field name="condition_select">python</field>
             <field name="condition_python">result = inputs.HEX50 and inputs.HEX50.amount > 0</field>
             <field name="amount_select">code</field>
-            <field name="amount_python">result = round(0.0077777*contract.wage.inputs.HEX50.amount)</field>
+            <field name="amount_python_compute">result = round(0.0077777*contract.wage.inputs.HEX50.amount)</field>
         </record>
         <record id="custom_hr_salary_rule_discount_hours" model="hr.salary.rule">
             <field name="name">HORAS DESCUENTO</field>
