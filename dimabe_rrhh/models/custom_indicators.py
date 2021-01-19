@@ -133,17 +133,24 @@ class CustomIndicators(models.Model):
                         })
             elif table == tables[6]:
                 data = self.get_safe(table)
-                table_data ={
-                    'title':'Seguro de Cesantia (AFC)',
-                    'data': data
-                }
-                indicators.append(table_data)
+                for item in data:
+                    for d in item['data']:
+                        self.env['custom.indicators.data'].create({
+                            'name': d['title'],
+                            'value': d['data'],
+                            'type': '8',
+                            'indicator_id': self.id
+                        })
             elif table == tables[7]:
                 data = self.get_afp_data(table)
-                table_data = {
-                    'title': 'Tasa Cotizacion Obligatoria AFP',
-                    'data': data
-                }
+                for item in data:
+                    for d in item['data']:
+                        self.env['custom.indicators.data'].create({
+                            'name': d['title'],
+                            'value': d['data'],
+                            'type': '9',
+                            'indicator_id': self.id
+                        })
                 indicators.append(table_data)
 
         return indicators
