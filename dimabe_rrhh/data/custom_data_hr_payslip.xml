@@ -61,13 +61,33 @@
             </field>
         </record>
         <record id="custom_hr_salary_rule_wage_adjustment" model="hr.salary.rule">
-            <field name="name">Ajuste Sueldo Base</field>
-            <field name="code">AJU</field>
+            <field name="name">Ajuste Ley Sueldo Base</field>
+            <field name="code">ALSB</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = payslip.indicators_id.mapped('data_ids').filtered(lambda a : a.type == '5')[0].value > contract.wage</field>
+            <field name="condition_python">sueldominimo = payslip.indicators_id.mapped('data_ids').filtered(lambda a: a.type == '5')[0].value result = sueldominimo > contract.wage</field>
             <field name="amount_select">code</field>
-            <field name="amount_select">result = round(((payslip.indicators_id.mapped('data_ids').filtered(lambda a : a.type == '5')[0].value - contract.wage) / 30) * worked_days.WORK100.number_of_days)</field>
+            <field name="amount_python_compute">sueldominimo = payslip.indicators_id.mapped('data_ids').filtered(lambda a: a.type == '5')[0].value days = worked_days.WORK100.number_of_days result = round(((sueldominimo - contract.wage) / 30) * days)</field>
         </record>
+        <record id="custom_hr_salary_rule_extra_hours" model="hr.salary.rule">
+            <field name="name">Horas Extra</field>
+            <field name="code">HEX50</field>
+            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.HEX50 and inputs.HEX50.amount > 0</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python">result = round(0.0077777*contract.wage.inputs.HEX50.amount)</field>
+        </record>
+        <record id="custom_hr_salary_rule_discount_hours" model="hr.salary.rule">
+            <field name="name">HORAS DESCUENTO</field>
+            <field name="sequence" eval="5"/>
+            <field name="code">HEXDE</field>
+            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.HEXDE and inputs.HEXDE.amount > 0</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">hour_value = (((contract.wage / 30) * 28) / 180) result = (hour_value * inputs.HEXDE.amount) * (-1)</field>
+        </record>
+
     </data>
 </odoo>
