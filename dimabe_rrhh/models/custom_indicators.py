@@ -134,7 +134,8 @@ class CustomIndicators(models.Model):
             elif table == tables[6]:
                 data = self.get_safe(table)
                 for item in data:
-                    for d in item['data']:
+                    raise models.ValidationError(item)
+                    for d in item['value']:
                         self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
@@ -144,7 +145,8 @@ class CustomIndicators(models.Model):
             elif table == tables[7]:
                 data = self.get_afp_data(table)
                 for item in data:
-                    for d in item['data']:
+                    r
+                    for d in item['']:
                         self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
