@@ -72,6 +72,7 @@ class CustomIndicators(models.Model):
                         self.env['custom.indicators.data'].create({
                             'name':d['title'],
                             'value':d['data'],
+                            'value_show':f'$ {d["data"]}',
                             'type':'1',
                             'last_month': row == 1,
                             'indicator_id':self.id
@@ -81,13 +82,15 @@ class CustomIndicators(models.Model):
                 table_data = self.get_utm_uta(table)
                 self.env['custom.indicators.data'].create({
                     'name':table_data['data'][0]['title'],
-                    'value':table_data['data'][0]['value'],
+                    'value': d['data'],
+                    'value_show': f'$ {table_data["data"][0]["value"]}',
                     'type':'2',
                     'indicator_id':self.id
                 })
                 self.env['custom.indicators.data'].create({
                     'name': table_data['data'][1]['title'],
                     'value': table_data['data'][1]['value'],
+                    'value_show':f'$ {table_data["data"][1]["value"]}',
                     'type': '3',
                     'indicator_id': self.id
                 })
@@ -98,6 +101,7 @@ class CustomIndicators(models.Model):
                         self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
+                            'value_show': f'$ {d["data"]}',
                             'type': '4',
                             'indicator_id':self.id
                         })
@@ -108,6 +112,7 @@ class CustomIndicators(models.Model):
                         self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
+                            'value_show': f'$ {d["data"]}',
                             'type': '5',
                             'indicator_id':self.id
                         })
@@ -118,6 +123,7 @@ class CustomIndicators(models.Model):
                         self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
+                            'value_show': f'$ {d["data"]}',
                             'type': '6',
                             'indicator_id':self.id
                         })
@@ -128,6 +134,7 @@ class CustomIndicators(models.Model):
                         self.env['custom.indicators.data'].create({
                             'name': d['title'],
                             'value': d['data'],
+                            'value_show': f'$ {d["data"]}',
                             'type': '7',
                             'indicator_id': self.id
                         })

@@ -6,7 +6,9 @@ class CustomIndicators(models.Model):
 
     name = fields.Char('Nombre')
 
-    value = fields.Float('Valor')
+    value = fields.Float('Valor Calculo')
+
+    value_show = fields.Char('Valor')
 
     percentage_show = fields.Char('Porcentaje')
 
