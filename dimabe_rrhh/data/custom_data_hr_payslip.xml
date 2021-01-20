@@ -127,14 +127,14 @@
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = inputs.MANGRAT.amount</field>
         </record>
-        <record name="custom_hr_salary_rule_bonus" model="hr.salary.rule">
-            <field name="name">Aguinaldo</field>
-            <field name="code">AGUI</field>
-            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="condition_select">python</field>
-            <field name="condition_python">result = (inputs.AGUI and inputs.AGUI.amount > 0)</field>
-            <field name="amount_python_compute">result = inputs.AGUI.amount</field>
-        </record>
+<!--        <record name="custom_hr_salary_rule_bonus" model="hr.salary.rule">-->
+<!--            <field name="name">Aguinaldo</field>-->
+<!--            <field name="code">AGUI</field>-->
+<!--            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>-->
+<!--            <field name="condition_select">python</field>-->
+<!--            <field name="condition_python">result = (inputs.AGUI and inputs.AGUI.amount > 0)</field>-->
+<!--            <field name="amount_python_compute">result = inputs.AGUI.amount</field>-->
+<!--        </record>-->
 <!--        <record name="custom_hr_salary_rule_taxable_total" model="hr.salary.rule">-->
 <!--            <field name="name">Total Imponible</field>-->
 <!--            <field name="code">TOTIM</field>-->
