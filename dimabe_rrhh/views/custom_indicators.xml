@@ -21,6 +21,7 @@
                                     <field name="name"/>
                                     <field name="type"/>
                                     <field name="value"/>
+                                    <field name="percentage_show"/>
                                 </tree>
                             </field>
                         </group>
