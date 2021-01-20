@@ -134,7 +134,7 @@ class CustomIndicators(models.Model):
             elif table == tables[6]:
                 data = self.get_safe(table)
                 for d in data:
-                    raise models.ValidationError(f'Type {type(d)}')
+                    raise models.ValidationError(f'Key {d.keys()} Values {d.values()}')
                 indicators.append(table_data)
             elif table == tables[7]:
                 data = self.get_afp_data(table)
