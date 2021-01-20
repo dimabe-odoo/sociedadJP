@@ -43,7 +43,7 @@ class MobileSaleController(http.Controller):
 
             })
             for tax in product_object.taxes_id:
-                sale_line.write({'tax_ids':[(4,[tax.id])]})
+                sale_line.write({'tax_ids':[(4,tax.id)]})
         mobile.button_confirm()
         mobile.sudo().write({
             'seller_id': session,
