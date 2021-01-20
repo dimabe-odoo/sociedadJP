@@ -136,7 +136,8 @@ class CustomIndicators(models.Model):
                 for d in data:
                     self.env['custom.indicators.data'].create({
                         'name':d['title'],
-                        'value':d['value'],
+                        'percentage_show':f'{d["value"]} %',
+                        'percentage_value':d['value'],
                         'type':'8',
                         'indicator_id':self.id
                     })
@@ -145,7 +146,8 @@ class CustomIndicators(models.Model):
                 for d in data:
                     self.env['custom.indicators.data'].create({
                         'name':d['title'],
-                        'value':d['value'],
+                        'percentage_show':f'{d["value"]} %',
+                        'percentage_value':d['value'],
                         'type':'9',
                         'indicator_id':self.id
                     })

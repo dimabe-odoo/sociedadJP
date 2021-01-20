@@ -8,6 +8,10 @@ class CustomIndicators(models.Model):
 
     value = fields.Float('Valor')
 
+    percentage_show = fields.Char('Porcentaje')
+
+    percentage_value = fields.Float('Valor Porcentaje')
+
     type = fields.Selection(
         [('1', 'UF'), ('2', 'UTM'), ('3', 'UTA'), ('4', 'Topes'), ('5', 'Renta Minima Imponible'), ('6', 'APV'),
          ('7', 'Deposito Convenido'), ('8', 'AFC'), ('9', 'AFP')],string='Tipo')
@@ -15,3 +19,4 @@ class CustomIndicators(models.Model):
     last_month = fields.Boolean('Ultimo Mes')
 
     indicator_id = fields.Many2one('custom.indicators','Indicador')
+
