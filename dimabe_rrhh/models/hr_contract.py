@@ -48,3 +48,4 @@ class HrContract(models.Model):
         [('old', 'Pensíon de Vejez'), ('disability', 'Pension de Invalidez'), ('survival', 'Pension de Sobreviviencia'),
          ('no', 'No Pensionado')]
         , default='no', string='Tipo de Pension')
+
