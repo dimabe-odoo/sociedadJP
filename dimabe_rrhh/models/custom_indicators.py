@@ -133,10 +133,8 @@ class CustomIndicators(models.Model):
                         })
             elif table == tables[6]:
                 data = self.get_safe(table)
-                table_data ={
-                    'title':'Seguro de Cesantia (AFC)',
-                    'data': data
-                }
+                for d in data:
+                    raise models.ValidationError(f'Type {type(d)}')
                 indicators.append(table_data)
             elif table == tables[7]:
                 data = self.get_afp_data(table)
