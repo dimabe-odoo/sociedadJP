@@ -117,16 +117,16 @@
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = inputs.COMI.amount</field>
         </record>
-        <record name="custom_hr_salary_rule_manual_gratifition_legal" model="hr.salary.rule">
-            <field name="name">Gratificion Legal Manual</field>
-            <field name="code">MANGRAT</field>
-            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
-            <field name="condition_select">python</field>
-            <field name="condition_python">result = (inputs.MANGRAT and inputs.MANGRAT.amount > 0)</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.MANGRAT.amount</field>
-        </record>
+<!--        <record name="custom_hr_salary_rule_manual_gratifition_legal" model="hr.salary.rule">-->
+<!--            <field name="name">Gratificion Legal Manual</field>-->
+<!--            <field name="code">MANGRAT</field>-->
+<!--            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>-->
+<!--            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>-->
+<!--            <field name="condition_select">python</field>-->
+<!--            <field name="condition_python">result = (inputs.MANGRAT and inputs.MANGRAT.amount > 0)</field>-->
+<!--            <field name="amount_select">code</field>-->
+<!--            <field name="amount_python_compute">result = inputs.MANGRAT.amount</field>-->
+<!--        </record>-->
 <!--        <record name="custom_hr_salary_rule_bonus" model="hr.salary.rule">-->
 <!--            <field name="name">Aguinaldo</field>-->
 <!--            <field name="code">AGUI</field>-->
