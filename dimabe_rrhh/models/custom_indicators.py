@@ -134,17 +134,21 @@ class CustomIndicators(models.Model):
             elif table == tables[6]:
                 data = self.get_safe(table)
                 for d in data:
-                    raise models.ValidationError(f'Key {d.keys()} Values {d.values()}')
-                indicators.append(table_data)
+                    self.env['custom.indicators.data'].create({
+                        'name':d['title'],
+                        'value':d['value'],
+                        'type':'8',
+                        'indicator_id':self.id
+                    })
             elif table == tables[7]:
                 data = self.get_afp_data(table)
-                table_data = {
-                    'title': 'Tasa Cotizacion Obligatoria AFP',
-                    'data': data
-                }
-                indicators.append(table_data)
-
-        return indicators
+                for d in data:
+                    self.env['custom.indicators.data'].create({
+                        'name':d['title'],
+                        'value':d['value'],
+                        'type':'9',
+                        'indicator_id':self.id
+                    })
 
 
     def get_afp_data(self,table):
