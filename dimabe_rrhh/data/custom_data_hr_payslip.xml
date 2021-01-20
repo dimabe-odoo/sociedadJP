@@ -91,33 +91,33 @@
             <field name="amount_select">code</field>
             <field name="amount_python_compute">hour_value = (((contract.wage / 30) * 28) / 180) result = (hour_value * inputs.HEXDE.amount) * (-1)</field>
         </record>
-        <record id="custom_hr_salary_rule_legal_gratification" model="hr.salary.rule">
-            <field name="name">GRATIFICACION LEGAL</field>
-            <field name="code">GRAT</field>
-            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
-            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round(contract.wage * 25 / 100)</field>
-        </record>
-        <record id="custom_hr_salary_rule_comision" model="hr.salary.rule">
-            <field name="name">Comisiones</field>
-            <field name="code">COMI</field>
-            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
-            <field name="condition_select">python</field>
-            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="condition_python">result = (inputs.COMI and inputs.COMI.amount > 0)</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_select">result = inputs.COMI.amount</field>
-        </record>
-        <record id="custom_hr_salary_rule_bonus" model="hr.salary.rule">
-            <field name="name">AGUINALDO</field>
-            <field name="code">AGUI</field>
-            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
-            <field name="condition_select">python</field>
-            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <filed name="condition_python">result = (inputs.AGUI and inputs.AGUI.amount > 0)</filed>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.AGUI.amount</field>
-        </record>
+<!--        <record id="custom_hr_salary_rule_legal_gratification" model="hr.salary.rule">-->
+<!--            <field name="name">GRATIFICACION LEGAL</field>-->
+<!--            <field name="code">GRAT</field>-->
+<!--            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>-->
+<!--            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>-->
+<!--            <field name="amount_select">code</field>-->
+<!--            <field name="amount_python_compute">result = round(contract.wage * 25 / 100)</field>-->
+<!--        </record>-->
+<!--        <record id="custom_hr_salary_rule_comision" model="hr.salary.rule">-->
+<!--            <field name="name">Comisiones</field>-->
+<!--            <field name="code">COMI</field>-->
+<!--            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>-->
+<!--            <field name="condition_select">python</field>-->
+<!--            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>-->
+<!--            <field name="condition_python">result = (inputs.COMI and inputs.COMI.amount > 0)</field>-->
+<!--            <field name="amount_select">code</field>-->
+<!--            <field name="amount_python_select">result = inputs.COMI.amount</field>-->
+<!--        </record>-->
+<!--        <record id="custom_hr_salary_rule_bonus" model="hr.salary.rule">-->
+<!--            <field name="name">AGUINALDO</field>-->
+<!--            <field name="code">AGUI</field>-->
+<!--            <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>-->
+<!--            <field name="condition_select">python</field>-->
+<!--            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>-->
+<!--            <filed name="condition_python">result = (inputs.AGUI and inputs.AGUI.amount > 0)</filed>-->
+<!--            <field name="amount_select">code</field>-->
+<!--            <field name="amount_python_compute">result = inputs.AGUI.amount</field>-->
+<!--        </record>-->
     </data>
 </odoo>
