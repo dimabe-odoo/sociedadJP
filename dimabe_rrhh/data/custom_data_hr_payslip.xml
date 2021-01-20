@@ -144,17 +144,16 @@
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = round(categories.IMP)</field>
         </record>
-        <record name="custom_hr_salary_rule_household_allowance" model="hr.salary.rule">
-            <field name="name">Asignacion Familiar</field>
-            <field name="code">ASIGFAM</field>
-            <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
-            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="condition_select">python</field>
-            <field name="condition_python">result = ((contract.simple_charge != 0) or (contract.maternal_charge != 0) or (contract.disability_charge != 0)) &amp; (contract.is_pensionary is False)</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">charges = contract.simple_charge + contract.maternal_charge + contract.disability_charge
-            result = contract.frame_id.value * charge
-            </field>
-        </record>
+<!--        <record name="custom_hr_salary_rule_household_allowance" model="hr.salary.rule">-->
+<!--            <field name="name">Asignacion Familiar</field>-->
+<!--            <field name="code">ASIGFAM</field>-->
+<!--            <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>-->
+<!--            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>-->
+<!--            <field name="condition_select">python</field>-->
+<!--            <field name="condition_python">result = ((contract.simple_charge != 0) or (contract.maternal_charge != 0) or (contract.disability_charge != 0)) &amp; (contract.is_pensionary is False)</field>-->
+<!--            <field name="amount_select">code</field>-->
+<!--            <field name="amount_python_compute">charges = contract.simple_charge + contract.maternal_charge + contract.disability_charge result = contract.frame_id.value * charge-->
+<!--            </field>-->
+<!--        </record>-->
     </data>
 </odoo>
