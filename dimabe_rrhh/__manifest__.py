@@ -24,10 +24,19 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'data/custom_data_demo.xml',
+        'data/custom_data_apv.xml',
+        'data/custom_data_afp.xml',
+        'data/custom_data_hr_payslip.xml',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/custom_data.xml'
+        'views/custom_data.xml',
+        'views/custom_benefits_rrhh.xml',
+        'views/custom_indicators.xml',
+        'views/hr_contract.xml',
+        'views/hr_salary_rule.xml',
+        'views/hr_payslip.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

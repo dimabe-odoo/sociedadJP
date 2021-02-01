@@ -1,5 +1,6 @@
 <odoo>
     <data>
+        <menuitem name="Previsionales" parent="hr_payroll.menu_hr_payroll_root" id="hr_pension_menu"/>
 <!--
         <template id="listing">
           <ul>
