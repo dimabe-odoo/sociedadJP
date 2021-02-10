@@ -80,7 +80,7 @@
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = round(0.0077777*contract.wage*inputs.HEX50.amount)</field>
         </record>
-        <record id="custom_hr_salary_rule_discount_hours" model="hr.salary.rule">
+        <!-- <record id="custom_hr_salary_rule_discount_hours" model="hr.salary.rule">
             <field name="name">HORAS DESCUENTO</field>
             <field name="code">HEXDE</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
@@ -89,7 +89,7 @@
             <field name="condition_python">result = inputs.HEXDE and inputs.HEXDE.amount > 0</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">hour_value = (((contract.wage / 30) * 28) / 180) result = (hour_value * inputs.HEXDE.amount) * (-1)</field>
-        </record>
+        </record> -->
         <record id="custom_hr_salary_rule_legal_gratification" model="hr.salary.rule">
             <field name="name">Gratification Legal</field>
             <field name="code">GRAT</field>
