@@ -401,7 +401,7 @@ elif TOTIM >=round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores
      result = round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf) * payslip.indicadores_id.mutual_seguridad /100
 else:
      result = round(round(TOTIM)*payslip.indicadores_id.mutual_seguridad /100)</field>
-            <field name="register_id" ref="contrib_register_previred"/>
+            
         </record>
 
 
@@ -437,7 +437,7 @@ else:
             <field name="appears_on_payslip" eval="False"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = categories.PREV + SIS + SECEEMP</field>
-            <field name="register_id" ref="contrib_register_previred"/>
+            
         </record>
 
 
@@ -488,7 +488,7 @@ else:
             <field name="appears_on_payslip" eval="False"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = categories.SALUD</field>
-            <field name="register_id" ref="contrib_register_previred"/>
+            
         </record>
 
 
@@ -507,7 +507,7 @@ if Salud >= (payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.
     result = round(((payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100)*payslip.indicadores_id.uf) * (payslip.indicadores_id.caja_compensacion / 7))
 else:
     result = round(payslip.indicadores_id.caja_compensacion * round(TOTIM)/100)</field>
-            <field name="register_id" ref="contrib_register_previred"/>
+            
         </record>
 
         <record id="custom_hr_salary_fonasa_amount" model="hr.salary.rule">
@@ -525,7 +525,7 @@ if Salud >= round((payslip.indicadores_id.tope_imponible_salud*payslip.indicador
     result =round( round((payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100)*payslip.indicadores_id.uf) * (payslip.indicadores_id.fonasa / 7))
 else:
     result = round(payslip.indicadores_id.fonasa * round(TOTIM)/100)</field>
-            <field name="register_id" ref="contrib_register_previred"/>
+            
         </record>
 
 
@@ -724,7 +724,6 @@ elif TOTIM >=round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores
      result = round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf) * payslip.indicadores_id.isl /100
 else:
      result = round(round(TOTIM)*payslip.indicadores_id.isl /100)</field>
-            <field name="register_id" ref="contrib_register_previred"/>
         </record>
 
 </odoo>
