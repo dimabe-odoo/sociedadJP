@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
         <record id="custom_work_entry_cl" model="hr.work.entry.type">
             <field name="name">Tipo Entrada Chile</field>
             <field name="code">CL</field>
@@ -159,5 +158,4 @@
             result = contract.frame_id.value * charge
             </field>
         </record> 
-    </data>
 </odoo>
