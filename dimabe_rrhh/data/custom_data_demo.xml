@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
         <record model="custom.data.type" id="custom_data_initial_apv">
             <field name="name">APV</field>
         </record>
@@ -26,5 +25,4 @@
             <field name="name">Year</field>
             <field name="digits">0</field>
         </record>
-    </data>
 </odoo>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
         <record id="custom_apv_cuprum_afp_cuprum" model="custom.benefits.rrhh">
             <field name="name">Cuprum</field>
             <field name="code">003</field>
@@ -211,5 +210,4 @@
             <field name="data_type_id">1</field>
             <field name="type">safe</field>
         </record>
-    </data>
 </odoo>

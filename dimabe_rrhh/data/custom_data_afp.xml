@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
         <record id="custom_afp_cuprum" model="custom.afp">
             <field name="name">Cuprum</field>
             <field name="code">03</field>
@@ -36,5 +35,4 @@
             <field name="code">35</field>
             <field name="vat">76.960.424-3</field>
         </record>
-    </data>
 </odoo>
