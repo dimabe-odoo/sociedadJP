@@ -63,3 +63,11 @@ class MobileSaleLine(models.Model):
         if values['loan_qty'] > values['qty']:
             raise models.UserError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
         return super(MobileSaleLine,self).write(values)
+
+    @api.model
+    def create(self, values):
+        if values['qty'] == '0':
+            raise models.UserError('No puede crear pedido con cantidad 0')
+        if values['loan_qty'] > values['qty']:
+            raise models.UserError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
+        return super(MobileSaleLine, self).create(values)
