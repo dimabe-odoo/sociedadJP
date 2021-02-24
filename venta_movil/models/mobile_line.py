@@ -67,7 +67,7 @@ class MobileSaleLine(models.Model):
 
     @api.model
     def create(self, values):
-        if values['qty'] == '0':
+        if values['qty'] == 0:
             raise models.UserError('No puede crear pedido con cantidad 0')
         if values['loan_qty']:
             if values['loan_qty'] > values['qty']:
