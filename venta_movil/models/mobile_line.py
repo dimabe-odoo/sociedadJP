@@ -28,12 +28,6 @@ class MobileSaleLine(models.Model):
     def compute_subtotal(self):
         for item in self:
             item.subtotal = item.price * item.qty
-    
-    @api.onchange('qty')
-    def compute_qty(self):
-        for item in self:
-            if item.qty == 0:
-                raise models.ValidationError("No puede ingresar una cantidad en 0")
 
 
     @api.onchange('product_id')
@@ -60,3 +54,12 @@ class MobileSaleLine(models.Model):
     def onchange_loan_qty(self):
         if self.loan_qty > self.qty:
             raise models.ValidationError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
+
+
+    @api.model
+    def write(self,values):
+        if values['qty'] == '0':
+            raise models.UserError('No puede crear pedido con cantidad 0')
+        if values['loan_qty'] > values['qty']:
+            raise models.UserError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
+        return super(MobileSaleLine,self).write(values)
