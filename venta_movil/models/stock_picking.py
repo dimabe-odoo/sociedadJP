@@ -28,7 +28,7 @@ class StockPicking(models.Model):
             if item.picking_type_code not in ('outgoing', 'incoming'):
                 return super(StockPicking, self).button_validate()
             elif "Entrada" in item.origin or "Salida" in item.origin or item.origin == '' or not item.origin:
-                return super(StockPicking,self).button_validate()
+                return super(StockPicking, self).button_validate()
             else:
                 if item.picking_type_code == 'outgoing':
                     if item.sale_id.loan_supply:
@@ -67,7 +67,7 @@ class StockPicking(models.Model):
                             'origin': 'Entrada de ' + item.origin,
                             'partner_id': item.partner_id.id
                         })
-                        reception.action_confirm()
+
                         self.write({
                             'supply_dispatch_id': reception.id,
                             'have_supply': True
@@ -83,7 +83,7 @@ class StockPicking(models.Model):
                                     move.product_id.supply_id.display_name))
                             if (move.product_uom_qty - move.loan_supply) != 0:
                                 qty = move.product_uom_qty
-                                self.env['stock.move'].create({
+                                stock_move = self.env['stock.move'].create({
                                     'picking_id': reception.id,
                                     'name': 'MOVE/' + item.name,
                                     'location_id': reception.location_id.id,
@@ -95,6 +95,17 @@ class StockPicking(models.Model):
                                     'quantity_done': qty,
                                     'product_uom': move.product_id.supply_id.uom_id.id,
                                     'date_expected': item.scheduled_date
+                                })
+                                self.env['stock.move.line'].create({
+                                    'picking_id': reception.id,
+                                    'move_id': stock_move.id,
+                                    'location_id': reception.location_id.id,
+                                    'location_dest_id': reception.location_dest_id.id,
+                                    'product_id': stock_move.product_id.id,
+                                    'product_uom_id': stock_move.product_id.uom_id.id,
+                                    'product_uom_qty': qty,
+                                    'qty_done': qty,
+                                    'date': datetime.date.today()
                                 })
                         if item.sale_id.loan_supply:
                             qty = move.product_uom_qty - move.loan_supply
@@ -111,6 +122,7 @@ class StockPicking(models.Model):
                                 'product_uom': move.product_id.supply_id.uom_id.id,
                                 'date_expected': item.scheduled_date
                             })
+
                     return super(StockPicking, self).button_validate()
                 else:
                     reception = self.env['stock.picking'].create({
