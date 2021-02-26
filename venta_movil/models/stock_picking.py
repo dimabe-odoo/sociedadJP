@@ -96,17 +96,6 @@ class StockPicking(models.Model):
                                     'product_uom': move.product_id.supply_id.uom_id.id,
                                     'date_expected': item.scheduled_date
                                 })
-                                self.env['stock.move.line'].create({
-                                    'picking_id': reception.id,
-                                    'move_id': stock_move.id,
-                                    'location_id': reception.location_id.id,
-                                    'location_dest_id': reception.location_dest_id.id,
-                                    'product_id': stock_move.product_id.id,
-                                    'product_uom_id': stock_move.product_id.uom_id.id,
-                                    'product_uom_qty': qty,
-                                    'qty_done': qty,
-                                    'date': datetime.date.today()
-                                })
                         if item.sale_id.loan_supply:
                             qty = move.product_uom_qty - move.loan_supply
                             stock_move = self.env['stock.move'].create({
