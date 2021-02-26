@@ -67,6 +67,7 @@ class StockPicking(models.Model):
                             'origin': 'Entrada de ' + item.origin,
                             'partner_id': item.partner_id.id
                         })
+                        reception.action_confirm()
                         self.write({
                             'supply_dispatch_id': reception.id,
                             'have_supply': True
