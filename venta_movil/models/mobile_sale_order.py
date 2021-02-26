@@ -179,10 +179,6 @@ class MobileSaleOrder(models.Model):
         res = super(MobileSaleOrder, self).create(values)
         return res
 
-    def button_confirm(self):
-        self.write({
-            'state':'assigned'
-        })
 
     def button_dispatch(self):
         self.write({
