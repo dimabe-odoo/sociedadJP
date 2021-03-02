@@ -71,8 +71,6 @@ class MobileSaleOrder(models.Model):
 
     assigned_longitude = fields.Float('Latitud')
 
-
-
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
