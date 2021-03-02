@@ -10,6 +10,8 @@ class StockLocation(models.Model):
 
     user_id = fields.Many2one('res.users')
 
+    qr_code_truck = fields.Binary('Qr Camion')
+
     @api.onchange('is_truck')
     def onchange_istruck(self):
         if self.is_truck:
