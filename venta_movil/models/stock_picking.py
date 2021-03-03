@@ -27,7 +27,7 @@ class StockPicking(models.Model):
         for item in self:
             if item.picking_type_code not in ('outgoing', 'incoming'):
                 return super(StockPicking, self).button_validate()
-            if item.origin:
+            elif item.origin:
                 if "Entrada" in item.origin or "Salida" in item.origin or item.origin == '':
                     return super(StockPicking, self).button_validate()
             else:
