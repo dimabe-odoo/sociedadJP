@@ -28,10 +28,10 @@ class StockPicking(models.Model):
             if item.picking_type_code not in ('outgoing', 'incoming'):
                 models._logger.error('primer')
                 return super(StockPicking, self).button_validate()
-            elif item.origin:
-                models._logger.error('segundo')
-                if "Entrada" in item.origin or "Salida" in item.origin or item.origin == '':
+            elif (item.origin) :
+                if ("Entrada" in item.origin or "Salida" in item.origin or item.origin == '' or not item.origin):
                     return super(StockPicking, self).button_validate()
+                return super(StockPicking, self).button_validate()
             else:
                 models._logger.error('tercer')
                 if item.move_ids_without_package.mapped('product_id').mapped('supply_id'):
