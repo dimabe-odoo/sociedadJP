@@ -26,11 +26,14 @@ class StockPicking(models.Model):
     def button_validate(self):
         for item in self:
             if item.picking_type_code not in ('outgoing', 'incoming'):
+                models._logger.error('primer')
                 return super(StockPicking, self).button_validate()
             elif item.origin:
+                models._logger.error('segundo')
                 if "Entrada" in item.origin or "Salida" in item.origin or item.origin == '':
                     return super(StockPicking, self).button_validate()
             else:
+                models._logger.error('tercer')
                 if item.move_ids_without_package.mapped('product_id').mapped('supply_id'):
                     if item.picking_type_code == 'outgoing':
                         if item.sale_id.loan_supply:
