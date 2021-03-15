@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="maps_odoo.list">
+      <field name="name">maps_odoo list</field>
+      <field name="model">maps_odoo.maps_odoo</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="maps_odoo.action_window">
+      <field name="name">maps_odoo window</field>
+      <field name="res_model">maps_odoo.maps_odoo</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="maps_odoo.action_server">
+      <field name="name">maps_odoo server</field>
+      <field name="model_id" ref="model_maps_odoo_maps_odoo"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="maps_odoo" id="maps_odoo.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="maps_odoo.menu_1" parent="maps_odoo.menu_root"/>
+    <menuitem name="Menu 2" id="maps_odoo.menu_2" parent="maps_odoo.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="maps_odoo.menu_1_list" parent="maps_odoo.menu_1"
+              action="maps_odoo.action_window"/>
+    <menuitem name="Server to list" id="maps_odoo" parent="maps_odoo.menu_2"
+              action="maps_odoo.action_server"/>
+-->
+  </data>
+</odoo>
