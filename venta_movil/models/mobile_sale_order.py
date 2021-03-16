@@ -271,6 +271,7 @@ class MobileSaleOrder(models.Model):
                     'picking_id': sale_odoo.picking_ids[0].id,
                     'product_id':line.product_id.id,
                     'product_uom_qty':line.qty,
+                    'qty_done':line.qty,
                     'product_uom_id':line.product_id.uom_id.id,
                     'location_id':sale_odoo.picking_ids[0].move_ids_without_package.filtered(
                         lambda a: a.product_id.id == line.product_id.id).location_id.id,
