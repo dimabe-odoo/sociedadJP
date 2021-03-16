@@ -177,7 +177,6 @@ class MobileSaleOrder(models.Model):
         res = super(MobileSaleOrder, self).create(values)
         return res
 
-
     def button_dispatch(self):
         self.write({
             'state': 'onroute'
@@ -257,13 +256,28 @@ class MobileSaleOrder(models.Model):
 
         sale_odoo.action_confirm()
         models._logger.error(sale_odoo.state)
-        models._logger.error(sale_odoo.picking_ids[0].move_line_ids_without_package)
-        for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
-            models._logger.error(sale_odoo.picking_ids[0].move_line_ids_without_package)
-            stock.write({
-                'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
-                'location_id': self.location_id.id,
-            })
+        if sale_odoo.picking_ids[0].move_line_ids_without_package:
+            for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
+                models._logger.error(sale_odoo.picking_ids[0].move_line_ids_without_package)
+                stock.write({
+                    'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
+                    'location_id': self.location_id.id,
+                })
+        else:
+            for line in self.mobile_lines:
+                self.env['stock.move.line'].create({
+                    'move_id': sale_odoo.picking_ids[0].move_ids_without_package.filtered(
+                        lambda a: a.product_id.id == line.product_id.id).id,
+                    'picking_id': sale_odoo.picking_ids[0].id,
+                    'product_id':line.product_id.id,
+                    'product_uom_qty':line.qty,
+                    'product_uom_id':line.product_id.uom_id.id,
+                    'location_id':sale_odoo.picking_ids[0].move_ids_without_package.filtered(
+                        lambda a: a.product_id.id == line.product_id.id).location_id.id,
+                    'location_dest_id':sale_odoo.picking_ids[0].move_ids_without_package.filtered(
+                        lambda a: a.product_id.id == line.product_id.id).location_dest_id.id,
+                    'date':datetime.date.today(),
+                })
         models._logger.error('{}'.format(sale_odoo.picking_ids))
         # if self.mobile_lines.filtered(lambda a: a.loan_qty > 0):
         #     sale_odoo.write({
@@ -301,7 +315,7 @@ class MobileSaleOrder(models.Model):
         self.write({
             'sale_id': sale_odoo.id,
             'state': 'done',
-            'date_done':datetime.datetime.now()
+            'date_done': datetime.datetime.now()
         })
         self.finish_date = datetime.datetime.now()
         datedif = relativedelta(self.finish_date, self.onroute_date)
