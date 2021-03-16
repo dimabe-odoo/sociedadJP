@@ -310,8 +310,6 @@ class MobileSaleOrder(models.Model):
                 'qty_done': sale_odoo.picking_ids[0].supply_dispatch_id.move_line_ids_without_package.filtered(
                     lambda a: a.product_id.id == mobile.product_id.supply_id.id).qty_done - mobile.loan_qty
             })
-        sale_odoo._create_invoices()
-        sale_odoo.invoice_ids[0].action_post()
         self.write({
             'sale_id': sale_odoo.id,
             'state': 'done',
