@@ -67,7 +67,7 @@ class ResPartnerController(http.Controller):
         for product in list_products:
             if "Cilindro" in product.name:
                 result.append({
-                    "name": product.name,
+                    "name": product.display_name,
                     "image1902": product.image_1920
                 })
         return result
