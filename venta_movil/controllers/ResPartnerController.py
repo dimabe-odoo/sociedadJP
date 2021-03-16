@@ -55,7 +55,7 @@ class ResPartnerController(http.Controller):
                 'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
                 'is_Dist': True if 'Descuento' in pr.product_tmpl_id.display_name or 'Discount' in pr.product_tmpl_id.display_name else False,
                 'Stock': stock_product.quantity,
-                'Price': pr.fixed_price * taxes_amount
+                'Price': pr.fixed_price
             })
 
         return result
