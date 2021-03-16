@@ -201,6 +201,8 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
+        _logger = logging.getLogger(__name__)
+        _logger.error(id)
         if id:
             order = request.env['mobile.sale.order'].sudo().search([('id', '=', int(id))])
             respond = []
