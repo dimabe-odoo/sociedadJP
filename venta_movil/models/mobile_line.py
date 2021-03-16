@@ -21,14 +21,13 @@ class MobileSaleLine(models.Model):
 
     mobile_id = fields.Many2one('mobile.sale.order', auto_join=True)
 
-    subtotal = fields.Monetary('Subtotal',compute='compute_subtotal')
+    subtotal = fields.Monetary('Subtotal', compute='compute_subtotal')
 
     tax_ids = fields.Many2many('account.tax', string='Impuestos')
 
     def compute_subtotal(self):
         for item in self:
             item.subtotal = item.price * item.qty
-
 
     @api.onchange('product_id')
     def onchange_product_id(self):
@@ -55,21 +54,21 @@ class MobileSaleLine(models.Model):
         if self.loan_qty > self.qty:
             raise models.ValidationError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
 
-
     @api.model
-    def write(self,values):
+    def write(self, values):
         if values['qty'] == 0:
             raise models.UserError('No puede crear pedido con cantidad 0')
-        if 'loan_qty' in  values.keys():
+        if 'loan_qty' in values.keys():
             if values['loan_qty'] > values['qty']:
                 raise models.UserError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
-        return super(MobileSaleLine,self).write(values)
+        return super(MobileSaleLine, self).write(values)
 
     @api.model
     def create(self, values):
         if values['qty'] == 0:
             raise models.UserError('No puede crear pedido con cantidad 0')
-        if values['loan_qty']:
-            if values['loan_qty'] > values['qty']:
-                raise models.UserError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
+        if 'loan_qty' in values.keys():
+            if values['loan_qty']:
+                if values['loan_qty'] > values['qty']:
+                    raise models.UserError('La cantidad a prestar no puede ser mayor a la cantidad a vender')
         return super(MobileSaleLine, self).create(values)
