@@ -257,6 +257,7 @@ class MobileSaleOrder(models.Model):
 
         sale_odoo.action_confirm()
         models._logger.error(sale_odoo.state)
+        models._logger.error(sale_odoo.picking_ids[0].move_line_ids_without_package)
         for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
             models._logger.error(sale_odoo.picking_ids[0].move_line_ids_without_package)
             stock.write({
