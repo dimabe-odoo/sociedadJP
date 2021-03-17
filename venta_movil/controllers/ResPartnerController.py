@@ -32,8 +32,10 @@ class ResPartnerController(http.Controller):
 
     @http.route('/api/client', type='json', method=['GET'], auth='token', cors='*')
     def get_client(self, client):
-        client = request.env['res.partner'].sudo().search([('id', '=', client)])
-        raw_data = client.read()
+        client_object = request.env['res.partner'].sudo().search([('id', '=', client)])
+        _logger = logging.getLogger(__name__)
+        _logger.error(f'{client} {client_object}')
+        raw_data = client_object.read()
         json_data = json.dumps(raw_data, default=date_utils.json_default)
         json_dict = json.loads(json_data)
         return json_dict[0]
