@@ -32,7 +32,7 @@ class StockPicking(models.Model):
                     return super(StockPicking, self).button_validate()
                 elif item.sale_id:
                     if item.sale_id.with_delivery:
-                        if item.move_ids_without_package.mapped('product_id').mappped('supply_id'):
+                        if item.move_ids_without_package.mapped('product_id').mapped('supply_id'):
                             if item.picking_type_id.code == 'outgoing':
                                 if item.sale_id.loan_supply:
                                     loan_recepction_id = self.env['stock.picking'].create({
