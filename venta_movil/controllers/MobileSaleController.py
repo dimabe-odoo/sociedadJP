@@ -168,7 +168,7 @@ class MobileSaleController(http.Controller):
                 })
             order_app = {}
             order_active_2 = request.env['mobile.sale.order'].search(
-                [('seller_id.id', '=', session.id), ('state', '=', 'assigned')])
+                [('seller_id.id', '=', session.id), ('state', 'in', ('confirm','assigned'))])
             logging.getLogger().error('Order {}'.format(order_active_2.name))
             if order_active_2:
                 order_app = {
@@ -201,8 +201,6 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
-        _logger = logging.getLogger(__name__)
-        _logger.error(id)
         if id:
             order = request.env['mobile.sale.order'].sudo().search([('id', '=', int(id))])
             respond = []
