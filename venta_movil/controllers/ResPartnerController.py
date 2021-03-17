@@ -61,7 +61,7 @@ class ResPartnerController(http.Controller):
                 'Stock': stock_product.quantity,
                 'Price': pr.fixed_price
             })
-        for coupon in request.env['product.product'].search([('categ_id','=',7)]):
+        for coupon in request.env['product.product'].sudo().search([('categ_id','=',7)]):
             result.append({
                 'Product_Id': coupon.product_tmpl_id.id,
                 'Product_Name': coupon.product_tmpl_id.name,
