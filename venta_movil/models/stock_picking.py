@@ -83,7 +83,7 @@ class StockPicking(models.Model):
                                                 'product_uom': move.product_id.supply_id.uom_id.id,
                                                 'date_expected': item.scheduled_date
                                             })
-                                            for line in item.reception.move_line_ids_without_package:
+                                            for line in reception.move_line_ids_without_package:
                                                 line.write({
                                                     'qty_done':qty
                                                 })
@@ -103,7 +103,7 @@ class StockPicking(models.Model):
                                                 'product_uom': move.product_id.supply_id.uom_id.id,
                                                 'date_expected': item.scheduled_date
                                             })
-                                            for line in item.loan_reception_id.move_line_ids_without_package:
+                                            for line in loan_recepction_id.move_line_ids_without_package:
                                                 line.write({
                                                     'qty_done':qty
                                                 })
