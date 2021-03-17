@@ -68,7 +68,7 @@ class ResPartnerController(http.Controller):
                 'isCat': True if 'Catalítico' in coupon.product_tmpl_id.display_name else False,
                 'is_Dist': True if 'Descuento' in coupon.product_tmpl_id.display_name or 'Discount' in coupon.product_tmpl_id.display_name else False,
                 'Stock': 200,
-                'Price': coupon.fixed_price
+                'Price': coupon.list_price
             })
         return result
 
