@@ -45,6 +45,7 @@ class StockPicking(models.Model):
                                         'loan_reception_id': loan_recepction_id.id,
                                         'have_supply': True
                                     })
+                                    loan_recepction_id.action_confirm()
                                 if item.move_ids_without_package.filtered(
                                         lambda a: (a.loan_supply - a.product_uom_qty) != 0):
                                     reception = self.env['stock.picking'].create({
@@ -61,6 +62,7 @@ class StockPicking(models.Model):
                                         'supply_dispatch_id': reception.id,
                                         'have_supply': True
                                     })
+                                    reception.action_confirm()
                                 for move in item.move_ids_without_package:
                                     if move.product_id.supply_id:
                                         quant = self.env['stock.quant'].search(
