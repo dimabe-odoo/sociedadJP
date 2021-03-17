@@ -140,7 +140,7 @@ class MobileSaleController(http.Controller):
                 json_data = json.loads(respond_google.text)
                 distance_text = json_data['routes'][0]["legs"][0]['distance']['text']
                 distance_value = json_data['routes'][0]["legs"][0]['distance']['value'] / 1000
-                logging.error(stock_array)
+                logging.error(res.mapped('mobile_lines').mapped('product_id').mapped('id'))
                 if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                      [stock['Product_id'] for stock in stock_array]):
                     logging.error("Llega aqui")
