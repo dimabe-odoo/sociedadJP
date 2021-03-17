@@ -52,6 +52,7 @@ class ResPartnerController(http.Controller):
                 [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
             stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
             taxes_amount = (int(sum(product.mapped('taxes_id').mapped('amount'))) / 100) + 1
+
             result.append({
                 'Product_Id': pr.product_tmpl_id.id,
                 'Product_Name': pr.product_tmpl_id.name,
@@ -60,7 +61,15 @@ class ResPartnerController(http.Controller):
                 'Stock': stock_product.quantity,
                 'Price': pr.fixed_price
             })
-
+        for coupon in self.env['product.product'].search([('categ_id','=',7)]):
+            result.append({
+                'Product_Id': coupon.product_tmpl_id.id,
+                'Product_Name': coupon.product_tmpl_id.name,
+                'isCat': True if 'Catalítico' in coupon.product_tmpl_id.display_name else False,
+                'is_Dist': True if 'Descuento' in coupon.product_tmpl_id.display_name or 'Discount' in pr.product_tmpl_id.display_name else False,
+                'Stock': 200,
+                'Price': pr.fixed_price
+            })
         return result
 
     @http.route('/api/images',type='json',method=['GET'],auth='public',cors='*')
