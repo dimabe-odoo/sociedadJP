@@ -36,6 +36,7 @@ class ResPartnerController(http.Controller):
         _logger = logging.getLogger(__name__)
         _logger.error(f'{client} {client_object}')
         raw_data = client_object.read()
+        _logger.error(f'{client} {raw_data}')
         json_data = json.dumps(raw_data, default=date_utils.json_default)
         json_dict = json.loads(json_data)
         return json_dict[0]
