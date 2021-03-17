@@ -142,6 +142,7 @@ class MobileSaleController(http.Controller):
                 distance_value = json_data['routes'][0]["legs"][0]['distance']['value'] / 1000
                 if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
                                      [stock['Product_id'] for stock in stock_array]):
+                    logging.error("Llega aqui")
                     respond.append({
                         'Order_Id': res.id,
                         'Order_Name': res.name,
@@ -149,6 +150,7 @@ class MobileSaleController(http.Controller):
                         'Distance_Value': self.round_distance(float(distance_value))
                     })
                 else:
+                    logging.error("Llega aca")
                     continue
             list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
             logging.getLogger().error(list_sort_by_dis)
