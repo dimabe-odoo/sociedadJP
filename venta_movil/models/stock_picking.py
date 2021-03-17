@@ -40,7 +40,6 @@ class StockPicking(models.Model):
                                         'picking_type_id': self.picking_type_id.warehouse_id.in_type_id.id,
                                         'location_id': self.parent_id.property_stock_supplier.id,
                                         'location_dest_id': self.picking_type_id.warehouse_id.loan_location_id.id,
-                                        'move_direct': 'direct',
                                         'origin': f'Entrada de {item.self.name}',
                                         'partner_id': self.partner_id.id
                                     })
@@ -57,7 +56,6 @@ class StockPicking(models.Model):
                                         'location_dest_id': self.env['stock.warehouse'].search(
                                             [('id', '=', item.picking_type_id.warehouse_id.id)]).lot_stock_id.id,
                                         'state': 'assigned',
-                                        'move_direct': 'direct',
                                         'origin': 'Entrada de ' + item.origin,
                                         'partner_id': item.partner_id.id
                                     })
