@@ -31,7 +31,7 @@ class StockPicking(models.Model):
                 if "Entrada" in item.origin or "Salida" in item.origin or item.origin == '' or not item.origin:
                     return super(StockPicking, self).button_validate()
                 return super(StockPicking, self).button_validate()
-            else:
+            elif 'SO' in item.origin:
                 if item.move_ids_without_package.mapped('product_id').mapped('supply_id'):
                     if item.picking_type_code == 'outgoing':
                         if item.sale_id.loan_supply:
