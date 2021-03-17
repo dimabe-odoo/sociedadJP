@@ -28,9 +28,7 @@ class StockPicking(models.Model):
             if item.picking_type_id.code not in ('outgoing', 'incoming'):
                 return super(StockPicking, self).button_validate()
             elif item.origin:
-                if "Entrada" in item.origin and "Salida" in item.origin or item.origin == '' or not item.origin:
-                    return super(StockPicking, self).button_validate()
-                elif item.sale_id:
+                if item.sale_id:
                     if item.sale_id.with_delivery:
                         if item.move_ids_without_package.mapped('product_id').mapped('supply_id'):
                             if item.picking_type_id.code == 'outgoing':
@@ -47,6 +45,7 @@ class StockPicking(models.Model):
                                         'loan_reception_id': loan_recepction_id.id,
                                         'have_supply': True
                                     })
+                                    item.loan_reception_id.action_assign()
                                 if item.move_ids_without_package.filtered(
                                         lambda a: (a.loan_supply - a.product_uom_qty) != 0):
                                     reception = self.env['stock.picking'].create({
@@ -59,10 +58,11 @@ class StockPicking(models.Model):
                                         'origin': 'Entrada de ' + item.origin,
                                         'partner_id': item.partner_id.id
                                     })
-                                    self.write({
+                                    item.write({
                                         'supply_dispatch_id': reception.id,
                                         'have_supply': True
                                     })
+                                    item.supply_dispatch_id.action_assign()
                                 for move in item.move_ids_without_package:
                                     if move.product_id.supply_id:
                                         quant = self.env['stock.quant'].search(
@@ -85,6 +85,10 @@ class StockPicking(models.Model):
                                                 'product_uom': move.product_id.supply_id.uom_id.id,
                                                 'date_expected': item.scheduled_date
                                             })
+                                            for line in item.move_line_ids_without_package:
+                                                line.write({
+                                                    'qty_done':qty
+                                                })
                                         item.supply_dispatch_id.button_validate()
                                         if item.sale_id.loan_supply:
                                             qty = move.product_uom_qty - move.loan_supply
@@ -101,6 +105,10 @@ class StockPicking(models.Model):
                                                 'product_uom': move.product_id.supply_id.uom_id.id,
                                                 'date_expected': item.scheduled_date
                                             })
+                                            for line in item.move_line_ids_without_package:
+                                                line.write({
+                                                    'qty_done':qty
+                                                })
                                             item.loan_reception_id.button_validate()
                                 return super(StockPicking, self).button_validate()
                             else:
