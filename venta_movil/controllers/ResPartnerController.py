@@ -61,7 +61,7 @@ class ResPartnerController(http.Controller):
                 'Stock': stock_product.quantity,
                 'Price': pr.fixed_price
             })
-        for coupon in request.env['product.product'].sudo().search([('categ_id','=',7)]):
+        for coupon in request.env['product.product'].sudo().search([('categ_id', '=', 7)]):
             result.append({
                 'Product_Id': coupon.product_tmpl_id.id,
                 'Product_Name': coupon.product_tmpl_id.name,
@@ -70,9 +70,15 @@ class ResPartnerController(http.Controller):
                 'Stock': 1,
                 'Price': coupon.list_price
             })
+        for cil in request.env['product.product'].sudo().search([('categ_id', '=', 7)]):
+            result.append({
+                'Product_Id': cil.product_tmpl_id.id,
+                'Product_Name': cil.product_tmpl_id.name,
+                'isCil': True,
+            })
         return result
 
-    @http.route('/api/images',type='json',method=['GET'],auth='public',cors='*')
+    @http.route('/api/images', type='json', method=['GET'], auth='public', cors='*')
     def get_image(self):
         list_products = request.env['product.product'].sudo().search([])
         result = []
