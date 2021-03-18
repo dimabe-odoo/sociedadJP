@@ -70,7 +70,7 @@ class ResPartnerController(http.Controller):
                 'Stock': 1,
                 'Price': coupon.list_price
             })
-        for cil in request.env['product.product'].sudo().search([('categ_id', '=', 7)]):
+        for cil in request.env['product.product'].sudo().search([('categ_id', '=', 5)]):
             result.append({
                 'Product_Id': cil.product_tmpl_id.id,
                 'Product_Name': cil.product_tmpl_id.name,
