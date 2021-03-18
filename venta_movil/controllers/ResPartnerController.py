@@ -52,7 +52,7 @@ class ResPartnerController(http.Controller):
                 [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
             stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
             taxes_amount = (int(sum(product.mapped('taxes_id').mapped('amount'))) / 100) + 1
-            if pr.categ_id.id not in (7, 5):
+            if pr.product_tmpl_id.categ_id.id not in (7, 5):
                 result.append({
                     'Product_Id': pr.product_tmpl_id.id,
                     'Product_Name': pr.product_tmpl_id.name,
