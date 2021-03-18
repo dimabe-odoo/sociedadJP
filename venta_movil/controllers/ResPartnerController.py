@@ -75,6 +75,7 @@ class ResPartnerController(http.Controller):
                 'Product_Id': cil.product_tmpl_id.id,
                 'Product_Name': cil.product_tmpl_id.name,
                 'isCil': True,
+                'Price':cil.list_price
             })
         return result
 
