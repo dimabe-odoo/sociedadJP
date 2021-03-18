@@ -52,15 +52,15 @@ class ResPartnerController(http.Controller):
                 [('product_tmpl_id', '=', pr.product_tmpl_id.id)])
             stock_product = stock.filtered(lambda a: a.product_id.id == product.id)
             taxes_amount = (int(sum(product.mapped('taxes_id').mapped('amount'))) / 100) + 1
-
-            result.append({
-                'Product_Id': pr.product_tmpl_id.id,
-                'Product_Name': pr.product_tmpl_id.name,
-                'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
-                'is_Dist': True if 'Descuento' in pr.product_tmpl_id.display_name or 'Discount' in pr.product_tmpl_id.display_name else False,
-                'Stock': stock_product.quantity,
-                'Price': pr.fixed_price
-            })
+            if pr.categ_id.id not in (7,5):
+                result.append({
+                    'Product_Id': pr.product_tmpl_id.id,
+                    'Product_Name': pr.product_tmpl_id.name,
+                    'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
+                    'is_Dist': True if 'Descuento' in pr.product_tmpl_id.display_name or 'Discount' in pr.product_tmpl_id.display_name else False,
+                    'Stock': stock_product.quantity,
+                    'Price': pr.fixed_price
+                })
         for coupon in request.env['product.product'].sudo().search([('categ_id', '=', 7)]):
             result.append({
                 'Product_Id': coupon.product_tmpl_id.id,
