@@ -1,4 +1,5 @@
 from odoo import models
+import datetime
 
 class AccountMove(models.Model):
     _inherit ='account.move'
@@ -11,7 +12,7 @@ class AccountMove(models.Model):
                     discount_history = self.env['custom.discount.history'].create({
                         'sale_id': sale_order.id,
                         'customer_id': value['partner_id'],
-                        'date_discount': self.datetime.now()
+                        'date_discount': datetime.datetime.now()
                     })
         return super(AccountMove, self).create(values)
 
