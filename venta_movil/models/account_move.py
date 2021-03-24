@@ -1,6 +1,6 @@
 from odoo import models
 
-class AccountMove(models.model):
+class AccountMove(models.Model):
     _inherit ='account.move'
 
     def create(self, values):
