@@ -10,7 +10,7 @@ class AccountMove(models.Model):
                 if sale_order:
                     discount_history = self.env['custom.discount.history'].create({
                         'sale_id': sale_order.id,
-                        'customer_id': values['partner_id'],
+                        'customer_id': value['partner_id'],
                         'date_discount': self.datetime.now()
                     })
         return super(AccountMove, self).create(values)
