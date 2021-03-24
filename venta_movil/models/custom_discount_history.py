@@ -1,4 +1,4 @@
-from odoo import fields, api
+from odoo import fields, models, api
 
 class CustomDiscountHistory(models.Model):
 
