@@ -15,7 +15,7 @@
                 </record>
 
                 <record id="custom_discount_history_act_window" model="ir.actions.act_window">
-                    <field name="name">Pedido a domicilio</field>
+                    <field name="name">Historial de Descuentos Caja Los Andes</field>
                     <field name="type">ir.actions.act_window</field>
                     <field name="res_model">custom.discount.history</field>
                     <field name="view_id" ref="custom_discount_history_tree_view"/>
