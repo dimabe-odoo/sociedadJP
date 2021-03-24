@@ -10,6 +10,7 @@
                             <field name="sale_id"/>
                             <field name="customer_id"/>
                             <field name="discount_amount"/>
+                            <field name="discount_state"/>
                         </tree>
                     </field>
                 </record>
