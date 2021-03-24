@@ -13,7 +13,6 @@ class AccountMove(models.Model):
                         'customer_id': values['partner_id'],
                         'date_discount': self.datetime.now()
                     })
-        
         return super(AccountMove, self).create(values)
 
 
