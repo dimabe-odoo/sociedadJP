@@ -6,7 +6,7 @@ class AccountMove(models.Model):
     def create(self, values):
         for value in values:
             if value['invoice_origin']:
-                sale_order = self.env['sale_order'].search([('name','=',value['invoice_origin'])])
+                sale_order = self.env['sale.order'].search([('name','=',value['invoice_origin'])])
                 if sale_order:
                     discount_history = self.env['custom.discount.history'].create({
                         'sale_id': sale_order.id,
