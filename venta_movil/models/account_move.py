@@ -4,7 +4,7 @@ class AccountMove(models.Model):
     _inherit ='account.move'
 
     def create(self, values):
-        raise models.ValidationError(values.keys())
+        raise models.ValidationError(values[0].keys())
         discount_history = self.env['custom.discount.history'].create({
             'sale_id': values['sale_id'],
             'customer_id': values['partner_id'],
