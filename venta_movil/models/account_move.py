@@ -27,7 +27,7 @@ class AccountMove(models.Model):
                         'customer_id': values['partner_id'],
                         'date_discount': datetime.datetime.now()
                 })
-      
+        raise models.ValidationError('Not')
         return super(AccountMove, self).write(values)
 
 
