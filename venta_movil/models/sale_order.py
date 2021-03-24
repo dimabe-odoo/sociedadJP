@@ -24,7 +24,7 @@ class SaleOrder(models.Model):
         raise models.ValidationError(self.user)
 
     def create(self, values):
-        res = super(SaleOrder, self).create()
+        res = super(SaleOrder, self).create(values)
 
         discount_history = self.env['custom.discount.history'].create({
             'sale_id': values['id'],
