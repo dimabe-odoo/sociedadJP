@@ -23,12 +23,4 @@ class SaleOrder(models.Model):
     def assign_location_id(self):
         raise models.ValidationError(self.user)
 
-    def create(self, values):
-        res = super(SaleOrder, self).create(values)
-        discount_history = self.env['custom.discount.history'].create({
-            'sale_id': values['id'],
-            'customer_id': values['partner_id'],
-            'date_discount': self.datetime.now()
-        })
-
-        return res
+   
