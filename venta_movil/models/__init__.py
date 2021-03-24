@@ -35,3 +35,4 @@ from . import mobile_line
 from . import pos_order_line
 
 from . import truck_session
+from . import custom_discount_history
