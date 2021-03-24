@@ -17,6 +17,7 @@ class AccountMove(models.Model):
     #    return super(AccountMove, self).create(values)
     
     def write(self, values):
+        raise models.ValidationError(values.keys())
         if values['invoice_payment_state'] == 'paid':
             sale_order = self.env['sale.order'].search([('name','=',values['invoice_origin'])])
             if sale_order:
