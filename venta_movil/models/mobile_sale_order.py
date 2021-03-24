@@ -336,3 +336,9 @@ class MobileSaleOrder(models.Model):
         if datedif.seconds != 0:
             strdate = '{} {} seg'.format(strdate, datedif.seconds)
         self.onroute_to_finish = strdate
+
+        discount_history = self.env['custom.discount.history'].create({
+            'sale_id': sale_odoo.id,
+            'customer_id': self.customer_id.id,
+            'date_discount': self.datetime.now()
+        })

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="custom_discount_history_tree_view" model="ir.ui.view">
+                    <field name="name">custom_discount_history_tree_view</field>
+                    <field name="model">custom.discount.history</field>
+                    <field name="arch" type="xml">
+                        <tree>
+                            <field name="date_discount"/>
+                            <field name="sale_id"/>
+                            <field name="customer_id"/>
+                            <field name="discount_amount"/>
+                        </tree>
+                    </field>
+                </record>
+
+                <record id="custom_discount_history_act_window" model="ir.actions.act_window">
+                    <field name="name">Pedido a domicilio</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">mobile.sale.order</field>
+                    <field name="view_id" ref="custom_discount_history_tree_view"/>
+                    <field name="view_mode">tree,form</field>
+                </record>
+
+                <menuitem name="Historial de Descuentos CA" id="custom_discount_history_menu" parent="sale.sale_order_menu"
+                        action="custom_discount_history_act_window"/>
+    </data>
+</odoo>    

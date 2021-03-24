@@ -14,4 +14,15 @@ class CustomDiscountHistory(models.Model):
 
 
     def _compute_discount_amount(self):
-        print('')
+        for item in self:
+            sale_order = self.env['sale.order'].search([('id','=',item.sale_id.id)]) 
+            total_discount_amount = 0
+            if sale_order:
+                if len(sale_order.order_line) > 0:
+                    for line in sale_order.order_line:  
+                        if line.product_id.categ_id.id == 7:
+                            total_discount_amount += (-1 * line.product_id.lst_price)
+
+            item.discount_amount = total_discount_amount
+
+            
