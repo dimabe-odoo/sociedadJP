@@ -25,7 +25,6 @@ class SaleOrder(models.Model):
 
     def create(self, values):
         res = super(SaleOrder, self).create(values)
-
         discount_history = self.env['custom.discount.history'].create({
             'sale_id': values['id'],
             'customer_id': values['partner_id'],
