@@ -17,6 +17,7 @@ class AccountMove(models.Model):
     #    return super(AccountMove, self).create(values)
     
     def write(self, values):
+        raise models.ValidationError(values.keys())
         if 'invoice_payment_state' in values.keys():
             raise models.ValidationError(values['invoice_payment_state'])
             if values['invoice_payment_state'] == 'paid':
@@ -27,7 +28,6 @@ class AccountMove(models.Model):
                         'customer_id': values['partner_id'],
                         'date_discount': datetime.datetime.now()
                 })
-        raise models.ValidationError('Not')
         return super(AccountMove, self).write(values)
 
 
