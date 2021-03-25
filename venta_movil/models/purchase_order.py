@@ -31,7 +31,7 @@ class PurchaseOrder (models.Model):
 
             for line in discount_counts:
                 if line['count'] > 0:
-                    self['purchase.order.line'].create({
+                    self.env['purchase.order.line'].create({
                         'product_template_id': line['id'],
                         'name': line['name'],
                         'product_qty': line['count'],
