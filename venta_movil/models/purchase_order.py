@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+import datetime
 
 
 class PurchaseOrder (models.Model):
@@ -37,7 +38,8 @@ class PurchaseOrder (models.Model):
                         'product_qty': line['count'],
                         'price_unit': line['price'],
                         'product_uom': line['uom'],
-                        'order_id': self.id
+                        'order_id': self.id,
+                        'date_planned': datetime.datetime.now()
                     })
         else:
             raise models.ValidationError('No Posee Descuentos por Cobrar')
