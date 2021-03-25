@@ -12,7 +12,7 @@ class CustomDiscountHistory(models.Model):
 
     date_discount = fields.Datetime(string="Fecha del Descuento")
 
-    discount_state = fields.Selection([('Por Cobrar','Cobrado')])
+    discount_state = fields.Selection([('Por Cobrar','Por Cobrar'),('Cobrado','Cobrado')])
 
     def _compute_discount_amount(self):
         for item in self:
