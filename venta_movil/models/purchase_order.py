@@ -12,8 +12,12 @@ class PurchaseOrder (models.Model):
         discount_history = self.env['custom.discount.history'].search([('discount_state', '=', 'Cobrado'),('purchase_order_id','=',self.id)])
         for d in discount_history:
             d.write({
-               'discount_state': 'Por Cobrar'
+               'discount_state': 'Por Cobrar',
+               'purchase_order_id': None
             })
+        for t in self.order_line:
+            if t.product_id.categ_id.id == 7:
+                t.unlink()
         return result
 
     def add_discount_history(self):
