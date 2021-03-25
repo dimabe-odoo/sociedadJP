@@ -39,7 +39,6 @@ class PurchaseOrder (models.Model):
                         'product_uom': line['uom'],
                         'order_id': self.id
                     })
-
         else:
             raise models.ValidationError('No Posee Descuentos por Cobrar')
 
