@@ -18,7 +18,7 @@ class CustomDiscountHistory(models.Model):
 
     discount_type_ids = fields.Many2many(compute="_compute_discount_type", string="Descuentos")
 
-    def _compute(self):
+    def _compute_discount_type(self):
         for item in self:
             item.discount_type_ids = item.sale_id.mapped('sale.order.line').mapped('product_id').filtered(lambda x: x.categ_id == 7 )
 
