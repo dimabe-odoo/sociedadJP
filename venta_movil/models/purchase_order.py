@@ -10,7 +10,7 @@ class PurchaseOrder (models.Model):
         discount_history = self.env['custom.discount.history'].search([('discount_state', '=', 'Por Cobrar')])
 
         if (len(discount_history) > 0):
-            discount_types = self.env['product.template'].search([('cat_id','=',7)])
+            discount_types = self.env['product.template'].search([('categ_id','=',7)])
             discount_counts = []
             for t in discount_types:
                 discount_counts.append({
