@@ -20,7 +20,7 @@ class CustomDiscountHistory(models.Model):
 
     def _compute_discount_type(self):
         for item in self:
-            item.discount_type_ids = item.sale_id.mapped('sale.order.line').mapped('product_id').filtered(lambda x: x.categ_id == 7 )
+            item.discount_type_ids = item.sale_id.mapped('order_line').mapped('product_id').filtered(lambda x: x.categ_id == 7 )
 
     def _compute_discount_amount(self):
         for item in self:
