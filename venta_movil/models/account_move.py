@@ -8,9 +8,7 @@ class AccountMove(models.Model):
         raise models.ValidationError(values.keys())
         if 'state' in values.keys():
             if values['state'] == 'posted':
-                if values['invoice_origin']:
-                    sale_order = self.env['sale.order'].search([('name','=',values['invoice_origin'])])
-
+                    sale_order = self.env['sale.order'].search([('id','=',self.invoice_line_ids[0].sale_line_ids[0].order_id)])
                     if sale_order:
                         if sale_order.id not in self.env['custom.discount.history'].mapped('sale_id'):
                             discount_history = self.env['custom.discount.history'].create({
