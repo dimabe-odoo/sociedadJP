@@ -269,14 +269,14 @@ class MobileSaleOrder(models.Model):
                     'move_id': sale_odoo.picking_ids[0].move_ids_without_package.filtered(
                         lambda a: a.product_id.id == line.product_id.id).id,
                     'picking_id': sale_odoo.picking_ids[0].id,
-                    'product_id':line.product_id.id,
-                    'qty_done':line.qty,
-                    'product_uom_id':line.product_id.uom_id.id,
-                    'location_id':sale_odoo.picking_ids[0].move_ids_without_package.filtered(
+                    'product_id': line.product_id.id,
+                    'qty_done': line.qty,
+                    'product_uom_id': line.product_id.uom_id.id,
+                    'location_id': sale_odoo.picking_ids[0].move_ids_without_package.filtered(
                         lambda a: a.product_id.id == line.product_id.id).location_id.id,
-                    'location_dest_id':sale_odoo.picking_ids[0].move_ids_without_package.filtered(
+                    'location_dest_id': sale_odoo.picking_ids[0].move_ids_without_package.filtered(
                         lambda a: a.product_id.id == line.product_id.id).location_dest_id.id,
-                    'date':datetime.date.today(),
+                    'date': datetime.date.today(),
                 })
         models._logger.error('{}'.format(sale_odoo.picking_ids))
         # if self.mobile_lines.filtered(lambda a: a.loan_qty > 0):
@@ -289,7 +289,6 @@ class MobileSaleOrder(models.Model):
         #                 move.write({
         #                     'loan_supply': self.mobile_lines.filtered(lambda a: a.product_id.id == move.product_id.id).loan_qty,
         #                 })
-
         sale_odoo.picking_ids[0].write({
             'show_supply': True,
             'location_id': self.location_id.id
@@ -315,6 +314,8 @@ class MobileSaleOrder(models.Model):
             'state': 'done',
             'date_done': datetime.datetime.now()
         })
+        sale_odoo._create_invoices()
+        sale_odoo.invoice_ids[0].action_invoice_paid()
         self.finish_date = datetime.datetime.now()
         datedif = relativedelta(self.finish_date, self.onroute_date)
         strdate = ""
@@ -336,5 +337,3 @@ class MobileSaleOrder(models.Model):
         if datedif.seconds != 0:
             strdate = '{} {} seg'.format(strdate, datedif.seconds)
         self.onroute_to_finish = strdate
-
-        
