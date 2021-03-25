@@ -23,7 +23,7 @@ class PurchaseOrder (models.Model):
             for item in discount_history:
                 for line in discount_history.sale_id.order_line:
                     for d in discount_counts:
-                        if line.product_id.name in d.name:
+                        if line.product_id.name == d['name']:
                             d['count'] += line.product_uom_qty
 
             for line in discount_counts:
