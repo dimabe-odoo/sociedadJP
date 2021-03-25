@@ -14,6 +14,8 @@ class CustomDiscountHistory(models.Model):
 
     discount_state = fields.Selection([('Por Cobrar','Por Cobrar'),('Cobrado','Cobrado')], string="Estado")
 
+    purchase_order_id = fields.Many2one('purchase.order', string="Pedido de Compra")
+
     def _compute_discount_amount(self):
         for item in self:
             sale_order = self.env['sale.order'].search([('id','=',item.sale_id.id)]) 
