@@ -14,6 +14,9 @@
                 <xpath expr="//field[@name='date_order']" position="after">
                     <field name="have_purchase_without_supply" invisible="1"/>
                 </xpath>
+                <xpath expr="//field[@name='partner_ref']" position="before">
+                    <button type="object" name="add_discount_history" string="Agregar Descuentos Por Cobrar" attrs="{'invisible':[('state','!=','draft')]}"/>
+                </xpath>
             </field>
         </record>
     </data>
