@@ -26,8 +26,10 @@ class PurchaseOrder (models.Model):
             for item in discount_history:
                 for line in discount_history.sale_id.order_line:
                     for d in discount_counts:
+                        currency_count = 0
                         if line.product_id.name == d['name']:
-                            d['count'] += line.product_uom_qty
+                            currency_count += line.product_uom_qty
+                        d['count'] = currency_count
                             #self.write({'discount_history_ids' : (4, item.id)})
 
             for line in discount_counts:
