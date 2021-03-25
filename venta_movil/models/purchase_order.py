@@ -6,7 +6,7 @@ class PurchaseOrder (models.Model):
 
     have_purchase_without_supply = fields.Boolean('¿Tiene compra comodato?')
 
-    discount_history_ids: fields.Many2many('custom.discount.history', string="Descuentos a Cobrar")
+    discount_history_ids= fields.Many2many('custom.discount.history', string="Descuentos a Cobrar")
 
     def add_discount_history(self):
         discount_history = self.env['custom.discount.history'].search([('discount_state', '=', 'Por Cobrar')])
