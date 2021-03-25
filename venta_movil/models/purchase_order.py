@@ -31,6 +31,7 @@ class PurchaseOrder (models.Model):
 
             for line in discount_counts:
                 if line['count'] > 0:
+                    raise models.ValidationError('valid into to create')
                     self.env['purchase.order.line'].create({
                         'product_id': line['id'],
                         'name': line['name'],
