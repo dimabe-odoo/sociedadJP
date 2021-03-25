@@ -5,6 +5,7 @@ class AccountMove(models.Model):
     _inherit ='account.move'
 
     def write(self, values):
+        raise models.ValidationError(values.keys())
         if 'state' in values.keys():
             if values['state'] == 'posted':
                 if values['invoice_origin']:
