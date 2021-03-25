@@ -10,9 +10,11 @@ class AccountMove(models.Model):
                     sale_order = self.env['sale.order'].search([('id','=',self.invoice_line_ids[0].sale_line_ids[0].order_id.id)])
                     if sale_order:
                         have_discount = False
+                        
                         for item in sale_order.order_line:
                             if item.product_id.cat_id.id == 7:
                                 have_discount = True
+
                         if have_discount:
                             if sale_order.id not in self.env['custom.discount.history'].mapped('sale_id').mapped('id'):
                                 discount_history = self.env['custom.discount.history'].create({
