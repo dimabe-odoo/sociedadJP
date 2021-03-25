@@ -7,6 +7,15 @@ class PurchaseOrder (models.Model):
 
     have_purchase_without_supply = fields.Boolean('¿Tiene compra comodato?')
 
+    def button_cancel(self):
+        result = super(PurchaseOrder, self).button_cancel()
+        discount_history = self.env['custom.discount.history'].search([('discount_state', '=', 'Cobrado'),('purchase_order_id','=',self.id)])
+        for d in discount_history:
+            d.write({
+               'discount_state': 'Por Cobrar'
+            })
+        return result
+
     def add_discount_history(self):
         discount_history = self.env['custom.discount.history'].search([('discount_state', '=', 'Por Cobrar')])
 
@@ -16,7 +25,6 @@ class PurchaseOrder (models.Model):
                 'purchase_order_id': self.id
             })
 
-        
         if (len(discount_history) > 0):
             discount_types = self.env['product.template'].search([('categ_id','=',7)])
             discount_counts = []
