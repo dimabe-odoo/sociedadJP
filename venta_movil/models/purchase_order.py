@@ -31,12 +31,13 @@ class PurchaseOrder (models.Model):
 
             for line in discount_counts:
                 if line['count'] > 0:
-                    self.order_line.create({
+                    self['purchase.order.line'].create({
                         'product_template_id': line['id'],
                         'name': line['name'],
                         'product_qty': line['count'],
                         'price_unit': line['price'],
-                        'product_uom': line['uom']
+                        'product_uom': line['uom'],
+                        'order_id': self.id
                     })
 
         else:
