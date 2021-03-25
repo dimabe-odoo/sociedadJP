@@ -12,7 +12,8 @@ class PurchaseOrder (models.Model):
 
         for item in discount_history:
             item.write({
-                'discount_state': 'Cobrado'
+                'discount_state': 'Cobrado',
+                'purchase_order_id': self.id
             })
 
         
