@@ -10,9 +10,9 @@ class AccountMove(models.Model):
                     sale_order = self.env['sale.order'].search([('id','=',self.invoice_line_ids[0].sale_line_ids[0].order_id.id)])
                     if sale_order:
                         have_discount = False
-                        
+
                         for item in sale_order.order_line:
-                            if item.product_id.cat_id.id == 7:
+                            if item.product_id.categ_id.id == 7:
                                 have_discount = True
 
                         if have_discount:
