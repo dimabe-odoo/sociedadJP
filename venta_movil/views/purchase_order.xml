@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="purchase_purchase_order_form_inherit" model="ir.ui.view">
             <field name="name">purchase_purchase_order_form_inherit</field>
             <field name="model">purchase.order</field>
