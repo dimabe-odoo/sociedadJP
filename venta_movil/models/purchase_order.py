@@ -23,13 +23,10 @@ class PurchaseOrder (models.Model):
                         'count': 0,
                         'uom': t['uom_po_id']['id']
                     })
-            for item in discount_history:
-                for line in discount_history.sale_id.order_line:
-                    for d in discount_counts:
-                        currency_count = 0
-                        if line.product_id.name == d['name']:
-                            currency_count += line.product_uom_qty
-                        d['count'] = currency_count
+            for line in discount_history.sale_id.order_line:
+                for d in discount_counts:
+                    if line.product_id.name == d['name']:
+                        d['count'] += line.product_uom_qty
                             #self.write({'discount_history_ids' : (4, item.id)})
 
             for line in discount_counts:
