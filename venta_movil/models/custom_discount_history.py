@@ -16,6 +16,13 @@ class CustomDiscountHistory(models.Model):
 
     purchase_order_id = fields.Many2one('purchase.order', string="Pedido de Compra")
 
+    #discount_type_ids = fields.Many2many(compute="_compute_discount_type", string="Descuentos")
+
+    #def _compute(self):
+    #    for item in self:
+    #        item.discount_type_ids = item.sale_id.mapped('sale.order.line').mapped('product_id').filtered(lambda x: x.categ_id == 7 )
+
+
     def _compute_discount_amount(self):
         for item in self:
             sale_order = self.env['sale.order'].search([('id','=',item.sale_id.id)]) 
