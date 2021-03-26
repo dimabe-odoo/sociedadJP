@@ -15,9 +15,9 @@ class PurchaseOrder (models.Model):
                'discount_state': 'Por Cobrar',
                'purchase_order_id': None
             })
-        for t in self.order_line:
-            if t.product_id.categ_id.id == 7:
-                t.unlink()
+        for line in self.order_line:
+            if line.product_id.categ_id.id == 7:
+                line.unlink()
         return result
 
     def add_discount_history(self):

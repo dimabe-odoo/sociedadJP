@@ -35,7 +35,10 @@ class MobileSaleLine(models.Model):
         for item in self.mobile_id.price_list_id.item_ids:
             if item.product_tmpl_id.id == self.product_id.id:
                 price = item.fixed_price
-        self.price = price
+        if self.product_id.categ_id.id == 7:
+            self.price = self.product_id.list_price
+        else:
+            self.price = price
         self.tax_ids = self.product_id.taxes_id
 
     @api.onchange('qty')
