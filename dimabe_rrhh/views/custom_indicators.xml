@@ -14,16 +14,34 @@
                             <field name="month"/>
                             <field name="year"/>
                         </group>
-                        <group>
-                            <field name="data_ids">
-                                <tree create="false" delete="false" editable="false">
-                                    <field name="name"/>
-                                    <field name="type"/>
-                                    <field name="value_show"/>
-                                    <field name="percentage_show"/>
-                                </tree>
-                            </field>
-                        </group>
+                        <notebook>
+                            <page string="Indicadores">
+                                <group>
+                                    <field name="data_ids">
+                                        <tree create="false" delete="false" editable="false">
+                                            <field name="name"/>
+                                            <field name="type"/>
+                                            <field name="value_show"/>
+                                            <field name="percentage_show"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Instituciones Relacionados">
+                                <group>
+                                    <field name="ccad_id"/>
+                                    <field name="ccaf_rate"/>
+                                    <field name="national_health_fund_rate">
+                                    <field name="ips_rate"/>
+                                    <field name="max_taxable_health_rate"/>
+                                </group>
+                                <group>
+                                    <field name="has_mutuality"/>
+                                    <field name="mutuality_id"/>
+                                    
+                                </group>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
