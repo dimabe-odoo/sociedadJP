@@ -21,7 +21,7 @@
         <record model="custom.data.type" id="custom_data_employee_type">
             <field name="name">Tipo de Empleado</field>
         </record>
-        <record model="custom.data.type" id="custom_data_employee_type">
+        <record model="custom.data.type" id="custom_data_contract_type">
             <field name="name">Tipo de Contrato</field>
         </record>
         <record model="decimal.precision" id="custom_decimal_precision">
