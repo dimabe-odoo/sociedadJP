@@ -44,6 +44,8 @@ class HrContract(models.Model):
 
     is_pensionary = fields.Boolean('Pensionado')
 
+    type_id = fields.Many2one('custom.data', 'Tipo de Contrato', domain=[('data_type_id', '=', 8)])
+
     type_pensionary = fields.Selection(
         [('old', 'Pensíon de Vejez'), ('disability', 'Pension de Invalidez'), ('survival', 'Pension de Sobreviviencia'),
          ('no', 'No Pensionado')]
