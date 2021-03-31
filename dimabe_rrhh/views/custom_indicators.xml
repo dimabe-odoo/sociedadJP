@@ -15,7 +15,7 @@
                             <field name="month"/>
                             <field name="year"/>
                         </group>
-                        <page string="Indicadores" name="inicators">
+                        <group>
                             <field name="data_ids">
                                 <tree create="false" delete="false" editable="false">
                                     <field name="name"/>
@@ -24,11 +24,11 @@
                                     <field name="percentage_show"/>
                                 </tree>
                             </field>
-                        </page>
-                        <page string="Instituciones Relacionadas">
-                        </page>
+                        </group>
                     </sheet>
                 </form>
+                <page string="Instituciones Relacionadas">
+                </page>
             </field>
         </record>
 
