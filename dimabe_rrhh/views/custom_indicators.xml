@@ -38,7 +38,7 @@
                                 <group>
                                     <field name="has_mutuality"/>
                                     <field name="mutuality_id"/>
-                                    
+                                    <field name="mutuality_ids"/>
                                 </group>
                             </page>
                         </notebook>

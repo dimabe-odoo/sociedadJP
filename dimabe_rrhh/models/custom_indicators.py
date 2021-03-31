@@ -222,6 +222,8 @@ class CustomIndicators(models.Model):
         }
         data.append(c_section_max)
 
+        return data
+
 
     def get_afp_data(self,table):
         data = []
