@@ -181,7 +181,7 @@ class CustomIndicators(models.Model):
                     self.env['custom.indicators.data'].create({
                         'name':d['title'],
                         'value':d['value'],
-                        'value_show': f'$ {d["data"]}',
+                        'value_show': f'$ {d["value"]}',
                         'type':'10',
                         'indicator_id':self.id
                     })
