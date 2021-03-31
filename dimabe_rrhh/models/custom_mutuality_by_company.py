@@ -9,4 +9,4 @@ class CustomMutualityByCompany(models.Model):
 
     value = fields.Float('Valor')
 
-    indicator_id = fields.Many2one(comodel_name='custom.indicators', auto_join=True, string='Indicadores')
+    #indicator_id = fields.Many2one(comodel_name='custom.indicators', auto_join=True, string='Indicadores')
