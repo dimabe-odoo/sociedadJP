@@ -33,7 +33,7 @@ class CustomIndicators(models.Model):
 
     mutuality_id = fields.Many2one('custom.data', 'Mutual', domain=[('data_type_id', '=', 3)])
 
-    mutuality_ids = fields.One2many('custom.mutuality', 'indicator_id', string='Valores por Compañia')
+    mutuality_ids = fields.One2many('custom.mutuality.by.company', 'indicator_id', string='Valores por Compañia')
 
     @api.model
     def create(self, vals):
