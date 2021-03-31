@@ -188,7 +188,6 @@ class CustomIndicators(models.Model):
 
     def get_household_allowance_data(self,table):
         data = []
-
         a_section_amount = {
             'title': 'Tramo A - Monto',
             'value':self.clear_string(table.select("strong")[4].get_text())
