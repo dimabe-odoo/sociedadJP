@@ -31,7 +31,7 @@
                                 <group>
                                     <field name="ccad_id"/>
                                     <field name="ccaf_rate"/>
-                                    <field name="national_health_fund_rate">
+                                    <field name="national_health_fund_rate"/>
                                     <field name="ips_rate"/>
                                     <field name="max_taxable_health_rate"/>
                                 </group>
