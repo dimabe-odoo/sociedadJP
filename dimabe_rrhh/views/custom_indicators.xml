@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="custom_indicators_form_view" model="ir.ui.view">
             <field name="name">custom_indicators.form</field>
             <field name="model">custom.indicators</field>
@@ -27,8 +26,6 @@
                         </group>
                     </sheet>
                 </form>
-                <page string="Instituciones Relacionadas">
-                </page>
             </field>
         </record>
 
