@@ -35,35 +35,12 @@ class CustomIndicators(models.Model):
 
     mutuality_ids = fields.One2many('custom.mutuality.by.company', 'indicator_id', string='Valores por Compañia')
 
+    institute_occupational_safety = fields.Float('ISL', help="Instituto de Seguridad Laboral")
+
     @api.model
     def create(self, vals):
         vals['name'] = f'{self.get_month(vals["month"])} {vals["year"]}'
         return super(CustomIndicators, self).create(vals)
-
-    def get_data_from_url(self):
-        indicators = self.get_data_from_url()
-        for indicator in indicators:
-            if isinstance(indicator, dict):
-                for value in indicator['data']:
-                    ind = self.env['custom.data'].create({
-                        'name': value['title'].capitalize(),
-                        'value': value['value'],
-                        'data_type_id': 5
-                    })
-                    self.write({
-                        'data_ids': [(4, ind.id)]
-                    })
-            else:
-                for data in indicator:
-                    for value in data['data']:
-                        ind = self.env['custom.data'].create({
-                            'name': f"{data['title'].capitalize()} {value['title'].lower()}",
-                            'value': value['data'],
-                            'data_type_id': 5
-                        })
-                        self.write({
-                            'data_ids': [(4, ind.id)]
-                        })
 
     def clear_string(self, cad):
         cad = cad.replace(".", '').replace("$", '').replace(" ", '')
@@ -73,7 +50,14 @@ class CustomIndicators(models.Model):
         cad = cad.replace("1ff8", "")
         return cad
 
+    def validate_indicator_registered(self):
+        indicator_data_ids = self.env['custom.indicators.data'].search([('indicator_id','=',self.id)])
+        if len(indicator_data_ids)>0:
+            for item in indicator_data_ids:
+                item.unlink()
+
     def get_data(self):
+        self.validate_indicator_registered()
         link = 'https://www.previred.com/web/previred/indicadores-previsionales'
         data = requests.get(link)
         soup = BeautifulSoup(data.text, 'html.parser')

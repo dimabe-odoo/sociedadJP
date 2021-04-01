@@ -29,16 +29,23 @@
                             </page>
                             <page string="Instituciones Relacionados">
                                 <group>
-                                    <field name="ccaf_id"/>
-                                    <field name="ccaf_rate"/>
-                                    <field name="national_health_fund_rate"/>
-                                    <field name="ips_rate"/>
-                                    <field name="max_taxable_health_rate"/>
-                                </group>
-                                <group>
-                                    <field name="has_mutuality"/>
-                                    <field name="mutuality_id"/>
-                                    <field name="mutuality_ids"/>
+                                    <group>
+                                        <field name="ccaf_id"/>
+                                        <field name="ccaf_rate"/>
+                                        <field name="national_health_fund_rate"/>
+                                        <field name="ips_rate"/>
+                                        <field name="max_taxable_health_rate"/>
+                                    </group>
+                                    <group>
+                                        <field name="has_mutuality"/>
+                                        <field name="mutuality_id" attrs="{'invisible': [('has_mutuality', '=', False)]}" />
+                                        <field name="mutuality_ids" attrs="{'invisible': [('has_mutuality', '=', False)]}">
+                                            <tree>
+                                                <field name="company_id" required="1"/>
+                                                <field name="value" />
+                                            </tree>
+                                        </field>
+                                    </group>
                                 </group>
                             </page>
                         </notebook>
