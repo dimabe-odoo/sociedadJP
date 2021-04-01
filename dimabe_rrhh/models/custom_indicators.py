@@ -11,12 +11,29 @@ class CustomIndicators(models.Model):
     name = fields.Char('Nombre')
 
     data_ids = fields.One2many('custom.indicators.data','indicator_id',string='Datos')
+
     month = fields.Selection(
         [('jan', 'Enero'), ('feb', 'Febrero'), ('mar', 'Marzo'), ('apr', 'Abril'), ('may', 'Mayo'), ('jun', 'Junio'),
          ('jul', 'Julio'), ('aug', 'Agosto'), ('sep', 'Septiembre'), ('oct', 'Octubre'), ('nov', 'Noviembre'),
          ('dec', 'Diciembre')],string='Mes')
 
     year = fields.Float('Año', default=datetime.now().strftime('%Y'), digits=dp.get_precision('Year'))
+
+    ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain=[('data_type_id', '=', 2)])
+    
+    ccaf_rate = fields.Float('Tasa CCAF')
+
+    national_health_fund_rate = fields.Float('Tasa Fonasa')
+
+    ips_rate = fields.Float('Tasa IPS')
+
+    max_taxable_health_rate = fields.Float('Tope Imponible Salud %')
+
+    has_mutuality = fields.Boolean('Tiene Mutual', default=True)
+
+    mutuality_id = fields.Many2one('custom.data', 'Mutual', domain=[('data_type_id', '=', 3)])
+
+    mutuality_ids = fields.One2many('custom.mutuality.by.company', 'indicator_id', string='Valores por Compañia')
 
     @api.model
     def create(self, vals):
@@ -158,6 +175,53 @@ class CustomIndicators(models.Model):
                         'type':'9',
                         'indicator_id':self.id
                     })
+            elif table == tables[8]:
+                data = self.get_household_allowance_data(table)
+                for d in data:
+                    self.env['custom.indicators.data'].create({
+                        'name':d['title'],
+                        'value':d['value'],
+                        'value_show': f'$ {d["value"]}',
+                        'type':'10',
+                        'indicator_id':self.id
+                    })
+
+    def get_household_allowance_data(self,table):
+        data = []
+        a_section_amount = {
+            'title': 'Tramo A - Monto',
+            'value':self.clear_string(table.select("strong")[4].get_text())
+        }
+        data.append(a_section_amount)
+        a_section_max = {
+            'title': 'Tramo A - Tope',
+            'value':self.clear_string(table.select("strong")[5].get_text())[1:]
+        }
+        data.append(a_section_max)
+
+        b_section_amount = {
+            'title': 'Tramo B - Monto',
+            'value':self.clear_string(table.select("strong")[6].get_text())
+        }
+        data.append(b_section_amount)
+        b_section_max = {
+            'title': 'Tramo B - Tope',
+            'value':self.clear_string(table.select("strong")[7].get_text())[6:]
+        }
+        data.append(b_section_max)
+
+        c_section_amount = {
+            'title': 'Tramo C - Monto',
+            'value':self.clear_string(table.select("strong")[8].get_text())
+        }
+        data.append(c_section_amount)
+        c_section_max = {
+            'title': 'Tramo C - Tope',
+            'value':self.clear_string(table.select("strong")[9].get_text())[6:]
+        }
+        data.append(c_section_max)
+
+        return data
 
 
     def get_afp_data(self,table):
@@ -172,6 +236,11 @@ class CustomIndicators(models.Model):
             'value':self.clear_string(table.select("strong")[9].get_text())
         }
         data.append(sis_rate_capital)
+        sis_rate_independent_capital = {
+            'title': 'Tasa SIS Independiente Capital',
+            'value': self.clear_string(table.select("strong")[10].get_text())
+        }
+        data.append(sis_rate_independent_capital)
 
         afp_rate_cuprum = {
             'title':'Tasa Afp Cuprum',
@@ -184,17 +253,27 @@ class CustomIndicators(models.Model):
             'value':self.clear_string(table.select("strong")[12].get_text())
         }
         data.append(sis_rate_cuprum)
+        sis_rate_independent_cuprum = {
+            'title': 'Tasa SIS Independiente Cuprum',
+            'value': self.clear_string(table.select("strong")[13].get_text())
+        }
+        data.append(sis_rate_independent_cuprum)
 
         afp_rate_habitat = {
             'title': 'Tasa Afp Habitat',
             'value':self.clear_string(table.select("strong")[14].get_text())
         }
         data.append(afp_rate_habitat)
-        sis_rate_habitad = {
+        sis_rate_habitat = {
             'title': 'Tasa SIS Habitat',
             'value': self.clear_string(table.select("strong")[15].get_text())
         }
-        data.append(sis_rate_habitad)
+        data.append(sis_rate_habitat)
+        sis_rate_independent_habitat = {
+            'title': 'Tasa SIS Independiente Habitat',
+            'value': self.clear_string(table.select("strong")[16].get_text())
+        }
+        data.append(sis_rate_independent_habitat)
 
         afp_rate_planvital = {
             'title': 'Tasa Afp PlanVital',
@@ -206,6 +285,11 @@ class CustomIndicators(models.Model):
             'value': self.clear_string(table.select("strong")[18].get_text())
         }
         data.append(sis_rate_planvital)
+        sis_rate_independent_planvital = {
+            'title': 'Tasa SIS Independiente PlanVital',
+            'value': self.clear_string(table.select("strong")[19].get_text())
+        }
+        data.append(sis_rate_independent_planvital)
 
         afp_rate_provida = {
             'title': 'Tasa Afp Provida',
@@ -218,6 +302,11 @@ class CustomIndicators(models.Model):
             'value': self.clear_string(table.select("strong")[21].get_text())
         }
         data.append(sis_rate_provida)
+        sis_rate_independent_provida = {
+            'title': 'Tasa SIS Independiente Provida',
+            'value': self.clear_string(table.select("strong")[22].get_text())
+        }
+        data.append(sis_rate_independent_provida)
 
         afp_rate_modelo = {
             'title': 'Tasa Afp Modelo',
@@ -230,6 +319,11 @@ class CustomIndicators(models.Model):
         }
         data.append(sis_rate_modelo)
 
+        sis_rate_independent_modelo = {
+            'title': 'Tasa SIS Independiente Modelo',
+            'value': self.clear_string(table.select("strong")[25].get_text())
+        }
+        data.append(sis_rate_independent_modelo)
 
         afp_rate_uno = {
             'title': 'Tasa Afp Uno',
@@ -241,6 +335,11 @@ class CustomIndicators(models.Model):
             'value': self.clear_string(table.select("strong")[27].get_text())
         }
         data.append(sis_rate_uno)
+        sis_rate_independent_uno = {
+            'title': 'Tasa SIS Independiente Uno',
+            'value': self.clear_string(table.select("strong")[28].get_text())
+        }
+        data.append(sis_rate_independent_uno)
 
         return data
 
