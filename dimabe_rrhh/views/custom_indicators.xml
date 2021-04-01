@@ -38,6 +38,7 @@
                                     </group>
                                     <group>
                                         <field name="has_mutuality"/>
+                                        <field name="institute_occupational_safety" attrs="{'invisible': [('has_mutuality', '=', True)]}"/>
                                         <field name="mutuality_id" attrs="{'invisible': [('has_mutuality', '=', False)]}" />
                                         <field name="mutuality_ids" attrs="{'invisible': [('has_mutuality', '=', False)]}">
                                             <tree>
