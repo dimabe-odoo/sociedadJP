@@ -1,13 +1,16 @@
 from odoo import models
 import datetime
 
+
 class AccountMove(models.Model):
-    _inherit ='account.move'
+    _inherit = 'account.move'
 
     def write(self, values):
         if 'state' in values.keys():
             if values['state'] == 'posted':
-                    sale_order = self.env['sale.order'].search([('id','=',self.invoice_line_ids[0].sale_line_ids[0].order_id.id)])
+                if self.invoice_line_ids:
+                    sale_order = self.env['sale.order'].search(
+                        [('id', '=', self.invoice_line_ids[0].sale_line_ids[0].order_id.id)])
                     if sale_order:
                         have_discount = False
 
@@ -24,8 +27,3 @@ class AccountMove(models.Model):
                                     'discount_state': 'Por Cobrar'
                                 })
         return super(AccountMove, self).write(values)
-
-
-
-
-
