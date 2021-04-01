@@ -8,7 +8,7 @@ class AccountMove(models.Model):
     def write(self, values):
         if 'state' in values.keys():
             if values['state'] == 'posted':
-                if self.invoice_line_ids:
+                if self.invoice_line_ids.mapped('sale_line_ids'):
                     sale_order = self.env['sale.order'].search(
                         [('id', '=', self.invoice_line_ids[0].sale_line_ids[0].order_id.id)])
                     if sale_order:
