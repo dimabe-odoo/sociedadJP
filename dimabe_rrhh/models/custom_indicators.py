@@ -19,10 +19,7 @@ class CustomIndicators(models.Model):
 
     year = fields.Float('Año', default=datetime.now().strftime('%Y'), digits=dp.get_precision('Year'))
 
-    #ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain=[('data_type_id', '=', 2)])
     ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación')
-
-    ccaf_type_id = fields.Integer('custom.data.type',compute="_compute_ccaf_type")
 
     ccaf_rate = fields.Float('Tasa CCAF')
 
@@ -34,15 +31,23 @@ class CustomIndicators(models.Model):
 
     has_mutuality = fields.Boolean('Tiene Mutual', default=True)
 
-    mutuality_id = fields.Many2one('custom.data', 'Mutual', domain=[('data_type_id', '=', 3)])
+    mutuality_id = fields.Many2one('custom.data', 'Mutual')
 
     mutuality_ids = fields.One2many('custom.mutuality.by.company', 'indicator_id', string='Valores por Compañia')
 
     institute_occupational_safety = fields.Float('ISL', help="Instituto de Seguridad Laboral")
+
+    ccaf_type_id = fields.Integer('custom.data.type',compute="_compute_ccaf_type")
+
+    mutuality_type_id = fields.Integer('custom.data.type',compute="_compute_mutuality_type")
  
     @api.model
     def _compute_ccaf_type(self):
         self.ccaf_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_ccaf').id
+    
+    @api.model
+    def _compute_mutuality_type(self):
+        self.mutuality_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_mutuality').id
         
     @api.model
     def create(self, vals):
