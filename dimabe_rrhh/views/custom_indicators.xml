@@ -40,7 +40,7 @@
                                     <group>
                                         <field name="has_mutuality"/>
                                         <field name="institute_occupational_safety" attrs="{'invisible': [('has_mutuality', '=', True)]}"/>
-                                        <field name="mutuality_type_id" invisible="1">
+                                        <field name="mutuality_type_id" invisible="1"/>
                                         <field name="mutuality_id" attrs="{'invisible': [('has_mutuality', '=', False)]}" domain="[('data_type_id','=',mutuality_type_id)]"/>
                                         <field name="mutuality_ids" attrs="{'invisible': [('has_mutuality', '=', False)]}">
                                             <tree>
