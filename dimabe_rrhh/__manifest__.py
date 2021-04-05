@@ -25,10 +25,10 @@
     # always loaded
     'data': [
         'data/custom_data_demo.xml',
-        #'data/custom_data_apv.xml',
-        #'data/custom_data_afp.xml',
+        'data/custom_data_apv.xml',
+        'data/custom_data_afp.xml',
         #'data/custom_data_ccaf.xml',
-        #'data/custom_data_hr_payslip.xml',
+        'data/custom_data_hr_payslip.xml',
         #'data/custom_data_mutuality.xml',
         #'data/custom_data_contract_type.xml',
         #'data/custom_data_section.xml',
