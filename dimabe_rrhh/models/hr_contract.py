@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class HrContract(models.Model):
@@ -60,6 +60,13 @@ class HrContract(models.Model):
     legal_gratification = fields.Boolean('Gratificación Legal Manual')
 
     section_id = fields.Many2one('custom.data','Tramo', domain=[('data_type_id','=',6)])
+
+    section_amount = fields.Float('Monto Tramo', compute="_compute_section_amount")
+
+
+    @api.depends('section_id')
+    def _compute_section_amount(self):
+        print('')
 
     
 
