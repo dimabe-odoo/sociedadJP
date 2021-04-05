@@ -38,7 +38,7 @@ class CustomIndicators(models.Model):
 
     institute_occupational_safety = fields.Float('ISL', help="Instituto de Seguridad Laboral")
 
-    @api.Model
+    @api.model
     def _get_ccaf_ids(self):
         ids = self.env.ref('custom_data_initial_ccaf').ids
         return [('data_type_id','=',ids)]
