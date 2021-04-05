@@ -9,17 +9,18 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='information']" position="inside">
+                    <group>
                         <field name="collation_amount"/>
                         <field name="mobilization_amount"/>
                         <field name="viatic_amount"/>
                         <field name="advance_salary_amount"/>
                         <field name="legal_gratification"/>
-                        <field name="section_id" options="{'no_quick_create':True,'no_create':True}"/>
+                    </group>
                 </xpath>
                 <xpath expr="//page[@name='information']" position="after">
                     <page string="Carga Familiar">
                         <group string="Cargas" style="width:50%;">
-                            <field name="frame_id"/>
+                            <field name="section_id" options="{'no_quick_create':True,'no_create':True}"/>
                             <field name="simple_charge"/>
                             <field name="maternal_charge"/>
                             <field name="disability_charge"/>

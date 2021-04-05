@@ -12,8 +12,6 @@ class HrContract(models.Model):
 
     isapre_id = fields.Many2one('custom.isapre', 'Isapre')
 
-    frame_id = fields.Many2one('custom.data', 'Tramo', domain=[('data_type_id', '=', 6)])
-
     simple_charge = fields.Integer('Carga Simple')
 
     maternal_charge = fields.Integer('Carga Materna')
@@ -61,7 +59,7 @@ class HrContract(models.Model):
 
     legal_gratification = fields.Boolean('Gratificación Legal Manual')
 
-    section_id = fields.Many2one('custom.data','Viático', domain=[('data_type_id','=',6)])
+    section_id = fields.Many2one('custom.data','Tramo', domain=[('data_type_id','=',6)])
 
     
 
