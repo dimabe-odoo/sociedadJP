@@ -2,35 +2,27 @@
 <odoo>
         <record model="custom.data.type" id="custom_data_initial_apv">
             <field name="name">APV</field>
-            <field name="code_rrhh">1</field>
         </record>
         <record model="custom.data.type" id="custom_data_initial_ccaf">
             <field name="name">CCAF</field>
-            <field name="code_rrhh">2</field>
         </record>
         <record model="custom.data.type" id="custom_data_initial_mutuality">
             <field name="name">Mutualidad</field>
-            <field name="code_rrhh">3</field>
         </record>
         <record model="custom.data.type" id="custom_data_initial_complementary">
             <field name="name">Seguro Complementario</field>
-            <field name="code_rrhh">4</field>
         </record>
         <record model="custom.data.type" id="custom_data_initial_indicators">
             <field name="name">Indicadores</field>
-            <field name="code_rrhh">5</field>
         </record>
-        <record model="custom.data.type" id="custom_data_initial_frame">
+        <record model="custom.data.type" id="custom_data_initial_section">
             <field name="name">Tramo</field>
-            <field name="code_rrhh">6</field>
         </record>
         <record model="custom.data.type" id="custom_data_employee_type">
             <field name="name">Tipo de Empleado</field>
-            <field name="code_rrhh">7</field>
         </record>
         <record model="custom.data.type" id="custom_data_contract_type">
             <field name="name">Tipo de Contrato</field>
-            <field name="code_rrhh">8</field>
         </record>
         <record model="decimal.precision" id="custom_decimal_precision">
             <field name="digits">0</field>
