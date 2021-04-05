@@ -32,6 +32,7 @@
                                     <group>
                                         <field name="ccaf_id"/>
                                         <field name="ccaf_rate"/>
+                                        <button type="object" name="test" string="Obtener id CCAF"/>
                                         <field name="national_health_fund_rate"/>
                                         <field name="ips_rate"/>
                                         <field name="max_taxable_health_rate"/>
