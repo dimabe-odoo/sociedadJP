@@ -19,8 +19,9 @@ class CustomIndicators(models.Model):
 
     year = fields.Float('Año', default=datetime.now().strftime('%Y'), digits=dp.get_precision('Year'))
 
-    ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain=[('data_type_id', '=', 2)])
-    
+    #ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain=[('data_type_id', '=', 2)])
+    ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain='_get_ccaf_ids')
+
     ccaf_rate = fields.Float('Tasa CCAF')
 
     national_health_fund_rate = fields.Float('Tasa Fonasa')
@@ -36,6 +37,11 @@ class CustomIndicators(models.Model):
     mutuality_ids = fields.One2many('custom.mutuality.by.company', 'indicator_id', string='Valores por Compañia')
 
     institute_occupational_safety = fields.Float('ISL', help="Instituto de Seguridad Laboral")
+
+    @api.Model
+    def _get_ccaf_ids(self):
+        ids = self.env.ref('custom_data_initial_ccaf').ids
+        return [('data_type_id','=',ids)]
 
     @api.model
     def create(self, vals):
