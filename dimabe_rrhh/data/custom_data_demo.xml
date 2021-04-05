@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
         <record model="custom.data.type" id="custom_data_initial_apv">
+            <field name="id">1</field>
             <field name="name">APV</field>
         </record>
         <record model="custom.data.type" id="custom_data_initial_ccaf">
+            <field name="id">2</field>
             <field name="name">CCAF</field>
         </record>
         <record model="custom.data.type" id="custom_data_initial_mutuality">
+            <field name="id">3</field>
             <field name="name">Mutualidad</field>
         </record>
         <record model="custom.data.type" id="custom_data_initial_complementary">
+            <field name="id">4</field>
             <field name="name">Seguro Complementario</field>
         </record>
         <record model="custom.data.type" id="custom_data_initial_indicators">
+            <field name="id">5</field>
             <field name="name">Indicadores</field>
         </record>
         <record model="custom.data.type" id="custom_data_initial_frame">
+            <field name="id">6</field>
             <field name="name">Tramo</field>
         </record>
         <record model="custom.data.type" id="custom_data_employee_type">
+            <field name="id">7</field>
             <field name="name">Tipo de Empleado</field>
         </record>
         <record model="custom.data.type" id="custom_data_contract_type">
+            <field name="id">8</field>
             <field name="name">Tipo de Contrato</field>
         </record>
         <record model="decimal.precision" id="custom_decimal_precision">
