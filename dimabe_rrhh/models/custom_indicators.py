@@ -20,7 +20,7 @@ class CustomIndicators(models.Model):
     year = fields.Float('Año', default=datetime.now().strftime('%Y'), digits=dp.get_precision('Year'))
 
     #ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain=[('data_type_id', '=', 2)])
-    ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain="[('data_type_id','=',ccaf_type_id)]")
+    ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain="[('data_type_id','=',2)]")
 
     ccaf_type_id = fields.Many2one('custom.data.type',compute="_compute_ccaf_type")
 
