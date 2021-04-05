@@ -20,9 +20,7 @@ class CustomIndicators(models.Model):
     year = fields.Float('Año', default=datetime.now().strftime('%Y'), digits=dp.get_precision('Year'))
 
     #ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain=[('data_type_id', '=', 2)])
-    ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain="[('data_type_id','=',2)]")
-
-    ccaf_type_id = fields.Many2one('custom.data.type',compute="_compute_ccaf_type")
+    ccaf_id = fields.Many2one('custom.data', 'Caja de Compensación', domain=lambda self: self._get_ccaf_type_id)
 
     ccaf_rate = fields.Float('Tasa CCAF')
 
@@ -39,16 +37,11 @@ class CustomIndicators(models.Model):
     mutuality_ids = fields.One2many('custom.mutuality.by.company', 'indicator_id', string='Valores por Compañia')
 
     institute_occupational_safety = fields.Float('ISL', help="Instituto de Seguridad Laboral")
-
+ 
     @api.model
-    def _compute_ccaf_type(self):
-        self.ccaf_type_id = self.env.ref('custom_data_initial_ccaf')
+    def _get_ccaf_type_id(self):
+        return [('data_type_id','=',self.env.ref('dimabe_rrhh.custom_data_initial_ccaf').id)]
         
-    def test(self):
-        test = self.env.ref('dimabe_rrhh.custom_data_initial_ccaf').id
-        name = self.env.ref('dimabe_rrhh.custom_data_initial_ccaf').name
-        raise models.ValidationError(f'{test} {name}')
-
     @api.model
     def create(self, vals):
         vals['name'] = f'{self.get_month(vals["month"])} {vals["year"]}'
