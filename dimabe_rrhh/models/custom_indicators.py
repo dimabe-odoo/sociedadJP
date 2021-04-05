@@ -45,7 +45,7 @@ class CustomIndicators(models.Model):
         self.ccaf_type_id = self.env.ref('custom_data_initial_ccaf')
         
     def test(self):
-        raise models.ValidationError(f'{self.ccaf_type_id.id} {ccaf_type_id.name}')
+        raise models.ValidationError(f'{self.ccaf_type_id.id} {self.ccaf_type_id.name}')
 
     @api.model
     def create(self, vals):
