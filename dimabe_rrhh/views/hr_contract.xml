@@ -20,7 +20,8 @@
                 <xpath expr="//page[@name='information']" position="after">
                     <page string="Carga Familiar">
                         <group string="Cargas" style="width:50%;">
-                            <field name="section_id" options="{'no_quick_create':True,'no_create':True}"/>
+                            <field name="section_type_id" invisible="1"/>
+                            <field name="section_id" options="{'no_quick_create':True,'no_create':True}" domain="[('data_type_id','=',section_type_id)]"/>
                             <field name="section_amount"/>
                             <field name="simple_charge"/>
                             <field name="maternal_charge"/>
@@ -48,12 +49,14 @@
                             <field name="saving_ccaf" attrs="{'invisible':[('have_saving_ccaf','=',False)]}"/>
                         </group>
                         <group string="Seguro Complementario" style="width:50%;">
-                            <field name="supplementary_insurance_id"/>
+                            <field name="supplementary_insurance_type_id " invisile="1"/>
+                            <field name="supplementary_insurance_id" domain="[('data_type_id','=',supplementary_insurance_type_id)]"/>
                             <field name="currency_supplementary_insurance_id" />
                             <field name="supplementary_insurance_agreed_quotes_uf"/>
                         </group>
                         <group string="APV" style="width:50%">
-                            <field name="apv_id"/>
+                            <field name="apv_type_id" invisile="1"/>
+                            <field name="apv_id" domain="[('data_type_id','=',apv_type_id)]"/>
                         </group>
                     </page>
                 </xpath>

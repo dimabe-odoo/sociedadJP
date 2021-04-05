@@ -6,7 +6,7 @@ class HrContract(models.Model):
 
     afp_id = fields.Many2one('custom.afp', 'AFP')
 
-    apv_id = fields.Many2one('custom.data', 'Institución APV', domain=[('data_type_id', '=', 1)])
+    apv_id = fields.Many2one('custom.data', 'Institución APV')
 
     is_fonasa = fields.Boolean('Es Fonasa')
 
@@ -24,7 +24,7 @@ class HrContract(models.Model):
 
     own_account_isapre = fields.Boolean('Cuenta propia Isapre')
 
-    supplementary_insurance_id = fields.Many2one('custom.data',string='Seguro Complementario', domain=[('data_type_id', '=', 4)])
+    supplementary_insurance_id = fields.Many2one('custom.data',string='Seguro Complementario')
 
     not_afp = fields.Boolean('No Cotiza AFP')
 
@@ -42,7 +42,7 @@ class HrContract(models.Model):
 
     is_pensionary = fields.Boolean('Pensionado')
 
-    type_id = fields.Many2one('custom.data', 'Tipo de Contrato', domain=[('data_type_id', '=', 8)])
+    type_id = fields.Many2one('custom.data', 'Tipo de Contrato')
 
     type_pensionary = fields.Selection(
         [('old', 'Pensión de Vejez'), ('disability', 'Pensión de Invalidez'), ('survival', 'Pensión de Sobreviviencia'),
@@ -59,9 +59,37 @@ class HrContract(models.Model):
 
     legal_gratification = fields.Boolean('Gratificación Legal Manual')
 
-    section_id = fields.Many2one('custom.data','Tramo', domain=[('data_type_id','=',6)])
+    section_id = fields.Many2one('custom.data','Tramo')
 
     section_amount = fields.Float('Monto Máximo Tramo', compute="_compute_section_amount")
+
+    section_type_id = fields.Integer(compute="_compute_section_type")
+
+    contract_type_id = fields.Integer(compute="_compute_contract_type")
+
+    supplementary_insurance_type_id = fields.Integer(compute="_compute_supplementary_insurance_type")
+
+    apv_type_id = fields.Integer(compute="_compute_apv_type")
+
+    @api.model
+    def _compute_section_type(self):
+        for item in self:
+            item.section_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_section').id
+
+    @api.model
+    def _compute_contract_type(self):
+        for item in self:
+            item.contract_type_id = self.env.ref('dimabe_rrhh.custom_data_contract_type').id
+
+    @api.model
+    def _compute_supplementary_insurance_type(self):
+        for item in self:
+            item.supplementary_insurance_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_complementary').id
+
+    @api.model
+    def _compute_apv_type(self):
+        for item in self:
+            item.apv_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_apv').id
 
     @api.depends('section_id')
     def _compute_section_amount(self):
