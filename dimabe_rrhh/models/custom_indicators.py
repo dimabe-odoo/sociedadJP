@@ -41,7 +41,7 @@ class CustomIndicators(models.Model):
     institute_occupational_safety = fields.Float('ISL', help="Instituto de Seguridad Laboral")
  
     @api.model
-    def _compute_ccaf_type_id(self):
+    def _compute_ccaf_type(self):
         self.ccaf_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_ccaf').id
         
     @api.model
