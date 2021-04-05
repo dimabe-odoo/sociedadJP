@@ -8,15 +8,13 @@
             <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <xpath expr="//div[@name='wage']" position="after">
-                    <group>
+                <xpath expr="//page[@name='information']" position="inside">
                         <field name="collation_amount"/>
                         <field name="mobilization_amount"/>
                         <field name="viatic_amount"/>
                         <field name="advance_salary_amount"/>
                         <field name="legal_gratification"/>
                         <field name="section_id" options="{'no_quick_create':True,'no_create':True}"/>
-                    </group>
                 </xpath>
                 <xpath expr="//page[@name='information']" position="after">
                     <page string="Carga Familiar">
