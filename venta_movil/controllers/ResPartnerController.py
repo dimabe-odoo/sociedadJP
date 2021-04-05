@@ -57,6 +57,7 @@ class ResPartnerController(http.Controller):
                     'Product_Id': pr.product_tmpl_id.id,
                     'Product_Name': pr.product_tmpl_id.name,
                     'isCat': True if 'Catalítico' in pr.product_tmpl_id.display_name else False,
+                    'isCil': False,
                     'is_Dist': True if 'Descuento' in pr.product_tmpl_id.display_name or 'Discount' in pr.product_tmpl_id.display_name else False,
                     'Stock': stock_product.quantity,
                     'Price': pr.fixed_price
@@ -66,6 +67,7 @@ class ResPartnerController(http.Controller):
                 'Product_Id': coupon.product_tmpl_id.id,
                 'Product_Name': coupon.product_tmpl_id.name,
                 'isCat': True if 'Catalítico' in coupon.product_tmpl_id.display_name else False,
+                'isCil': False,
                 'is_Dist': True if 'Descuento' in coupon.product_tmpl_id.display_name or 'Discount' in coupon.product_tmpl_id.display_name else False,
                 'Stock': 1,
                 'Price': coupon.list_price
@@ -75,6 +77,7 @@ class ResPartnerController(http.Controller):
                 'Product_Id': cil.product_tmpl_id.id,
                 'Product_Name': cil.product_tmpl_id.name,
                 'isCil': True,
+                'Stock':5,
                 'Price':cil.list_price
             })
         return result
