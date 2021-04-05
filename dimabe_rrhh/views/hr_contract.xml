@@ -49,7 +49,7 @@
                             <field name="saving_ccaf" attrs="{'invisible':[('have_saving_ccaf','=',False)]}"/>
                         </group>
                         <group string="Seguro Complementario" style="width:50%;">
-                            <field name="supplementary_insurance_type_id " invisile="1"/>
+                            <field name="supplementary_insurance_type_id" invisile="1"/>
                             <field name="supplementary_insurance_id" domain="[('data_type_id','=',supplementary_insurance_type_id)]"/>
                             <field name="currency_supplementary_insurance_id" />
                             <field name="supplementary_insurance_agreed_quotes_uf"/>
