@@ -30,7 +30,8 @@
                             <page string="Instituciones Relacionados">
                                 <group>
                                     <group>
-                                        <field name="ccaf_id"/>
+                                        <field name="ccaf_type_id" invisible="1"/>
+                                        <field name="ccaf_id" domain="[('data_type_id','=',ccaf_type_id)]"/>
                                         <field name="ccaf_rate"/>
                                         <field name="national_health_fund_rate"/>
                                         <field name="ips_rate"/>
