@@ -21,6 +21,7 @@
                     <page string="Carga Familiar">
                         <group string="Cargas" style="width:50%;">
                             <field name="section_id" options="{'no_quick_create':True,'no_create':True}"/>
+                            <field name="section_amount"/>
                             <field name="simple_charge"/>
                             <field name="maternal_charge"/>
                             <field name="disability_charge"/>
