@@ -65,16 +65,18 @@ class HrContract(models.Model):
 
     @api.depends('section_id')
     def _compute_section_amount(self):
-        if self.section_id:
-            section_amount = self.env['custom.indicators.data'].search([(self.section_id.name,'in','name'),('Monto','in','name')], order='id desc')[0]
-            self.section_amount = section_amount.value
+        for item in self:
+            if item.section_id:
+                section_amount = self.env['custom.indicators.data'].search([(item.section_id.name,'in','name'),('Monto','in','name')], order='id desc')[0]
+                item.section_amount = section_amount.value
 
     @api.onchange('section_id')
     def onchange_section_id(self):
-        max_salary_section = self.env['custom.indicators.data'].search([(self.section_id.name,'in','name'),('Tope','in','name')], order='id desc')[0]
+        for item in self:
+            max_salary_section = self.env['custom.indicators.data'].search([(item.section_id.name,'in','name'),('Tope','in','name')], order='id desc')[0]
 
-        if self.wage > max_salary_section.value:
-            raise models.ValidationError(f'La renta {self.wage} no corresponde al {self.section_id.name}')
+            if item.wage > max_salary_section.value:
+                raise models.ValidationError(f'La renta {self.wage} no corresponde al {self.section_id.name}')
 
     
 
