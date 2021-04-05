@@ -63,7 +63,6 @@ class HrContract(models.Model):
 
     section_amount = fields.Float('Monto Máximo Tramo', compute="_compute_section_amount")
 
-
     @api.depends('section_id')
     def _compute_section_amount(self):
         print('')
