@@ -30,7 +30,7 @@
         'data/custom_data_ccaf.xml',
         'data/custom_data_hr_payslip.xml',
         'data/custom_data_mutuality.xml',
-        'data/custom_data_contract_type.xml',
+        #'data/custom_data_contract_type.xml',
         'data/custom_data_section.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
