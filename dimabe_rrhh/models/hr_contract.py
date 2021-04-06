@@ -111,6 +111,7 @@ class HrContract(models.Model):
                 raise models.ValidationError(f'{self.wage} <= {max_salary_section.value}')
                 if max_salary_section and self.wage <= max_salary_section.value:
                     self.section_id = section.id
+                    break
             
 
 
