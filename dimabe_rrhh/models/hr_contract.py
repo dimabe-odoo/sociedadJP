@@ -95,7 +95,7 @@ class HrContract(models.Model):
     def _compute_section_amount(self):
         for item in self:
             if item.section_id:
-                section_amount = self.env['custom.indicators.data'].search([(item.section_id.name,'in','name'),('Monto','in','name')], order='id desc')[0]
+                section_amount = self.env['custom.indicators.data'].search([('name','like',item.section_id.name),('name','in',item.section_id.name)], order='id desc')[0]
                 item.section_amount = section_amount.value
 
     @api.onchange('section_id')
