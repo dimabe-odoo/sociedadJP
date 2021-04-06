@@ -61,7 +61,7 @@ class HrContract(models.Model):
 
     section_id = fields.Many2one('custom.data','Tramo')
 
-    section_amount = fields.Float('Monto Máximo Tramo', compute="_compute_section_amount")
+    section_amount = fields.Float('Monto Máximo Tramo')
 
     section_type_id = fields.Integer(compute="_compute_section_type")
 
@@ -92,21 +92,26 @@ class HrContract(models.Model):
             item.apv_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_apv').id
 
     @api.onchange('section_id')
-    def _compute_section_amount(self):
+    def onchange_section(self):
         for item in self:
             if item.section_id.name:
                 section_amount = self.env['custom.indicators.data'].search([('name','like',item.section_id.name),('name','in',item.section_id.name)], order='id desc')[0]
-                #raise models.ValidationError(f'{len(section_amount)}')
-                
                 item.section_amount = section_amount.value
 
-    @api.onchange('section_id')
-    def onchange_section_id(self):
+    @api.onchange('wage')
+    def onchange_wage(self):
         for item in self:
-            max_salary_section = self.env['custom.indicators.data'].search([(item.section_id.name,'in','name'),('Tope','in','name')], order='id desc')[0]
+            section_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_section').id
+            sections = self.env['custom.data'].search([('data_type_id','=',section_type_id)])
+            for section in sections:
+                max_salary_section = self.env['custom.indicators.data'].search([(section.name,'in','name'),('Tope','in','name')], order='id desc')[0]
+                if item.wage <= max_salary_section.value:
+                    item.section_id = section.id
+                    break
+                item.section_id = section.id
 
-            if item.wage > max_salary_section.value:
-                raise models.ValidationError(f'La renta {self.wage} no corresponde al {self.section_id.name}')
+            #if item.wage > max_salary_section.value:
+            #    raise models.ValidationError(f'La renta {self.wage} no corresponde al {self.section_id.name}')
 
     
 
