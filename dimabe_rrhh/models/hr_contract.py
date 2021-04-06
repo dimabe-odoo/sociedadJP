@@ -104,8 +104,8 @@ class HrContract(models.Model):
             if section.code == 'D':
                 self.section_id = section.id
             else:
-                max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')[0]
-                if max_salary_section and self.wage <= max_salary_section.value:
+                max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')
+                if max_salary_section and self.wage <= max_salary_section[0].value:
                     self.section_id = section.id
             
 
