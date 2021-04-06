@@ -101,13 +101,13 @@ class HrContract(models.Model):
     def onchange_wage(self):
         sections = self.env['custom.data'].search([('data_type_id','=',self.section_type_id)])
         for section in sections:
-            max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')[0]
-            if section.id == sections[3].id:
-                raise models.ValidationError(f'{len(max_salary_section)}')
-            if max_salary_section and len(max_salary_section) > 0 and self.wage <= max_salary_section.value:
+            if 'D' in section.name:
                 self.section_id = section.id
-                break
-            self.section_id = section.id
+            else:
+                max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')[0]
+                if max_salary_section and self.wage <= max_salary_section.value:
+                    self.section_id = section.id
+            
 
 
     
