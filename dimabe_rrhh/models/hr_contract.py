@@ -100,18 +100,15 @@ class HrContract(models.Model):
 
     @api.onchange('wage')
     def onchange_wage(self):
-        for item in self:
-            section_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_section').id
-            sections = self.env['custom.data'].search([('data_type_id','=',section_type_id)])
-            for section in sections:
-                max_salary_section = self.env['custom.indicators.data'].search([(section.name,'in','name'),('Tope','in','name')], order='id desc')[0]
-                if item.wage <= max_salary_section.value:
-                    item.section_id = section.id
-                    break
+        sections = self.env['custom.data'].search([('data_type_id','=',self.section_type_id)])
+        for section in sections:
+            max_salary_section = self.env['custom.indicators.data'].search([(section.name,'in','name'),('Tope','in','name')], order='id desc')[0]
+            raise models.ValidationError(f'{max_salary_section.value} compare {self.wage}')
+            if max_salary_section and self.wage <= max_salary_section.value:
                 item.section_id = section.id
+                break
+            item.section_id = section.id
 
-            #if item.wage > max_salary_section.value:
-            #    raise models.ValidationError(f'La renta {self.wage} no corresponde al {self.section_id.name}')
 
     
 
