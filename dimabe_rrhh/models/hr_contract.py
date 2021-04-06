@@ -96,6 +96,8 @@ class HrContract(models.Model):
         for item in self:
             if item.section_id:
                 section_amount = self.env['custom.indicators.data'].search([('name','like',item.section_id.name),('name','in',item.section_id.name)], order='id desc')[0]
+                raise models.ValidationError(f'{len(section_amount)} {section_amount.value}')
+                
                 item.section_amount = section_amount.value
 
     @api.onchange('section_id')
