@@ -91,13 +91,14 @@ class HrContract(models.Model):
         for item in self:
             item.apv_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_apv').id
 
-    @api.depends('section_id')
+    @api.onchange('section_id')
     def _compute_section_amount(self):
-        if self.section_id:
-            section_amount = self.env['custom.indicators.data'].sudo().search([('name','like',self.section_id.name),('name','in',self.section_id.name)], order='id desc')[0]
-            raise models.ValidationError(f'{len(section_amount)}')
+        for item in self:
+            if item.section_id.name:
+                section_amount = self.env['custom.indicators.data'].search([('name','like',item.section_id.name),('name','in',item.section_id.name)], order='id desc')[0]
+                #raise models.ValidationError(f'{len(section_amount)}')
                 
-            self.section_amount = section_amount.value
+                item.section_amount = section_amount.value
 
     @api.onchange('section_id')
     def onchange_section_id(self):
