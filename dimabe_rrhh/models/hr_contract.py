@@ -95,7 +95,7 @@ class HrContract(models.Model):
     def onchange_section(self):
         for item in self:
             if item.section_id.name:
-                section_amount = self.env['custom.indicators.data'].search([('name','like',item.section_id.name),('name','in',item.section_id.name)], order='id desc')[0]
+                section_amount = self.env['custom.indicators.data'].search([('name','like',item.section_id.name),('name','like',item.section_id.name)], order='id desc')[0]
                 item.section_amount = section_amount.value
 
     @api.onchange('wage')
