@@ -55,8 +55,8 @@
                             <field name="supplementary_insurance_agreed_quotes_uf"/>
                         </group>
                         <group string="APV" style="width:50%">
-                            <field name="apv_type_id" invisile="1"/>
-                            <field name="apv_id" domain="[('data_type_id','=',apv_type_id)]"/>
+                            <field name="apv_type_id" invisible="1"/>
+                            <field name="apv_id" domain="[('data_type_id','=',apv_type_id)]" context="{'default_data_type_id':apv_type_id}"/>
                         </group>
                     </page>
                 </xpath>

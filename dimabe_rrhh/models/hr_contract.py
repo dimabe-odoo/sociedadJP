@@ -6,7 +6,7 @@ class HrContract(models.Model):
 
     afp_id = fields.Many2one('custom.afp', 'AFP')
 
-    apv_id = fields.Many2one('custom.data', 'Institución APV')
+    apv_id = fields.Many2one('custom.benefits.rrhh', 'Institución APV')
 
     is_fonasa = fields.Boolean('Es Fonasa')
 
@@ -108,6 +108,7 @@ class HrContract(models.Model):
                 self.section_id = section.id
             else:
                 max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')[0]
+                raise models.ValidationError(max_salary_section)
                 if max_salary_section and self.wage <= max_salary_section.value:
                     self.section_id = section.id
             
