@@ -103,7 +103,7 @@ class HrContract(models.Model):
         sections = self.env['custom.data'].search([('data_type_id','=',self.section_type_id)])
         for section in sections:
             max_salary_section = self.env['custom.indicators.data'].search([('name','like',section.name),('name','like','Tope')], order='id desc')[0]
-            #raise models.ValidationError(f'{max_salary_section.value} compare {self.wage}')
+            raise models.ValidationError(f'{len(max_salary_section)} {max_salary_section[0].value}')
             if max_salary_section and self.wage <= max_salary_section.value:
                 item.section_id = section.id
                 break
