@@ -93,12 +93,11 @@ class HrContract(models.Model):
 
     @api.depends('section_id')
     def _compute_section_amount(self):
-        for item in self:
-            if item.section_id:
-                section_amount = self.env['custom.indicators.data'].search([('name','like',item.section_id.name),('name','in',item.section_id.name)], order='id desc')[0]
-                raise models.ValidationError(f'{len(section_amount)} {section_amount.value}')
+        if self.section_id:
+            section_amount = self.env['custom.indicators.data'].sudo().search([('name','like',self.section_id.name),('name','in',self.section_id.name)], order='id desc')[0]
+            raise models.ValidationError(f'{len(section_amount)}')
                 
-                item.section_amount = section_amount.value
+            self.section_amount = section_amount.value
 
     @api.onchange('section_id')
     def onchange_section_id(self):
