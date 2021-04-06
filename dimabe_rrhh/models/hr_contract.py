@@ -108,7 +108,6 @@ class HrContract(models.Model):
                 self.section_id = section.id
             else:
                 max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')[0]
-                raise models.ValidationError(f'{self.wage} <= {max_salary_section.value}')
                 if max_salary_section and self.wage <= max_salary_section.value:
                     self.section_id = section.id
                     break
