@@ -94,8 +94,11 @@ class HrContract(models.Model):
     @api.onchange('section_id')
     def onchange_section(self):
         if self.section_id.name:
-            section_amount = self.env['custom.indicators.data'].search([('name','=',self.section_id.name + ' - Monto')], order='id desc')[0]
-            self.section_amount = section_amount.value
+            if self.section_id.code == 'D':
+                self.section_amount = 0
+            else:
+                section_amount = self.env['custom.indicators.data'].search([('name','=',self.section_id.name + ' - Monto')], order='id desc')[0]
+                self.section_amount = section_amount.value
 
     @api.onchange('wage')
     def onchange_wage(self):
@@ -104,8 +107,8 @@ class HrContract(models.Model):
             if section.code == 'D':
                 self.section_id = section.id
             else:
-                max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')
-                if max_salary_section and self.wage <= max_salary_section[0].value:
+                max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')[0]
+                if max_salary_section and self.wage <= max_salary_section.value:
                     self.section_id = section.id
             
 
