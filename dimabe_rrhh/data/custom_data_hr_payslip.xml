@@ -270,8 +270,6 @@ else:
     result = 0
 </field>
         </record>
-
-
         <record id="custom_hr_salary_rule_voluntary_saving_amount" model="hr.salary.rule">
             <field name="name">APORTE AL AHORRO VOLUNTARIO</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
