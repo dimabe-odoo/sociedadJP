@@ -18,3 +18,9 @@ class HrPaySlip(models.Model):
                     'payslip_id': item.id
                 })
             item.salary_id = None
+    
+    @api.model
+    def get_worked_day_lines(self, contracts, date_from, date_to):
+        res = super(HrPaySlip, self).get_worked_day_lines(contracts, date_from, date_to)
+        raise models.ValidationError('Test boton calcular hoja')
+        return res
