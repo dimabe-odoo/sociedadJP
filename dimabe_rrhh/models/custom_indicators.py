@@ -112,7 +112,7 @@ class CustomIndicators(models.Model):
                 for item in table_data:
                     for d in item['data']:
                         self.env['custom.indicators.data'].create({
-                            'name': d['title'],
+                            'name': d['title'].replace(':',''),
                             'value': d['data'],
                             'value_show': f'$ {d["data"]}',
                             'type': '4',
@@ -123,7 +123,7 @@ class CustomIndicators(models.Model):
                 for item in table_data:
                     for d in item['data']:
                         self.env['custom.indicators.data'].create({
-                            'name': d['title'],
+                            'name': d['title'].replace(':',''),
                             'value': d['data'],
                             'value_show': f'$ {d["data"]}',
                             'type': '5',
@@ -134,7 +134,7 @@ class CustomIndicators(models.Model):
                 for item in table_data:
                     for d in item['data']:
                         self.env['custom.indicators.data'].create({
-                            'name': d['title'],
+                            'name': d['title'].replace(':',''),
                             'value': d['data'],
                             'value_show': f'$ {d["data"]}',
                             'type': '6',
@@ -145,7 +145,7 @@ class CustomIndicators(models.Model):
                 for item in table_data:
                     for d in item['data']:
                         self.env['custom.indicators.data'].create({
-                            'name': d['title'],
+                            'name': d['title'].replace(':',''),
                             'value': d['data'],
                             'value_show': f'$ {d["data"]}',
                             'type': '7',

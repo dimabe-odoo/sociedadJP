@@ -276,7 +276,7 @@ else:
             <field name="code">APV</field>
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.apv_id:</field>
+            <field name="condition_python">contract.apv_amount > 0:</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">if contract.apv_amount > 0:
     rate = payslip.indicator_id.uf
@@ -302,34 +302,35 @@ else:
             <field name="amount_python_compute">amount = 0
 if inputs.HEX50:
     amount = inputs.HEX50.amount
-DEVENGABLE=round(contract.wage+contract.otros_imp+amount)
+
+DEVENGABLE=round(contract.wage+amount)
+
+min_salary = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Trab. Dependientes e Independientes').value
+maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'Cesantía' in a.name).value
 
 GRATI=round(DEVENGABLE * 25 / 100 )
-if GRATI > (4.75 * payslip.indicadores_id.sueldo_minimo /12):
-    GRATI = round (4.75 * payslip.indicadores_id.sueldo_minimo / 12)
-else:
-    GRATI = GRATI
+if GRATI > (4.75 * min_salary /12):
+    GRATI = round(4.75 * min_salary / 12)
 
-
-if TOTIM >=round(payslip.indicadores_id.tope_imponible_seguro_cesantia*payslip.indicadores_id.uf):
-     totimpo =round(payslip.indicadores_id.tope_imponible_seguro_cesantia*payslip.indicadores_id.uf)
+if TOTIM >=round(maximum):
+    totimpo =round(maximum)
 elif TOTIM ==0:
-     totimpo =round(DEVENGABLE+GRATI)
+    totimpo =round(DEVENGABLE+GRATI)
 else:
-     totimpo = TOTIM
+    totimpo = TOTIM
 
-if contract.pension is True:
-     result = 0
-elif contract.type_id.name == 'Sueldo Empresarial':
-     result = 0
-elif contract.type_id.name == 'Plazo Indefinido':
-     result = round(totimpo*payslip.indicadores_id.contrato_plazo_indefinido_empleador/100)
-elif contract.type_id.name == 'Indefinido 11 anos o mas':
-     result = round(TOTIM*payslip.indicadores_id.contrato_plazo_indefinido_empleador_otro/100)
-elif contract.type_id.name == 'Plazo Fijo':
-     result = round(totimpo*payslip.indicadores_id.contrato_plazo_fijo_empleador/100)
+if contract.is_pensionary is True:
+    result = 0
+elif contract.type_id.code == '4':
+    result = 0
+elif contract.type_id.code == '1':
+    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name = 'Contrato Plazo Indefinido Trabajador').value/100)
+elif contract.type_id.code == '3':
+    result = round(TOTIM * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name = 'Plazo Indefinido 11 años o más').value / 100)
+elif contract.type_id.name == '2':
+    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name = 'Contrato Plazo Fijo Empleador').value /100)
 else:
-     result = 0</field>
+    result = 0</field>
         </record>
 
         <record id="custom_hr_salary_rule_company_forecast_amount" model="hr.salary.rule">
