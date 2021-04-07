@@ -14,7 +14,7 @@
         </record>
         <record id="custom_data_more_eleven" model="custom.data">
             <field name="id">3</field>
-            <field name="name">Indefinido 11 años o mas</field>
+            <field name="name">Indefinido 11 años o más</field>
             <field name="code">3</field>
             <field name="data_type_id" ref="custom_data_contract_type"/>
         </record>

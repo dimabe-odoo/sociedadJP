@@ -341,18 +341,25 @@ class CustomIndicators(models.Model):
 
     def get_safe(self, table):
         data = []
-        contract_undefined_employer = {'title': 'Contracto Plazo Indefinido Empleador',
+        contract_undefined_employer = {'title': 'Contrato Plazo Indefinido Empleador',
                                        'value': self.clear_string(table.select("strong")[5].get_text())}
         data.append(contract_undefined_employer)
-        contract_undefined_employee = {'title': 'Contracto Plazo Indefinido Trabajador',
+
+        contract_undefined_employee = {'title': 'Contrato Plazo Indefinido Trabajador',
                                        'value': self.clear_string(table.select("strong")[6].get_text())}
         data.append(contract_undefined_employee)
-        contract_fixed_term_employer = {'title': 'Contracto Plazo Fijo Empleador',
+
+        contract_fixed_term_employer = {'title': 'Contrato Plazo Fijo Empleador',
                                         'value': self.clear_string(table.select("strong")[7].get_text())}
         data.append(contract_fixed_term_employer)
-        contract_undefined_employer_other = {'title': 'Contacto Plazo Empleador Otro',
-                                             'value': self.clear_string(table.select("strong")[9].get_text())}
-        data.append(contract_undefined_employer_other)
+
+        contract_undefined_eleven_or_more = {'title': 'Plazo Indefinido 11 años o más',
+                                            'value': self.clear_string(table.select("strong")[9].get_text())}
+        data.append(contract_undefined_eleven_or_more)
+
+        private_home_worker = {'title': 'Trabajador Casa Particular',
+                                             'value': self.clear_string(table.select("strong")[11].get_text())}
+        data.append(private_home_worker)
         return data
 
     def get_utm_uta(self, table):

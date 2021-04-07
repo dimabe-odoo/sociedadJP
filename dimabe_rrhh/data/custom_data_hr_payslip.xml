@@ -79,7 +79,7 @@
             <field name="condition_select">python</field>
             <field name="condition_python">result = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '5')[0].value > contract.wage</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round(((payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '5')[0].value - contract.wage) / 30) * worked_days.WORK100.number_of_days)</field>
+            <field name="amount_python_compute">result = round(((payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '5')[0].value - contract.wage) / 30) * worked_days.number_of_days)</field>
         </record>
         <record id="custom_hr_salary_rule_extra_hours" model="hr.salary.rule">
             <field name="name">Horas Extra</field>
@@ -177,10 +177,10 @@
             <field name="code">COL</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.colacion > 0</field>
+            <field name="condition_python">result = contract.collation_amount > 0</field>
             <field name="amount_select">code</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="amount_python_compute">result = round((contract.colacion / 30) * worked_days.WORK100.number_of_days)</field>
+            <field name="amount_python_compute">result = round((contract.collation_amount / 30) * worked_days.number_of_days)</field>
         </record>
 
         <record id="custom_hr_salary_rule_mobilization" model="hr.salary.rule">
@@ -189,9 +189,9 @@
             <field name="code">MOV</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.movilizacion > 0</field>
+            <field name="condition_python">result = contract.mobilization_amount > 0</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((contract.movilizacion / 30) * worked_days.WORK100.number_of_days)</field>
+            <field name="amount_python_compute">result = round((contract.mobilization_amount / 30) * worked_days.number_of_days)</field>
         </record> 
 
 
@@ -212,9 +212,9 @@
             <field name="code">VIASAN</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.viatico_santiago > 0</field>
+            <field name="condition_python">result = contract.viatic_amount > 0</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((contract.viatico_santiago / 30) * worked_days.WORK100.number_of_days)</field>
+            <field name="amount_python_compute">result = round((contract.viatic_amount / 30) * worked_days.number_of_days)</field>
         </record>
 
         <record id="custom_hr_salary_rule_total_amount_not_taxable" model="hr.salary.rule">
@@ -234,31 +234,16 @@
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">if contract.afp_id.name == 'CAPITAL':
-    tasa = payslip.indicadores_id.tasa_afp_capital
-elif contract.afp_id.name == 'CUPRUM':
-    tasa = payslip.indicadores_id.tasa_afp_cuprum
-elif contract.afp_id.name == 'HABITAT':
-    tasa = payslip.indicadores_id.tasa_afp_habitat
-elif contract.afp_id.name == 'MODELO':
-    tasa = payslip.indicadores_id.tasa_afp_modelo
-elif contract.afp_id.name == 'PLANVITAL':
-    tasa = payslip.indicadores_id.tasa_afp_planvital
-elif contract.afp_id.name == 'PROVIDA':
-    tasa = payslip.indicadores_id.tasa_afp_provida
-elif contract.afp_id.name == 'UNO':
-    tasa = payslip.indicadores_id.tasa_afp_uno
+            <field name="amount_python_compute">rate=payslip.indicator_id.mapped('data_ids').filtered(lambda a : a.type == '9' and ('Afp ' +contract.afp_id.name) .upper() in a.name.upper()).percentage_value
+maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'AFP' in a.name).value
+total_imp = categories.IMP
+if contract.is_pensionary or contract.not_afp:
+    result=0
+elif total_imp >=round(maximum):
+    result = round(maximum * rate / 100)
 else:
-    tasa = 0
-
-if contract.pension is True:
-    result = 0
-elif contract.sin_afp is True:
-    result = 0
-elif TOTIM >=round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf):
-    result =round( round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf)*tasa /100)
-else:
-    result = round(round(TOTIM)*tasa /100)</field>
+    result = round(total_imp * rate / 100)
+</field>
         </record>
 
 
@@ -269,20 +254,21 @@ else:
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">if contract.pension is True:
-     result = 0
-elif contract.type_id.name == 'Sueldo Empresarial':
-     result = 0
-elif contract.type_id.name == 'Plazo Fijo':
-     result = 0
-elif TOTIM >=round(payslip.indicadores_id.tope_imponible_seguro_cesantia*payslip.indicadores_id.uf):
-     result =round(payslip.indicadores_id.tope_imponible_seguro_cesantia*payslip.indicadores_id.uf*payslip.indicadores_id.contrato_plazo_indefinido_trabajador/100)
-elif contract.type_id.name == 'Plazo Indefinido':
-     result = round(TOTIM*payslip.indicadores_id.contrato_plazo_indefinido_trabajador/100)
-elif contract.type_id.name == 'Indefinido 11 anos o mas':
-     result = round(TOTIM*payslip.indicadores_id.contrato_plazo_indefinido_trabajador_otro/100)
+            <field name="amount_python_compute">maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'Cesantía' in a.name).value
+contract_undefined_term = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name =='Contrato Plazo Indefinido Trabajador').value
+contract_undefined_eleven_or_more_term = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name =='Plazo Indefinido 11 años o más').value
+total_imp = categories.IMP
+if contract.is_pensionary or contract.type_id.code == '2' or contract.type_id.code == '4':
+    result = 0
+elif total_imp >=round(maximum):
+    result = round(maximum * contract_undefined_term / 100)
+elif contract.type_id.code == '1':
+    result = round(total_imp * contract_undefined_term / 100)
+elif contract.type_id.name == '3':
+    result = round(total_imp * contract_undefined_eleven_or_more_term / 100)
 else:
-     result = 0</field>
+    result = 0
+</field>
         </record>
 
 
