@@ -276,19 +276,19 @@ else:
             <field name="code">APV</field>
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.aporte_voluntario > 0</field>
+            <field name="condition_python">result = contract.apv_id:</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">if contract.aporte_voluntario_moneda == 'uf':
-    tasa = payslip.indicadores_id.uf
-elif contract.aporte_voluntario_moneda == 'clp':
-    tasa = 1
+            <field name="amount_python_compute">if contract.apv_amount > 0:
+    rate = payslip.indicator_id.uf
+elif contract.apv_currency == 'clp':
+    rate = 1
 else:
-    tasa = 0
+    rate = 0
 
-if round(contract.aporte_voluntario*tasa) > round(payslip.indicadores_id.tope_mensual_apv * payslip.indicadores_id.uf ):
-    result = round(payslip.indicadores_id.tope_mensual_apv * payslip.indicadores_id.uf )
+if round(contract.apv_amount*rate) > round(payslip.indicator_id.tope_mensual_apv * payslip.indicator_id.uf ):
+    result = round(payslip.indicator_id.tope_mensual_apv * payslip.indicator_id.uf )
 else:
-    result = round(contract.aporte_voluntario*tasa)</field>
+    result = round(contract.apv_amount*rate)</field>
         </record>
 
         <record id="custom_hr_salary_rule_unemployment_insurance_company_contribution_amount" model="hr.salary.rule">

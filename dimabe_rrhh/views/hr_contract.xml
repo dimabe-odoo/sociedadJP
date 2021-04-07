@@ -57,6 +57,9 @@
                         <group string="APV" style="width:50%">
                             <field name="apv_type_id" invisible="1"/>
                             <field name="apv_id" domain="[('data_type_id','=',apv_type_id)]" context="{'default_data_type_id':apv_type_id}"/>
+                            <field name="apv_currency" attrs="{'invisible':[('apv_id','=',None)]}"/>
+                            <field name="apv_amount" attrs="{'invisible':[('apv_id','=',None)]}"/>
+                            <field name="apv_payment_term" attrs="{'invisible':[('apv_id','=',None)]}"/>
                         </group>
                     </page>
                 </xpath>
