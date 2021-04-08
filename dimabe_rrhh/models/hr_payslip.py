@@ -21,6 +21,7 @@ class HrPaySlip(models.Model):
     
     @api.onchange('contract_id')
     def onchange_contract(self):
+        raise models.ValidationError(self.id)
         codes = []
         for line in self.worked_days_line_ids:
             if line.code not in codes:
@@ -28,6 +29,6 @@ class HrPaySlip(models.Model):
         if 'WORK100' not in codes:
             self.env['hr.payslip.worked_days'].create({
                 'work_entry_type_id': 1,
-                'payslip_id': 1,
+                'payslip_id': self.id,
                 'sequence': 10
             })
