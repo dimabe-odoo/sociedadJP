@@ -221,7 +221,6 @@ class CustomIndicators(models.Model):
 
         return data
 
-
     def get_afp_data(self,table):
         data = []
         afp_rate_capital = {
