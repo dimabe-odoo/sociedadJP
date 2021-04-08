@@ -542,10 +542,9 @@ else:
     amount_to_reduce = 0
     for item in payslip.indicator_id.mapped('unique_tax_ids'):
         if TRIBU >= item.salary_from:
-            if TRIBU <= item.salary_to:
-                factor = item.factor
-                amount_to_reduce = item.amount_to_reduce
-                break
+            factor = item.factor
+            amount_to_reduce = item.amount_to_reduce
+            break
         elif TRIBU >= item.salary_from and item.salary_to == 0:
             factor = item.factor
             amount_to_reduce = item.amount_to_reduce
