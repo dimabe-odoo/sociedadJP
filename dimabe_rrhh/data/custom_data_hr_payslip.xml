@@ -255,8 +255,8 @@ else:
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'Cesantía' in a.name).value
-contract_undefined_term = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name =='Contrato Plazo Indefinido Trabajador').value
-contract_undefined_eleven_or_more_term = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name =='Plazo Indefinido 11 años o más').value
+contract_undefined_term = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name =='Contrato Plazo Indefinido Trabajador').percentage_value
+contract_undefined_eleven_or_more_term = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name =='Plazo Indefinido 11 años o más').percentage_value
 total_imp = categories.IMP
 if contract.is_pensionary or contract.type_id.code == '2' or contract.type_id.code == '4':
     result = 0
