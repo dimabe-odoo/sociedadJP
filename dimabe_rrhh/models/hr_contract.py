@@ -77,7 +77,6 @@ class HrContract(models.Model):
 
     apv_payment_term = fields.Selection((('1', 'Directa'), ('2', 'Indirecta')), 'Forma de Pago', default="1")
 
-
     @api.model
     def _compute_section_type(self):
         for item in self:
