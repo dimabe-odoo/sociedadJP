@@ -17,14 +17,14 @@
                         <notebook>
                             <page string="Indicadores">
                                 <group>
-                                    <tree>
-                                        <field name="unique_tax_ids">
+                                    <field name="unique_tax_ids">
+                                        <tree>
                                             <field name="salary_from"/>
                                             <field name="salary_to"/>
                                             <field name="factor"/>
                                             <field name="amount_to_reduce"/>
-                                        </field>
-                                    </tree>
+                                        </tree>
+                                    </field>
                                 </group>
                                 <group>
                                     <field name="data_ids">
