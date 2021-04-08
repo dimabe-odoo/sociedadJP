@@ -17,6 +17,14 @@
                         <notebook>
                             <page string="Indicadores">
                                 <group>
+                                    <fields name="unique_tax_ids">
+                                        <field name="salary_from"/>
+                                        <field name="salary_to"/>
+                                        <field name="factor"/>
+                                        <field name="amount_to_reduce"/>
+                                    </field>
+                                </group>
+                                <group>
                                     <field name="data_ids">
                                         <tree create="false" delete="false" editable="false">
                                             <field name="name"/>
