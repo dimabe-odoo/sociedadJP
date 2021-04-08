@@ -29,6 +29,5 @@ class HrPaySlip(models.Model):
             self.env['hr.payslip.worked_days'].create({
                 'work_entry_type_id': 1,
                 'payslip_id': self.id,
-                'contract_id': self.contract_id.id,
-                'sequence': 1
+                'sequence': 10
             })
