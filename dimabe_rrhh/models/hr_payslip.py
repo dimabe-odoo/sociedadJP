@@ -21,13 +21,13 @@ class HrPaySlip(models.Model):
     
     @api.onchange('employee_id')
     def onchange_employee(self):
-        codes = []
-        for line in self.worked_days_line_ids:
-            if line.code not in codes:
-                codes.append(line.code)
-        if 'WORK100' not in codes:
-            self.env['hr.payslip.worked_days'].create({
-                'work_entry_type_id': 1,
-                'payslip_id': self._origin.id,
-                'sequence': 10
-            })
+        for item in self:
+            codes = []
+            for line in item.worked_days_line_ids:
+                if line.code not in codes:
+                    codes.append(line.code)
+            if 'WORK100' not in codes:
+                self.env['hr.payslip.worked_days'].create({
+                    'work_entry_type_id': 1,
+                    'payslip_id': self._origin.id
+                })
