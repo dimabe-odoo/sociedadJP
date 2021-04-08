@@ -19,7 +19,6 @@ class HrPaySlip(models.Model):
                 })
             item.salary_id = None
     
-    @api.onchange('employee_id')
     def onchange_employee(self):
         for item in self:
             codes = []
@@ -33,3 +32,12 @@ class HrPaySlip(models.Model):
                 #        'work_entry_type_id': 1,
                 #        'payslip_id': 1
                 #    })
+class HrPayslipWorkedDays(models.Model):
+    _inherit = 'hr.payslip.worked_days'
+
+    @api.Model
+    def create(self, vals):
+        res = super(HrPayslipWorkedDays, self).create
+        raise models.ValidationError(vals)
+        return res
+        
