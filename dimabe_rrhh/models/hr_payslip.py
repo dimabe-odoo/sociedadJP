@@ -19,8 +19,14 @@ class HrPaySlip(models.Model):
                 })
             item.salary_id = None
     
-    @api.model
-    def get_worked_day_lines(self, contracts, date_from, date_to):
-        res = super(HrPaySlip, self).get_worked_day_lines(contracts, date_from, date_to)
-        raise models.ValidationError('Test boton calcular hoja')
-        return res
+    @api.onchange('contract_id')
+    def onchange_contract(self):
+        codes = []
+
+        for line in self.worked_days_line_ids:
+            if line.code not in codes:
+                codes.append(line.code)
+        if 'WORK100' not in codes:
+            self.env['hr.payslip_worked_days'].create({
+                'work_entry_type_id': 1
+            })
