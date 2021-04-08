@@ -19,8 +19,8 @@ class HrPaySlip(models.Model):
                 })
             item.salary_id = None
     
-    @api.onchange('contract_id')
-    def onchange_contract(self):
+    @api.onchange('employee_id')
+    def onchange_employee(self):
         codes = []
         for line in self.worked_days_line_ids:
             if line.code not in codes:
