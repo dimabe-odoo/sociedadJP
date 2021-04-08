@@ -28,5 +28,7 @@ class HrPaySlip(models.Model):
         if 'WORK100' not in codes:
             self.env['hr.payslip.worked_days'].create({
                 'work_entry_type_id': 1,
-                'payslip_id': self.id
+                'payslip_id': self.id,
+                'contract_id': self.contract_id.id,
+                'secuence': 1
             })
