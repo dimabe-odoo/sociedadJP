@@ -545,7 +545,7 @@ else:
             factor = item.factor
             amount_to_reduce = item.amount_to_reduce
             break
-        elif TRIBU >= item.salary_from TRIBU and <= item.salary_to:
+        elif TRIBU >= item.salary_from and TRIBU <= item.salary_to:
             factor = item.factor
             amount_to_reduce = item.amount_to_reduce
             break
