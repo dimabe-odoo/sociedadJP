@@ -68,7 +68,7 @@
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((contract.wage / 30) * worked_days.number_of_days)
+            <field name="amount_python_compute">result = round(contract.wage / 30 * worked_days.number_of_days)
             </field>
         </record>
         <record id="custom_hr_salary_rule_wage_adjustment" model="hr.salary.rule">
@@ -324,11 +324,11 @@ else:
 if contract.is_pensionary is True or contract.type_id.code == '4':
     result = 0
 elif contract.type_id.code == '1':
-    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Contrato Plazo Indefinido Trabajador').value/100)
+    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Contrato Plazo Indefinido Trabajador').percentage_value/100)
 elif contract.type_id.code == '3':
-    result = round(TOTIM * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Plazo Indefinido 11 años o más').value / 100)
+    result = round(TOTIM * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Plazo Indefinido 11 años o más').percentage_value / 100)
 elif contract.type_id.code == '2':
-    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Contrato Plazo Fijo Empleador').value /100)
+    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Contrato Plazo Fijo Empleador').percentage_value /100)
 else:
     result = 0</field>
         </record>
