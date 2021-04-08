@@ -12,7 +12,7 @@ class CustomIndicators(models.Model):
 
     data_ids = fields.One2many('custom.indicators.data','indicator_id',string='Datos')
 
-    unique_tax_ids = fields.One2many('custom.indicators','indicator_id',string="Impuesto Único 2° Categoría")
+    unique_tax_ids = fields.One2many('custom.unique.tax','indicator_id',string="Impuesto Único 2° Categoría")
 
     month = fields.Selection(
         [('jan', 'Enero'), ('feb', 'Febrero'), ('mar', 'Marzo'), ('apr', 'Abril'), ('may', 'Mayo'), ('jun', 'Junio'),
