@@ -234,7 +234,7 @@
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">rate=payslip.indicator_id.mapped('data_ids').filtered(lambda a : a.type == '9' and ('Afp ' +contract.afp_id.name) .upper() in a.name.upper()).percentage_value
+            <field name="amount_python_compute">rate=payslip.indicator_id.mapped('data_ids').filtered(lambda a : a.type == '9' and ('Afp ' +contract.afp_id.name).upper() in a.name.upper()).percentage_value
 maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'AFP' in a.name).value
 total_imp = categories.IMP
 if contract.is_pensionary or contract.not_afp:
@@ -276,19 +276,21 @@ else:
             <field name="code">APV</field>
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">contract.apv_amount > 0:</field>
+            <field name="condition_python">contract.apv_amount > 0</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">if contract.apv_amount > 0:
-    rate = payslip.indicator_id.uf
-elif contract.apv_currency == 'clp':
+if contract.apv_currency == 'clp':
     rate = 1
+elif contract.apv_currency == 'uf'
+    rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True)
 else:
     rate = 0
 
-if round(contract.apv_amount*rate) > round(payslip.indicator_id.tope_mensual_apv * payslip.indicator_id.uf ):
-    result = round(payslip.indicator_id.tope_mensual_apv * payslip.indicator_id.uf )
+maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'Mensual' in a.name  and a.type=='6')
+if round(contract.apv_amount * rate) > round(maximum):
+    result = round(payslip.indicator_id.maximum)
 else:
-    result = round(contract.apv_amount*rate)</field>
+    result = round(contract.apv_amount * rate)</field>
         </record>
 
         <record id="custom_hr_salary_rule_unemployment_insurance_company_contribution_amount" model="hr.salary.rule">
@@ -324,11 +326,11 @@ if contract.is_pensionary is True:
 elif contract.type_id.code == '4':
     result = 0
 elif contract.type_id.code == '1':
-    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name = 'Contrato Plazo Indefinido Trabajador').value/100)
+    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Contrato Plazo Indefinido Trabajador').value/100)
 elif contract.type_id.code == '3':
-    result = round(TOTIM * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name = 'Plazo Indefinido 11 años o más').value / 100)
+    result = round(TOTIM * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Plazo Indefinido 11 años o más').value / 100)
 elif contract.type_id.name == '2':
-    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name = 'Contrato Plazo Fijo Empleador').value /100)
+    result = round(totimpo * payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Contrato Plazo Fijo Empleador').value /100)
 else:
     result = 0</field>
         </record>
@@ -339,46 +341,29 @@ else:
             <field name="code">SIS</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_company_contribution"/>
             <field name="appears_on_payslip" eval="False"/>
-            <field name="condition_select">none</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">not_afp_sis is False</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">amount = 0
 if inputs.HEX50:
     amount = inputs.HEX50.amount
-DEVENGABLE=round(contract.wage+contract.otros_imp+amount)
+DEVENGABLE=round(contract.wage+amount)
 
-if contract.afp_id.name == 'CAPITAL':
-    tasa = payslip.indicadores_id.tasa_sis_capital
-elif contract.afp_id.name == 'CUPRUM':
-    tasa = payslip.indicadores_id.tasa_sis_cuprum
-elif contract.afp_id.name == 'HABITAT':
-    tasa = payslip.indicadores_id.tasa_sis_habitat
-elif contract.afp_id.name == 'MODELO':
-    tasa = payslip.indicadores_id.tasa_sis_modelo
-elif contract.afp_id.name == 'PLANVITAL':
-    tasa = payslip.indicadores_id.tasa_sis_planvital
-elif contract.afp_id.name == 'PROVIDA':
-    tasa = payslip.indicadores_id.tasa_sis_provida
-elif contract.afp_id.name == 'UNO':
-    tasa = payslip.indicadores_id.tasa_sis_uno
-else:
-    tasa = 0
+rate=payslip.indicator_id.mapped('data_ids').filtered(lambda a : a.type == '9' and ('SIS ' +contract.afp_id.name).upper() in a.name.upper()).percentage_value
+maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'AFP' in a.name).value
+min_salary = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Trab. Dependientes e Independientes').value
 
 GRATI=round(DEVENGABLE * 25 / 100 )
-if GRATI > (4.75 * payslip.indicadores_id.sueldo_minimo /12):
-    GRATI = round (4.75 * payslip.indicadores_id.sueldo_minimo / 12)
-else:
-    GRATI = GRATI
-
-if contract.pension is True:
+if GRATI > (4.75 * min_salary /12):
+    GRATI = round (4.75 * min_salary / 12)
+if contract.is_pensionary or contract.not_afp:
     result = 0
-elif contract.sin_afp_sis is True:
-    result = 0
-elif TOTIM >=round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf):
-    result = round(round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf)*tasa /100)
+elif TOTIM >=round(maximum):
+    result = round(maximum * rate /100)
 elif TOTIM ==0:
-     result =round(round(DEVENGABLE+GRATI)*tasa /100)
+    result =round(DEVENGABLE+GRATI * rate /100)
 else:
-    result = round(round(TOTIM)*tasa /100)</field>
+    result = round(TOTIM * rate /100)</field>
         </record>
 
 
@@ -390,18 +375,16 @@ else:
             <field name="appears_on_payslip" eval="False"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">if payslip.indicadores_id.mutual_seguridad_bool is False:
-     result = 0
-elif contract.type_id.name == 'Sueldo Empresarial':
-     result = 0
-elif TOTIM >=round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf):
-     result = round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf) * payslip.indicadores_id.mutual_seguridad /100
+            <field name="amount_python_compute">
+maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'AFP' in a.name).value
+mutuality_rate = payslip.indicator_id.mapped('mutuality_ids')[0].value
+if payslip.indicator_id.has_mutuality is False or contract.type_id.code == '4':
+    result = 0
+elif TOTIM >=round(maximum):
+    result = round(maximum * mutuality_rate /100)
 else:
-     result = round(round(TOTIM)*payslip.indicadores_id.mutual_seguridad /100)</field>
-            
+    result = round(TOTIM * mutuality_rate /100)</field>
         </record>
-
-
         <record id="custom_hr_salary_rule_supplementary_insurance_amount" model="hr.salary.rule">
             <field name="name">SEGURO COMPLEMENTARIO</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
@@ -409,22 +392,22 @@ else:
             <field name="category_id" ref="custom_hr_salary_rule_category_company_contribution"/>
             <field name="condition_select">python</field>
             <field name="appears_on_payslip" eval="False"/>
-            <field name="condition_python">result = contract.seguro_complementario > 0</field>
+            <field name="condition_python">contract.supplementary_insurance_agreed_quotes_uf > 0</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">if contract.seguro_complementario_moneda == 'uf':
-    tasa = payslip.indicadores_id.uf
-elif contract.seguro_complementario_moneda == 'clp':
-    tasa = 1
+            <field name="amount_python_compute">if contract.currency_supplementary_insurance_id == 'uf':
+    rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True)
+elif contract.currency_supplementary_insurance_id == 'clp':
+    rate = 1
 else:
-    tasa = 0
+    rate = 0
 
-if round(contract.seguro_complementario*tasa) > round(payslip.indicadores_id.tope_mensual_apv * payslip.indicadores_id.uf ):
-    result = round(payslip.indicadores_id.tope_mensual_apv * payslip.indicadores_id.uf )
+maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'Mensual' in a.name  and a.type=='6')
+
+if round(contract.supplementary_insurance_agreed_quotes_uf*rate) > round(maximum):
+    result = round(maximum)
 else:
-    result = round(contract.seguro_complementario*tasa)</field>
+    result = round(contract.supplementary_insurance_agreed_quotes_uf*rate)</field>
         </record>
-
-
         <record id="custom_hr_salary_rule_afp_to_pay_amount" model="hr.salary.rule">
             <field name="name">AFP X PAGAR</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
@@ -446,32 +429,34 @@ else:
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = 0
-Salud=round(7 * round(TOTIM)/100)
-if contract.isapre_cuenta_propia:
-     result = False
-elif Salud >= round((payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100)*payslip.indicadores_id.uf):
-    result = round((payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100)*payslip.indicadores_id.uf)
+safe=round(7 * round(TOTIM)/100)
+maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'AFP' in a.name).value
+if contract.own_account_isapre:
+    result = False
+elif safe >= round(payslip.indicator_id.max_taxable_health_rate * maximum /100):
+    result = round(payslip.indicator_id.max_taxable_health_rate * maximum /100)
 else:
-    result = round(7 * round(TOTIM)/100)</field>
+    result = safe</field>
         </record>
-
-
         <record id="custom_hr_salary_additional_isapre_amount" model="hr.salary.rule">
             <field name="name">ADICIONAL ISAPRE</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">ADISA</field>
             <field name="category_id" ref="custom_hr_salary_rule_health"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">if contract.isapre_id.name == 'FONASA':
-    result = False
-elif worked_days.WORK100.number_of_days == 0:
-     result = False
-elif contract.isapre_cuenta_propia:
-     result = False
+            <field name="condition_python">
+if contract.currency_supplementary_insurance_id == 'uf':
+    rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True)
+elif contract.currency_supplementary_insurance_id == 'clp':
+    rate = 1
 else:
-    result = round((payslip.indicadores_id.uf / 30 * (worked_days.WORK100.number_of_days)) * contract.isapre_cotizacion_uf) > round(SALUD)</field>
+    rate = 0
+if contract.is_fonasa or worked_days.number_of_days == 0 or contract.own_account_isapre:
+    result = False
+else:
+    result = round((rate / 30 * (worked_days.number_of_days)) * contract.isapre_agreed_quotes_uf) > round(SALUD)</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result =round ((((payslip.indicadores_id.uf / 30) * (worked_days.WORK100.number_of_days)) * contract.isapre_cotizacion_uf)  - round(SALUD))</field>
+            <field name="amount_python_compute">result = round((((rate / 30) * (worked_days.number_of_days)) * contract.isapre_agreed_quotes_uf  - round(SALUD))</field>
         </record>
 
 
@@ -481,14 +466,12 @@ else:
             <field name="code">COLMENA</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.isapre_id.name != 'FONASA'</field>
+            <field name="condition_python">contract.is_fonasa is False</field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = categories.SALUD</field>
             
         </record>
-
-
 
         <record id="custom_hr_salary_compensation_box_amount" model="hr.salary.rule">
             <field name="name">CAJA DE COMPENSACION</field>
@@ -496,15 +479,17 @@ else:
             <field name="code">CAJACOMP</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.isapre_id.name == 'FONASA'</field>
+            <field name="condition_python">contract.is_fonasa is True'</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = 0
-Salud=round(7 * round(TOTIM)/100)
-if Salud >= (payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100)*payslip.indicadores_id.uf:
-    result = round(((payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100)*payslip.indicadores_id.uf) * (payslip.indicadores_id.caja_compensacion / 7))
+safe=round(7 * round(TOTIM)/100)
+maximum_safe = payslip.indicator_id.max_taxable_health_rate
+maximum_afp = payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value
+ccaf_rate = payslip.indicator_id.ccaf_rate
+if safe >= (maximum_safe * maximum_afp/100):
+    result = round((maximum_safe * maximum_afp / 100) * (ccaf_rate / 7))
 else:
-    result = round(payslip.indicadores_id.caja_compensacion * round(TOTIM)/100)</field>
-            
+    result = round(ccaf_rate * TOTIM / 100)</field>    
         </record>
 
         <record id="custom_hr_salary_fonasa_amount" model="hr.salary.rule">
@@ -513,19 +498,19 @@ else:
             <field name="code">FONASA</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.isapre_id.name == 'FONASA'</field>
+            <field name="condition_python">result = contract.is_fonasa</field>
             <field name="amount_select">code</field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="amount_python_compute">result = 0
-Salud=round(7 * round(TOTIM)/100)
-if Salud >= round((payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100)*payslip.indicadores_id.uf):
-    result =round( round((payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100)*payslip.indicadores_id.uf) * (payslip.indicadores_id.fonasa / 7))
+safe=round(7 * round(TOTIM)/100)
+maximum_safe = payslip.indicator_id.max_taxable_health_rate
+maximum_afp = payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value
+fonasa_rate = payslip.indicator_id.national_health_fund_rate
+if safe >= round(maximum_safe * maximum_afp / 100):
+    result =round(maximum_safe * maximum_afp / 100 * (fonasa_rate / 7))
 else:
-    result = round(payslip.indicadores_id.fonasa * round(TOTIM)/100)</field>
-            
+    result = round(fonasa_rate * TOTIM/100)</field>
         </record>
-
-
 
 <record id="custom_hr_salary_rule_tribute_amount" model="hr.salary.rule">
             <field name="name">TRIBUTABLE</field>
@@ -534,18 +519,14 @@ else:
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">saludtotal = categories.SALUD
-if (saludtotal > (payslip.indicadores_id.uf*(payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100))):
-
-    result = TOTIM - round(payslip.indicadores_id.uf*(payslip.indicadores_id.tope_imponible_salud*payslip.indicadores_id.tope_imponible_afp/100)) - PREV - SECE
-
+            <field name="amount_python_compute">total_safe = categories.SALUD
+maximum_safe = payslip.indicator_id.max_taxable_health_rate
+maximum_afp = payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value
+if total_safe > (maximum_safe*maximum_afp / 100):
+    result = TOTIM - round(maximum_safe*maximum_afp/100) - PREV - SECE
 else:
-    result = round(TOTIM - saludtotal - PREV - SECE)</field>
+    result = round(TOTIM - total_safe - PREV - SECE)</field>
         </record>
-
-
-
-
 
         <record id="custom_hr_salary_rule_unique_tax_amount" model="hr.salary.rule">
             <field name="name">IMPUESTO UNICO</field>
@@ -553,25 +534,25 @@ else:
             <field name="code">IMPUNI</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_discount"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = TRIBU > payslip.indicadores_id.utm*13.5</field>
+            <field name="condition_python">result = TRIBU > payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '2').value*13.5</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">if payslip.indicadores_id.utm*13.5 > TRIBU :
+            <field name="amount_python_compute">utm = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '2').value
+if utm * 13.5 > TRIBU:
     result = 0
-elif payslip.indicadores_id.utm*30 > TRIBU:
- result = TRIBU*0.04-(payslip.indicadores_id.utm*0.54)
-elif payslip.indicadores_id.utm*50 > TRIBU:
- result = TRIBU*0.08-(payslip.indicadores_id.utm*1.74)
-elif payslip.indicadores_id.utm*70 > TRIBU:
- result = TRIBU*0.135-(payslip.indicadores_id.utm*4.49)
-elif payslip.indicadores_id.utm*90 > TRIBU:
- result = TRIBU*0.23-(payslip.indicadores_id.utm*11.14)
-elif payslip.indicadores_id.utm*120 > TRIBU:
- result = TRIBU*0.304-(payslip.indicadores_id.utm*17.80)
-elif payslip.indicadores_id.utm*150 > TRIBU:
- result = TRIBU*0.355-(payslip.indicadores_id.utm*23.92)
+elif utm * 30 > TRIBU:
+ result = TRIBU * 0.04 - (utm * 0.54)
+elif utm * 50 > TRIBU:
+ result = TRIBU * 0.08 - (utm * 1.74)
+elif utm * 70 > TRIBU:
+ result = TRIBU * 0.135 - (utm * 4.49)
+elif utm * 90 > TRIBU:
+ result = TRIBU * 0.23 - (utm * 11.14)
+elif utm * 120 > TRIBU:
+ result = TRIBU * 0.304 - (utm * 17.80)
+elif utm * 150 > TRIBU:
+ result = TRIBU * 0.35 - (utm * 23.92)
 else:
- result = TRIBU*0.40-(payslip.indicadores_id.utm*30.67)</field>
-
+ result = TRIBU * 0.4 - (utm * 30.67)</field>
         </record>
 
 
@@ -591,12 +572,12 @@ else:
             <field name="code">ASUE</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_other_discount"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">result = (contract.anticipo_sueldo > 0) or (inputs.ASUE.amount > 0)</field>
+            <field name="condition_python">result = (contract.advance_salary_amount > 0) or (inputs.ASUE.amount > 0)</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">if  (inputs.ASUE.amount > 0):
      result = inputs.ASUE.amount
 else:
-     result = contract.anticipo_sueldo</field>
+     result = contract.advance_salary_amount</field>
         </record>
 
        <record id="custom_hr_salary_rule_bussines_loan_amount" model="hr.salary.rule">
@@ -712,14 +693,17 @@ result = round(SECEEMP) + round(SIS) + round(MUT) + round(SC) + round(IS)</field
             <field name="appears_on_payslip" eval="False"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">if payslip.indicadores_id.mutual_seguridad_bool is True:
-     result = 0
-elif contract.type_id.name == 'Sueldo Empresarial':
-     result = 0
-elif TOTIM >=round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf):
-     result = round(payslip.indicadores_id.tope_imponible_afp*payslip.indicadores_id.uf) * payslip.indicadores_id.isl /100
+            <field name="amount_python_compute">
+maximum_afp=payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value
+isl = payslip.indicator_id.institute_occupational_safety
+if payslip.indicator_id.has_mutuality is True:
+    result = 0
+elif contract.type_id.code == '4':
+    result = 0
+elif TOTIM >=round(maximum_afp):
+    result = round(maximum_afp * isl /100)
 else:
-     result = round(round(TOTIM)*payslip.indicadores_id.isl /100)</field>
+    result = round(round(TOTIM) * isl /100)</field>
         </record>
 
 </odoo>
