@@ -30,5 +30,5 @@ class HrPaySlip(models.Model):
                 'work_entry_type_id': 1,
                 'payslip_id': self.id,
                 'contract_id': self.contract_id.id,
-                'secuence': 1
+                'sequence': 1
             })
