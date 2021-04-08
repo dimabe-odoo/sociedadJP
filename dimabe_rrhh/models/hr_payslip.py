@@ -38,6 +38,6 @@ class HrPayslipWorkedDays(models.Model):
     @api.Model
     def create(self, vals):
         res = super(HrPayslipWorkedDays, self).create
-        raise models.ValidationError(vals)
+        raise models.ValidationError(vals.keys())
         return res
         
