@@ -21,7 +21,6 @@ class HrPaySlip(models.Model):
     
     @api.onchange('contract_id')
     def onchange_contract(self):
-        raise models.ValidationError(self.id)
         codes = []
         for line in self.worked_days_line_ids:
             if line.code not in codes:
