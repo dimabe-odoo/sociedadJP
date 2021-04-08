@@ -35,7 +35,7 @@ class HrPaySlip(models.Model):
 class HrPayslipWorkedDays(models.Model):
     _inherit = 'hr.payslip.worked_days'
 
-    @api.Model
+    @api.model
     def create(self, vals):
         res = super(HrPayslipWorkedDays, self).create
         raise models.ValidationError(vals.keys())
