@@ -44,9 +44,14 @@ class HrPayslipWorkedDays(models.Model):
             new_record = {
                 'sequence': 10,
                 'work_entry_type_id': 1,
-                'payslip_id': 1
+                'payslip_id': 1,
+                'number_of_hours':0,
+                'amount': vals['amount'],
+                'number_of_days': 0
             }
-            vals_list.append(vals)
+        
+        vals_list.append(vals)
+        vals_list.append(new_record)
 
         raise models.ValidationError(vals_list.keys())
         
