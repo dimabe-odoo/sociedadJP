@@ -26,15 +26,21 @@ class HrPaySlip(models.Model):
         days = 0
         attendances = {}
         leaves = []
-        raise models.ValidationError(len(res))
-        for line in res:
-            if line.get('code') == 'WORK100':
-                attendances = line
-            else:
-                leaves.append(line)
-        for leave in leaves:
-            temp += leave.get('number_of_days') or 0
-
+        #raise models.ValidationError(len(res))
+        if len(res) > 0:
+            for line in res:
+                if line.get('code') == 'WORK100':
+                    attendances = line
+                else:
+                    leaves.append(line)
+            for leave in leaves:
+                temp += leave.get('number_of_days') or 0
+        #else:
+        #    attendances = {
+        #        'work_entry_type_id': 1,
+        #        ''
+        #    }
+        
         #Dias laborados reales para calcular la semana corrida
         
         #effective = attendances.copy()
@@ -53,6 +59,7 @@ class HrPaySlip(models.Model):
         #else:
         #    dias = 30 - temp
         attendances['number_of_days'] = days
+        attendances['work_entry_type_id'] = 1
         res = []
         res.append(attendances)
         #res.append(effective)
