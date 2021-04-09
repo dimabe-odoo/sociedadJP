@@ -26,7 +26,7 @@ class HrPaySlip(models.Model):
         days = 0
         attendances = {}
         leaves = []
-        #raise models.ValidationError(len(res))
+        raise models.ValidationError(len(res))
         for line in res:
             if line.get('code') == 'WORK100':
                 attendances = line
