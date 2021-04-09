@@ -11,7 +11,7 @@ class HrPaySlip(models.Model):
     def add(self):
         for item in self:
             if item.salary_id:
-                type_id = self.env['hr.payslip.input.types'].search([('code','=',item.salary_id.code)])
+                type_id = self.env['hr.payslip.input.type'].search([('code','=',item.salary_id.code)])
                 if type_id:
                     self.env['hr.payslip.input'].create({
                         'name': item.salary_id.name,
