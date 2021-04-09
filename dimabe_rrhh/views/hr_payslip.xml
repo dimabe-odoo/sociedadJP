@@ -10,6 +10,9 @@
                 <xpath expr="//field[@name='worked_days_line_ids']/tree//field[@name='name']" position="after">
                     <field name="code"/>
                 </xpath>
+                <xpath expr="//field[@name='input_line_ids']/tree//field[@name='name']" position="after">
+                    <field name="code"/>
+                </xpath>
                 <xpath expr="//page[1]" position="after">
                     <page string="Prevision">
                         <group string="Indicadores">
