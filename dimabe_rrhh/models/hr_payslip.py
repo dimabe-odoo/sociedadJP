@@ -16,7 +16,7 @@ class HrPaySlip(models.Model):
                 
                 if type_id:
                     if item.salary_id.amount_select == 'fix':
-                        amount = item.salary_id.quantity * item.salary_id.amount_fix
+                        amount = item.salary_id.amount_fix
                     self.env['hr.payslip.input'].create({
                         'name': item.salary_id.name,
                         'code': item.salary_id.code,
