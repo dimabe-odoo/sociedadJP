@@ -107,7 +107,12 @@
             <field name="code">GRAT</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = (categories.IMP * 25 / 100)</field>
+            <field name="amount_python_compute">minimum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Trab. Dependientes e Independientes').value 
+if (SUELDO * 25 / 100) >= (minimum * 4.75 / 12):
+    result = minimum * 4.75 / 12
+else:
+    result = SUELDO * 25 / 100
+            </field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
         </record>
         <record id="custom_hr_salary_rule_production_bonus" model="hr.salary.rule">
@@ -181,16 +186,6 @@
             <field name="amount_select">code</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="amount_python_compute">result = round((contract.collation_amount / 30) * worked_days.WORK100.number_of_days)</field>
-        </record>
-
-        <record id="custom_hr_salary_rule_test" model="hr.salary.rule">
-            <field name="name">BONO TEST</field>
-            <field name="code">BTEST</field>
-            <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
-            <field name="condition_select">python</field>
-            <field name="amount_select">code</field>
-            <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="amount_python_compute">result = 20000</field>
         </record>
 
         <record id="custom_hr_salary_rule_mobilization" model="hr.salary.rule">
@@ -478,7 +473,7 @@ else:
             <field name="condition_python">contract.is_fonasa is False</field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories.SALUD</field>
+            <field name="amount_python_compute">result = categories.SAL</field>
             
         </record>
 
@@ -527,7 +522,7 @@ else:
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">total_safe = categories.SALUD
+            <field name="amount_python_compute">total_safe = categories.SAL
 maximum_safe = payslip.indicator_id.max_taxable_health_rate
 maximum_afp = payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value
 if total_safe > (maximum_safe*maximum_afp / 100):
@@ -571,7 +566,7 @@ else:
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round(categories.PREV) +  round(categories.SALUD) +  round(categories.DED)</field>
+            <field name="amount_python_compute">result = round(categories.PREV) +  round(categories.SAL) +  round(categories.DES)</field>
         </record>
 
        <record id="custom_hr_salary_rule_salary_advance_amount" model="hr.salary.rule">
