@@ -7,8 +7,8 @@ class HrSalaryRule(models.Model):
 
     @api.onchange('is_bonus')
     def onchange_method(self):
-        if not self.code:
-            raise models.UserError('No pude definir un bono sin definir el codigo primero')
+        #if not self.code:
+        #    raise models.UserError('No pude definir un bono sin definir el codigo primero')
         if self.is_bonus:
             self.write({
                 'condition_select':'python',

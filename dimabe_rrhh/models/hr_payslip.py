@@ -27,7 +27,7 @@ class HrPaySlip(models.Model):
                     })
 
                     self.env['hr.payslip.input'].create({
-                        'name': item.salary_id.name,
+                        'name': item.salary_id.name.uuper(),
                         'code': item.salary_id.code,
                         'contract_id': item.contract_id.id,
                         'payslip_id': item.id,
