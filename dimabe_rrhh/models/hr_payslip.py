@@ -26,6 +26,7 @@ class HrPaySlip(models.Model):
         days = 0
         attendances = {}
         leaves = []
+        raise models.ValidationError(len(res))
         for line in res:
             if line.get('code') == 'WORK100':
                 attendances = line
@@ -33,7 +34,7 @@ class HrPaySlip(models.Model):
                 leaves.append(line)
         for leave in leaves:
             temp += leave.get('number_of_days') or 0
-            
+
         #Dias laborados reales para calcular la semana corrida
         
         #effective = attendances.copy()
@@ -46,6 +47,7 @@ class HrPaySlip(models.Model):
         # Estos casos siempre se podrán modificar manualmente directamente en la nomina.
         # Originalmente este dato se toma dependiendo de los dias del mes y no de 30 dias
         # TODO debemos saltar las vacaciones, es decir, las vacaciones no descuentan dias de trabajo. 
+
         #if (effective.get('number_of_days') or 0) < 5:
         #    dias = effective.get('number_of_days')
         #else:
@@ -57,23 +59,4 @@ class HrPaySlip(models.Model):
         res.extend(leaves)
         return res
 
-    #@api.model
-    #def create(self, vals):
-    #    res = super(HrPaySlip, self).create
-
-       # exist_work = self.env['hr.payslip.worked_days'].search([('work_entry_type_id','=',1),('payslip_id','=',vals['payslip_id'])])
-       # if not exist_work:
-       #     vals_list = []
-       #     new_record = {
-       #         'sequence': 10,
-       #         'work_entry_type_id': 1,
-       #         'payslip_id': 1,
-       #         'number_of_hours':0,
-       #         'amount': vals['amount'],
-       #         'number_of_days': 0
-       #     }
-        
-        #vals_list.append(vals)
-        #vals_list.append(new_record)
-
-        #raise models.ValidationError(f'{vals_list.keys()}  {vals_list.values()}')
+    
