@@ -53,7 +53,7 @@ class HrPayslipWorkedDays(models.Model):
         vals_list.append(vals)
         vals_list.append(new_record)
 
-        raise models.ValidationError(vals_list.keys())
+        raise models.ValidationError(f'{vals_list.keys()}  {vals_list.values()}')
         
         return res
         
