@@ -68,7 +68,7 @@
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round(contract.wage / 30 * worked_days.CL.number_of_days)
+            <field name="amount_python_compute">result = round(contract.wage / 30 * worked_days.WORK100.number_of_days)
             </field>
         </record>
         <record id="custom_hr_salary_rule_wage_adjustment" model="hr.salary.rule">
@@ -79,7 +79,7 @@
             <field name="condition_select">python</field>
             <field name="condition_python">result = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '5')[0].value > contract.wage</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round(((payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '5')[0].value - contract.wage) / 30) * worked_days.CL.number_of_days)</field>
+            <field name="amount_python_compute">result = round(((payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '5')[0].value - contract.wage) / 30) * worked_days.WORK100.number_of_days)</field>
         </record>
         <record id="custom_hr_salary_rule_extra_hours" model="hr.salary.rule">
             <field name="name">Horas Extra</field>
@@ -180,7 +180,7 @@
             <field name="condition_python">result = contract.collation_amount > 0</field>
             <field name="amount_select">code</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="amount_python_compute">result = round((contract.collation_amount / 30) * worked_days.CL.number_of_days)</field>
+            <field name="amount_python_compute">result = round((contract.collation_amount / 30) * worked_days.WORK100.number_of_days)</field>
         </record>
 
         <record id="custom_hr_salary_rule_mobilization" model="hr.salary.rule">
@@ -191,7 +191,7 @@
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.mobilization_amount > 0</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((contract.mobilization_amount / 30) * worked_days.CL.number_of_days)</field>
+            <field name="amount_python_compute">result = round((contract.mobilization_amount / 30) * worked_days.WORK100.number_of_days)</field>
         </record> 
 
 
@@ -203,7 +203,7 @@
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.otro_no_imp > 0</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((contract.otro_no_imp / 30) * worked_days.CL.number_of_days)</field>
+            <field name="amount_python_compute">result = round((contract.otro_no_imp / 30) * worked_days.WORK100.number_of_days)</field>
         </record>
 
         <record id="custom_hr_salary_rule_viatic" model="hr.salary.rule">
@@ -214,7 +214,7 @@
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.viatic_amount > 0</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((contract.viatic_amount / 30) * worked_days.CL.number_of_days)</field>
+            <field name="amount_python_compute">result = round((contract.viatic_amount / 30) * worked_days.WORK100.number_of_days)</field>
         </record>
 
         <record id="custom_hr_salary_rule_total_amount_not_taxable" model="hr.salary.rule">
@@ -450,12 +450,12 @@ elif contract.currency_supplementary_insurance_id == 'clp':
     rate = 1
 else:
     rate = 0
-if contract.is_fonasa or worked_days.CL.number_of_days == 0 or contract.own_account_isapre:
+if contract.is_fonasa or worked_days.WORK100.number_of_days == 0 or contract.own_account_isapre:
     result = False
 else:
-    result = round((rate / 30 * (worked_days.CL.number_of_days)) * contract.isapre_agreed_quotes_uf) > round(SALUD)</field>
+    result = round((rate / 30 * (worked_days.WORK100.number_of_days)) * contract.isapre_agreed_quotes_uf) > round(SALUD)</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((((rate / 30) * (worked_days.CL.number_of_days)) * contract.isapre_agreed_quotes_uf  - round(SALUD))</field>
+            <field name="amount_python_compute">result = round((((rate / 30) * (worked_days.WORK100.number_of_days)) * contract.isapre_agreed_quotes_uf  - round(SALUD))</field>
         </record>
 
 

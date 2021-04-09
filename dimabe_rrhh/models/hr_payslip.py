@@ -26,7 +26,6 @@ class HrPaySlip(models.Model):
         days = 0
         attendances = {}
         leaves = []
-        #raise models.ValidationError(len(res))
         if len(res) > 0:
             for line in res:
                 if line.get('code') == 'WORK100':
@@ -35,34 +34,10 @@ class HrPaySlip(models.Model):
                     leaves.append(line)
             for leave in leaves:
                 temp += leave.get('number_of_days') or 0
-        #else:
-        #    attendances = {
-        #        'work_entry_type_id': 1,
-        #        ''
-        #    }
-        
-        #Dias laborados reales para calcular la semana corrida
-        
-        #effective = attendances.copy()
-        #effective.update({
-        #    'name': _("Dias de trabajo efectivos"),
-        #    'sequence': 2,
-        #    'code': 'EFF100',
-        #})
-        # En el caso de que se trabajen menos de 5 días tomaremos los dias trabajados en los demás casos 30 días - las faltas
-        # Estos casos siempre se podrán modificar manualmente directamente en la nomina.
-        # Originalmente este dato se toma dependiendo de los dias del mes y no de 30 dias
-        # TODO debemos saltar las vacaciones, es decir, las vacaciones no descuentan dias de trabajo. 
-
-        #if (effective.get('number_of_days') or 0) < 5:
-        #    dias = effective.get('number_of_days')
-        #else:
-        #    dias = 30 - temp
         attendances['number_of_days'] = days
         attendances['work_entry_type_id'] = 1
         res = []
         res.append(attendances)
-        #res.append(effective)
         res.extend(leaves)
         return res
 
