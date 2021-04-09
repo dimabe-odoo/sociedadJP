@@ -13,9 +13,10 @@ class HrPaySlip(models.Model):
             if item.salary_id:
                 type_id = self.env['hr.payslip.input.type'].search([('code','=',item.salary_id.code)])
                 amount = 0
-                if item.salary_id.amount_select == 'fix':
-                    amount = item.quantity * item.amount_fix
+                
                 if type_id:
+                    if item.salary_id.amount_select == 'fix':
+                        amount = item.salary_id.quantity * item.salary_id.amount_fix
                     self.env['hr.payslip.input'].create({
                         'name': item.salary_id.name,
                         'code': item.salary_id.code,
@@ -34,8 +35,7 @@ class HrPaySlip(models.Model):
                         'code': item.salary_id.code,
                         'contract_id': item.contract_id.id,
                         'payslip_id': item.id,
-                        'input_type_id': input_type.id,
-                        'amount': amount
+                        'input_type_id': input_type.id
                     })
             item.salary_id = None
     
