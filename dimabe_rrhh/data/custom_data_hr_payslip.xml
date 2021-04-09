@@ -185,7 +185,7 @@
 
         <record id="custom_hr_salary_rule_test" model="hr.salary.rule">
             <field name="name">BONO TEST</field>
-            <field name="code">BTEST/field>
+            <field name="code">BTEST</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
             <field name="condition_select">python</field>
             <field name="amount_select">code</field>
