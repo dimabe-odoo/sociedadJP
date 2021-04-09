@@ -18,4 +18,37 @@ class HrPaySlip(models.Model):
                     'payslip_id': item.id
                 })
             item.salary_id = None
-  
+    
+    def onchange_employee(self):
+        for item in self:
+            codes = []
+            if self.employee_id:
+                print('')
+                #for line in item.worked_days_line_ids:
+                #    if line.code not in codes:
+                #        codes.append(line.code)
+                #if 'WORK100' not in codes:
+                #    self.env['hr.payslip.worked_days'].create({
+                #        'work_entry_type_id': 1,
+                #        'payslip_id': 1
+                #    })
+class HrPayslipWorkedDays(models.Model):
+    _inherit = 'hr.payslip.worked_days'
+
+    @api.model
+    def create(self, vals):
+        res = super(HrPayslipWorkedDays, self).create
+        exist_work = self.env['hr.payslip.worked_days'].search([('work_entry_type_id','=',1),('payslip_id','=',vals['payslip_id'])])
+        if not exist_work:
+            vals_list = []
+            new_record = {
+                'sequence': 10,
+                'work_entry_type_id': 1,
+                'payslip_id': 1
+            }
+            vals_list.append(vals)
+
+        raise models.ValidationError(vals_list.keys())
+        
+        return res
+        
