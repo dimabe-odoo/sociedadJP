@@ -17,6 +17,12 @@ class HrPaySlip(models.Model):
                 if type_id:
                     if item.salary_id.amount_select == 'fix':
                         amount = item.salary_id.amount_fix
+                    elif item.salary_id.code == 'COL':
+                        if item.contract_id.collation_amount > 0:
+                            amount = item.contract_id.collation_amount
+                        else:
+                            raise models.ValidationError('No se puede agregar Asig. Colación ya que está en 0 en el contrato')
+               
                     self.env['hr.payslip.input'].create({
                         'name': item.salary_id.name,
                         'code': item.salary_id.code,
