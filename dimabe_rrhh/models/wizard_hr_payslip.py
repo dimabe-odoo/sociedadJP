@@ -39,7 +39,7 @@ class WizardHrPayslip(models.TransientModel):
         #    [('indicator_id', '=', indicators.id), ('state', 'in', ['done', 'draft']),('employee_id.address_id.id','=',self.company_id.id), ('name', 'not like', 'Devolución:')])
 
         payslips = self.env['hr.payslip'].sudo().search(
-            [('indicator_id', '=', indicators.id), ('state', 'in', ['done', 'draft'])])
+            [('indicator_id', '=', self.indicator_id.id), ('state', 'in', ['done', 'draft'])])
 
         totals = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id'))]).filtered(
             lambda a: a.total > 0)
