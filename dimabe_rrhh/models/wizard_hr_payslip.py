@@ -159,7 +159,7 @@ class WizardHrPayslip(models.TransientModel):
         return action
 
     @api.model
-    def get_workd_days(self, payslip):
+    def get_worked_days(self, payslip):
         worked_days = 0
         if payslip:
             for line in payslip.worked_days_line_ids:
