@@ -84,7 +84,6 @@ class HrContract(models.Model):
 
     @api.model
     def _compute_contract_type(self):
-        raise models.ValidationError(self.env.ref('dimabe_rrhh.custom_data_contract_type').id)
         for item in self:
             item.contract_type_id = self.env.ref('dimabe_rrhh.custom_data_contract_type').id
 
