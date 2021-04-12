@@ -8,8 +8,8 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='department_id']" position="before">
-                    <field name="contract_type_id"/>
-                    <field name="type_id" required="1" domain="[('data_type_id','=',contract_type_id)]"/>
+                    <!--<field name="contract_type_id"/>-->
+                    <field name="type_id" required="1"/>
                 </xpath>
                 <xpath expr="//page[@name='information']" position="inside">
                     <group>
