@@ -95,16 +95,17 @@ class HrContract(models.Model):
 
     @api.onchange('wage')
     def onchange_wage(self):
-        sections = self.env['custom.data'].search([('data_type_id','=',self.section_id.data_type_id)])
-        for section in sections:
-            if section.code == 'D':
-                self.section_id = section.id
-                break
-            else:
-                max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')[0]
-                if max_salary_section and self.wage <= max_salary_section.value:
+        if self.section_id:
+            sections = self.env['custom.data'].search([('data_type_id','=',self.section_id.data_type_id)])
+            for section in sections:
+                if section.code == 'D':
                     self.section_id = section.id
                     break
+                else:
+                    max_salary_section = self.env['custom.indicators.data'].search([('name','=',section.name + ' - Tope')], order='id desc')[0]
+                    if max_salary_section and self.wage <= max_salary_section.value:
+                        self.section_id = section.id
+                        break
             
 
 
