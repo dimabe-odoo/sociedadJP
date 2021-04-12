@@ -152,7 +152,6 @@ class WizardHrPayslip(models.TransientModel):
         file_name = 'Libro de Remuneraciones {}'.format(indicators.name)
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': file_name,
-            'datas_fname': file_name,
             'datas': file_base64
         })
         action = {
