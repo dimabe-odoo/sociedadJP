@@ -71,9 +71,9 @@ class HrContract(models.Model):
 
     apv_amount = fields.Float('Monto APV')
 
-    apv_currency = fields.Selection((('uf', 'UF'), ('clp', 'Pesos')), 'Tipo de Moneda', default="uf")
+    apv_currency = fields.Selection([('uf', 'UF'), ('clp', 'Pesos')], 'Tipo de Moneda', default="uf")
 
-    apv_payment_term = fields.Selection((('1', 'Directa'), ('2', 'Indirecta')), 'Forma de Pago', default="1")
+    apv_payment_term = fields.Selection([('1', 'Directa'), ('2', 'Indirecta')], 'Forma de Pago', default="1")
 
     @api.model
     def _compute_section_type(self):
