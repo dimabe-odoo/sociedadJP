@@ -5,6 +5,8 @@ class HrSalaryRule(models.Model):
 
     is_bonus = fields.Boolean('Es Bono')
 
+    show_in_book = fields.Boolean('Aparece en el libro de remuneraciones', default=True)
+
     @api.onchange('is_bonus')
     def onchange_method(self):
         #if not self.code:
