@@ -39,7 +39,7 @@ class WizardHrPayslip(models.TransientModel):
         #    [('indicator_id', '=', indicators.id), ('state', 'in', ['done', 'draft']),('employee_id.address_id.id','=',self.company_id.id), ('name', 'not like', 'Devolución:')])
 
         payslips = self.env['hr.payslip'].sudo().search(
-            [('indicator_id', '=', self.indicator_id.id)])
+            [('indicator_id', '=', self.indicator_id.id),('state','=','done')])
 
         totals = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id'))]).filtered(
             lambda a: a.total > 0)
@@ -76,9 +76,9 @@ class WizardHrPayslip(models.TransientModel):
             worksheet.set_column(row, col, len(long_rut))
             col += 1
             worksheet.write(12, 2, 'N° Centro de Costo', bold_format)
-            if pay.account_analytic_id:
+            if pay.account_analytic_id.code:
                 worksheet.write(row, col, pay.account_analytic_id.code)
-            elif pay.contract_id.department_id.analytic_account_id:
+            elif pay.contract_id.department_id.analytic_account_id.code:
                 worksheet.write(row, col, pay.contract_id.department_id.analytic_account_id.code)
             else:
                 worksheet.write(row, col, '')
