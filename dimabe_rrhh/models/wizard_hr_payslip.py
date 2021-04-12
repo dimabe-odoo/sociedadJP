@@ -54,7 +54,7 @@ class WizardHrPayslip(models.TransientModel):
         worksheet.write(4,0, self.company_id.country_id.name, bold_format)
         worksheet.write(5,0, self.company_id.vat, bold_format)
         worksheet.write(6,0, 'Fecha Informe : '+datetime.today().strftime('%d-%m-%Y'), bold_format)
-        worksheet.write(7,0, self.month, bold_format)
+        worksheet.write(7,0, self.indicator_id.month, bold_format)
         worksheet.write(8,0, 'Fichas : Todas', bold_format)
         worksheet.write(9,0, 'Área de Negocio : Todas las Áreas de Negocios', bold_format)
         worksheet.write(10,0, 'Centro de Costo : Todos los Centros de Costos', bold_format)
