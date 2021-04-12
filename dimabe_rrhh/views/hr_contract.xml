@@ -8,7 +8,6 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='department_id']" position="before">
-                    <!--<field name="contract_type_id"/>-->
                     <field name="type_id" required="1"/>
                 </xpath>
                 <xpath expr="//page[@name='information']" position="inside">
@@ -23,8 +22,7 @@
                 <xpath expr="//page[@name='information']" position="after">
                     <page string="Carga Familiar">
                         <group string="Cargas" style="width:50%;">
-                            <field name="section_type_id" invisible="1"/>
-                            <field name="section_id" options="{'no_quick_create':True,'no_create':True}" domain="[('data_type_id','=',section_type_id)]"/>
+                            <field name="section_id" options="{'no_quick_create':True,'no_create':True}"/>
                             <field name="section_amount"/>
                             <field name="simple_charge"/>
                             <field name="maternal_charge"/>

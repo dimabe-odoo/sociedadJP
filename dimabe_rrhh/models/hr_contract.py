@@ -42,7 +42,6 @@ class HrContract(models.Model):
 
     is_pensionary = fields.Boolean('Pensionado')
 
-    #type_id = fields.Many2one('custom.data', 'Tipo de Contrato')
     type_id = fields.Many2one('custom.data', 'Tipo de Contrato', domain=[('code','in',(1,2,3,4))])
 
     type_pensionary = fields.Selection(
@@ -60,13 +59,9 @@ class HrContract(models.Model):
 
     legal_gratification = fields.Boolean('Gratificación Legal Manual')
 
-    section_id = fields.Many2one('custom.data','Tramo')
+    section_id = fields.Many2one('custom.data','Tramo',domain=[('code','in',('A','B','C','D'))])
 
     section_amount = fields.Float('Monto Máximo Tramo')
-
-    section_type_id = fields.Integer(compute="_compute_section_type")
-
-    contract_type_id = fields.Integer(compute="_compute_contract_type")
 
     supplementary_insurance_type_id = fields.Integer(compute="_compute_supplementary_insurance_type")
 
@@ -78,16 +73,7 @@ class HrContract(models.Model):
 
     apv_payment_term = fields.Selection((('1', 'Directa'), ('2', 'Indirecta')), 'Forma de Pago', default="1")
 
-    @api.model
-    def _compute_section_type(self):
-        for item in self:
-            item.section_type_id = self.env.ref('dimabe_rrhh.custom_data_initial_section').id
-
-    @api.model
-    def _compute_contract_type(self):
-        for item in self:
-            item.contract_type_id = self.env.ref('dimabe_rrhh.custom_data_contract_type').id
-
+   
     @api.model
     def _compute_supplementary_insurance_type(self):
         for item in self:
