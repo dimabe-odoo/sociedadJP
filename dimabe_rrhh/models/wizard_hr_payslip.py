@@ -21,11 +21,6 @@ class WizardHrPayslip(models.TransientModel):
 
     #years = fields.Integer(string="Años", default=int(datetime.now().year))
 
-    file_data = fields.Binary('Archivo Generado',
-                              default=lambda self: self.env['wizard.hr.payslip'].sudo().search([])[-1].file_data)
-    file_name = fields.Char('Nombre de archivo',
-                            default=lambda self: self.env['wizard.hr.payslip'].sudo().search([])[-1].file_name)
-
     def print_report_xlsx(self):
         file_name = 'temp'
         workbook = xlsxwriter.Workbook(file_name)
