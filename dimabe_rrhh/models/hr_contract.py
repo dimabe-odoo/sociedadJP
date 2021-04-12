@@ -95,7 +95,7 @@ class HrContract(models.Model):
 
     @api.onchange('wage')
     def onchange_wage(self):
-        if self.section_id:
+        if self.wage:
             sections = self.env['custom.data'].search([('data_type_id','=',self.section_id.data_type_id)])
             for section in sections:
                 if section.code == 'D':
