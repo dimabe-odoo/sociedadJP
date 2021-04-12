@@ -7,7 +7,9 @@ class HrPaySlip(models.Model):
     indicator_id = fields.Many2one('custom.indicators', string='Indicadores')
 
     salary_id = fields.Many2one('hr.salary.rule', 'Agregar Entrada')
-    #salary_id = fields.Many2one('hr.payslip.input.type', 'Agregar Entrada')
+    
+    account_analytic_id = fields.Many2one('account.analytic.account','Centro de Costo',readonly=True)
+
     def add(self):
         for item in self:
             if item.salary_id:
