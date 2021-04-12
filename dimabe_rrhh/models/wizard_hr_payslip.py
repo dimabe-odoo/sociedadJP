@@ -44,6 +44,8 @@ class WizardHrPayslip(models.TransientModel):
         totals = self.env['hr.payslip.line'].sudo().search([('slip_id', 'in', payslips.mapped('id'))]).filtered(
             lambda a: a.total > 0)
 
+        raise models.ValidationError(f'{len(payslips)} {len(totals)}')
+
         totals_result = []
         payslips = totals.mapped('slip_id')
         bold_format = workbook.add_format({'bold': True})
