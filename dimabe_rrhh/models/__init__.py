@@ -16,3 +16,4 @@ from . import hr_payslip
 from . import custom_indicators_data
 from . import custom_mutuality_by_company
 from . import custom_unique_tax
+from . import wizard_hr_payslip
