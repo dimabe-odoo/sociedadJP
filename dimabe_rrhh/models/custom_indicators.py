@@ -42,6 +42,23 @@ class CustomIndicators(models.Model):
     ccaf_type_id = fields.Integer('custom.data.type',compute="_compute_ccaf_type")
 
     mutuality_type_id = fields.Integer('custom.data.type',compute="_compute_mutuality_type")
+
+    state = fields.Selection([
+        ('draft','Borrador'),
+        ('done','Validado'),
+        ], string=u'Estado', readonly=True, default='draft')
+
+    def action_done(self):
+        self.write({'state': 'done'})
+        return True
+    
+    def action_draft(self):
+        self.write({'state': 'draft'})
+        return True
+    
+    @api.onchange('month')
+    def get_name(self):
+        self.name = str(self.month).replace('oct', 'Octubre').replace('nov', 'Noviembre').replace('dec', 'Diciembre').replace('jan', 'Enero').replace('feb', 'Febrero').replace('mar', 'Marzo').replace('apr', 'Abril').replace('may', 'Mayo').replace('jun', 'Junio').replace('7', 'Julio').replace('aug', 'Agosto').replace('sep', 'Septiembre') + " " + str(self.year)
  
     @api.model
     def _compute_ccaf_type(self):

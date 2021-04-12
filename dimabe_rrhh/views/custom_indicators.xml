@@ -8,6 +8,9 @@
                 <form>
                     <header>
                         <button type="object" name="get_data" string="Obtener Informacion"/>
+                        <button string="Validar" type="object" name="action_done" states="draft" class="oe_highlight"/>
+				        <button string="Volver a borrador" type="object" name="action_draft" states="done" />
+                        <!--<field name="state" widget="statusbar" />-->
                     </header>
                     <sheet>
                         <group>
