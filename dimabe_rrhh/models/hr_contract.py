@@ -75,6 +75,14 @@ class HrContract(models.Model):
 
     apv_payment_term = fields.Selection([('1', 'Directa'), ('2', 'Indirecta')], string='Forma de Pago', default="1")
 
+    @api.onchange('is_fonasa')
+    def onchange_is_fonasa(self):
+        for item in self:
+            if item.is_fonasa:
+                item.isapre_id = self.env['custom.isapre'].search([('code','=','07')]).id
+            else:
+                item.isapre_id = self.env['custom.isapre'].search([('code','=','00')]).id
+
     @api.model
     def _compute_section_type(self):
         for item in self:

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="custom_isapre_0" model="custom.isapre">
+            <field name="name">Banmédica</field>
+            <field name="code">01</field>
+        </record>
+        <record id="custom_isapre_1" model="custom.isapre">
+            <field name="name">Consalud</field>
+            <field name="code">02</field>
+        </record>
+        <record id="custom_isapre_2" model="custom.isapre">
+            <field name="name">VidaTres</field>
+            <field name="code">03</field>
+        </record>
+        <record id="custom_isapre_2" model="custom.isapre">
+            <field name="name">Colmena</field>
+            <field name="code">04</field>
+        </record>
+        <record id="custom_isapre_2" model="custom.isapre">
+            <field name="name">Isapre Cruz Blanca S.A</field>
+            <field name="code">05</field>
+        </record>
+        <record id="custom_isapre_2" model="custom.isapre">
+            <field name="name">Fonasa</field>
+            <field name="code">07</field>
+        </record>
+        <record id="custom_isapre_2" model="custom.isapre">
+            <field name="name">Nueva Masvida</field>
+            <field name="code">10</field>
+        </record>
+        <record id="custom_isapre_2" model="custom.isapre">
+            <field name="name">Isapre Bco. Estado</field>
+            <field name="code">12</field>
+        </record>
+        <record id="custom_isapre_2" model="custom.isapre">
+            <field name="name">Cruz del Norte</field>
+            <field name="code">25</field>
+        </record>
+
+</odoo>
