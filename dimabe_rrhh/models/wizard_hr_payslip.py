@@ -442,7 +442,6 @@ class WizardHrPayslip(models.TransientModel):
                                                self.company_id.display_name.replace('.', ''))
         attachment_id = self.env['ir.attachment'].sudo().create({
             'name': file_name,
-            'datas_fname': file_name,
             'datas': base64.encodebytes(output.getvalue().encode())
         })
 
