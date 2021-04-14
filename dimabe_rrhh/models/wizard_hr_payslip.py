@@ -236,7 +236,7 @@ class WizardHrPayslip(models.TransientModel):
                 #17 FECHA HASTA MOVIMIENTO PERSONAL 
                 payslip.date_to.strftime("%d/%m/%Y") if payslip.personal_movements != '0' else '00/00/0000',
                 #18 TRAMO FAM
-                payslip.contract_id.section_id.name,
+                payslip.contract_id.section_id.name[1:],
                 #19 CARGAS SIMPLES
                 payslip.contract_id.simple_charge,
                 #20 CARGA MAT
