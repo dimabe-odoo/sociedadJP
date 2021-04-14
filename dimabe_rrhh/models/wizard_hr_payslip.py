@@ -339,7 +339,7 @@ class WizardHrPayslip(models.TransientModel):
                 # 63 Tasa Cotizacion Ex-Caja Prevision
                 '0',
                 #64 RENTA IMPONIBLE IPS
-                self.verify_ips(self.get_payslip_lines_value(payslip, 'TOTIM'), payslip.indicadores_id.mapped('data_ids').filtered(lambda a: 'Para afiliados al IPS (ex INP)' in a.name).value) if self.get_payslip_lines_value(payslip,'TOTIM') else '0',            
+                self.verify_ips(self.get_payslip_lines_value(payslip, 'TOTIM'), payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'Para afiliados al IPS (ex INP)' in a.name).value) if self.get_payslip_lines_value(payslip,'TOTIM') else '0',            
                 #65 COTIZACION OBLIGATORIO IPS
                 '0',
                 #66 RENTA IMPONIBL DESAHUCIO
@@ -376,9 +376,12 @@ class WizardHrPayslip(models.TransientModel):
                 #80 COTIZACION OBLIGATORIA ISAPRE
                 '0' if payslip.contract_id.is_fonasa is True else
                              str(round(float(self.get_payslip_lines_value(payslip, 'SALUD')))),
-                #81
-                #82
-                #83
+                #81 COTIZACION ADICIONAL VOLUNTARIA
+                '0' if payslip.contract_id.is_fonasa is True else str(round(float(self.get_payslip_lines_value(payslip, 'ADISA')))),
+                #82 MONTO GARANTIA EXPLICITA DE SALUD
+                '0',
+                #83 CODIGO CCAF
+                payslip.indicator_id.ccaf_id.code if payslip.indicator_id.ccaf_id.code else '00'
                 #84
                 #85
                 #86

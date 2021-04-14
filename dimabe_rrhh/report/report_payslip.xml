@@ -71,38 +71,37 @@
                       <tr>
                       	<td><span t-field="o.contract_id.afp_id"/></td>
                         <td>
-                        	<t t-if="('MODELO' == o.contract_id.afp_id.name)">
-								<span t-raw="o.indicadores_id.tasa_afp_modelo" />
-							</t>
-							<t t-if="('CUPRUM' == o.contract_id.afp_id.name)">
-								<span t-raw="o.indicadores_id.tasa_afp_cuprum" />
-							</t>
-							<t t-if="('HABITAT' == o.contract_id.afp_id.name)">
-								<span t-raw="o.indicadores_id.tasa_afp_habitat" />
-							</t>
-							<t t-if="('PLANVITAL' == o.contract_id.afp_id.name)">
-								<span t-raw="o.indicadores_id.tasa_afp_planvital" />
-							</t>
-							<t t-if="('PROVIDA' == o.contract_id.afp_id.name)">
-								<span t-raw="o.indicadores_id.tasa_afp_provida" />
-							</t>
-							<t t-if="('CAPITAL' == o.contract_id.afp_id.name)">
-								<span t-raw="o.indicadores_id.tasa_afp_capital" />
-							</t>
-                            <t t-if="('UNO' == o.contract_id.afp_id.name)">
-                                <span t-raw="o.indicadores_id.tasa_afp_uno"/>
-                            </t>
-							%
+                        	<t t-if="('MODELO' == o.contract_id.afp_id.name.upper())">
+                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name = 'Tasa Afp Modelo').percentage_show" />
+                          </t>
+                          <t t-if="('CUPRUM' == o.contract_id.afp_id.name.upper())">
+                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name = 'Tasa Afp Cuprum').percentage_show" />
+                          </t>
+                          <t t-if="('HABITAT' == o.contract_id.afp_id.name.upper())">
+                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name = 'Tasa Afp Habitat').percentage_show" />
+                          </t>
+                          <t t-if="('PLANVITAL' == o.contract_id.afp_id.name.upper())">
+                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name = 'Tasa Afp PlanVital').percentage_show" />
+                          </t>
+                          <t t-if="('PROVIDA' == o.contract_id.afp_id.name.upper())">
+                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name = 'Tasa Afp Provida').percentage_show" />
+                          </t>
+                          <t t-if="('CAPITAL' == o.contract_id.afp_id.name.upper())">
+                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name = 'Tasa Afp Capital').percentage_show" />
+                          </t>
+                          <t t-if="('UNO' == o.contract_id.afp_id.name.upper())">
+                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name = 'Tasa Afp Uno').percentage_show" />
+                          </t>
                         </td>
                         <td><span t-field="o.contract_id.isapre_id"/></td>
-                        <td><span t-field="o.contract_id.isapre_fun"/></td>
-                        <td>UF <strong t-field="o.contract_id.isapre_cotizacion_uf"/></td>
+                        <td><span t-field="o.contract_id.fun_number"/></td>
+                        <td>UF <strong t-field="o.contract_id.isapre_agreed_quotes_uf"/></td>
                         <td style="text-align:right">
-                          <t t-if="('FONASA' == o.contract_id.isapre_id.name)">
+                          <t t-if="(o.contract_id.is_fonasa is True)">
                               <t t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="p"><t t-if="('SALUD' == p.code)"><span t-esc="round(p.amount)" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></t></t>
                           </t>
-                          <t t-if="('FONASA' != o.contract_id.isapre_id.name)" >
-                              <span t-esc="round(o.indicadores_id.uf*o.contract_id.isapre_cotizacion_uf)" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
+                          <t t-if="(o.contract_id.is_fonasa is False)" >
+                              <span t-esc="round(o.indicadores_id.uf*o.contract_id.isapre_agreed_quotes_uf)" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/>
                           </t>
                         </td>
                       </tr>
@@ -145,9 +144,9 @@
                         </t>
                       </td>
                       <td>
-                        <span t-field="o.contract_id.carga_familiar"/>/
-                        <span t-field="o.contract_id.carga_familiar_maternal"/>/
-                        <span t-field="o.contract_id.carga_familiar_invalida"/>
+                        <span t-field="o.contract_id.simple_charge"/>/
+                        <span t-field="o.contract_id.maternal_charge"/>/
+                        <span t-field="o.contract_id.disability_charge"/>
                       </td>
                       <td>
                         <t t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="p">
