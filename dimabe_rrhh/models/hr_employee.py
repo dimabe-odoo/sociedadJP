@@ -4,7 +4,7 @@ from odoo import models, fields
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
-    employee_type_id = fields.Many2one('custom.data', 'Tipo de Empleado', domain=[('data_type_id', '=', 7)])
+    employee_type_id = fields.Many2one('custom.data', 'Tipo de Empleado', domain=[('date_type_id.name', '=', 'Tipo de Empleado')])
 
     first_name = fields.Char("Nombre")
 
