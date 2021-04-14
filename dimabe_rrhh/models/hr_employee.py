@@ -29,5 +29,5 @@ class HrEmployee(models.Model):
 
     @api.onchange('first_name', 'mothers_name', 'middle_name', 'last_name')
     def get_name(self):
-        if self.firstname and self.last_name:
+        if self.first_name and self.last_name:
             self.name = self._get_computed_name(self.last_name, self.first_name, self.mothers_name, self.middle_name)
