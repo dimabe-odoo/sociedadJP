@@ -176,7 +176,7 @@ class WizardHrPayslip(models.TransientModel):
 
         writer = csv.writer(output, delimiter=';', quotechar="'", quoting=csv.QUOTE_NONE)
 
-        payslip_recs = payslip_model.sudo().search([('date_from','=',self.date_from),('employee_id.addres_id','=',self.company_id.id)])
+        payslip_recs = payslip_model.sudo().search([('date_from','=',self.date_from),('employee_id.address_id','=',self.company_id.id)])
 
         date_start = self.date_from
         date_stop = self.date_to
