@@ -622,3 +622,15 @@ class WizardHrPayslip(models.TransientModel):
             return round(totimp * indicator.mapped('data_ids').filtered(lambda a: a.name == 'Contrato Plazo Indefinido Empleador').percentage_value / 100)
         else:
             return 0
+
+    @api.model
+    def verify_ccaf(self, TOTIM, TOPE):
+        if TOTIM:
+            TOTIM_2 = float(TOTIM)
+            if TOTIM_2 > (TOPE):
+                data = round(float(TOPE))
+                return str(data)
+            else:
+                return str(TOTIM)
+        else:
+            return "0"
