@@ -166,7 +166,7 @@ class WizardHrPayslip(models.TransientModel):
         return action
 
     def action_generate_csv(self):
-        employee_model = self.emv['hr_employee']
+        employee_model = self.env['hr_employee']
         payslip_model = self.env['hr.payslip']
         payslip_line_model = self.env['hr.payslip.line']
         company_country = self.env.user.company_id.country_id
