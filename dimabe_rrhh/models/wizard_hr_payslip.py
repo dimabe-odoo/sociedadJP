@@ -381,21 +381,35 @@ class WizardHrPayslip(models.TransientModel):
                 #82 MONTO GARANTIA EXPLICITA DE SALUD
                 '0',
                 #83 CODIGO CCAF
-                payslip.indicator_id.ccaf_id.code if payslip.indicator_id.ccaf_id.code else '00'
-                #84
-                #85
-                #86
-                #87
-                #88
-                #89
-                #90
-                #91
-                #92
-                #93
-                #94
-                #95
-                #96
-                #97
+                payslip.indicator_id.ccaf_id.code if payslip.indicator_id.ccaf_id.code else '00',
+                #84 RENTA IMPONIBLE CCAF
+                self.verify_ccaf(self.get_payslip_lines_value(payslip, 'TOTIM'),payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value) if self.get_payslip_lines_value(payslip,'TOTIM') else "0",
+                #85 CREDITOS PERSONALES CCAF 
+                self.get_payslip_lines_value(payslip, 'PCCAF') if self.get_payslip_lines_value(payslip,'PCCAF') else '0',
+                #86 DESCUENTO DENTAL CCAF
+                '0',
+                #87 DESCUENTOS POR LEASING
+                self.get_payslip_lines_value(payslip, 'CCAF') if self.get_payslip_lines_value(payslip,'CCAF') else '0',
+                #88 DESXCUENTOS POR SEGURO DE VIDA
+                '0',
+                #89 OTROS DESCUENTOS CCAF
+                '0',
+                #90 COTIZACION A CCAF DE NO AFILIADOS A ISAPRES
+                self.get_payslip_lines_value(payslip, 'CAJACOMP') if self.get_payslip_lines_value(payslip, 'CAJACOMP') else '0',
+                #91 DESCUENTOS CARGAS FAMILIARES CCAF
+                '0',
+                #92 Otros descuentos CCAF 1
+                '0',
+                #93 Otros descuentos CCAF 2
+                '0',
+                #94 Bonos Gobierno  CCAF 
+                '0',
+                #95 CODIGO SUCURSAL CCAF
+                '0',
+                #96 CODIGO MUTUALIDAD
+                payslip.indicator_id.mutuality_id.code if payslip.indicator_id.has_mutuality is True and payslip.indicator_id.mutuality_id.code else "00",
+                #97 RENTA IMPOBILE MUTUAL
+                self.get_mutuality_taxable(payslip and payslip[0] or False, self.get_payslip_lines_value(payslip, 'TOTIM')),
                 #98
                 #99
                 #100
@@ -539,3 +553,14 @@ class WizardHrPayslip(models.TransientModel):
         else:
             return str(round(float(TOTIM)))
    
+    @api.model
+    def get_mutuality_taxable(self, payslip, TOTIM):
+        TOTIM_2 = float(TOTIM)
+        if payslip.contract_id.mutual_seguridad is False:
+            return 0
+        elif payslip.contract_id.type_id.name == 'Sueldo Empresarial':
+            return 0
+        elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
+            return round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)
+        else:
+            return round(TOTIM_2)
