@@ -262,7 +262,7 @@ class WizardHrPayslip(models.TransientModel):
                 str(round(float(self.get_payslip_lines_value(payslip, 'PREV')))),
                 #29 APORTE SIS
                 str(round(float(self.get_payslip_lines_value(payslip, 'SIS')))),
-                #30 AHORRO AFP
+                #30 CUENTA DE AHORRO VOLUNTARIO AFP
                 '0',
                 # 31 Renta Imp. Sust.AFP
                 '0',
