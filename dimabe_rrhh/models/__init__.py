@@ -19,3 +19,4 @@ from . import custom_unique_tax
 from . import wizard_hr_payslip
 from . import hr_department
 from . import hr_employee
+from . import custom_employee_type

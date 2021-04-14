@@ -18,9 +18,6 @@
         <record model="custom.data.type" id="custom_data_initial_section">
             <field name="name">Tramo</field>
         </record>
-        <record model="custom.data.type" id="custom_data_employee_type">
-            <field name="name">Tipo de Empleado</field>
-        </record>
         <record model="custom.data.type" id="custom_data_contract_type">
             <field name="name">Tipo de Contrato</field>
         </record>
