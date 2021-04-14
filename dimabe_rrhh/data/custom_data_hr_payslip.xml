@@ -285,7 +285,7 @@ else:
 if contract.apv_currency == 'clp':
     rate = 1
 elif contract.apv_currency == 'uf'
-    rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True)
+    rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True).value
 else:
     rate = 0
 
@@ -398,7 +398,7 @@ else:
             <field name="condition_python">contract.supplementary_insurance_agreed_quotes_uf > 0</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">if contract.currency_supplementary_insurance_id == 'uf':
-    rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True)
+    rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True).value
 elif contract.currency_supplementary_insurance_id == 'clp':
     rate = 1
 else:
@@ -448,7 +448,7 @@ else:
             <field name="condition_select">python</field>
             <field name="condition_python">
 if contract.currency_supplementary_insurance_id == 'uf':
-    rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True)
+    rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True).value
 elif contract.currency_supplementary_insurance_id == 'clp':
     rate = 1
 else:

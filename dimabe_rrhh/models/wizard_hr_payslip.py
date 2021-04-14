@@ -410,9 +410,12 @@ class WizardHrPayslip(models.TransientModel):
                 payslip.indicator_id.mutuality_id.code if payslip.indicator_id.has_mutuality is True and payslip.indicator_id.mutuality_id.code else "00",
                 #97 RENTA IMPOBILE MUTUAL
                 self.get_mutuality_taxable(payslip and payslip[0] or False, self.get_payslip_lines_value(payslip, 'TOTIM')),
-                #98
-                #99
-                #100
+                #98 COTIZACION ACCIDENTE DEL TRABAJO
+                str(round(float(self.get_payslip_lines_value(payslip, 'MUT')))) if self.get_payslip_lines_value(payslip, 'MUT') else '0',
+                #99 CODIGO DE SUCURSAL PAGO MUTUAL
+                '0',
+                #100 RENTA IMPONIBLE SEGUR CESANTIA
+                self.get_imponible_seguro_cesantia(payslip and payslip[0] or False, self.get_payslip_lines_value(payslip, 'TOTIM'), self.get_payslip_lines_value(payslip, 'IMPLIC')),
                 #101
                 #102
                 #103
@@ -563,3 +566,21 @@ class WizardHrPayslip(models.TransientModel):
             return round(payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value)
         else:
             return round(float(TOTIM))
+
+    @api.model
+    def get_taxable_unemployment_insurance(self, payslip, TOTIM, LIC):
+        LIC_2 = float(LIC)
+        TOTIM_2 = float(TOTIM)
+        if TOTIM_2 < payslip.indicadores_id.sueldo_minimo:
+            return 0
+        if LIC_2 > 0:
+            TOTIM = LIC
+        if payslip.contract_id.is_pensionary is True:
+            return 0
+        elif payslip.contract_id.type_id.code == 4 :#'Sueldo Empresarial'
+            return 0
+        elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf):
+            return str(round(
+                float(round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf))))
+        else:
+            return str(round(float(round(TOTIM_2))))
