@@ -415,7 +415,7 @@ class WizardHrPayslip(models.TransientModel):
                 #99 CODIGO DE SUCURSAL PAGO MUTUAL
                 '0',
                 #100 RENTA IMPONIBLE SEGUR CESANTIA
-                self.get_imponible_seguro_cesantia(payslip and payslip[0] or False, self.get_payslip_lines_value(payslip, 'TOTIM'), self.get_payslip_lines_value(payslip, 'IMPLIC')),
+                self.get_taxable_unemployment_insurance(payslip and payslip[0] or False, self.get_payslip_lines_value(payslip, 'TOTIM'), self.get_payslip_lines_value(payslip, 'IMPLIC')),
                 #101
                 #102
                 #103
@@ -579,8 +579,8 @@ class WizardHrPayslip(models.TransientModel):
             return 0
         elif payslip.contract_id.type_id.code == 4 :#'Sueldo Empresarial'
             return 0
-        elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf):
+        elif TOTIM_2 >= round(payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == 4 and 'Para Seguro de Cesantía' in a.name).value):
             return str(round(
-                float(round(payslip.indicadores_id.tope_imponible_seguro_cesantia * payslip.indicadores_id.uf))))
+                float(round(payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == 4 and 'Para Seguro de Cesantía' in a.name).value))))
         else:
             return str(round(float(round(TOTIM_2))))
