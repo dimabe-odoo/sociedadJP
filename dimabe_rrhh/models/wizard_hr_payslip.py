@@ -287,7 +287,7 @@ class WizardHrPayslip(models.TransientModel):
                 #41 NUM CONTRATO APVI
                 '0',
                 #42 FORMA DE PAGO APVI
-                payslip.contract_id.forma_pago_apv if self.get_payslip_lines_value_2(payslip,'APV') else '0',
+                payslip.contract_id.forma_pago_apv if self.get_payslip_lines_value(payslip,'APV') else '0',
                 #43 COTIZACION APVI
                 str(round(float(self.get_payslip_lines_value(payslip, 'APV')))) if str(round(float(self.get_payslip_lines_value(payslip, 'APV')))) else '0',
                 #44 COTIZACION DEPOSITO CONV
