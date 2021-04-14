@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
         <record id="custom_isapre_1" model="custom.isapre">
+            <field name="name">Sin Isapre</field>
+            <field name="code">00</field>
+        </record>
+        <record id="custom_isapre_1" model="custom.isapre">
             <field name="name">Banmédica</field>
             <field name="code">01</field>
             <field name="vat">96572800-7</field>
