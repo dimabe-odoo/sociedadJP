@@ -4,9 +4,9 @@
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='department_id']" position="before">
+            <!--<xpath expr="//field[@name='department_id']" position="before">
                 <field name="employee_type_id" required="1"/>
-            </xpath>
+            </xpath>-->
             <xpath expr="//field[@name='name']" position="attributes">
                 <attribute name="invisible">1</attribute>
                 <attribute name="no_label">1</attribute>
