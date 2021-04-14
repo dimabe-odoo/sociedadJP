@@ -5,6 +5,8 @@ import base64
 from collections import Counter
 import io
 import csv
+from dateutil import relativedelta
+import time
 
 class WizardHrPayslip(models.TransientModel):
     _name = "wizard.hr.payslip"
@@ -22,6 +24,9 @@ class WizardHrPayslip(models.TransientModel):
     #     ('Diciembre', 'Diciembre'), ], string="Mes")
 
     #years = fields.Integer(string="Años", default=int(datetime.now().year))
+    date_from = fields.Date('Fecha Inicial', required=True, default=lambda self: time.strftime('%Y-%m-01'))
+    date_to = fields.Date('Fecha Final', required=True, default=lambda self: str(
+        datetime.now() + relativedelta.relativedelta(months=+1, day=1, days=-1))[:10])
 
     def print_report_xlsx(self):
         file_name = 'temp'
@@ -416,13 +421,37 @@ class WizardHrPayslip(models.TransientModel):
                 '0',
                 #100 RENTA IMPONIBLE SEGUR CESANTIA
                 self.get_taxable_unemployment_insurance(payslip and payslip[0] or False, self.get_payslip_lines_value(payslip, 'TOTIM'), self.get_payslip_lines_value(payslip, 'IMPLIC')),
-                #101
-                #102
-                #103
-                #104
-                #105
-            
+                #101 APORTE TRABAJADOR SEGURO CESANTIA
+                str(round(float(self.get_payslip_lines_value(payslip, 'SECE')))) if self.get_payslip_lines_value(payslip, 'SECE') else '0',
+                #102 APORTE EMPLEADO SEGURO CESANTIA
+                str(self.verify_quotation_afc(
+                                 self.get_taxable_unemployment_insurance(payslip and payslip[0] or False,
+                                                                    self.get_payslip_lines_value(payslip, 'TOTIM'),
+                                                                    self.get_payslip_lines_value(payslip, 'IMPLIC')),
+                                 payslip.indicator_id, payslip.contract_id)),
+                #103 RUT PAGADORA SUBSIDIO
+                '0',
+                #104 dv pafador subsidio
+                '',
+                #105 centro de costo, sucursal, agencia
+                '0'
             ]
+            writer.writerow([str(l) for l in line_employee])
+        
+        file_name = "Previred_{}{}.txt".format(self.date_to,
+                                               self.company_id.display_name.replace('.', ''))
+        attachment_id = self.env['ir.attachment'].sudo().create({
+            'name': file_name,
+            'datas_fname': file_name,
+            'datas': base64.encodebytes(output.getvalue().encode())
+        })
+
+        action = {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/{}?download=true'.format(attachment_id.id, ),
+            'target': 'self',
+        }
+        return action
 
 
 
@@ -584,3 +613,13 @@ class WizardHrPayslip(models.TransientModel):
                 float(round(payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == 4 and 'Para Seguro de Cesantía' in a.name).value))))
         else:
             return str(round(float(round(TOTIM_2))))
+
+    @api.multi
+    def verify_quotation_afc(self, TOTIM, indicator, contract):
+        totimp = float(TOTIM)
+        if contract.type_id.code == 2 :#Plazo Fijo
+            return round(totimp * indicator.mapped('data_ids').filtered(lambda a: a.name == 'Contrato Plazo Fijo Empleador').percentage_value / 100)
+        elif contract.type_id.code == 1: #Plazo Indefinido
+            return round(totimp * indicator.mapped('data_ids').filtered(lambda a: a.name == 'Contrato Plazo Indefinido Empleador').percentage_value / 100)
+        else:
+            return 0
