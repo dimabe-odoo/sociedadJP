@@ -614,7 +614,7 @@ class WizardHrPayslip(models.TransientModel):
         else:
             return str(round(float(round(TOTIM_2))))
 
-    @api.multi
+    @api.model
     def verify_quotation_afc(self, TOTIM, indicator, contract):
         totimp = float(TOTIM)
         if contract.type_id.code == 2 :#Plazo Fijo
