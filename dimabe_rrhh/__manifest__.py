@@ -43,7 +43,8 @@
         'views/hr_salary_rule.xml',
         'views/hr_payslip.xml',
         'views/wizard_hr_payslip.xml',
-        'views/hr_department.xml'
+        'views/hr_department.xml',
+        'report/report_payslip.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
