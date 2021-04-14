@@ -72,25 +72,25 @@
                       	<td><span t-field="o.contract_id.afp_id"/></td>
                         <td>
                         	<t t-if="('MODELO' == o.contract_id.afp_id.name.upper())">
-                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Modelo').percentage_show" />
+                            <span t-raw="o.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Modelo').percentage_show" />
                           </t>
                           <t t-if="('CUPRUM' == o.contract_id.afp_id.name.upper())">
-                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Cuprum').percentage_show" />
+                            <span t-raw="o.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Cuprum').percentage_show" />
                           </t>
                           <t t-if="('HABITAT' == o.contract_id.afp_id.name.upper())">
-                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Habitat').percentage_show" />
+                            <span t-raw="o.indicaindicator_idtor.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Habitat').percentage_show" />
                           </t>
                           <t t-if="('PLANVITAL' == o.contract_id.afp_id.name.upper())">
-                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp PlanVital').percentage_show" />
+                            <span t-raw="o.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp PlanVital').percentage_show" />
                           </t>
                           <t t-if="('PROVIDA' == o.contract_id.afp_id.name.upper())">
-                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Provida').percentage_show" />
+                            <span t-raw="o.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Provida').percentage_show" />
                           </t>
                           <t t-if="('CAPITAL' == o.contract_id.afp_id.name.upper())">
-                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Capital').percentage_show" />
+                            <span t-raw="o.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Capital').percentage_show" />
                           </t>
                           <t t-if="('UNO' == o.contract_id.afp_id.name.upper())">
-                            <span t-raw="o.indicator.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Uno').percentage_show" />
+                            <span t-raw="o.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Tasa Afp Uno').percentage_show" />
                           </t>
                         </td>
                         <td><span t-field="o.contract_id.isapre_id"/></td>

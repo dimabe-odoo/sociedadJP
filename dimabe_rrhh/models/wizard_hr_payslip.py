@@ -555,12 +555,11 @@ class WizardHrPayslip(models.TransientModel):
    
     @api.model
     def get_mutuality_taxable(self, payslip, TOTIM):
-        TOTIM_2 = float(TOTIM)
-        if payslip.contract_id.mutual_seguridad is False:
+        if payslip.indicator_id.has_mutuality is False:
             return 0
-        elif payslip.contract_id.type_id.name == 'Sueldo Empresarial':
+        elif payslip.contract_id.type_id.code == 4: #SUELDO EMPRESARIAL
             return 0
-        elif TOTIM_2 >= round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf):
-            return round(payslip.indicadores_id.tope_imponible_afp * payslip.indicadores_id.uf)
+        elif float(TOTIM) >= round(payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value):
+            return round(payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value)
         else:
-            return round(TOTIM_2)
+            return round(float(TOTIM))
