@@ -3,6 +3,8 @@ import xlsxwriter
 from datetime import datetime
 import base64
 from collections import Counter
+import io
+import csv
 
 class WizardHrPayslip(models.TransientModel):
     _name = "wizard.hr.payslip"
@@ -158,6 +160,252 @@ class WizardHrPayslip(models.TransientModel):
         }
         return action
 
+    def action_generate_csv(self):
+        employee_model = self.emv['hr_employee']
+        payslip_model = self.env['hr.payslip']
+        payslip_line_model = self.env['hr.payslip.line']
+        company_country = self.env.user.company_id.country_id
+        sex_data = {'male': "M", 'female': "F",}
+        output = io.StringIO()
+        #_logger = logging.getLogger(__name__)
+
+        writer = csv.writer(output, delimiter=';', quotechar="'", quoting=csv.QUOTE_NONE)
+
+        payslip_recs = payslip_model.sudo().search([('date_from','=',self.date_from),('employee_id.addres_id','=',self.company_id.id)])
+
+        date_start = self.date_from
+        date_stop = self.date_to
+        date_start_format = date_start.strftime("%m%Y")
+        date_stop_format = date_stop.strftime("%m%Y")
+        line_employee = []
+        rut = ""
+        rut_dv = ""
+        rut_emp = ""
+        rut_emp_dv = ""
+
+        try:
+            rut_emp, rut_emp_dv = self.env.user.company_id.vat.split("-")
+            rut_emp = rut_emp.replace('.', '')
+        except:
+            pass
+
+        for payslip in payslip_recs:
+            payslip_line_recs = payslip_line_model.sudo().search([('slip_id', '=', payslip.id)])
+            rut = ""
+            rut_dv = ""
+            rut, rut_dv = payslip.employee_id.identification_id.split("-")
+            rut = rut.replace('.', '')
+            line_employee = [
+                #1 RUT SIN DIGITO NI PUNTOS NI GUION
+                self._shorten_str(rut, 11),
+                #2 DIGITO VERIFICADOR
+                self._shorten_str(rut_dv, 1),
+                #3 APELLIDO
+                self._format_str(payslip.employee_id.last_name.upper(), 30) if payslip.employee_id.last_name else '',
+                #4 SEGUNDO APELLIDO
+                self._format_str(payslip.employee_id.mothers_name.upper(), 30) if payslip.employee_id.mothers_name else '',
+                #5 NOMBRES
+                "%s %s" % (self._format_str(payslip.employee_id.first_name.upper(), 15), self._format_str(payslip.employee_id.middle_name.upper(), 15) if payslip.employee_id.middle_name else ''),
+                #6 SEXO
+                sex_data.get(payslip.employee_id.gender, '') if payslip.employee_id.gender else '',
+                #7 NACION
+                self.get_nacionality(payslip.employee_id.country_id.id),
+                #8 TIPO PAGO
+                self.get_pay_method(payslip.employee_id),
+                #9 PERIODO DESDE
+                date_start_format,
+                #10 PERIOD HASTA 
+                date_stop_format,
+                #11 REGIMEN
+                self.get_provisional_regime(payslip.contract_id),
+                #12 TIPO TRABAJADOR
+                '0',
+                #13 DIAS TRABAJADOS
+                str(round(self.get_worked_days(payslip and payslip[0] or False))),
+                #14 TIPO LINEA
+                self.get_line_type(payslip and payslip[0] or False),
+                #15 COD MOVI
+                payslip.personal_movements,
+                #16 FECHA DESDE MOVIMIENTO PERSONAL (Si declara mov. personal 1, 3, 4, 5, 6, 7, 8 y 11 Fecha Desde es obligatorio y debe estar dentro del periodo de remun)
+                payslip.date_from.strftime("%d/%m/%Y") if payslip.personal_movements != '0' else '00/00/0000',
+                #17 FECHA HASTA MOVIMIENTO PERSONAL 
+                payslip.date_to.strftime("%d/%m/%Y") if payslip.personal_movements != '0' else '00/00/0000',
+                #18 TRAMO FAM
+                payslip.contract_id.section_id.name,
+                #19 CARGAS SIMPLES
+                payslip.contract_id.simple_charge,
+                #20 CARGA MAT
+                payslip.contract_id.maternal_charge,
+                #21 CARBA INV
+                payslip.contract_id.disability_charge,
+                #22 ASIG FAMILIAR
+                self.get_payslip_line_value(payslip, 'ASIGFAM') if self.get_payslip_line_value(payslip ,'ASIGFAM') else '0',
+                #23 ASIG RETRO
+                self.get_payslip_line_value(payslip, 'ASFRETRO') if self.get_payslip_lines_value(payslip, 'ASFRETRO') else '0',
+                #24 REINT CARGAS
+                '0',
+                #25 SUBSIDIO TRABAJADOR JOVEN
+                'N',
+                #26 AFP
+                payslip.contract_id.afp_id.code if payslip.contract_id.afp_id.code else '00',
+                #27 IMPO AFP
+                str(round(float(self.get_taxable_afp(payslip and payslip[0] or False,
+                                                                      self.get_payslip_lines_value(payslip, 'TOTIM'),
+                                                                      self.get_payslip_lines_value(payslip,
+                                                                                                     'IMPLIC'))))),
+                #28 COT AFP
+                str(round(float(self.get_payslip_lines_value(payslip, 'PREV')))),
+                #29 APORTE SIS
+                str(round(float(self.get_payslip_lines_value(payslip, 'SIS')))),
+                #30 AHORRO AFP
+                '0',
+                # 31 Renta Imp. Sust.AFP
+                '0',
+                # 32 Tasa Pactada (Sustit.)
+                '0',
+                # 33 Aporte Indemn. (Sustit.)
+                '0',
+                # 34 N Periodos (Sustit.)
+                '0',
+                # 35 Periodo desde (Sustit.)
+                '0',
+                # 36 Periodo Hasta (Sustit.)
+                '0',
+                # 37 Puesto de Trabajo Pesado
+                ' ',
+                # 38 % Cotizacion Trabajo Pesado
+                '0',
+                # 39 Cotizacion Trabajo Pesado
+                '0',
+                #40 codigo INS APVI
+                payslip.contract_id.apv_id.code if self.get_payslip_lines_value(payslip,'APV') != '0' else '0',
+                #41 NUM CONTRATO APVI
+                '0',
+                #42 FORMA DE PAGO APVI
+                payslip.contract_id.forma_pago_apv if self.get_payslip_lines_value_2(payslip,'APV') else '0',
+                #43 COTIZACION APVI
+                str(round(float(self.get_payslip_lines_value(payslip, 'APV')))) if str(round(float(self.get_payslip_lines_value(payslip, 'APV')))) else '0',
+                #44 COTIZACION DEPOSITO CONV
+                ' ',
+                # 45 Codigo Institucion Autorizada APVC
+                '0',
+                # 46 Numero de Contrato APVC
+                '0',
+                # 47 Forma de Pago APVC
+                '0',
+                # 48 Cotizacion Trabajador APVC
+                '0',
+                # 49 Cotizacion Empleador APVC
+                '0',
+                # 50 RUT Afiliado Voluntario 9 (11)
+                '0',
+                # 51 DV Afiliado Voluntario
+                ' ',
+                # 52 Apellido Paterno VOLUNTARIO
+                ' ',
+                # 53 Apellido Materno VOLUNTARIO
+                '',
+                # 54 Nombres VOLUNTARIO
+                ' ',
+                #55 CODIGO MOVIMIENTO PERSONAL
+                            # Código Glosa
+                            # 0 Sin Movimiento en el Mes
+                            # 1 Contratación a plazo indefinido
+                            # 2 Retiro
+                            # 3 Subsidios
+                            # 4 Permiso Sin Goce de Sueldos
+                            # 5 Incorporación en el Lugar de Trabajo
+                            # 6 Accidentes del Trabajo
+                            # 7 Contratación a plazo fijo
+                            # 8 Cambio Contrato plazo fijo a plazo indefinido
+                            # 11 Otros Movimientos (Ausentismos)
+                            # 12 Reliquidación, Premio, Bono
+                            # TODO LIQUIDACION
+                '0',
+                # 56 Fecha inicio movimiento personal (dia-mes-año)
+                '0',
+                # 57 Fecha fin movimiento personal (dia-mes-año)
+                '0',
+                # 58 Codigo de la AFP
+                '0',
+                # 59 Monto Capitalizacion Voluntaria
+                '0',
+                # 60 Monto Ahorro Voluntario
+                '0',
+                # 61 Numero de periodos de cotizacion
+                '0',
+                # 62 Codigo EX-Caja Regimen
+                '0',
+                # 63 Tasa Cotizacion Ex-Caja Prevision
+                '0',
+                #64 RENTA IMPONIBLE IPS
+                self.verify_ips(self.get_payslip_lines_value(payslip, 'TOTIM'), payslip.indicadores_id.mapped('data_ids').filtered(lambda a: 'Para afiliados al IPS (ex INP)' in a.name).value) if self.get_payslip_lines_value(payslip,'TOTIM') else '0',            
+                #65 COTIZACION OBLIGATORIO IPS
+                '0',
+                #66 RENTA IMPONIBL DESAHUCIO
+                '0',
+                #67 CODIGO EX-CAJA REGIMEN DESHAUCIO
+                '0',
+                #68 TASA COTIZACION DESAHUCIO
+                '0',
+                #69 COTIZACION DESHAUCIO
+                '0',
+                #70 COTIZACION FONASA
+                self.get_payslip_lines_value(payslip,'FONASA') if payslip.contract_id.is_fonasa is True else '0',
+                #71 COTIZACION ACC. TRABAJO ISL
+                str(round(float(self.get_payslip_lines_value(payslip, 'ISL')))) if self.get_payslip_lines_value(
+                                 payslip, 'ISL') else '0',
+                #72 BONIFICACION LEY 15386
+                '0',
+                #73 DESCUENTO POR CARGAS FAMILIARES EN IPS
+                '0',
+                #74 BONOS GOBIERNO
+                '0',
+                #75 CODIGO INSTITUCION DE SALUD
+                payslip.contract_id.isapre_id.code if payslip.contract_id.is_fonasa is False else '07'
+                #76 NUMERO DEL FUN
+                '' if payslip.contract_id.is_fonasa is True else payslip.contract_id.fun_number if payslip.contract_id.fun_number else '',
+                #77 RENTA IMPONIBLE ISAPRE
+                '0' if payslip.contract_id.is_fonasa is True else self.get_taxable_health(
+                                 payslip and payslip[0] or False, self.get_payslip_lines_value(payslip, 'TOTIM')),
+                
+                #78 MONEDA DEL PLAN PACTADO ISAPRE
+                '1' if payslip.contract_id.currency_isapre_id.name == 'CLP' or payslip.contract_id.is_fonasa is True else '2',
+                #79 COTIZACION PACTADA
+                '0' if payslip.contract_id.is_fonasa is True else payslip.contract_id.isapre_agreed_quotes_uf,
+                #80 COTIZACION OBLIGATORIA ISAPRE
+                '0' if payslip.contract_id.is_fonasa is True else
+                             str(round(float(self.get_payslip_lines_value(payslip, 'SALUD')))),
+                #81
+                #82
+                #83
+                #84
+                #85
+                #86
+                #87
+                #88
+                #89
+                #90
+                #91
+                #92
+                #93
+                #94
+                #95
+                #96
+                #97
+                #98
+                #99
+                #100
+                #101
+                #102
+                #103
+                #104
+                #105
+            
+            ]
+
+
+
     @api.model
     def get_worked_days(self, payslip):
         worked_days = 0
@@ -184,3 +432,107 @@ class WizardHrPayslip(models.TransientModel):
                 if line.code == 'HEXDE':
                     worked_days = line.amount
         return worked_days
+
+    @api.model
+    def _shorten_str(self, text, size=1):
+        c = 0
+        shorten_text = ""
+        while c < size and c < len(text):
+            shorten_text += text[c]
+            c += 1
+        return shorten_text
+
+    @api.model
+    def _format_str(self, text, size=1):
+        c = 0
+        formated_text = ""
+        special_chars = [
+            ['á', 'a'],
+            ['é', 'e'],
+            ['í', 'i'],
+            ['ó', 'o'],
+            ['ú', 'u'],
+            ['ñ', 'n'],
+            ['Á', 'A'],
+            ['É', 'E'],
+            ['Í', 'I'],
+            ['Ó', 'O'],
+            ['Ú', 'U'],
+            ['Ñ', 'N']]
+
+        while c < size and c < len(text):
+            formated_text += text[c]
+            c += 1
+        for char in special_chars:
+            try:
+                formated_text = formated_text.replace(char[0], char[1])
+            except:
+                pass
+        return formated_text
+
+    @api.model
+    def get_nacionality(self, country):
+        if country == 46:
+            return 0
+        else:
+            return 1
+    @api.model
+    def get_pay_method(self, employee):
+        # 01 Remuneraciones del mes
+        # 02 Gratificaciones
+        # 03 Bono Ley de Modernizacion Empresas Publicas
+        # TODO: en base a que se elije el tipo de pago???
+        return 1
+
+    @api.model 
+    def get_provisional_regime(self, contract):
+        if contract.is_pensionary is True:
+            return 'SIP'
+        else:
+            return 'AFP'
+
+    @api.model
+    def get_line_type(self, payslip):
+        # 00 Linea Principal o Base
+        # 01 Linea Adicional
+        # 02 Segundo Contrato
+        # 03 Movimiento de Personal Afiliado Voluntario
+        return '00'
+
+    @api.model
+    def get_payslip_line_value(self, obj, rule):
+        val = 0
+        lines = self.env['hr.payslip.line']
+        details = lines.search([('slip_id','=',obj.id),('code','=', rule)])
+        val = round(details.total)
+        return val
+
+    @api.model
+    def get_taxable_afp(self, payslip, TOTIM, LIC):
+        LIC_2 = float(LIC)
+        TOTIM_2 = float(TOTIM)
+        if LIC_2 > 0:
+            TOTIM = LIC
+        if payslip.contract_id.is_pensionary is True:
+            return '0.0'
+        elif TOTIM_2 >= round(payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value):
+            return str(round(float(payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value)))
+        else:
+            return str(round(float(round(TOTIM_2))))
+
+    @api.model
+    def verify_ips(self, TOTIM, TOPE):
+        if float(TOTIM) > (TOPE):
+            data = round(float(TOPE))
+            return data
+        else:
+            return TOTIM
+
+    @api.model
+    def get_taxable_health(self, payslip, TOTIM):
+        result = 0
+        if float(TOTIM) >= round(payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value):
+            return str(round(float(payslip.indicator_id.mapped('data_ids').filtered(lambda a: 'AFP' in a.name and a.type=='4').value)))
+        else:
+            return str(round(float(TOTIM)))
+   

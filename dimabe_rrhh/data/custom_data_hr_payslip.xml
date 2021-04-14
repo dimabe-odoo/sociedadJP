@@ -2,12 +2,10 @@
 <odoo>
 
     <!-- Decimal Precision -->
-
         <record forcecreate="True" id="hr_payroll.decimal_payroll" model="decimal.precision">
             <field name="name">Payroll</field>
             <field name="digits">0</field>
         </record>
-
         <record forcecreate="True" id="hr_payroll.decimal_payroll_rate" model="decimal.precision">
             <field name="name">Payroll Rate</field>
             <field name="digits">0</field>
@@ -92,7 +90,7 @@
             <field name="amount_python_compute">result = round(0.0077777*contract.wage*inputs.HEX50.amount)</field>
         </record>
         <record id="custom_hr_salary_rule_discount_hours" model="hr.salary.rule">
-            <field name="name">HORAS DESCUENTO</field>
+            <field name="name">Horas Descuento</field>
             <field name="code">HEXDE</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
@@ -178,7 +176,7 @@ else:
         </record>
 
         <record id="custom_hr_salary_rule_collation" model="hr.salary.rule">
-            <field name="name">COLACION</field>
+            <field name="name">Colación</field>
             <field name="code">COL</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
             <field name="condition_select">python</field>
@@ -189,7 +187,7 @@ else:
         </record>
 
         <record id="custom_hr_salary_rule_mobilization" model="hr.salary.rule">
-            <field name="name">MOVILIZACION</field>
+            <field name="name">Movilización</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">MOV</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
@@ -201,7 +199,7 @@ else:
 
 
         <record id="custom_hr_salary_rule_other_not_taxable" model="hr.salary.rule">
-            <field name="name">OTROS NO IMPONIBLE</field>
+            <field name="name">Otros No Imponible</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">OTRONOIMP</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
@@ -212,9 +210,9 @@ else:
         </record>
 
         <record id="custom_hr_salary_rule_viatic" model="hr.salary.rule">
-            <field name="name">VIATICO</field>
+            <field name="name">Viático</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="code">VIASAN</field>
+            <field name="code">VIAT</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_not_taxable"/>
             <field name="condition_select">python</field>
             <field name="condition_python">result = contract.viatic_amount > 0</field>
@@ -223,7 +221,7 @@ else:
         </record>
 
         <record id="custom_hr_salary_rule_total_amount_not_taxable" model="hr.salary.rule">
-            <field name="name">TOTAL NO IMPONIBLE</field>
+            <field name="name">Total No Imponible NO IMPONIBLE</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">TOTNOI</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -233,7 +231,7 @@ else:
         </record>
 
         <record id="custom_hr_salary_rule_forecast_amount" model="hr.salary.rule">
-            <field name="name">PREVISION</field>
+            <field name="name">Previsión</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">PREV</field>
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
@@ -253,7 +251,7 @@ else:
 
 
         <record id="custom_hr_salary_rule_unemployment_insurance_amount" model="hr.salary.rule">
-            <field name="name">SEGURO CESANTIA</field>
+            <field name="name">Seguro Cesantía</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">SECE</field>
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
@@ -276,7 +274,7 @@ else:
 </field>
         </record>
         <record id="custom_hr_salary_rule_voluntary_saving_amount" model="hr.salary.rule">
-            <field name="name">APORTE AL AHORRO VOLUNTARIO</field>
+            <field name="name">Aporte al Ahorro Voluntario</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">APV</field>
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
@@ -299,7 +297,7 @@ else:
         </record>
 
         <record id="custom_hr_salary_rule_unemployment_insurance_company_contribution_amount" model="hr.salary.rule">
-            <field name="name">SEGURO CESANTIA APORTE EMPRESA</field>
+            <field name="name">Seguro Cesantía Aporte Empresa</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">SECEEMP</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_company_contribution"/>
@@ -339,7 +337,7 @@ else:
         </record>
 
         <record id="custom_hr_salary_rule_company_forecast_amount" model="hr.salary.rule">
-            <field name="name">PREVISION EMPRESA AFP SIS</field>
+            <field name="name">Previsión Empresa AFP SIS</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">SIS</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_company_contribution"/>
@@ -373,7 +371,7 @@ else:
 
 
         <record id="custom_hr_salary_rule_security_mutual_amount" model="hr.salary.rule">
-            <field name="name">MUTUAL SEGURIDAD</field>
+            <field name="name">Mutual Seguridad</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">MUT</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_company_contribution"/>
@@ -391,7 +389,7 @@ else:
     result = round(TOTIM * mutuality_rate /100)</field>
         </record>
         <record id="custom_hr_salary_rule_supplementary_insurance_amount" model="hr.salary.rule">
-            <field name="name">SEGURO COMPLEMENTARIO</field>
+            <field name="name">Seguro Complementario</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">SECOMP</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_company_contribution"/>
@@ -414,7 +412,7 @@ else:
     result = round(contract.supplementary_insurance_agreed_quotes_uf*rate)</field>
         </record>
         <record id="custom_hr_salary_rule_afp_to_pay_amount" model="hr.salary.rule">
-            <field name="name">AFP X PAGAR</field>
+            <field name="name">AFP por Pagar</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">AFP</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -426,7 +424,7 @@ else:
 
 
 <record id="custom_hr_salary_rule_health_amount" model="hr.salary.rule">
-            <field name="name">SALUD</field>
+            <field name="name">Salud</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">SALUD</field>
             <field name="category_id" ref="custom_hr_salary_rule_health"/>
@@ -443,7 +441,7 @@ else:
     result = safe</field>
         </record>
         <record id="custom_hr_salary_additional_isapre_amount" model="hr.salary.rule">
-            <field name="name">ADICIONAL ISAPRE</field>
+            <field name="name">Adicional Isapre</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">ADISA</field>
             <field name="category_id" ref="custom_hr_salary_rule_health"/>
@@ -465,20 +463,19 @@ else:
 
 
         <record id="custom_hr_salary_isapre_to_pay_amount" model="hr.salary.rule">
-            <field name="name">ISAPRES X PAGAR</field>
+            <field name="name">Isapres por Pagar</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
-            <field name="code">COLMENA</field>
+            <field name="code">ISAP</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">contract.is_fonasa is False</field>
+            <field name="condition_python">result = not contract.is_fonasa </field>
             <field name="appears_on_payslip" eval="False"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = categories.SAL</field>
-            
         </record>
 
         <record id="custom_hr_salary_compensation_box_amount" model="hr.salary.rule">
-            <field name="name">CAJA DE COMPENSACION</field>
+            <field name="name">Caja de Compensación</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">CAJACOMP</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -496,7 +493,7 @@ else:
         </record>
 
         <record id="custom_hr_salary_fonasa_amount" model="hr.salary.rule">
-            <field name="name">FONASA</field>
+            <field name="name">Fonasa</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">FONASA</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -516,7 +513,7 @@ else:
         </record>
 
 <record id="custom_hr_salary_rule_tribute_amount" model="hr.salary.rule">
-            <field name="name">TRIBUTABLE</field>
+            <field name="name">Tributable</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">TRIBU</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -532,7 +529,7 @@ else:
         </record>
 
         <record id="custom_hr_salary_rule_unique_tax_amount" model="hr.salary.rule">
-            <field name="name">IMPUESTO UNICO</field>
+            <field name="name">Impuesto Único</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">IMPUNI</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_discount"/>
@@ -560,7 +557,7 @@ else:
 
 
        <record id="custom_hr_salary_rule_legal_discount_amount" model="hr.salary.rule">
-            <field name="name">TOTAL DESC. LEGALES</field>
+            <field name="name">Total Desc. Legales</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">TODELE</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -570,7 +567,7 @@ else:
         </record>
 
        <record id="custom_hr_salary_rule_salary_advance_amount" model="hr.salary.rule">
-            <field name="name">ANTICIPO DE SUELDO</field>
+            <field name="name">Anticipo de Sueldo</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">ASUE</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_other_discount"/>
@@ -584,7 +581,7 @@ else:
         </record>
 
        <record id="custom_hr_salary_rule_bussines_loan_amount" model="hr.salary.rule">
-            <field name="name">PRESTAMOS EMPRESA</field>
+            <field name="name">Prestamo Empresa</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">PRES</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_other_discount"/>
@@ -595,7 +592,7 @@ else:
         </record>
 
        <record id="custom_hr_salary_rule_ccaf_loan_amount" model="hr.salary.rule">
-            <field name="name">PRESTAMOS CCAF</field>
+            <field name="name">Prestamos CCAF</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">PCCAF</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_other_discount"/>
@@ -606,7 +603,7 @@ else:
         </record>
 
        <record id="custom_hr_salary_rule_other_discount_amount" model="hr.salary.rule">
-            <field name="name">OTROS DESCUENTOS</field>
+            <field name="name">Otros Descuentos</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">TOD</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -616,7 +613,7 @@ else:
         </record>
 
        <record id="custom_hr_salary_rule_total_expense_amount" model="hr.salary.rule">
-            <field name="name">TOTAL GASTOS</field>
+            <field name="name">Total Gastos</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">HABALG</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -634,7 +631,7 @@ result = categories.IMP + categories.NOTIMP - asig</field>
 
 
        <record id="custom_hr_salary_rule_total_discount_amount" model="hr.salary.rule">
-            <field name="name">TOTAL DESCUENTOS</field>
+            <field name="name">Total Descuentos</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">TDE</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -644,7 +641,7 @@ result = categories.IMP + categories.NOTIMP - asig</field>
         </record>
 
         <record id="custom_hr_salary_rule_total_assets_amount" model="hr.salary.rule">
-            <field name="name">TOTAL HABERES</field>
+            <field name="name">Total Haberes</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">HAB</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -654,7 +651,7 @@ result = categories.IMP + categories.NOTIMP - asig</field>
         </record>
 
        <record id="custom_hr_salary_rule_total_employee_contribution_amount" model="hr.salary.rule">
-            <field name="name">TOTAL APORTE PATRONAL</field>
+            <field name="name">Total Aporte Patronal</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">APORTE</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -678,7 +675,7 @@ result = round(SECEEMP) + round(SIS) + round(MUT) + round(SC) + round(IS)</field
 
 
        <record id="custom_hr_salary_rule_total_liquid_reach_amount" model="hr.salary.rule">
-            <field name="name">ALCANCE LIQUIDO</field>
+            <field name="name">Alcance Liquido</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">LIQ</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -689,7 +686,7 @@ result = round(SECEEMP) + round(SIS) + round(MUT) + round(SC) + round(IS)</field
         </record>
 
         <record id="custom_hr_salary_rule_total_quotation_work_amount" model="hr.salary.rule">
-            <field name="name">COTIZACION ACC. TRABAJO ISL</field>
+            <field name="name">Cotización ACC. Trabajo ISL</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">ISL</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_company_contribution"/>

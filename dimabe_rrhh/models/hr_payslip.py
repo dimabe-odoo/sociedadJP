@@ -10,6 +10,19 @@ class HrPaySlip(models.Model):
     
     account_analytic_id = fields.Many2one('account.analytic.account','Centro de Costo',readonly=True)
 
+    personal_movements = fields.Selection((('0', 'Sin Movimiento en el Mes'),
+     ('1', 'Contratación a plazo indefinido'),
+     ('2', 'Retiro'),
+     ('3', 'Subsidios (L Médicas)'),
+     ('4', 'Permiso Sin Goce de Sueldos'),
+     ('5', 'Incorporación en el Lugar de Trabajo'),
+     ('6', 'Accidentes del Trabajo'),
+     ('7', 'Contratación a plazo fijo'),
+     ('8', 'Cambio Contrato plazo fijo a plazo indefinido'),
+     ('11', 'Otros Movimientos (Ausentismos)'),
+     ('12', 'Reliquidación, Premio, Bono')     
+     ), 'Movimientos Personal', default="0")
+
     def add(self):
         for item in self:
             if item.salary_id:
