@@ -599,7 +599,7 @@ class WizardHrPayslip(models.TransientModel):
     def get_taxable_unemployment_insurance(self, payslip, TOTIM, LIC):
         LIC_2 = float(LIC)
         TOTIM_2 = float(TOTIM)
-        if TOTIM_2 < payslip.indicadores_id.sueldo_minimo:
+        if TOTIM_2 < payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == 5 and 'Trab. Dependientes e Independientes' in a.name).sueldo_minimo:
             return 0
         if LIC_2 > 0:
             TOTIM = LIC
