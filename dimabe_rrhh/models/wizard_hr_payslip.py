@@ -244,9 +244,9 @@ class WizardHrPayslip(models.TransientModel):
                 #21 CARBA INV
                 payslip.contract_id.disability_charge,
                 #22 ASIG FAMILIAR
-                self.get_payslip_line_value(payslip, 'ASIGFAM') if self.get_payslip_line_value(payslip ,'ASIGFAM') else '0',
+                self.get_payslip_lines_value(payslip, 'ASIGFAM') if self.get_payslip_lines_value(payslip ,'ASIGFAM') else '0',
                 #23 ASIG RETRO
-                self.get_payslip_line_value(payslip, 'ASFRETRO') if self.get_payslip_lines_value(payslip, 'ASFRETRO') else '0',
+                self.get_payslip_lines_value(payslip, 'ASFRETRO') if self.get_payslip_lines_value(payslip, 'ASFRETRO') else '0',
                 #24 REINT CARGAS
                 '0',
                 #25 SUBSIDIO TRABAJADOR JOVEN
@@ -548,7 +548,7 @@ class WizardHrPayslip(models.TransientModel):
         return '00'
 
     @api.model
-    def get_payslip_line_value(self, obj, rule):
+    def get_payslip_lines_value(self, obj, rule):
         val = 0
         lines = self.env['hr.payslip.line']
         details = lines.search([('slip_id','=',obj.id),('code','=', rule)])
