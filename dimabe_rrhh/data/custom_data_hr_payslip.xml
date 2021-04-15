@@ -279,7 +279,7 @@ elif total_imp >=round(maximum):
     result = round(maximum * contract_undefined_term / 100)
 elif contract.type_id.code == '1':
     result = round(total_imp * contract_undefined_term / 100)
-elif contract.type_id.name == '3':
+elif contract.type_id.code== '3':
     result = round(total_imp * contract_undefined_eleven_or_more_term / 100)
 else:
     result = 0

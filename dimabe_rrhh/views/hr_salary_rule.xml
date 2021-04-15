@@ -14,6 +14,9 @@
                 <xpath expr="//page[@name='general']" position="attributes">
                     <attribute name="groups">base.group_no_one</attribute>
                 </xpath>
+                <xpath expr="//field[@name='appears_on_payslip']" position="after">
+                    <field name="show_in_book"/>
+                </xpath>
             </field>
         </record>
     </data>
