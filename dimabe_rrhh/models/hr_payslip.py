@@ -30,12 +30,12 @@ class HrPaySlip(models.Model):
     @api.model
     def _compute_basic_salary(self):
         for item in self:
-            item.basic_salary = f"$ {item.line_ids.filtered(lambda a: a.code=='SUELDO').total}"
+            item.basic_salary = '$ ' + item.line_ids.filtered(lambda a: a.code=='SUELDO').total
 
     @api.model
     def _compute_net_salary(self):
         for item in self:
-            item.basic_salary = f"$ {item.line_ids.filtered(lambda a: a.code=='LIQ').total}"
+            item.basic_salary = '$ ' + item.line_ids.filtered(lambda a: a.code=='LIQ').total
 
     def add(self):
         for item in self:
