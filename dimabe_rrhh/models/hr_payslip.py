@@ -10,6 +10,10 @@ class HrPaySlip(models.Model):
     
     account_analytic_id = fields.Many2one('account.analytic.account','Centro de Costo',readonly=True)
 
+    basic_salary = fields.Char('Sueldo Base', compute="_compute_basic_salary")
+
+    net_salary = fields.Char('Alcance Liquido', compute="_compute_net_salary")
+
     personal_movements = fields.Selection((('0', 'Sin Movimiento en el Mes'),
      ('1', 'Contratación a plazo indefinido'),
      ('2', 'Retiro'),
@@ -22,6 +26,16 @@ class HrPaySlip(models.Model):
      ('11', 'Otros Movimientos (Ausentismos)'),
      ('12', 'Reliquidación, Premio, Bono')     
      ), 'Movimientos Personal', default="0")
+
+    @api.model
+    def _compute_basic_salary(self):
+        for item in self:
+            item.basic_salary = f"$ {item.line_ids.filtered(lambda a: a.code=='SUELDO').total}"
+
+    @api.model
+    def _compute_net_salary(self):
+        for item in self:
+            item.basic_salary = f"$ {item.line_ids.filtered(lambda a: a.code=='LIQ').total}"
 
     def add(self):
         for item in self:
