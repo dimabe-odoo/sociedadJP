@@ -167,7 +167,7 @@ class WizardHrPayslip(models.TransientModel):
 
     def action_generate_csv(self):
         employee_model = self.env['hr.employee']
-        payslip_model = self.env['hr.payslip'].search([('state','!=','cancel'),('state','!=','draft')])
+        payslip_model = self.env['hr.payslip']
         payslip_line_model = self.env['hr.payslip.line']
         company_country = self.env.user.company_id.country_id
         sex_data = {'male': "M", 'female': "F",}
@@ -176,7 +176,7 @@ class WizardHrPayslip(models.TransientModel):
 
         writer = csv.writer(output, delimiter=';', quotechar="'", quoting=csv.QUOTE_NONE)
 
-        payslip_recs = payslip_model.sudo().search([('date_from','=',self.date_from),('employee_id.address_id','=',self.company_id.id)])
+        payslip_recs = payslip_model.sudo().search([('date_from','=',self.date_from),('state','!=','cancel'),('state','!=','draft'),('employee_id.address_id','=',self.company_id.id)])
 
         date_start = self.date_from
         date_stop = self.date_to
