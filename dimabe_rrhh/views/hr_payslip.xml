@@ -40,6 +40,7 @@
                 <xpath expr="//field[@name='net_wage']" position="replace">
                     <field name="net_salary"/>
                 </xpath>
+            </field>
         </record>
     </data>
 </odoo>
