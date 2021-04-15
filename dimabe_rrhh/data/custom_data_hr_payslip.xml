@@ -62,6 +62,7 @@
         <record id="custom_hr_salary_rule_wage_cl" model="hr.salary.rule">
             <field name="name">Sueldo Base</field>
             <field name="code">SUELDO</field>
+            <field name="sequence">1</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_taxable" />
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="condition_select">none</field>
@@ -82,6 +83,7 @@
         <record id="custom_hr_salary_rule_extra_hours" model="hr.salary.rule">
             <field name="name">Horas Extra</field>
             <field name="code">HEX50</field>
+            <field name="sequence">1</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_taxable"/>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="condition_select">python</field>
