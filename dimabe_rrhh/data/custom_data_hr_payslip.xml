@@ -229,7 +229,7 @@ else:
         </record>
 
         <record id="custom_hr_salary_rule_total_amount_not_taxable" model="hr.salary.rule">
-            <field name="name">Total No Imponible NO IMPONIBLE</field>
+            <field name="name">Total No Imponible</field>
             <field name="struct_id" ref="custom_hr_payroll_structure_cl"/>
             <field name="code">TOTNOI</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
@@ -287,7 +287,7 @@ else:
             <field name="code">APV</field>
             <field name="category_id" ref="custom_hr_salary_rule_forecast"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">contract.apv_amount > 0</field>
+            <field name="condition_python">result = contract.apv_amount > 0</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">if contract.apv_amount > 0:
 if contract.apv_currency == 'clp':
@@ -321,14 +321,14 @@ DEVENGABLE=round(contract.wage+amount)
 min_salary = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Trab. Dependientes e Independientes').value
 maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'Cesantía' in a.name).value
 
-GRATI=round(DEVENGABLE * 25 / 100 )
-if GRATI > (4.75 * min_salary /12):
-    GRATI = round(4.75 * min_salary / 12)
+GRAT=round(DEVENGABLE * 25 / 100 )
+if GRAT > (4.75 * min_salary /12):
+    GRAT = round(4.75 * min_salary / 12)
 
 if TOTIM >=round(maximum):
     totimpo =round(maximum)
 elif TOTIM ==0:
-    totimpo =round(DEVENGABLE+GRATI)
+    totimpo =round(DEVENGABLE+GRAT)
 else:
     totimpo = TOTIM
 
@@ -366,13 +366,13 @@ else:
     maximum = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type =='4' and 'AFP' in a.name).value
     min_salary = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.name == 'Trab. Dependientes e Independientes').value
 
-    GRATI=round(DEVENGABLE * 25 / 100 )
-    if GRATI > (4.75 * min_salary /12):
-        GRATI = round (4.75 * min_salary / 12)
+    GRAT=round(DEVENGABLE * 25 / 100 )
+    if GRAT > (4.75 * min_salary /12):
+        GRAT = round (4.75 * min_salary / 12)
     if TOTIM >=round(maximum):
         result = round(maximum * rate /100)
     elif TOTIM ==0:
-        result =round(DEVENGABLE+GRATI * rate /100)
+        result =round(DEVENGABLE+GRAT * rate /100)
     else:
         result = round(TOTIM * rate /100)</field>
         </record>
@@ -403,7 +403,7 @@ else:
             <field name="category_id" ref="custom_hr_salary_rule_category_company_contribution"/>
             <field name="condition_select">python</field>
             <field name="appears_on_payslip" eval="False"/>
-            <field name="condition_python">contract.supplementary_insurance_agreed_quotes_uf > 0</field>
+            <field name="condition_python">result = contract.supplementary_insurance_agreed_quotes_uf > 0</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">if contract.currency_supplementary_insurance_id == 'uf':
     rate = payslip.indicator_id.mapped('data_ids').filtered(lambda a: a.type == '1' and a.last_month is True).value
@@ -488,7 +488,7 @@ else:
             <field name="code">CAJACOMP</field>
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">contract.is_fonasa is True</field>
+            <field name="condition_python">result = contract.is_fonasa is True</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">safe=round(7 * TOTIM/100)
 maximum_safe = payslip.indicator_id.max_taxable_health_rate
@@ -580,12 +580,9 @@ else:
             <field name="code">ASUE</field>
             <field name="category_id" ref="custom_hr_salary_rule_category_other_discount"/>
             <field name="condition_select">python</field>
-            <field name="condition_python">contract.advance_salary_amount > 0 or (inputs.ASUE and inputs.ASUE.amount > 0)</field>
+            <field name="condition_python">result = inputs.ASUE and inputs.ASUE.amount > 0</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">if inputs.ASUE.amount > 0:
-    result = inputs.ASUE.amount
-else:
-    result = contract.advance_salary_amount</field>
+            <field name="amount_python_compute">result = inputs.ASUE.amount</field>
         </record>
 
        <record id="custom_hr_salary_rule_bussines_loan_amount" model="hr.salary.rule">
@@ -617,7 +614,7 @@ else:
             <field name="category_id" ref="custom_hr_salary_rule_subtotal"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories.ODESC</field>
+            <field name="amount_python_compute">result = categories.ODES</field>
         </record>
 
        <record id="custom_hr_salary_rule_total_expense_amount" model="hr.salary.rule">
