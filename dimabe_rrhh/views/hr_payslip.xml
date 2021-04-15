@@ -28,5 +28,18 @@
                 </xpath>
             </field>
         </record>
+        <record id="hr_inherit_tree_inherit" model="ir.ui.view">
+            <field name="name">hr_inherit.tree</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="priority" eval="1000"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='basic_wage']" position="replace">
+                    <field name="basic_salary"/>
+                </xpath>
+                <xpath expr="//field[@name='net_wage']" position="replace">
+                    <field name="net_salary"/>
+                </xpath>
+        </record>
     </data>
 </odoo>
