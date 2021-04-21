@@ -13,6 +13,12 @@
                 <xpath expr="//field[@name='input_line_ids']/tree//field[@name='amount']" position="before">
                     <field name="code"/>
                 </xpath>
+                <xpath expr="//field[@name='paid']" position="before">
+                    <field name="account_analytic_id"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="personal_movements"/>
+                </xpath>
                 <xpath expr="//page[1]" position="after">
                     <page string="Prevision">
                         <group string="Indicadores">

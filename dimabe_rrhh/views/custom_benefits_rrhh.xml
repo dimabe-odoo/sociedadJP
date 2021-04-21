@@ -43,7 +43,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem string="Beneficios RRHH" id="custom_benefits_rrhh_menu"
+        <menuitem name="Beneficios RRHH" id="custom_benefits_rrhh_menu"
                   parent="hr_payroll.menu_hr_payroll_configuration" action="custom_benefits_rrhh_act_window"/>
 
     </data>

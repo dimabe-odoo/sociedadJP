@@ -88,7 +88,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem string="Indicadores" id="custom_indicators_menu" parent="hr_pension_menu" action="custom_indicators_act_window"/>
+        <menuitem name="Indicadores" id="custom_indicators_menu" parent="hr_pension_menu" action="custom_indicators_act_window"/>
 
     </data>
 </odoo>
