@@ -48,7 +48,7 @@
         'views/hr_department.xml',
         'views/hr_employee.xml',
         'report/report_payslip.xml',
-        #'views/res_company.xml'
+        'views/res_company.xml'
 
     ],
     # only loaded in demonstration mode
