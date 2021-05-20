@@ -48,11 +48,12 @@ class LoginController(http.Controller):
             return {'user_id': str(user[0].id), 'user': user[0].name, 'employee_id': str(employee_id.id),
                     'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
                     'truck': session.truck_id.name,
-                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street, 'session': str(session.id),'is_present': True}
+                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street, 'session': str(session.id),
+                    'is_present': True}
         else:
             return {'user_id': str(user[0].id), 'user': user[0].name, 'employee_id': str(employee_id.id),
                     'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
-                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street,'is_present': True}
+                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street, 'is_present': True}
 
     @http.route('/api/assign_truck', type="json", method=['GET'], auth='token', cors='*')
     def assign_truck(self, truck, employee, user):
@@ -78,9 +79,9 @@ class LoginController(http.Controller):
                     'employee_id': employee,
                     'is_login': True,
                 })
-            return {'session_id': str(session.id)}
+            return {'ok': True, 'session_id': str(session.id)}
         else:
-            return "El camion {} no existe".format(truck)
+            return {'ok': False, 'message': "El camion {} no existe".format(truck)}
 
     @http.route('/api/logout', type='json', auth='public', cors='*')
     def logout(self, session_id):
