@@ -45,6 +45,7 @@ class CustomIndicators(models.Model):
 
     mutuality_type_id = fields.Integer('custom.data.type',compute="_compute_mutuality_type")
 
+
     state = fields.Selection([
         ('draft','Borrador'),
         ('done','Validado'),
