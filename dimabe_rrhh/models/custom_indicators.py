@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from odoo.addons import decimal_precision as dp
 from datetime import datetime
 from datetime import date
+from ..utils.tax_unique import getTaxeUniques
 
 
 class CustomIndicators(models.Model):
@@ -202,7 +203,7 @@ class CustomIndicators(models.Model):
                         'indicator_id':self.id
                     })
 
-        taxes = self.getTaxeUniques(self.get_month(self.month))
+        taxes = getTaxeUniques(self.get_month(self.month))
         for item in taxes:
             self.env['custom.unique.tax'].create({
                 'salary_from': item['from'],
