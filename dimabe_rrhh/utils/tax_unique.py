@@ -8,7 +8,7 @@ def cleanNumber(val):
 def getTaxeUniques(month):
     now = date.today()
     month_id = 'mes_'+month.lower()
-    url = f'https://www.sii.cl/valores_y_fechas/impuesto_2da_categoria/impuesto{now.year}.htm'
+    url = 'https://www.sii.cl/valores_y_fechas/impuesto_2da_categoria/impuesto{}.htm'.format(now.year)
 
     res = requests.get(url)
 
