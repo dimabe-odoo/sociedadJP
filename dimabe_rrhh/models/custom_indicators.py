@@ -203,15 +203,16 @@ class CustomIndicators(models.Model):
                         'indicator_id':self.id
                     })
 
-        taxes = getTaxeUniques(self.get_month(self.month))
-        for item in taxes:
-            self.env['custom.unique.tax'].create({
-                'salary_from': item['from'],
-                'salary_to': item['to'],
-                'factor': item['factor'],
-                'amount_to_reduce': item['discount'],
-                'indicator_id' : self.id
-            })
+        #Hay que buscar una manera ya que pagina no trae el tbody
+        #taxes = getTaxeUniques(self.get_month(self.month))
+        #for item in taxes:
+        #    self.env['custom.unique.tax'].create({
+        #        'salary_from': item['from'],
+        #        'salary_to': item['to'],
+        #        'factor': item['factor'],
+        #        'amount_to_reduce': item['discount'],
+        #        'indicator_id' : self.id
+        #    })
         
 
     def get_household_allowance_data(self,table):
