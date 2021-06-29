@@ -202,7 +202,7 @@ class CustomIndicators(models.Model):
                         'indicator_id':self.id
                     })
 
-        taxes = getTaxeUniques(self.get_month(self.month))
+        taxes = self.getTaxeUniques(self.get_month(self.month))
         for item in taxes:
             self.env['custom.unique.tax'].create({
                 'salary_from': item['from'],
