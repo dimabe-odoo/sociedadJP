@@ -16,9 +16,6 @@
                 <xpath expr="//field[@name='paid']" position="before">
                     <field name="account_analytic_id"/>
                 </xpath>
-                <xpath expr="//field[@name='name']" position="after">
-                    <field name="personal_movements"/>
-                </xpath>
                 <xpath expr="//page[1]" position="after">
                     <page string="Prevision">
                         <group string="Indicadores">

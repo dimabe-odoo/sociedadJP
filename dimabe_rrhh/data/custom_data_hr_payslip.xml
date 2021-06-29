@@ -120,7 +120,7 @@ GRATI = round(categories.IMP *25/100)
 if contract.type_id.code==4:
     result = 0
 elif GRATI  > (minimum * 4.75 / 12):
-    result = round((minimum * 4.75 / 12 /30) * worked_days.WORK100.number_of_days)
+    result = round(minimum * 4.75 / 12)
 else:
     result = GRATI
             </field>

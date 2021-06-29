@@ -14,6 +14,8 @@ class HrPaySlip(models.Model):
 
     net_salary = fields.Char('Alcance Liquido', compute="_compute_net_salary")
 
+    journal_id = fields.Many2one('account.journal', string="Diario", readonly=False)
+
     personal_movements = fields.Selection((('0', 'Sin Movimiento en el Mes'),
      ('1', 'Contratación a plazo indefinido'),
      ('2', 'Retiro'),
