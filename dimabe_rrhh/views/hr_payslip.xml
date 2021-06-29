@@ -31,20 +31,6 @@
                 </xpath>
             </field>
         </record>
-
-        <record id="hr_payslip_view_form_inherit" model="ir.ui.view">
-            <field name="name">hr_inherit.form</field>
-            <field name="model">hr.payslip</field>
-            <field name="inherit_id" ref="hr_payroll_account.hr_payslip_view_form"/>
-            <field name="priority" eval="8"/>
-            <field name="arch" type="xml">
-                 <xpath expr="//field[@name='journal_id']" position="attributes">
-                    <attribute name="readonly">0</attribute>
-                </xpath>
-            </field>
-        </record>
-
-
         <record id="hr_inherit_tree_inherit" model="ir.ui.view">
             <field name="name">hr_inherit.tree</field>
             <field name="model">hr.payslip</field>
@@ -59,10 +45,17 @@
                 </xpath>
             </field>
         </record>
-        
 
-
-
-       
+        <record id="hr_payslip_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr_inherit.form</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll_account.hr_payslip_view_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='journal_id']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
