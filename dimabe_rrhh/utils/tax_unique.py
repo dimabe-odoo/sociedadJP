@@ -17,7 +17,7 @@ def getTaxeUniques(month):
         div_month = soup.find(id=month_id)
         taxes = []
         if div_month != None:
-            tr = div_month.find('tbody').find_all('tr')
+            tr = div_month.find('tbody').findall('tr')
             for row in tr:
                 if 'QUINCENAL' in row.text:
                     break
@@ -25,7 +25,7 @@ def getTaxeUniques(month):
                     continue
                 taxeValue = {}
                 contador = 0
-                for val in row.find_all('td'):
+                for val in row.findall('td'):
                     if val.text:
                         contador += 1
                         if contador == 1:
