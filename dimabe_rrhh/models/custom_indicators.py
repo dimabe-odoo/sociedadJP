@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from odoo.addons import decimal_precision as dp
 from datetime import datetime
+from datetime import date
 
 
 class CustomIndicators(models.Model):
@@ -200,6 +201,17 @@ class CustomIndicators(models.Model):
                         'type':'10',
                         'indicator_id':self.id
                     })
+
+        taxes = getTaxeUniques(self.get_month(self.month))
+        for item in taxes:
+            self.env['custom.unique.tax'].create({
+                'salary_from': item['from'],
+                'salary_to': item['to'],
+                'factor': item['factor'],
+                'amount_to_reduce': item['discount'],
+                'indicator_id' : self.id
+            })
+        
 
     def get_household_allowance_data(self,table):
         data = []
@@ -455,3 +467,45 @@ class CustomIndicators(models.Model):
             return 'Noviembre'
         elif 'dec' == month:
             return 'Diciembre'
+
+
+    def getTaxeUniques(month):
+        now = date.today()
+        month_id = 'mes_'+month.lower()
+        url = f'https://www.sii.cl/valores_y_fechas/impuesto_2da_categoria/impuesto{now.year}.htm'
+
+        res = requests.get(url)
+
+        if res.status_code == 200:
+            soup = BeautifulSoup(res.content, 'html.parser')
+            div_month = soup.find(id=month_id)
+            taxes = []
+            if div_month != None:
+                tr = div_month.find('tbody').find_all('tr')
+                for row in tr:
+                    if 'QUINCENAL' in row.text:
+                        break
+                    if 'MENSUAL' in row.text:
+                        continue
+                    taxeValue = {}
+                    contador = 0
+                    for val in row.find_all('td'):
+                        if val.text:
+                            contador += 1
+                            if contador == 1:
+                                taxeValue['from'] = float(cleanNumber(val.text))
+                            if contador == 2:
+                                if 'Y' in val.text:
+                                    taxeValue['to'] = 0
+                                else:
+                                    taxeValue['to'] = float(cleanNumber(val.text))
+                            if contador == 3:
+                                taxeValue['factor'] = float(cleanNumber(val.text))
+                            if contador == 4:
+                                taxeValue['discount'] = float(cleanNumber(val.text))
+                    taxes.append(taxeValue)
+            return taxes
+
+
+    def cleanNumber(val):
+        return val.replace('$', '').replace(' ', '').replace('.', '').replace(',', '.')
