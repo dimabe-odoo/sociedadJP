@@ -49,6 +49,7 @@ class CustomLoan(models.Model):
     state = fields.Selection([('draft', 'Borrador'), ('in_process', 'En Proceso'), ('done', 'Finalizado')],
                              default='draft', track_visibility='onchange')
 
+
     def compute_fee_remaining(self):
         for item in self:
             if item.state == 'in_process':
