@@ -36,11 +36,11 @@ class CustomLoan(models.Model):
 
     interest = fields.Float('Interes')
 
-    #fee_ids = fields.One2many('custom.fee', 'loan_id')
+    fee_ids = fields.One2many('custom.fee', 'loan_id')
 
-    #next_fee_id = fields.Many2one('custom.fee', compute='compute_next_fee')
+    next_fee_id = fields.Many2one('custom.fee', compute='compute_next_fee')
 
-    #next_fee_date = fields.Date('Proxima Cuota', related='next_fee_id.expiration_date')
+    next_fee_date = fields.Date('Proxima Cuota', related='next_fee_id.expiration_date')
 
     rule_id = fields.Many2one('hr.salary.rule', string='Regla', domain=[('discount_in_fee', '=', True)],required=True)
 
