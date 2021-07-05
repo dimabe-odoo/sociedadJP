@@ -22,3 +22,4 @@ from . import hr_employee
 from . import custom_employee_type
 from . import res_company
 from . import custom_loan
+from . import confirm_loan
