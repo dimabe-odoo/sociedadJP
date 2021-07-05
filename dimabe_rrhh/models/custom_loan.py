@@ -36,7 +36,7 @@ class CustomLoan(models.Model):
 
     interest = fields.Float('Interes')
 
-    fee_ids = fields.One2many('custom.fee', 'loan_id')
+    #fee_ids = fields.One2many('custom.fee', 'loan_id')
 
     #next_fee_id = fields.Many2one('custom.fee', compute='compute_next_fee')
 
