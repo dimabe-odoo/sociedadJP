@@ -60,9 +60,6 @@ class StockPicking(models.Model):
                                 quant = self.env['stock.quant'].search(
                                     [('product_id.id', '=', move.product_id.supply_id.id),
                                      ('location_id.id', '=', item.location_id.id)])
-                                if quant.quantity < move.product_uom_qty:
-                                    raise models.ValidationError(
-                                        f'No tiene cantidad necesaria de insumos {move.product_id.supply_id.display_name}')
                             if (move.product_uom_qty - move.loan_supply) != 0:
                                 qty = move.product_uom_qty
                                 stock_move = self.env['stock.move'].create({
