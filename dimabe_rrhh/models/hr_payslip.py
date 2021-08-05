@@ -76,6 +76,7 @@ class HrPaySlip(models.Model):
                     })
             item.salary_id = None
     
+    #parece que hay que sacar
     @api.model
     def _get_worked_day_lines(self):
         res = super(HrPaySlip, self)._get_worked_day_lines()
