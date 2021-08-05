@@ -138,6 +138,9 @@ class MobileSaleController(http.Controller):
                 logging.getLogger().error(res.display_name)
                 logging.getLogger().error(url_google)
                 json_data = json.loads(respond_google.text)
+                print(json_data.keys(),json_data.values(),json_data)
+                if json_data['status'] == 'ZERO_RESULTS':
+                    continue
                 distance_text = json_data['routes'][0]["legs"][0]['distance']['text']
                 distance_value = json_data['routes'][0]["legs"][0]['distance']['value'] / 1000
                 logging.error(res.mapped('mobile_lines').mapped('product_id').mapped('id'))
@@ -174,16 +177,14 @@ class MobileSaleController(http.Controller):
                 [('seller_id.id', '=', session.id), ('state', 'in', ('confirm','assigned'))])
             logging.getLogger().error('Order {}'.format(order_active_2.name))
             if order_active_2:
+                print(order_active_2.read())
                 order_app = {
-                    'Order_Id': str(order_active_2.id),
+                    'Order_Id': order_active_2.id,
                     'Order_Name': order_active_2.name,
                 }
             return order_app
         else:
-            order_app = {
-                'Order_Id': str(order_active.id),
-                'Order_Name': order_active.name
-            }
+            order_app = self.get_order(latitude,longitude,order_active.id)
             return order_app
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
@@ -225,7 +226,7 @@ class MobileSaleController(http.Controller):
                 })
             respond.append({
                 "OrderId": order.id,
-                "OrderName": order.name,
+                "OrderName": order.name if order.name else '',
                 "Distance": distance_text,
                 "ClientName": order.customer_id.display_name,
                 "ClientAddress": order.customer_id.street,

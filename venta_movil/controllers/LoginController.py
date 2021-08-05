@@ -45,13 +45,13 @@ class LoginController(http.Controller):
         session = request.env['truck.session'].sudo().search([('user_id', '=', user.id), ('is_login', '=', True)])
 
         if session:
-            return {'user_id': str(user[0].id), 'user': user[0].name, 'employee_id': str(employee_id.id),
+            return {'user_id': user[0].id, 'user': user[0].name, 'employee_id': employee_id.id,
                     'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
                     'truck': session.truck_id.name,
-                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street, 'session': str(session.id),
+                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street, 'session': session.id,
                     'is_present': True}
         else:
-            return {'user_id': str(user[0].id), 'user': user[0].name, 'employee_id': str(employee_id.id),
+            return {'user_id': user[0].id, 'user': user[0].name, 'employee_id': employee_id.id,
                     'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
                     'mobile': user[0].mobile, 'token': token, 'address': user[0].street, 'is_present': True}
 
@@ -79,7 +79,7 @@ class LoginController(http.Controller):
                     'employee_id': employee,
                     'is_login': True,
                 })
-            return {'ok': True, 'session_id': str(session.id)}
+            return {'ok': True, 'session_id': session.id}
         else:
             return {'ok': False, 'message': "El camion {} no existe".format(truck)}
 

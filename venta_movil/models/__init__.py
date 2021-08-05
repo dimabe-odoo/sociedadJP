@@ -37,3 +37,4 @@ from . import pos_order_line
 from . import truck_session
 from . import custom_discount_history
 from . import account_move
+from . import stock_immediate_transfer
