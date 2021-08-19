@@ -28,7 +28,7 @@
                                 <field name="fee_qty" required="1" attrs="{'readonly': [('state','!=','draft')]}"/>
                                 <field name="fee_value" required="1"
                                        attrs="{'readonly': [('state','!=','draft')]}"/>
-                                <field name="next_fee_date"/>
+<!--                                <field name="next_fee_date"/>-->
                                 <field name="loan_total"
                                        readonly="1"/>
                             </group>
@@ -42,22 +42,22 @@
                                        attrs="{'invisible': [('type_of_loan','!=','new')],'readonly': [('state','!=','draft')]}"/>
                             </group>
                         </group>
-                        <notebook>
-                            <page string="Cuotas" name="fee">
-                                <group>
-                                    <field name="fee_remaining" attrs="{'invisible':[('state','=','draft')]}"
-                                           readonly="1"/>
-                                </group>
-                                <field name="fee_ids">
-                                    <tree create="false" editable="bottom" delete="false">
-                                        <field name="paid" readonly="1"/>
-                                        <field name="number" readonly="1"/>
-                                        <field name="expiration_date" readonly="1"/>
-                                        <field name="value" readonly="1"/>
-                                    </tree>
-                                </field>
-                            </page>
-                        </notebook>
+<!--                        <notebook>-->
+<!--                            <page string="Cuotas" name="fee">-->
+<!--                                <group>-->
+<!--                                    <field name="fee_remaining" attrs="{'invisible':[('state','=','draft')]}"-->
+<!--                                           readonly="1"/>-->
+<!--                                </group>-->
+<!--                                <field name="fee_ids">-->
+<!--                                    <tree create="false" editable="bottom" delete="false">-->
+<!--                                        <field name="paid" readonly="1"/>-->
+<!--                                        <field name="number" readonly="1"/>-->
+<!--                                        <field name="expiration_date" readonly="1"/>-->
+<!--                                        <field name="value" readonly="1"/>-->
+<!--                                    </tree>-->
+<!--                                </field>-->
+<!--                            </page>-->
+<!--                        </notebook>-->
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
