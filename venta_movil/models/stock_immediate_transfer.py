@@ -7,7 +7,7 @@ class StockImmediateTransfer(models.TransientModel):
 
     def process(self):
         res = super(StockImmediateTransfer, self).process()
-        if Enumerable(self.pick_ids).all(lambda x: x.state == 'done'):
+        if Enumerable(self.pick_ids).all(lambda x: x.state == 'done' and x.picking_type_id.sequence_code != 'INT'):
             for pick in self.pick_ids:
                 pick.process_supply_movement()
         return res

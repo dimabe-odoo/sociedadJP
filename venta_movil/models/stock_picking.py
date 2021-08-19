@@ -25,8 +25,9 @@ class StockPicking(models.Model):
 
     def button_validate(self):
         res = super(StockPicking, self).button_validate()
-        if self.state == 'done' and not self.supply_dispatch_id or not self.loan_reception_id:
-            self.process_supply_movement()
+        if self.state == 'done' and self.picking_type_id.sequence_code != 'INT':
+            if not self.supply_dispatch_id or not self.loan_reception_id:
+                self.process_supply_movement()
         return res
 
     def process_supply_movement(self):

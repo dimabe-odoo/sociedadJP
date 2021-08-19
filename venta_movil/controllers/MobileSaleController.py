@@ -39,11 +39,12 @@ class MobileSaleController(http.Controller):
                 'mobile_id': mobile.id,
                 'product_id': product_object.id,
                 'qty': product_json['qty'],
-                'price': customer.property_product_pricelist.item_ids.filtered(lambda a: a.product_tmpl_id.id == product_object.product_tmpl_id.id).fixed_price,
+                'price': customer.property_product_pricelist.item_ids.filtered(
+                    lambda a: a.product_tmpl_id.id == product_object.product_tmpl_id.id).fixed_price,
 
             })
             for tax in product_object.taxes_id:
-                sale_line.write({'tax_ids':[(4,tax.id)]})
+                sale_line.write({'tax_ids': [(4, tax.id)]})
         mobile.button_confirm()
         mobile.sudo().write({
             'seller_id': session,
@@ -56,6 +57,32 @@ class MobileSaleController(http.Controller):
         })
         mobile.make_done()
         return {'message': 'Compra realizada satifactoriamente'}
+
+    @http.route('/api/create_sale_order',type="json",method=['POST'],auth="token",cors='*')
+    def create_sale_order(self,products,client):
+        customer = request.env['res.partner'].sudo().search([('id', '=', client)])
+        mobile = request.env['mobile.sale.order'].sudo().create({
+            'state': 'draft',
+            'customer_id': customer.id,
+            'price_list_id': customer.property_product_pricelist.id
+        })
+        line = []
+        for product in products:
+            product_json = json.loads(product)
+            product_object = request.env['product.product'].sudo().search([('id', '=', int(product_json['id']))])
+            logging.getLogger().error(product_object.taxes_id)
+            sale_line = request.env['mobile.sale.line'].sudo().create({
+                'mobile_id': mobile.id,
+                'product_id': product_object.id,
+                'qty': product_json['qty'],
+                'price': customer.property_product_pricelist.item_ids.filtered(
+                    lambda a: a.product_tmpl_id.id == product_object.product_tmpl_id.id).fixed_price,
+
+            })
+            for tax in product_object.taxes_id:
+                sale_line.write({'tax_ids': [(4, tax.id)]})
+        mobile.button_confirm()
+        return {"Compra Realizada Safisfactoriamente, por favor quedar a la espera del repartidor"}
 
     @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
     def accept_order(self, mobile_id, latitude, longitude):
@@ -87,17 +114,28 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/redo_truck', type='json', method=['GET'], auth='token', cors='*')
     def redo_truck(self, session, orderId):
-        session = request.env['truck.session'].sudo().search([('id', '=', session)])
-        session.sudo().write({
+        session_obj = request.env['truck.session'].sudo().search([('id', '=', session)])
+        session_obj.sudo().write({
             'is_present': False
         })
-        if not orderId:
+        if orderId:
             order = request.env['mobile.sale.order'].sudo().search([('id', '=', orderId)])
             order.sudo().write({
                 'seller_id': None,
-                'state': 'confirm'
-
+                'state': 'confirm',
+                'warehouse_id': None,
+                'location_id': None
             })
+        else:
+            order = request.env['mobile.sale.order'].sudo().search(
+                [('location_id.id', '=', session_obj.truck_id.id), ('state', '!=', 'done')])
+            order.sudo().write({
+                'seller_id': None,
+                'state': 'confirm',
+                'warehouse_id': None,
+                'location_id': None
+            })
+        return "Sesion Desactivada y Pedido liberado"
 
     @http.route('/api/set_active', type='json', method=['GET'], auth='token', cors='*')
     def set_active(self, session):
@@ -105,6 +143,7 @@ class MobileSaleController(http.Controller):
         session.sudo().write({
             'is_present': True
         })
+        return "Sesion Activa"
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
@@ -138,7 +177,7 @@ class MobileSaleController(http.Controller):
                 logging.getLogger().error(res.display_name)
                 logging.getLogger().error(url_google)
                 json_data = json.loads(respond_google.text)
-                print(json_data.keys(),json_data.values(),json_data)
+                print(json_data.keys(), json_data.values(), json_data)
                 if json_data['status'] == 'ZERO_RESULTS':
                     continue
                 distance_text = json_data['routes'][0]["legs"][0]['distance']['text']
@@ -174,24 +213,36 @@ class MobileSaleController(http.Controller):
                 })
             order_app = {}
             order_active_2 = request.env['mobile.sale.order'].search(
-                [('seller_id.id', '=', session.id), ('state', 'in', ('confirm','assigned'))])
+                [('seller_id.id', '=', session.id), ('state', 'in', ('confirm', 'assigned'))])
             logging.getLogger().error('Order {}'.format(order_active_2.name))
             if order_active_2:
                 print(order_active_2.read())
-                order_app = {
-                    'Order_Id': order_active_2.id,
-                    'Order_Name': order_active_2.name,
-                }
+                order_app = self.get_order_dict(latitude=latitude, longitude=longitude, id=order_active_2.id)
+            else:
+                order_active_2 = request.env['mobile.sale.order'].search(
+                    [('state', 'in', ('confirm', 'assigned', 'onroute'))])
+                if not order_active_2.seller_id:
+                    warehouse = request.env['stock.warehouse'].sudo().search([])
+                    warehouse_id = 0
+                    for ware in warehouse:
+                        if truck.id in ware.mapped('truck_ids').mapped('id'):
+                            warehouse_id = ware.id
+                    order_active_2.write({
+                        'seller_id': session,
+                        'warehouse_id': warehouse_id,
+                        'location_id': session_active.truck_id.id
+                    })
+                order_app = self.get_order_dict(latitude=latitude, longitude=longitude, id=order_active_2.id)
             return order_app
         else:
-            order_app = self.get_order(latitude,longitude,order_active.id)
+            order_app = self.get_order(latitude, longitude, order_active.id)
             return order_app
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, employee):
         session = request.env['truck.session'].sudo().search([('employee_id', '=', employee)])
         env = request.env['mobile.sale.order'].sudo().search(
-            [('seller_id', 'in', session.mapped('id')), ('state', '=', 'done')],order="date_done desc")
+            [('seller_id', 'in', session.mapped('id')), ('state', '=', 'done')], order="date_done desc")
         result = []
         for res in env:
             result.append({
@@ -205,6 +256,9 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
+        return self.get_order_dict(latitude, longitude, id)
+
+    def get_order_dict(self, latitude, longitude, id):
         if id:
             order = request.env['mobile.sale.order'].sudo().search([('id', '=', int(id))])
             respond = []
