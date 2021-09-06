@@ -6,11 +6,10 @@ import werkzeug
 
 class RegisterController(http.Controller):
     @http.route('/api/register', type='json', auth='public', cors='*')
-    def do_register(self, name, password, email, phoneNumber):
+    def do_register(self, name, password, email, phoneNumber,commune,street):
         # search user exist
         email = email.lower()
         user = request.env['res.users'].sudo().search([('login', '=', email)])
-
         if user:
             raise werkzeug.exceptions.BadRequest(
                 'el email {} ya se encuentra registrado'.format(email))
@@ -30,7 +29,9 @@ class RegisterController(http.Controller):
             'login': email,
             'email': email,
             'password': password,
+            'street': street,
             'company_id': 1,
+            'property_product_pricelist': 3,
             'sel_groups_1_8_9': 8,
             'partner_id': partner[0].id,
             'mobile': phoneNumber})

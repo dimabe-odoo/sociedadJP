@@ -7,7 +7,7 @@ import functools
 import googlemaps
 import requests
 import math
-
+from odoo.tools import date_utils
 
 class MobileSaleController(http.Controller):
 
@@ -253,6 +253,20 @@ class MobileSaleController(http.Controller):
                 "total": res.total_sale
             })
         return result
+
+    @http.route('/api/client_orders',type='json',method=['GET'],auth='token',cors='*')
+    def get_client_orders(self,partner_id):
+        mobile_sale_order = request.env['mobile.sale.order'].search([('customer_id','=',partner_id)])
+        my_orders = []
+        for mobile in mobile_sale_order:
+            my_orders.append({
+                'id': mobile.id,
+                'name': mobile.name if mobile.name else '',
+                'state': mobile.state
+            })
+        return my_orders
+
+
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):

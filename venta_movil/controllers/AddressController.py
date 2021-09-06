@@ -19,13 +19,12 @@ class AddressController(http.Controller):
         return {'message': 'Dirección creada correctamente'}
 
     @http.route('/api/add_address', type='json', methods=['POST'], auth='token', cors='*')
-    def add_address(self, city, address, name, partner_id, commune_id, email, phone, reference, latitude, longitude):
+    def add_address(self, address, name, partner_id, commune_id, email, phone, latitude, longitude, reference=False):
         partner = request.env['res.partner'].search([('id', '=', partner_id)])
         res = request.env['res.partner'].sudo().create({
             'type': 'other',
             'name': name,
             'street': address,
-            'city': city,
             'partner_latitude': float(latitude),
             'partner_longitude': float(longitude),
             'jp_commune_id': commune_id,
@@ -36,30 +35,57 @@ class AddressController(http.Controller):
         })
         return {'message': 'Direccion creada correctamente'}
 
+    @http.route('/api/edit_address', type='json', methods=['POST'], auth='token', cors='*')
+    def edit_address(self, partner_id, name, phone, email, address, latitude, longitude):
+        partner_id = request.env['res.partner'].sudo().search([('id', '=', partner_id)]).write({
+            'name': name,
+            'mobile': phone,
+            'email': email,
+            'street': address,
+            'partner_latitude': float(latitude),
+            'partner_longitude': float(longitude),
+        })
+        return {"Direccion Modificada"}
+
     @http.route('/api/get_address', type='json', methods=['POST'], auth='token', cors='*')
     def get_address(self, partner_id):
         childs = request.env['res.partner'].search([('id', '=', partner_id)]).child_ids
         res = []
-        for child in childs:
-            if request.env['res.partner'].search([('address_favorite_id','=',child.id)]):
-                is_favorite = True
-            else:
-                is_favorite = False
+        if childs:
+            for child in childs:
+                if request.env['res.partner'].search([('address_favorite_id', '=', child.id)]):
+                    is_favorite = True
+                else:
+                    is_favorite = False
+                res.append({
+                    'id': child.id,
+                    'name': child.name,
+                    'street': child.street,
+                    'city': child.city,
+                    'mobile': child.mobile,
+                    'commune': child.jp_commune_id.name,
+                    'references': child.comment if child.comment else '',
+                    'is_favorite': is_favorite
+                })
+        else:
+            partner = request.env['res.partner'].search([('id', '=', partner_id)])
             res.append({
-                'id': child.id,
-                'name': child.name,
-                'street': child.street,
-                'city': child.city,
-                'mobile': child.mobile,
-                'commune': child.jp_commune_id.name,
-                'references': child.comment,
-                'is_favorite' : is_favorite
+                'id': partner.id,
+                'name': partner.name,
+                'street': partner.street if partner.street else '',
+                'city': partner.city if partner.city else '',
+                'mobile': partner.mobile if partner.mobile else '',
+                'commune': partner.jp_commune_id.name,
+                'references': partner.comment if partner.comment else '',
+                'is_favorite': True
             })
         return res
 
     @http.route('/api/delete_address', type='json', method=['POST'], auth='token', cors='*')
     def delete(self, partner_id):
         partner_id = request.env['res.partner'].search([('id', '=', partner_id)])
+        if not partner_id.parent_id:
+            return {'message': "No puede eliminar la direccion principal de su usuario"}
         partner_id.sudo().write({
             'parent_id': None
         })
@@ -75,4 +101,4 @@ class AddressController(http.Controller):
         partner_id.sudo().write({
             'address_favorite_id': address_id
         })
-        return partner_id.address_favorite_id.name
+        return {'message': f"Se ha definido como favorita a {partner_id.address_favorite_id.name}"}

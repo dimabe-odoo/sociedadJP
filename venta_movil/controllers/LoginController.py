@@ -46,7 +46,7 @@ class LoginController(http.Controller):
             return {'user_id': user[0].id, 'user': user[0].name, 'employee_id': employee_id.id,
                     'partner_id': user[0].partner_id.id, 'email': user[0].email, 'rut': user[0].vat,
                     'truck': session.truck_id.name,
-                    'mobile': user[0].mobile, 'token': token, 'address': user[0].street, 'session': session.id,
+                    'mobile': str(user[0].mobile), 'token': token, 'address': user[0].street, 'session': session.id,
                     'is_present': True}
         else:
             return {'user_id': user[0].id, 'user': user[0].name, 'employee_id': employee_id.id,
