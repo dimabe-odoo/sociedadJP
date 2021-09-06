@@ -11,7 +11,7 @@ class ProductController(http.Controller):
         result = []
         if partner.property_product_pricelist.item_ids:
             pricelist_id = partner.property_product_pricelist.item_ids
-            products = request.env['product.product'].search([])
+            products = request.env['product.product'].sudo().search([])
             for product in products:
                 raw_data = product.read()
                 json_data = json.dumps(raw_data, default=date_utils.json_default)
