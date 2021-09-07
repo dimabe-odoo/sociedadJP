@@ -110,7 +110,7 @@ class MobileSaleController(http.Controller):
             'payment_method': payment_id,
         })
         mobile_order.make_done()
-        return {'mobile_order', mobile_order.name}
+        return "Pedido Entregado correctamente"
 
     @http.route('/api/redo_truck', type='json', method=['GET'], auth='token', cors='*')
     def redo_truck(self, session, orderId):
@@ -148,8 +148,7 @@ class MobileSaleController(http.Controller):
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
         order_active = request.env['mobile.sale.order'].search(
-            [('seller_id.id', '=', session), ('state', 'in', ('assigned', 'onroute'))])
-
+                [('seller_id.id', '=', session), ('state', 'in', ('assigned', 'onroute'))])
         session_active = request.env['truck.session'].sudo().search([('id', '=', session)])
         if not order_active and session_active.is_present:
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
@@ -282,7 +281,8 @@ class MobileSaleController(http.Controller):
             json_data = json.loads(respond_google.text)
             logging.getLogger().error(json_data)
 
-            distance_text = json_data['routes'][0]['legs'][0]['distance']['text']
+            if json_data['status'] != 'ZERO_RESULTS':
+                distance_text = json_data['routes'][0]['legs'][0]['distance']['text']
             lines = []
             for line in order.mobile_lines:
                 lines.append({

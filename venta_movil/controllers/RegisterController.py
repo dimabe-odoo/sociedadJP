@@ -6,7 +6,7 @@ import werkzeug
 
 class RegisterController(http.Controller):
     @http.route('/api/register', type='json', auth='public', cors='*')
-    def do_register(self, name, password, email, phoneNumber,commune,street):
+    def do_register(self, name, password, email, phoneNumber, commune, street):
         # search user exist
         email = email.lower()
         user = request.env['res.users'].sudo().search([('login', '=', email)])
@@ -42,7 +42,7 @@ class RegisterController(http.Controller):
                 'mobile': create_user[0].mobile, 'address': create_user[0].street, 'token': token}
 
     @http.route('/api/create_client', type='json', method=['POST'], auth='token', cors='*')
-    def create_client(self, name, email, phoneNumber, commune_id, address, latitude, longitude, vat):
+    def create_client(self, name, email, phoneNumber, commune_id, address, latitude, longitude, vat, reference):
         email = email.lower()
         user = request.env['res.users'].sudo().search([('login', '=', email)])
 
@@ -57,12 +57,13 @@ class RegisterController(http.Controller):
         if partner:
             partner.write({'name': name, 'email': email, 'mobile': phoneNumber,
                            'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude,
-                           'jp_commune_id': commune.id, 'state_id': commune.state_id.id})
+                           'jp_commune_id': commune.id, 'state_id': commune.state_id.id, 'comment': reference})
         else:
             partner = request.env['res.partner'].sudo().create(
                 {'name': name, 'email': email, 'mobile': phoneNumber, 'jp_commune_id': commune.id,
-                 'state_id': commune.state_id.id,'property_product_pricelist':3, 'street': address, 'partner_latitude': latitude,
-                 'partner_longitude': longitude, 'l10n_cl_sii_taxpayer_type': '1', 'vat': vat})
+                 'state_id': commune.state_id.id, 'property_product_pricelist': 5, 'street': address,
+                 'partner_latitude': latitude,
+                 'partner_longitude': longitude, 'l10n_cl_sii_taxpayer_type': '1', 'vat': vat, 'comment': reference})
 
         create_user = request.env['res.users'].sudo().create({
             'name': name,
@@ -71,7 +72,8 @@ class RegisterController(http.Controller):
             'company_id': 1,
             'sel_groups_1_8_9': 8,
             'partner_id': partner.id,
-            'mobile': phoneNumber
+            'mobile': phoneNumber,
+            'comment': reference
         })
 
-        return {'ClientId':partner.id}
+        return {'message': "Cliente creado correctamente", 'clientId': partner.id}

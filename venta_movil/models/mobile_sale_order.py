@@ -28,14 +28,14 @@ class MobileSaleOrder(models.Model):
 
     mobile_lines = fields.One2many('mobile.sale.line', 'mobile_id', 'Productos')
 
-    total_sale = fields.Monetary('Total', compute='onchange_mobile_line')
+    total_sale = fields.Float('Total', digits=[10, 0], compute='onchange_mobile_line')
 
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
 
     sale_id = fields.Many2one('sale.order', 'Venta Interna')
 
-    paid = fields.Float('Pagado con')
+    paid = fields.Float('Pagado con', digits=[10, 0])
 
     confirm_date = fields.Datetime('Fecha Confirmado')
 
@@ -51,7 +51,7 @@ class MobileSaleOrder(models.Model):
 
     payment_method = fields.Many2one('pos.payment.method', 'Metodo de Pago')
 
-    change = fields.Float('Vuelto')
+    change = fields.Float('Vuelto', digits=[10, 0])
 
     warehouse_id = fields.Many2one('stock.warehouse', 'Bodega')
 
@@ -63,9 +63,9 @@ class MobileSaleOrder(models.Model):
 
     products = fields.Many2many('product.template', 'available_in_pos')
 
-    total_untaxed = fields.Monetary('Base Imponible', compute='onchange_mobile_line')
+    total_untaxed = fields.Float('Base Imponible', digits=[10, 0], compute='onchange_mobile_line')
 
-    total_taxes = fields.Monetary('Impuestos', compute='onchange_mobile_line')
+    total_taxes = fields.Float('Impuestos', digits=[10, 0], compute='onchange_mobile_line')
 
     assigned_latitude = fields.Float('Longitud')
 
@@ -102,6 +102,15 @@ class MobileSaleOrder(models.Model):
     @api.onchange('customer_id')
     def onchange_customer_id(self):
         self.price_list_id = self.customer_id.property_product_pricelist
+        if self.customer_id:
+            if self.customer_id.partner_latitude == 0 and self.customer_id.partner_longitude == 0:
+                res = {
+                    "warning": {
+                        "title": "Advertencia",
+                        "message": "Este cliente no cuenta con la datos de la ubicacion. lo cual puede causa problema al momento de asignar al repartidor"
+                    }
+                }
+                return res
 
     @api.onchange('seller_id')
     def onchange_location_id(self):

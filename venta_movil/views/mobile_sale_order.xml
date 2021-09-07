@@ -69,9 +69,9 @@
                                 </field>
                                 <strong style="float:right;font-size:20px;">
                                     <group>
-                                        <field widget="monetary" name="total_untaxed" readonly="1" style=""/>
-                                        <field widget="monetary" name="total_taxes" readonly="1"/>
-                                        <field widget="monetary" name="total_sale" readonly="1"/>
+                                        <field name="total_untaxed" readonly="1"/>
+                                        <field name="total_taxes" readonly="1"/>
+                                        <field name="total_sale" readonly="1"/>
                                         <field name="paid" attrs="{'invisible':[('state','!=','onroute')]}"/>
                                         <field name="change" attrs="{'invisible':[('state','!=','onroute')]}"
                                                readonly="1"/>
