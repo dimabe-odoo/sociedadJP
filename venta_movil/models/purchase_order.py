@@ -7,6 +7,11 @@ class PurchaseOrder (models.Model):
 
     have_purchase_without_supply = fields.Boolean('¿Tiene compra comodato?')
 
+    @api.model
+    def _get_picking_type(self, company_id):
+        self.picking_type_id = None
+        return None
+
     def button_cancel(self):
         result = super(PurchaseOrder, self).button_cancel()
         discount_history = self.env['custom.discount.history'].search([('discount_state', '=', 'Cobrado'),('purchase_order_id','=',self.id)])
