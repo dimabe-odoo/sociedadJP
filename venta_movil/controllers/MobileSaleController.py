@@ -95,6 +95,13 @@ class MobileSaleController(http.Controller):
         })
         mobile.button_dispatch()
 
+    @http.route('/api/repeat_order', type="json", method=["GET"], auth="token", cors="*")
+    def repeat_order(self, id):
+        mobile = request.env['mobile.sale.order'].search([('id', '=', id)])
+        if mobile:
+            new_mobile = mobile.copy()
+            return {"message": "Nuevo pedido creado a partir de uno ya finalizado", 'mobileId': new_mobile.id}
+
     @http.route('/api/cancel', type="json", method=['GET'], auth="token", cors='*')
     def cancel_order(self, mobile_id):
         mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
@@ -309,7 +316,7 @@ class MobileSaleController(http.Controller):
             return []
 
     @http.route('/api/get_client_order', type='json', method=['GET'], auth='token', cors='*')
-    def get_order(self, id):
+    def get_order_client(self, id):
         mobile_order = request.env['mobile.sale.order'].sudo().search([('id', '=', id)])
         if mobile_order:
             mobile_order_dict = self.odoo_obj_to_dict('mobile.sale.order', id)

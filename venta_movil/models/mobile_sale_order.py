@@ -26,14 +26,14 @@ class MobileSaleOrder(models.Model):
 
     date_done = fields.Datetime('Fecha de entrega')
 
-    mobile_lines = fields.One2many('mobile.sale.line', 'mobile_id', 'Productos')
+    mobile_lines = fields.One2many('mobile.sale.line', 'mobile_id', 'Productos', copy=True)
 
     total_sale = fields.Float('Total', digits=[10, 0], compute='onchange_mobile_line')
 
     currency_id = fields.Many2one('res.currency', 'Moneda',
                                   default=lambda self: self.env['res.currency'].search([('name', '=', 'CLP')]))
 
-    sale_id = fields.Many2one('sale.order', 'Venta Interna')
+    sale_id = fields.Many2one('sale.order', 'Venta Interna', copy=False)
 
     paid = fields.Float('Pagado con', digits=[10, 0])
 
@@ -93,11 +93,25 @@ class MobileSaleOrder(models.Model):
                     'total_taxes': 0
                 })
 
-    def button_asign(self):
+    def button_assign(self):
         for item in self:
             item.write({
                 'state': 'assigned'
             })
+
+    def copy(self, default=None):
+        res = super(MobileSaleOrder, self).copy(default)
+        price = 0
+        for product in res.mobile_lines:
+            for item in res.price_list_id.item_ids:
+                if item.product_tmpl_id.id == product.product_id.product_tmpl_id.id:
+                    price = item.fixed_price
+            if product.product_id.categ_id.id == 7:
+                product.price = product.product_id.list_price
+            else:
+                product.price = price
+            product.tax_ids = product.product_id.taxes_id
+        return res
 
     @api.onchange('customer_id')
     def onchange_customer_id(self):
