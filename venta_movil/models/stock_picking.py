@@ -142,14 +142,15 @@ class StockPicking(models.Model):
                         'product_uom': move.product_id.supply_id.uom_id.id,
                         'date_expected': self.scheduled_date
                     })
-                self.write({
-                    'supply_dispatch_id': dispatch.id,
-                    'show_supply': True
-                })
-                self.supply_dispatch_id.action_confirm()
-                self.supply_dispatch_id.action_assign()
-                for line in self.supply_dispatch_id.move_line_ids_without_package:
-                    line.write({
-                        'qty_done': line.product_uom_qty
+                if qty != 0:
+                    self.write({
+                        'supply_dispatch_id': dispatch.id,
+                        'show_supply': True
                     })
-                self.supply_dispatch_id.button_validate()
+                    self.supply_dispatch_id.action_confirm()
+                    self.supply_dispatch_id.action_assign()
+                    for line in self.supply_dispatch_id.move_line_ids_without_package:
+                        line.write({
+                            'qty_done': line.product_uom_qty
+                        })
+                    self.supply_dispatch_id.button_validate()
