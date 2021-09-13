@@ -1,4 +1,4 @@
-from odoo import http
+from odoo import http, _
 from odoo.http import request
 import datetime
 import logging
@@ -8,6 +8,7 @@ import googlemaps
 import requests
 import math
 from odoo.tools import date_utils
+
 
 class MobileSaleController(http.Controller):
 
@@ -58,8 +59,8 @@ class MobileSaleController(http.Controller):
         mobile.make_done()
         return {'message': 'Compra realizada satifactoriamente'}
 
-    @http.route('/api/create_sale_order',type="json",method=['POST'],auth="token",cors='*')
-    def create_sale_order(self,products,client):
+    @http.route('/api/create_sale_order', type="json", method=['POST'], auth="token", cors='*')
+    def create_sale_order(self, products, client):
         customer = request.env['res.partner'].sudo().search([('id', '=', client)])
         mobile = request.env['mobile.sale.order'].sudo().create({
             'state': 'draft',
@@ -82,7 +83,8 @@ class MobileSaleController(http.Controller):
             for tax in product_object.taxes_id:
                 sale_line.write({'tax_ids': [(4, tax.id)]})
         mobile.button_confirm()
-        return {"Compra Realizada Safisfactoriamente, por favor quedar a la espera del repartidor"}
+        return {"message": "Compra Realizada Safisfactoriamente, por favor quedar a la espera del repartidor",
+                "mobileID": mobile.id}
 
     @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
     def accept_order(self, mobile_id, latitude, longitude):
@@ -148,7 +150,7 @@ class MobileSaleController(http.Controller):
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
         order_active = request.env['mobile.sale.order'].search(
-                [('seller_id.id', '=', session), ('state', 'in', ('assigned', 'onroute'))])
+            [('seller_id.id', '=', session), ('state', 'in', ('assigned', 'onroute'))])
         session_active = request.env['truck.session'].sudo().search([('id', '=', session)])
         if not order_active and session_active.is_present:
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
@@ -253,19 +255,17 @@ class MobileSaleController(http.Controller):
             })
         return result
 
-    @http.route('/api/client_orders',type='json',method=['GET'],auth='token',cors='*')
-    def get_client_orders(self,partner_id):
-        mobile_sale_order = request.env['mobile.sale.order'].search([('customer_id','=',partner_id)])
+    @http.route('/api/client_orders', type='json', method=['GET'], auth='token', cors='*')
+    def get_client_orders(self, partner_id):
+        mobile_sale_order = request.env['mobile.sale.order'].search([('customer_id', '=', partner_id)])
         my_orders = []
         for mobile in mobile_sale_order:
             my_orders.append({
                 'id': mobile.id,
                 'name': mobile.name if mobile.name else '',
-                'state': mobile.state
+                'state': self.selection_to_string('mobile.sale.order', 'state', mobile.state),
             })
         return my_orders
-
-
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
@@ -308,6 +308,27 @@ class MobileSaleController(http.Controller):
         else:
             return []
 
+    @http.route('/api/get_client_order', type='json', method=['GET'], auth='token', cors='*')
+    def get_order(self, id):
+        mobile_order = request.env['mobile.sale.order'].sudo().search([('id', '=', id)])
+        if mobile_order:
+            mobile_order_dict = self.odoo_obj_to_dict('mobile.sale.order', id)
+            lines = []
+            for line in mobile_order.mobile_lines:
+                line_dict = self.odoo_obj_to_dict('mobile.sale.line', line.id)
+                lines.append(line_dict)
+            mobile_order_dict['product_lines'] = lines
+            mobile_order_dict['spanish_state'] = self.selection_to_string('mobile.sale.order', 'state',
+                                                                          mobile_order.state)
+            return mobile_order_dict
+
+    def odoo_obj_to_dict(self, model, id):
+        odoo_object = request.env[model].sudo().search([('id', '=', id)])
+        raw_data = odoo_object.read()
+        json_data = json.dumps(raw_data, default=date_utils.json_default)
+        json_dict = json.loads(json_data)
+        return json_dict[0]
+
     @http.route('/api/paymentmethod', type='json', method=['GET'], auth='token', cors='*')
     def get_paymeth_method(self):
         respond = request.env['pos.payment.method'].sudo().search([])
@@ -334,3 +355,6 @@ class MobileSaleController(http.Controller):
             return math.ceil(value)
         else:
             return round(value, 1)
+
+    def selection_to_string(self, model, field_name, field_value):
+        return _(dict(request.env[model].fields_get(allfields=[field_name])[field_name]['selection'])[field_value])

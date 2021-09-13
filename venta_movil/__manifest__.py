@@ -38,7 +38,8 @@
         'views/pos_order.xml',
         'views/mobile_sale_order.xml',
         'views/truck_session.xml',
-        'views/custom_discount_history.xml'
+        'views/custom_discount_history.xml',
+        'data/mobile_sale_order_sequence.xml',
 
     ],
     # only loaded in demonstration mode

@@ -3,10 +3,12 @@
     <data noupdate="1">
 
         <record id="mobile_sale_order_sequence" model="ir.sequence">
-            <field name="name">SequenceTitle</field>
-            <field name="code">ProjectName.ModelName.seq</field>
-            <field name="prefix">Prefix</field>
-            <field name="padding">7</field>
+            <field name="name">Sequencia Venta Movil</field>
+            <field name="code">mobile.sale.order.seq</field>
+            <field name="prefix">MSO/</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">3</field>
         </record>
 
     </data>

@@ -182,7 +182,7 @@ class MobileSaleOrder(models.Model):
     @api.model
     def create(self, values):
         values['state'] = 'draft'
-        values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order')
+        values['name'] = self.env['ir.sequence'].next_by_code('mobile.sale.order.seq')
         res = super(MobileSaleOrder, self).create(values)
         return res
 
