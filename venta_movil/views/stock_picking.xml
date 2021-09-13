@@ -17,7 +17,7 @@
                     <field name="sale_with_rent" attrs="{'invisible':[('picking_type_code','in',('incoming','internal'))]}"/>
                 </xpath>
                 <xpath expr="//field[@name='move_ids_without_package']//tree//field[@name='product_uom_qty']" position="after">
-                    <field name="purchase_without_supply" attrs="{'invisible':[('parent.purchase_without_supply','=',False)]}"/>
+                    <field name="purchase_without_supply" attrs="{'column_invisible':[('parent.purchase_without_supply','=',False)]}"/>
                     <field name="loan_supply" attrs="{'invisible':[('parent.sale_with_rent','=',False)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='location_id']" position="attributes">

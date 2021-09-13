@@ -120,14 +120,16 @@ class StockPicking(models.Model):
                     'partner_id': self.partner_id.id,
                 })
                 for move in self.move_ids_without_package:
+                    qty = move.product_uom_qty - move.purchase_without_supply if self.purchase_without_supply else move.product_uom_qty
+                    if qty == 0:
+                        continue
                     if move.product_id.supply_id:
                         quant = self.env['stock.quant'].search(
                             [('product_id.id', '=', move.product_id.supply_id.id),
                              ('location_id.id', '=', self.location_dest_id.id)])
-                        if quant.quantity < move.product_uom_qty:
+                        if quant.quantity < qty:
                             raise models.ValidationError(
                                 f'No tiene cantidad necesaria de insumos {move.product_id.supply_id.display_name}')
-                    qty = move.product_uom_qty
                     stock_move = self.env['stock.move'].create({
                         'picking_id': dispatch.id,
                         'name': move.product_id.supply_id.display_name,
