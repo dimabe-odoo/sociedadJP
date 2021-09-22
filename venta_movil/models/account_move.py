@@ -19,11 +19,13 @@ class AccountMove(models.Model):
                                 have_discount = True
 
                         if have_discount:
-                            if sale_order.id not in self.env['custom.discount.history'].mapped('sale_id').mapped('id'):
+                            if sale_order.id not in self.env['custom.discount.history'].search([]).mapped(
+                                    'sale_id').mapped('id'):
                                 self.env['custom.discount.history'].create({
                                     'sale_id': sale_order.id,
                                     'customer_id': sale_order.partner_id.id,
                                     'date_discount': datetime.datetime.now(),
-                                    'discount_state': 'Por Cobrar'
+                                    'discount_state': 'Por Cobrar',
+                                    'warehouse_id': sale_order.warehouse_id.id
                                 })
         return super(AccountMove, self).write(values)

@@ -6,6 +6,11 @@ class CustomDiscountHistory(models.Model):
 
     sale_id = fields.Many2one('sale.order', string="Pedido")
 
+    warehouse_id = fields.Many2one(
+        comodel_name='stock.warehouse',
+        string='Bodega',
+    )
+
     customer_id = fields.Many2one('res.partner', string="Cliente")
 
     discount_amount = fields.Integer(string="Monto Descuento", compute="_compute_discount_amount")

@@ -11,6 +11,7 @@
                             <field name="customer_id"/>
                             <field name="discount_type_ids"  widget="many2many_tags"/>
                             <field name="discount_amount"/>
+                            <field name="warehouse_id"/>
                             <field name="discount_state"/>
                         </tree>
                     </field>
