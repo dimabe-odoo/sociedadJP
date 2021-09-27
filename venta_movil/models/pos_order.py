@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 import datetime
-
+from functools import partial
 
 class PosOrder(models.Model):
     _inherit = 'pos.order'
@@ -13,7 +13,7 @@ class PosOrder(models.Model):
 
     @api.model
     def create(self, values):
-        models._logger.error('{},{}'.format(values.keys(), values.values()))
+        print(values)
         return super(PosOrder, self).create(values)
 
     def create_picking(self):
@@ -106,3 +106,4 @@ class PosOrder(models.Model):
             if self.lines.filtered(lambda q: q.loan > 0):
                 self.loan_reception_id.button_validate()
             self.supply_reception_id.button_validate()
+        return res

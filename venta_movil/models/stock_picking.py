@@ -65,35 +65,37 @@ class StockPicking(models.Model):
                         quant = self.env['stock.quant'].search(
                             [('product_id.id', '=', move.product_id.supply_id.id),
                              ('location_id.id', '=', self.location_id.id)])
-                    if (move.product_uom_qty - move.loan_supply) != 0:
-                        qty = move.product_uom_qty
-                        stock_move = self.env['stock.move'].create({
-                            'picking_id': reception.id,
-                            'name': move.product_id.supply_id.display_name,
-                            'location_id': reception.location_id.id,
-                            'location_dest_id': reception.location_dest_id.id,
-                            'product_id': move.product_id.supply_id.id,
-                            'date': datetime.date.today(),
-                            'procure_method': 'make_to_stock',
-                            'product_uom_qty': qty,
-                            'product_uom': move.product_id.supply_id.uom_id.id,
-                            'date_expected': self.scheduled_date
-                        })
-                    if self.sale_id.loan_supply:
-                        qty = move.product_uom_qty - move.loan_supply
-                        stock_move = self.env['stock.move'].create({
-                            'picking_id': loan_reception.id,
-                            'name': 'MOVE/' + self.name,
-                            'location_id': loan_reception.location_id.id,
-                            'location_dest_id': loan_reception.location_dest_id.id,
-                            'product_id': move.product_id.supply_id.id,
-                            'date': datetime.datetime.now(),
-                            'company_id': self.env.user.company_id.id,
-                            'procure_method': 'make_to_stock',
-                            'product_uom_qty': move.loan_supply,
-                            'product_uom': move.product_id.supply_id.uom_id.id,
-                            'date_expected': self.scheduled_date
-                        })
+                        if (move.product_uom_qty - move.loan_supply) != 0:
+                            qty = move.product_uom_qty
+                            stock_move = self.env['stock.move'].create({
+                                'picking_id': reception.id,
+                                'name': move.product_id.supply_id.display_name,
+                                'location_id': reception.location_id.id,
+                                'location_dest_id': reception.location_dest_id.id,
+                                'product_id': move.product_id.supply_id.id,
+                                'date': datetime.date.today(),
+                                'procure_method': 'make_to_stock',
+                                'product_uom_qty': qty,
+                                'product_uom': move.product_id.supply_id.uom_id.id,
+                                'date_expected': self.scheduled_date
+                            })
+                        if self.sale_id.loan_supply:
+                            qty = move.product_uom_qty - move.loan_supply
+                            stock_move = self.env['stock.move'].create({
+                                'picking_id': loan_reception.id,
+                                'name': 'MOVE/' + self.name,
+                                'location_id': loan_reception.location_id.id,
+                                'location_dest_id': loan_reception.location_dest_id.id,
+                                'product_id': move.product_id.supply_id.id,
+                                'date': datetime.datetime.now(),
+                                'company_id': self.env.user.company_id.id,
+                                'procure_method': 'make_to_stock',
+                                'product_uom_qty': move.loan_supply,
+                                'product_uom': move.product_id.supply_id.uom_id.id,
+                                'date_expected': self.scheduled_date
+                            })
+                    else:
+                        continue
                 self.supply_dispatch_id.action_confirm()
                 self.supply_dispatch_id.action_assign()
                 for line in self.supply_dispatch_id.move_line_ids_without_package:
@@ -130,18 +132,20 @@ class StockPicking(models.Model):
                         if quant.quantity < qty:
                             raise models.ValidationError(
                                 f'No tiene cantidad necesaria de insumos {move.product_id.supply_id.display_name}')
-                    stock_move = self.env['stock.move'].create({
-                        'picking_id': dispatch.id,
-                        'name': move.product_id.supply_id.display_name,
-                        'location_id': dispatch.location_dest_id.id,
-                        'location_dest_id': dispatch.location_id.id,
-                        'product_id': move.product_id.supply_id.id,
-                        'date': datetime.date.today(),
-                        'procure_method': 'make_to_stock',
-                        'product_uom_qty': qty,
-                        'product_uom': move.product_id.supply_id.uom_id.id,
-                        'date_expected': self.scheduled_date
-                    })
+                        stock_move = self.env['stock.move'].create({
+                            'picking_id': dispatch.id,
+                            'name': move.product_id.supply_id.display_name,
+                            'location_id': dispatch.location_dest_id.id,
+                            'location_dest_id': dispatch.location_id.id,
+                            'product_id': move.product_id.supply_id.id,
+                            'date': datetime.date.today(),
+                            'procure_method': 'make_to_stock',
+                            'product_uom_qty': qty,
+                            'product_uom': move.product_id.supply_id.uom_id.id,
+                            'date_expected': self.scheduled_date
+                        })
+                    else:
+                        continue
                 if qty != 0:
                     self.write({
                         'supply_dispatch_id': dispatch.id,

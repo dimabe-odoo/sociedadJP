@@ -7,6 +7,7 @@ class PurchaseOrder(models.Model):
 
     have_purchase_without_supply = fields.Boolean('¿Tiene compra comodato?')
 
+
     @api.model
     def _get_picking_type(self, company_id):
         self.picking_type_id = None
@@ -61,7 +62,8 @@ class PurchaseOrder(models.Model):
                         'price_unit': line['price'],
                         'product_uom': line['uom'],
                         'order_id': self.id,
-                        'date_planned': datetime.datetime.now()
+                        'date_planned': datetime.datetime.now(),
+                        'coupon_ids': discount_history
                     })
         else:
             raise models.ValidationError('No Posee Descuentos por Cobrar en esta bodega')
