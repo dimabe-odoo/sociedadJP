@@ -19,7 +19,7 @@ class PurchaseOrder(models.Model):
             [('discount_state', '=', 'Cobrado'), ('purchase_order_id', '=', self.id)])
         for d in discount_history:
             d.write({
-                'discount_state': 'Por Cobrar',
+
                 'purchase_order_id': None
             })
         for line in self.order_line:

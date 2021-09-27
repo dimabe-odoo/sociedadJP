@@ -34,6 +34,7 @@ class PurchaseOrderLine(models.Model):
     def unlink(self):
         if self.coupon_ids:
             self.coupon_ids.write({
-                'discount_state': 'Por Cobrar'
+                'discount_state': 'Por Cobrar',
+                'purchase_order_id': None
             })
         return super(PurchaseOrderLine, self).unlink()
