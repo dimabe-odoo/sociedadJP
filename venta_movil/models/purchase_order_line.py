@@ -20,7 +20,7 @@ class PurchaseOrderLine(models.Model):
             if diff >= 0:
                 index = 0
                 for coupon in self.coupon_ids:
-                    if index > values['product_qty']:
+                    if index == diff:
                         break
                     coupon.write({
                         'discount_state': 'Por Cobrar',
