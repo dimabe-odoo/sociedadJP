@@ -11,12 +11,21 @@ class PosOrder(models.Model):
 
     is_loan = fields.Boolean()
 
-    @api.model
-    def create(self, values):
-        print(values)
-        return super(PosOrder, self).create(values)
-
     def create_picking(self):
+        for line in self.lines:
+            have_discount = False
+            if line.product_id.categ_id.id == 7:
+                have_discount = True
+            if have_discount:
+                if self.id not in self.env['custom.discount.history'].search([('sale_origin','=','POS')]).mapped('pos_id').ids:
+                    self.env['custom.discount.history'].create({
+                        'pos_id': self.id,
+                        'sale_origin': 'POS',
+                        'customer_id': self.partner_id.id,
+                        'date_discount': datetime.datetime.now(),
+                        'discount_state': 'Por Cobrar',
+                        'warehouse_id': self.picking_type_id.warehouse_id.id
+                    })
         res = super(PosOrder, self).create_picking()
         if self.lines.filtered(lambda l: l.product_id.supply_id):
             if self.lines.filtered(lambda q: q.loan > 0):

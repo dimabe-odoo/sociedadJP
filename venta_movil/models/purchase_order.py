@@ -7,7 +7,6 @@ class PurchaseOrder(models.Model):
 
     have_purchase_without_supply = fields.Boolean('¿Tiene compra comodato?')
 
-
     @api.model
     def _get_picking_type(self, company_id):
         self.picking_type_id = None
@@ -52,7 +51,10 @@ class PurchaseOrder(models.Model):
                 for d in discount_counts:
                     if line.product_id.name == d['name']:
                         d['count'] += line.product_uom_qty
-
+            for line in discount_history.pos_id.lines:
+                for d in discount_counts:
+                    if line.product_id.name == d['name']:
+                        d['count'] += line.qty
             for line in discount_counts:
                 if line['count'] > 0:
                     self.env['purchase.order.line'].create({

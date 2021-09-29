@@ -4,7 +4,12 @@ class CustomDiscountHistory(models.Model):
 
     _name = 'custom.discount.history'
 
-    sale_id = fields.Many2one('sale.order', string="Pedido")
+
+    sale_id = fields.Many2one(comodel_name='sale.order',string='Pedido',readonly=True)
+
+    pos_id = fields.Many2one(comodel_name='pos.order',string="POS",readonly=True)
+
+    sale_origin = fields.Char('Origen')
 
     warehouse_id = fields.Many2one(
         comodel_name='stock.warehouse',
@@ -25,19 +30,34 @@ class CustomDiscountHistory(models.Model):
 
     def _compute_discount_type(self):
         for item in self:
-            cupons_products = item.sale_id.mapped('order_line').mapped('product_id').filtered(lambda x: x.categ_id.id == 7)
+            if item.sale_origin == 'Venta':
+                cupons_products = item.sale_id.mapped('order_line').mapped('product_id').filtered(lambda x: x.categ_id.id == 7)
+            elif item.sale_origin == 'POS':
+                cupons_products = item.pos_id.mapped('lines').mapped('product_id').filtered(
+                    lambda x: x.categ_id.id == 7)
+            else:
+                cupons_products = None
             #raise models.ValidationError(cupons_products[0].name)
             item.discount_type_ids = cupons_products
 
     def _compute_discount_amount(self):
         for item in self:
-            sale_order = self.env['sale.order'].search([('id','=',item.sale_id.id)]) 
-            total_discount_amount = 0
-            if sale_order:
-                if len(sale_order.order_line) > 0:
-                    for line in sale_order.order_line:  
-                        if line.product_id.categ_id.id == 7:
-                            total_discount_amount += (-1 * line.product_id.lst_price)
+            if item.sale_origin == 'Venta':
+                sale_order = self.env['sale.order'].search([('id', '=', item.sale_id.id)])
+                total_discount_amount = 0
+                if sale_order:
+                    if len(sale_order.order_line) > 0:
+                        for line in sale_order.order_line:
+                            if line.product_id.categ_id.id == 7:
+                                total_discount_amount += (-1 * line.product_id.lst_price)
+            else:
+                pos_order = self.env['pos.order'].search([('id', '=', item.pos_id.id)])
+                total_discount_amount = 0
+                if pos_order:
+                    if len(pos_order.lines) > 0:
+                        for line in pos_order.lines:
+                            if line.product_id.categ_id.id == 7:
+                                total_discount_amount += (-1 * line.product_id.lst_price)
 
             item.discount_amount = total_discount_amount
 

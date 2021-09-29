@@ -38,3 +38,4 @@ class PurchaseOrderLine(models.Model):
                 'purchase_order_id': None
             })
         return super(PurchaseOrderLine, self).unlink()
+

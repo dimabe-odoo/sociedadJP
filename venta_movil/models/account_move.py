@@ -23,6 +23,7 @@ class AccountMove(models.Model):
                                     'sale_id').mapped('id'):
                                 self.env['custom.discount.history'].create({
                                     'sale_id': sale_order.id,
+                                    'sale_origin': 'Venta',
                                     'customer_id': sale_order.partner_id.id,
                                     'date_discount': datetime.datetime.now(),
                                     'discount_state': 'Por Cobrar',
