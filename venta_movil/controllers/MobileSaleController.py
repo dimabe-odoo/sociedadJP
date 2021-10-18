@@ -157,7 +157,7 @@ class MobileSaleController(http.Controller):
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
         order_active = request.env['mobile.sale.order'].search(
-            [('seller_id.id', '=', session), ('state', 'in', ('assigned', 'onroute'))])
+            [('seller_id.id', '=', session), ('state', 'in', ('assigned', 'onroute'))],limit=1)
         session_active = request.env['truck.session'].sudo().search([('id', '=', session)])
         if not order_active and session_active.is_present:
             env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
@@ -221,14 +221,14 @@ class MobileSaleController(http.Controller):
                 })
             order_app = {}
             order_active_2 = request.env['mobile.sale.order'].search(
-                [('seller_id.id', '=', session.id), ('state', 'in', ('confirm', 'assigned'))])
+                [('seller_id.id', '=', session.id), ('state', 'in', ('confirm', 'assigned'))],limit=1)
             logging.getLogger().error('Order {}'.format(order_active_2.name))
             if order_active_2:
                 print(order_active_2.read())
                 order_app = self.get_order_dict(latitude=latitude, longitude=longitude, id=order_active_2.id)
             else:
                 order_active_2 = request.env['mobile.sale.order'].search(
-                    [('state', 'in', ('confirm', 'assigned', 'onroute'))])
+                    [('state', 'in', ('confirm', 'assigned', 'onroute'))],limit=1)
                 if not order_active_2.seller_id:
                     warehouse = request.env['stock.warehouse'].sudo().search([])
                     warehouse_id = 0
