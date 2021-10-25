@@ -40,7 +40,7 @@ class ProductController(http.Controller):
 
     @http.route('/api/get_stock_truck', type='json', method='GET', auth='token', cors='*')
     def get_stock_product_truck(self, truck):
-        truck_stock = request.env['stock.quant'].search([('location_id.name', '=', truck)])
+        truck_stock = request.env['stock.quant'].sudo().search([('location_id.name', '=', truck)])
         trucks = []
         for truck in truck_stock:
             trucks.append({
