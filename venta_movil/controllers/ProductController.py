@@ -47,5 +47,4 @@ class ProductController(http.Controller):
                 'ProductName': truck.product_id.name,
                 'Quantity': int(truck.quantity)
             })
-        print(trucks)
         return trucks

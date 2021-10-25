@@ -22,7 +22,7 @@ class ResPartnerController(http.Controller):
         for res in respond:
             result.append({
                 'Id': res.id,
-                'Name': res.name,
+                'Name': res.display_name,
                 'Address': res.street,
                 'Latitude': res.partner_latitude,
                 'Longitude': res.partner_longitude,
