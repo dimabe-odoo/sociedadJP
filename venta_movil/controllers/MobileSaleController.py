@@ -10,6 +10,25 @@ import math
 from odoo.tools import date_utils
 
 
+def verify_stock_truck_for_order(order_active, session):
+    orders_with_stock = []
+    for order in order_active:
+        if session.user_id in order.not_accepted_truck_ids:
+            continue
+        else:
+            # Verify Stock Truck
+            truck_stock = request.env['stock.quant'].sudo().search(
+                [('location_id', '=', session.truck_id.id), ('quantity', '>', 0)])
+            if not truck_stock:
+                continue
+            for stock in truck_stock:
+                if stock.product_id.id not in order.mobile_lines.mapped('product_id').ids:
+                    continue
+                else:
+                    orders_with_stock.append(order.id)
+    return orders_with_stock
+
+
 class MobileSaleController(http.Controller):
 
     @http.route('/api/create_mobile', type='json', method=['POST'], auth='public', cors='*')
@@ -87,9 +106,13 @@ class MobileSaleController(http.Controller):
                 "mobileID": mobile.id}
 
     @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
-    def accept_order(self, mobile_id, latitude, longitude):
+    def accept_order(self, mobile_id, latitude, longitude, session):
         mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', int(mobile_id))])
+        session_id = request.env['truck.session'].sudo().search([('id', '=', session)])
         mobile.write({
+            'seller_id': session_id.id,
+            'warehouse_id': session_id.warehouse_id.id,
+            'location_id': session_id.truck_id.id,
             'assigned_latitude': latitude,
             'assigned_longitude': longitude,
         })
@@ -103,11 +126,14 @@ class MobileSaleController(http.Controller):
             return {"message": "Nuevo pedido creado a partir de uno ya finalizado", 'mobileId': new_mobile.id}
 
     @http.route('/api/cancel', type="json", method=['GET'], auth="token", cors='*')
-    def cancel_order(self, mobile_id):
+    def cancel_order(self, mobile_id, truck):
         mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
+        truck = request.env['truck.session'].sudo().search([('truck_id.name', '=', truck), ('is_present', '=', True)])
         if not mobile_id:
             return {'No existe este pedido'}
-        mobile.cancel_order()
+        mobile.write({
+            "not_accepted_truck_ids": [(4, truck.user_id.id)]
+        })
         return {'Pedido {} ha sido cancelado'.format(mobile.name)}
 
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
@@ -156,95 +182,52 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
-        order_active = request.env['mobile.sale.order'].search(
-            [('seller_id.id', '=', session), ('state', 'in', ('assigned', 'onroute'))],limit=1)
-        session_active = request.env['truck.session'].sudo().search([('id', '=', session)])
-        if not order_active and session_active.is_present:
-            env = request.env['mobile.sale.order'].sudo().search([('state', '=', 'confirm')])
-            session = request.env['truck.session'].sudo().search([('id', '=', session)])
-            truck = request.env['stock.location'].sudo().search([('id', '=', session.truck_id.id)])
-            truck_stock = request.env['stock.quant'].sudo().search([('location_id', '=', truck.id)])
-            stock_array = []
-            now = datetime.datetime.now
-            respond = []
-            distance = []
-            _logger = logging.getLogger(__name__)
-            gmaps = googlemaps.Client(key='AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y')
-            ##Get Stock of truck
-            for stock in truck_stock:
-                if stock.quantity > 0:
-                    stock_array.append({
-                        'Product_id': stock.product_id.id,
-                        'Product': stock.product_id.display_name,
-                        'Qty': stock.quantity
-                    })
-            for res in env:
-                url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
-                    latitude, longitude, res.customer_id.partner_latitude, res.customer_id.partner_longitude)
-                respond_google = requests.request("GET", url=url_google)
-                logging.getLogger().error(res.display_name)
-                logging.getLogger().error(url_google)
-                json_data = json.loads(respond_google.text)
-                print(json_data.keys(), json_data.values(), json_data)
-                if json_data['status'] == 'ZERO_RESULTS':
-                    continue
-                distance_text = json_data['routes'][0]["legs"][0]['distance']['text']
-                distance_value = json_data['routes'][0]["legs"][0]['distance']['value'] / 1000
-                logging.error(res.mapped('mobile_lines').mapped('product_id').mapped('id'))
-                if self.compare_list(res.mapped('mobile_lines').mapped('product_id').mapped('id'),
-                                     [stock['Product_id'] for stock in stock_array]):
-                    logging.error("Llega aqui")
-                    respond.append({
-                        'Order_Id': res.id,
-                        'Order_Name': res.name,
-                        'Distance_Text': distance_text,
-                        'Distance_Value': self.round_distance(float(distance_value))
-                    })
-                else:
-                    logging.error("Llega aca")
-                    continue
-            list_sort_by_dis = sorted(respond, key=lambda i: i['Distance_Value'])
-            logging.getLogger().error(list_sort_by_dis)
-            if len(list_sort_by_dis) > 0:
-                mobile_order = request.env['mobile.sale.order'].sudo().search(
-                    [('id', '=', list_sort_by_dis[0]['Order_Id'])])
-                warehouse = request.env['stock.warehouse'].sudo().search([])
-                warehouse_id = 0
-                for ware in warehouse:
-                    if truck.id in ware.mapped('truck_ids').mapped('id'):
-                        warehouse_id = ware.id
-                mobile_order.sudo().write({
-                    'seller_id': session,
-                    'location_id': truck.id,
-                    'warehouse_id': warehouse_id,
-                    'state': 'assigned'
+        order_active = request.env['mobile.sale.order'].sudo().search(
+            [('seller_id', '=', False), ('state', '=', 'confirm')])
+        session = request.env['truck.session'].sudo().search([('id', '=', session)])
+        order_assigned = request.env['mobile.sale.order'].search(
+            [('seller_id', '=', session.id), ('state', 'not in', ['done', 'cancel', 'draft'])])
+        if order_active and not order_assigned:
+            order_with_stock = request.env['mobile.sale.order'].sudo().search(
+                [('id', 'in', verify_stock_truck_for_order(order_active, session))])
+            if len(order_with_stock) == 1:
+                order_with_stock.write({
+                    'seller_id': session.id,
+                    'warehouse_id': session.warehouse_id.id,
+                    'location_id': session.truck_id.id,
+                    'assigned_latitude': latitude,
+                    'assigned_longitude': longitude,
                 })
-            order_app = {}
-            order_active_2 = request.env['mobile.sale.order'].search(
-                [('seller_id.id', '=', session.id), ('state', 'in', ('confirm', 'assigned'))],limit=1)
-            logging.getLogger().error('Order {}'.format(order_active_2.name))
-            if order_active_2:
-                print(order_active_2.read())
-                order_app = self.get_order_dict(latitude=latitude, longitude=longitude, id=order_active_2.id)
+                return self.get_order(latitude,
+                                      longitude, order_with_stock.id)
             else:
-                order_active_2 = request.env['mobile.sale.order'].search(
-                    [('state', 'in', ('confirm', 'assigned', 'onroute'))],limit=1)
-                if not order_active_2.seller_id:
-                    warehouse = request.env['stock.warehouse'].sudo().search([])
-                    warehouse_id = 0
-                    for ware in warehouse:
-                        if truck.id in ware.mapped('truck_ids').mapped('id'):
-                            warehouse_id = ware.id
-                    order_active_2.write({
-                        'seller_id': session,
-                        'warehouse_id': warehouse_id,
-                        'location_id': session_active.truck_id.id
-                    })
-                order_app = self.get_order_dict(latitude=latitude, longitude=longitude, id=order_active_2.id)
-            return order_app
-        else:
-            order_app = self.get_order(latitude, longitude, order_active.id)
-            return order_app
+                orders = []
+                for order in order_with_stock:
+                    gmaps = googlemaps.Client(key='AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y')
+                    url_google = "https://maps.googleapis.com/maps/api/directions/json?origin={},{}&destination={},{}&key=AIzaSyBmphvpedTCBZvDDW3MEVknSowfl7O-v3Y".format(
+                        latitude, longitude, order.customer_id.partner_latitude, order.customer_id.partner_longitude)
+                    google_resp = requests.request("GET", url=url_google)
+                    json_google = json.loads(google_resp.text)
+                    if json_google['status'] != 'OK':
+                        continue
+                    else:
+                        orders.append({
+                            "order": order,
+                            "distance_value": json_google['routes'][0]["legs"][0]['distance']['value']
+                        })
+                orders_sorted_by_dist = sorted(orders, key=lambda i: i['distance_value'])
+                orders_sorted_by_dist[0]['order'].write({
+                    'seller_id': session.id,
+                    'warehouse_id': session.warehouse_id.id,
+                    'location_id': session.truck_id.id,
+                    'assigned_latitude': latitude,
+                    'assigned_longitude': longitude,
+                })
+                return self.get_order(latitude,
+                                      longitude,
+                                      orders_sorted_by_dist[0]['order'].id)
+        elif order_assigned:
+            return self.get_order(latitude, longitude, order_assigned.id)
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
     def get_my_orders(self, employee):
@@ -286,8 +269,6 @@ class MobileSaleController(http.Controller):
                 latitude, longitude, order.customer_id.partner_latitude, order.customer_id.partner_longitude)
             respond_google = requests.request("GET", url=url_google)
             json_data = json.loads(respond_google.text)
-            logging.getLogger().error(json_data)
-
             if json_data['status'] != 'ZERO_RESULTS':
                 distance_text = json_data['routes'][0]['legs'][0]['distance']['text']
             lines = []

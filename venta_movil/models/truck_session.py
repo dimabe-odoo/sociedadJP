@@ -21,6 +21,18 @@ class TruckSession(models.Model):
 
     is_present = fields.Boolean('Es Prestente',default=True)
 
+    warehouse_id = fields.Many2one('stock.warehouse',"Bodega",compute="compute_warehouse_id")
+
+    def compute_warehouse_id(self):
+        for item in self:
+            warehouse_id = self.env['stock.warehouse'].search([])
+            for warehouse in warehouse_id:
+                if item.truck_id in warehouse.truck_ids:
+                    item.warehouse_id = warehouse
+                    break
+                else:
+                    item.warehouse_id = None
+
     @api.model
     def create(self,values):
         if 'truck_id' in values.keys():

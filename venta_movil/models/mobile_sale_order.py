@@ -71,6 +71,10 @@ class MobileSaleOrder(models.Model):
 
     assigned_longitude = fields.Float('Latitud')
 
+    not_accepted_truck_ids = fields.Many2many(
+        comodel_name='res.users',
+        string='Usuario que rechazaron el pedido')
+
     @api.onchange('mobile_lines')
     def onchange_mobile_line(self):
         for item in self:
