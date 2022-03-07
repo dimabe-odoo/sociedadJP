@@ -5,3 +5,4 @@ googlemaps
 XlsxWriter
 pandas
 py_linq
+pdf417gen
