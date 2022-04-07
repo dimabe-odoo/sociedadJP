@@ -8,6 +8,7 @@ import googlemaps
 import requests
 import math
 from odoo.tools import date_utils
+from odoo import models
 
 
 def verify_stock_truck_for_order(order_active, session):
@@ -108,7 +109,7 @@ class MobileSaleController(http.Controller):
     @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
     def accept_order(self, mobile_id, latitude, longitude, session=False):
         mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', int(mobile_id))])
-        models._logger.error(f'llllllllllllllllllllllllllllllllllllllllllllllllllllllllll {request.env.user.id}')
+        raise models.ValidationError(request.env.user.id)
         session_id = request.env['truck.session'].sudo().search([('id', '=', session)])
         mobile.write({
             'seller_id': session_id.id,
