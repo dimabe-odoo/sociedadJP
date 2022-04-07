@@ -110,7 +110,7 @@ class MobileSaleController(http.Controller):
     def accept_order(self, mobile_id, latitude, longitude, session=False):
         mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', int(mobile_id))])
         session_id = request.env['truck.session'].sudo().search([('id', '=', session)])
-        if not session_id
+        if not session_id:
             session_id = request.env['truck.session'].sudo().search([('user_id.id','=',request.env.uid)])
         mobile.write({
             'seller_id': session_id.id,
