@@ -106,7 +106,7 @@ class MobileSaleController(http.Controller):
                 "mobileID": mobile.id}
 
     @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
-    def accept_order(self, mobile_id, latitude, longitude, session):
+    def accept_order(self, mobile_id, latitude, longitude, session=False):
         mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', int(mobile_id))])
         models._logger.error(f'llllllllllllllllllllllllllllllllllllllllllllllllllllllllll {request.env.user.id}')
         session_id = request.env['truck.session'].sudo().search([('id', '=', session)])
