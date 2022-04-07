@@ -143,7 +143,7 @@ class MobileSaleController(http.Controller):
             mobile.write({
                 "not_accepted_truck_ids": [(4, truck.user_id.id)]
             })
-            return {"message":'Pedido {} ha sido cancelado'.format(mobile.name)}
+            return {"message": 'Pedido {} ha sido cancelado'.format(mobile.name)}
         except Exception as e:
             return {"message": "Error"}
 
@@ -189,7 +189,6 @@ class MobileSaleController(http.Controller):
         except Exception as e:
             return {"message": "Error"}
 
-
     @http.route('/api/set_active', type='json', method=['GET'], auth='token', cors='*')
     def set_active(self, session):
         try:
@@ -197,7 +196,7 @@ class MobileSaleController(http.Controller):
             session.sudo().write({
                 'is_present': True
             })
-            return {"message" : "Sesion Activa"}
+            return {"message": "Sesion Activa"}
         except Exception as e:
             return {"message": "Error"}
 
@@ -262,7 +261,7 @@ class MobileSaleController(http.Controller):
                 "name": res.name,
                 "customerName": res.customer_id.display_name,
                 "address": res.customer_id.street,
-                "total": res.total_sale
+                "total": self.get_total(res)
             })
         return result
 
@@ -367,3 +366,12 @@ class MobileSaleController(http.Controller):
 
     def selection_to_string(self, model, field_name, field_value):
         return _(dict(request.env[model].fields_get(allfields=[field_name])[field_name]['selection'])[field_value])
+
+    def get_total(self, order):
+        total_untax = []
+        total_tax = []
+        for line in item.mobile_lines:
+            total_untax.append(line.price * line.qty)
+            for tx in line.tax_ids:
+                total_tax.append((tx.amount / 100) * line.price * line.qty)
+        return sum(total_untax) + sum(total_tax)
