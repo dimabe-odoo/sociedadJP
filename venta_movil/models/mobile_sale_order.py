@@ -254,8 +254,6 @@ class MobileSaleOrder(models.Model):
                 'company_id': self.env.user.company_id.id,
                 'currency_id': self.currency_id.id,
                 'partner_id': self.customer_id.id,
-                'partner_invoice_id': self.env['res.partner'].sudo().search(
-                    [('vat', '=', '66666666-6')]).id if self.customer_id.l10n_cl_activity_description else None,
                 'picking_policy': 'direct',
                 'origin': self.id,
                 'with_delivery': True,
