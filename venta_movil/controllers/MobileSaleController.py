@@ -109,8 +109,9 @@ class MobileSaleController(http.Controller):
     @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
     def accept_order(self, mobile_id, latitude, longitude, session=False):
         mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', int(mobile_id))])
-        raise models.ValidationError(f'User Id = {request.env.uid}')
         session_id = request.env['truck.session'].sudo().search([('id', '=', session)])
+        if not session_id
+            session_id = request.env['truck.session'].sudo().search([('user_id.id','=',request.env.uid)])
         mobile.write({
             'seller_id': session_id.id,
             'warehouse_id': session_id.warehouse_id.id,
