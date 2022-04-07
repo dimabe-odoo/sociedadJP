@@ -40,8 +40,11 @@ class ResPartnerController(http.Controller):
         json_data = json.dumps(raw_data, default=date_utils.json_default)
         json_dict = json.loads(json_data)
         price = get_price_product.get_prices(client_id=client,truck=truck)
-        json_dict[0]['price_list'] = price
-        return json_dict[0]
+        try:
+            json_dict[0]['price_list'] = price
+            return json_dict[0]
+        except Exception as e:
+            return {"message": "Error client no obtenido"}
 
 
     @http.route('/api/images', type='json', method=['GET'], auth='public', cors='*')

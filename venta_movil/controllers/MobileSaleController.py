@@ -108,18 +108,22 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/accept_order', type="json", method=['GET'], auth='public', cors='*')
     def accept_order(self, mobile_id, latitude, longitude, session=False):
-        mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', int(mobile_id))])
-        session_id = request.env['truck.session'].sudo().search([('id', '=', session)])
-        if not session_id:
-            session_id = request.env['truck.session'].sudo().search([('user_id.id','=',request.env.uid)])
-        mobile.write({
-            'seller_id': session_id.id,
-            'warehouse_id': session_id.warehouse_id.id,
-            'location_id': session_id.truck_id.id,
-            'assigned_latitude': latitude,
-            'assigned_longitude': longitude,
-        })
-        mobile.button_dispatch()
+        try:
+            mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', int(mobile_id))])
+            session_id = request.env['truck.session'].sudo().search([('id', '=', session)])
+            if not session_id:
+                session_id = request.env['truck.session'].sudo().search([('user_id.id', '=', request.env.uid)])
+            mobile.write({
+                'seller_id': session_id.id,
+                'warehouse_id': session_id.warehouse_id.id,
+                'location_id': session_id.truck_id.id,
+                'assigned_latitude': latitude,
+                'assigned_longitude': longitude,
+            })
+            mobile.button_dispatch()
+            return {"message": "Pedido Aceptado"}
+        except Exception as e:
+            return {"message": "Error"}
 
     @http.route('/api/repeat_order', type="json", method=["GET"], auth="token", cors="*")
     def repeat_order(self, id):
@@ -130,58 +134,72 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/cancel', type="json", method=['GET'], auth="token", cors='*')
     def cancel_order(self, mobile_id, truck):
-        mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
-        truck = request.env['truck.session'].sudo().search([('truck_id.name', '=', truck), ('is_present', '=', True)])
-        if not mobile_id:
-            return {'No existe este pedido'}
-        mobile.write({
-            "not_accepted_truck_ids": [(4, truck.user_id.id)]
-        })
-        return {'Pedido {} ha sido cancelado'.format(mobile.name)}
+        try:
+            mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
+            truck = request.env['truck.session'].sudo().search(
+                [('truck_id.name', '=', truck), ('is_present', '=', True)])
+            if not mobile_id:
+                return {'No existe este pedido'}
+            mobile.write({
+                "not_accepted_truck_ids": [(4, truck.user_id.id)]
+            })
+            return {"message":'Pedido {} ha sido cancelado'.format(mobile.name)}
+        except Exception as e:
+            return {"message": "Error"}
 
     @http.route('/api/sale/make_done', type='json', method=['GET'], auth='public', cors='*')
     def make_done(self, mobile_id, payment_id):
-        mobile_order = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
-        logging.getLogger().error(mobile_order.customer_id.display_name)
+        try:
+            mobile_order = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
+            logging.getLogger().error(mobile_order.customer_id.display_name)
 
-        mobile_order.write({
-            'payment_method': payment_id,
-        })
-        mobile_order.make_done()
-        return "Pedido Entregado correctamente"
+            mobile_order.write({
+                'payment_method': payment_id,
+            })
+            mobile_order.make_done()
+            return {"message": "Pedido Entregado correctamente"}
+        except Exception as e:
+            return {"message": "Error"}
 
     @http.route('/api/redo_truck', type='json', method=['GET'], auth='token', cors='*')
     def redo_truck(self, session, orderId):
-        session_obj = request.env['truck.session'].sudo().search([('id', '=', session)])
-        session_obj.sudo().write({
-            'is_present': False
-        })
-        if orderId:
-            order = request.env['mobile.sale.order'].sudo().search([('id', '=', orderId)])
-            order.sudo().write({
-                'seller_id': None,
-                'state': 'confirm',
-                'warehouse_id': None,
-                'location_id': None
+        try:
+            session_obj = request.env['truck.session'].sudo().search([('id', '=', session)])
+            session_obj.sudo().write({
+                'is_present': False
             })
-        else:
-            order = request.env['mobile.sale.order'].sudo().search(
-                [('location_id.id', '=', session_obj.truck_id.id), ('state', '!=', 'done')])
-            order.sudo().write({
-                'seller_id': None,
-                'state': 'confirm',
-                'warehouse_id': None,
-                'location_id': None
-            })
-        return "Sesion Desactivada y Pedido liberado"
+            if orderId:
+                order = request.env['mobile.sale.order'].sudo().search([('id', '=', orderId)])
+                order.sudo().write({
+                    'seller_id': None,
+                    'state': 'confirm',
+                    'warehouse_id': None,
+                    'location_id': None
+                })
+            else:
+                order = request.env['mobile.sale.order'].sudo().search(
+                    [('location_id.id', '=', session_obj.truck_id.id), ('state', '!=', 'done')])
+                order.sudo().write({
+                    'seller_id': None,
+                    'state': 'confirm',
+                    'warehouse_id': None,
+                    'location_id': None
+                })
+            return {"message": "Sesion Desactivada y Pedido liberado"}
+        except Exception as e:
+            return {"message": "Error"}
+
 
     @http.route('/api/set_active', type='json', method=['GET'], auth='token', cors='*')
     def set_active(self, session):
-        session = request.env['truck.session'].sudo().search([('id', '=', session)])
-        session.sudo().write({
-            'is_present': True
-        })
-        return "Sesion Activa"
+        try:
+            session = request.env['truck.session'].sudo().search([('id', '=', session)])
+            session.sudo().write({
+                'is_present': True
+            })
+            return {"message" : "Sesion Activa"}
+        except Exception as e:
+            return {"message": "Error"}
 
     @http.route('/api/mobile_orders', type="json", method=['GET'], auth='token', cors='*')
     def get_orders(self, latitude, longitude, session):
