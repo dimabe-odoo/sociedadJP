@@ -370,7 +370,7 @@ class MobileSaleController(http.Controller):
     def get_total(self, order):
         total_untax = []
         total_tax = []
-        for line in item.mobile_lines:
+        for line in order.mobile_lines:
             total_untax.append(line.price * line.qty)
             for tx in line.tax_ids:
                 total_tax.append((tx.amount / 100) * line.price * line.qty)
