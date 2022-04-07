@@ -241,7 +241,7 @@ class MobileSaleOrder(models.Model):
             sale_odoo = self.env['sale.order'].create({
                 'company_id': self.env.user.company_id.id,
                 'currency_id': self.currency_id.id,
-                'partner_id': self.address_id.id,
+                'partner_id': self.address_id.id if not self.address_id else self.customer_id.id,
                 'picking_policy': 'direct',
                 'origin': self.id,
                 'with_delivery': True,
