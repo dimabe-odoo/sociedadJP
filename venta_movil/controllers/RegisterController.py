@@ -43,37 +43,41 @@ class RegisterController(http.Controller):
 
     @http.route('/api/create_client', type='json', method=['POST'], auth='token', cors='*')
     def create_client(self, name, email, phoneNumber, commune_id, address, latitude, longitude, reference,vat=False):
-        email = email.lower()
-        user = request.env['res.users'].sudo().search([('login', '=', email)])
+        try:
+            email = email.lower()
+            user = request.env['res.users'].sudo().search([('login', '=', email)])
 
-        if user:
-            return 'el email {} ya se encuentra registrado'.format(email)
+            if user:
+                return 'el email {} ya se encuentra registrado'.format(email)
 
-        partner = request.env['res.partner'].sudo().search(
-            [('email', '=', email)])
+            partner = request.env['res.partner'].sudo().search(
+                [('email', '=', email)])
 
-        commune = request.env['jp.commune'].search([('id', '=', commune_id)])
+            commune = request.env['jp.commune'].search([('id', '=', commune_id)])
 
-        if partner:
-            partner.write({'name': name, 'email': email, 'mobile': phoneNumber,
-                           'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude,
-                           'jp_commune_id': commune.id, 'state_id': commune.state_id.id, 'comment': reference})
-        else:
-            partner = request.env['res.partner'].sudo().create(
-                {'name': name, 'email': email, 'mobile': phoneNumber, 'jp_commune_id': commune.id,
-                 'state_id': commune.state_id.id, 'property_product_pricelist': 5, 'street': address,
-                 'partner_latitude': latitude,
-                 'partner_longitude': longitude, 'l10n_cl_sii_taxpayer_type': '1', 'vat': vat, 'comment': reference})
+            if partner:
+                partner.write({'name': name, 'email': email, 'mobile': phoneNumber,
+                               'street': address, 'partner_latitude': latitude, 'partner_longitude': longitude,
+                               'jp_commune_id': commune.id, 'state_id': commune.state_id.id, 'comment': reference})
+            else:
+                partner = request.env['res.partner'].sudo().create(
+                    {'name': name, 'email': email, 'mobile': phoneNumber, 'jp_commune_id': commune.id,
+                     'state_id': commune.state_id.id, 'property_product_pricelist': 5, 'street': address,
+                     'partner_latitude': latitude,
+                     'partner_longitude': longitude, 'l10n_cl_sii_taxpayer_type': '1', 'vat': vat,
+                     'comment': reference})
 
-        create_user = request.env['res.users'].sudo().create({
-            'name': name,
-            'login': email,
-            'email': email,
-            'company_id': 1,
-            'sel_groups_1_8_9': 8,
-            'partner_id': partner.id,
-            'mobile': phoneNumber,
-            'comment': reference
-        })
+            create_user = request.env['res.users'].sudo().create({
+                'name': name,
+                'login': email,
+                'email': email,
+                'company_id': 1,
+                'sel_groups_1_8_9': 8,
+                'partner_id': partner.id,
+                'mobile': phoneNumber,
+                'comment': reference
+            })
 
-        return {'message': "Cliente creado correctamente", 'clientId': partner.id}
+            return {'message': "Cliente creado correctamente", 'clientId': partner.id}
+        except Exception as e:
+            return {'message': "Error al crear el cliente"}

@@ -9,6 +9,7 @@ import requests
 import math
 from odoo.tools import date_utils
 from odoo import models
+from datetime import date
 
 
 def verify_stock_truck_for_order(order_active, session):
@@ -254,15 +255,32 @@ class MobileSaleController(http.Controller):
         session = request.env['truck.session'].sudo().search([('employee_id', '=', employee)])
         env = request.env['mobile.sale.order'].sudo().search(
             [('seller_id', 'in', session.mapped('id')), ('state', '=', 'done')], order="date_done desc")
+
         result = []
         for res in env:
-            result.append({
-                "id": res.id,
-                "name": res.name,
-                "customerName": res.customer_id.display_name,
-                "address": res.customer_id.street,
-                "total": self.get_total(res)
-            })
+            date = res.finish_date.strftime('%Y-%m-%d')
+            if datetime.datetime.now().strftime('%Y-%m-%d') == date:
+                lines = []
+                for line in res.mobile_lines:
+                    lines.append({
+                        "id": line.id,
+                        "productId": line.product_id.id,
+                        "productName": line.product_id.name,
+                        "priceUnit": line.price,
+                        "qty": line.qty
+                    })
+                description = ','.join(f'Producto : {line["productName"]} Cantidad : {line["qty"]}' for line in lines)
+                result.append({
+                    "OrderId": res.id,
+                    "OrderName": res.name if res.name else '',
+                    "ClientName": res.customer_id.display_name,
+                    "ClientAddress": res.customer_id.street,
+                    "ClientLatitude": res.customer_id.partner_latitude,
+                    "ClientLongitude": res.customer_id.partner_longitude,
+                    'State': res.state,
+                    "Total": int(res.total_sale),
+                    "orderDescription": description
+                })
         return result
 
     @http.route('/api/client_orders', type='json', method=['GET'], auth='token', cors='*')
@@ -279,7 +297,10 @@ class MobileSaleController(http.Controller):
 
     @http.route('/api/order', type='json', method=['GET'], auth='token', cors='*')
     def get_order(self, latitude, longitude, id):
-        return self.get_order_dict(latitude, longitude, id)
+        try:
+            return self.get_order_dict(latitude, longitude, id)
+        except Exception as e:
+            return {'message': "Error en Comunicacion"}
 
     def get_order_dict(self, latitude, longitude, id):
         if id:
@@ -312,7 +333,7 @@ class MobileSaleController(http.Controller):
                 'State': order.state,
                 "Total": order.total_sale
             })
-            return respond
+            return {"message": f"Orden {'Asignada' if order.state == 'assigned' else 'En Ruta'}", "order": respond}
         else:
             return []
 

@@ -28,11 +28,12 @@ def get_prices(client_id, truck):
             'Price': coupon.list_price
         })
     for cil in request.env['product.product'].sudo().search([('categ_id', '=', 5)]):
+        stock_quant = request.env['stock.quant'].sudo().search([('location_id.id','=',location.id),('product_id.id','=',cil.id)])
         result.append({
             'product_id': cil.product_tmpl_id.id,
             'product_name': cil.product_tmpl_id.name,
             'isCil': True,
-            'Stock': 5,
+            'Stock': stock_quant.quantity,
             'Price': cil.list_price
         })
     return result
