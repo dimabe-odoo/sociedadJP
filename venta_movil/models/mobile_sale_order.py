@@ -85,17 +85,13 @@ class MobileSaleOrder(models.Model):
                 for tx in line.tax_ids:
                     total_tax.append((tx.amount / 100) * line.price * line.qty)
             if len(total_untax) > 0:
-                item.write({
-                    'total_sale': sum(total_untax) + sum(total_tax),
-                    'total_untaxed': sum(total_untax),
-                    'total_taxes': sum(total_tax)
-                })
+                item.total_sale = sum(total_untax) + sum(total_tax)
+                item.total_untaxed = sum(total_untax)
+                item.total_taxes = sum(total_tax)
             else:
-                item.write({
-                    'total_sale': 0,
-                    'total_untaxed': 0,
-                    'total_taxes': 0
-                })
+                item.total_sale = 0
+                item.total_untaxed = 0
+                item.total_taxes = 0
 
     def button_assign(self):
         for item in self:
@@ -160,6 +156,10 @@ class MobileSaleOrder(models.Model):
                     change = item.paid - item.total_sale
                     if change > 0:
                         item.change = change
+
+    def write(self,values):
+        res = super(MobileSaleOrder, self).write(values)
+        return res
 
     @api.onchange('customer_id')
     def onchange_address_id(self):
@@ -237,20 +237,8 @@ class MobileSaleOrder(models.Model):
         })
 
     def make_done(self):
-        if self.address_id:
-            sale_odoo = self.env['sale.order'].create({
-                'company_id': self.env.user.company_id.id,
-                'currency_id': self.currency_id.id,
-                'partner_id': self.address_id.id if not self.address_id else self.customer_id.id,
-                'picking_policy': 'direct',
-                'origin': self.id,
-                'with_delivery': True,
-                'loan_supply': self.is_loan,
-                'warehouse_id': self.warehouse_id.id,
-                'pricelist_id': self.price_list_id.id
-            })
-        else:
-            sale_odoo = self.env['sale.order'].create({
+
+        sale_odoo = self.env['sale.order'].create({
                 'company_id': self.env.user.company_id.id,
                 'currency_id': self.currency_id.id,
                 'partner_id': self.customer_id.id,
@@ -260,7 +248,7 @@ class MobileSaleOrder(models.Model):
                 'loan_supply': self.is_loan,
                 'warehouse_id': self.warehouse_id.id,
                 'pricelist_id': self.price_list_id.id
-            })
+        })
 
         for line in self.mobile_lines:
             sale_line = self.env['sale.order.line'].create({

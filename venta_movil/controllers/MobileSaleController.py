@@ -136,14 +136,12 @@ class MobileSaleController(http.Controller):
     @http.route('/api/cancel', type="json", method=['GET'], auth="token", cors='*')
     def cancel_order(self, mobile_id, truck):
         try:
-            mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)])
+            mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)],limit=1)
             truck = request.env['truck.session'].sudo().search(
                 [('truck_id.name', '=', truck), ('is_present', '=', True)])
             if not mobile_id:
                 return {'No existe este pedido'}
-            mobile.write({
-                "not_accepted_truck_ids": [(4, truck.user_id.id)]
-            })
+            mobile[0].not_accepted_truck_ids = [(4, request.env.uid)]
             return {"message": 'Pedido {} ha sido cancelado'.format(mobile.name)}
         except Exception as e:
             return {"message": "Error"}
@@ -160,7 +158,7 @@ class MobileSaleController(http.Controller):
             mobile_order.make_done()
             return {"message": "Pedido Entregado correctamente"}
         except Exception as e:
-            return {"message": "Error"}
+            return {"message": "Error de comunicacion"}
 
     @http.route('/api/redo_truck', type='json', method=['GET'], auth='token', cors='*')
     def redo_truck(self, session, orderId):
@@ -207,11 +205,11 @@ class MobileSaleController(http.Controller):
             [('seller_id', '=', False), ('state', '=', 'confirm')])
         session = request.env['truck.session'].sudo().search([('id', '=', session)])
         order_assigned = request.env['mobile.sale.order'].search(
-            [('seller_id', '=', session.id), ('state', 'not in', ['done', 'cancel', 'draft'])])
+            [('seller_id', '=', session.id), ('state', 'not in', ['done', 'cancel', 'draft'])]).filtered(lambda x: request.env.uid not in x.not_accepted_truck_ids.ids)
         if order_active and not order_assigned:
             order_with_stock = request.env['mobile.sale.order'].sudo().search(
                 [('id', 'in', verify_stock_truck_for_order(order_active, session))])
-            if len(order_with_stock) == 1:
+            if len(order_with_stock) == 1 and not order_with_stock.not_accepted_truck_ids:
                 order_with_stock.write({
                     'seller_id': session.id,
                     'warehouse_id': session.warehouse_id.id,
@@ -247,7 +245,7 @@ class MobileSaleController(http.Controller):
                 return self.get_order(latitude,
                                       longitude,
                                       orders_sorted_by_dist[0]['order'].id)
-        elif order_assigned:
+        elif order_assigned and request.env.uid not in order_assigned.not_accepted_truck_ids.ids:
             return self.get_order(latitude, longitude, order_assigned.id)
 
     @http.route('/api/my_orders', type='json', method=['GET'], auth='token', cors='*')
