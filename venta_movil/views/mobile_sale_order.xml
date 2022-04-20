@@ -17,8 +17,10 @@
                         />
                         <button type="object" string="Despachar" name="button_dispatch"
                                 attrs="{'invisible':[('state','!=','assigned')]}"/>
-                        <button type="object" string="Asignar" name="button_assign" attrs="{'invisible':[('state','!=','confirm')]}"/>
-                        <field name="state" widget="statusbar" statusbar_visible="cancel,draft,confirm,assigned,onroute,done"/>
+                        <button type="object" string="Asignar" name="button_assign"
+                                attrs="{'invisible':[('state','!=','confirm')]}"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="cancel,draft,confirm,assigned,onroute,done"/>
                     </header>
                     <sheet>
                         <div class="oe_title" attrs="{'invisible':[('state','=','draft')]}">
@@ -43,7 +45,8 @@
                                 <field name='sale_id' readonly="1" attrs="{'invisible':[('state','!=','done')]}"/>
                             </group>
                             <group>
-                                <field name="seller_id" attrs="{'invisible':[('state','in',('draft','cancel'))],'required':[('state','=','confirm')]}"/>
+                                <field name="seller_id"
+                                       attrs="{'invisible':[('state','in',('draft','cancel'))],'required':[('state','=','confirm')]}"/>
                                 <field name="warehouse_id" attrs="{'invisible':[('state','in',('draft','cancel'))]}"/>
                                 <field name="truck_ids" invisible="1"/>
                                 <field name="location_id"
@@ -63,7 +66,8 @@
                                         <field name="loan_qty"
                                                attrs="{'readonly':[('parent.state','=','done')]}"/>
                                         <field name="qty" attrs="{'readonly':[('parent.state','=','done')]}"/>
-                                        <field name="tax_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('type_tax_use','=','sale')]"/>
+                                        <field name="tax_ids" widget="many2many_tags" options="{'no_create': True}"
+                                               domain="[('type_tax_use','=','sale')]"/>
                                         <field name="subtotal" readonly="1" invisible="1"/>
                                     </tree>
                                 </field>
@@ -77,6 +81,13 @@
                                                readonly="1"/>
                                     </group>
                                 </strong>
+                            </page>
+                            <page name="rejected_user" string="Usuarios">
+                                <field name="not_accepted_truck_ids">
+                                    <tree editable="bottom" create="false" delete="true">
+                                        <field name="login"/>
+                                    </tree>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>

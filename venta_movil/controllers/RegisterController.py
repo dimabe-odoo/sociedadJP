@@ -42,13 +42,17 @@ class RegisterController(http.Controller):
                 'mobile': create_user[0].mobile, 'address': create_user[0].street, 'token': token}
 
     @http.route('/api/create_client', type='json', method=['POST'], auth='token', cors='*')
-    def create_client(self, name, email, phoneNumber, commune_id, address, latitude, longitude, reference,vat=False):
+    def create_client(self, name, email, phoneNumber, commune_id, address, latitude, longitude, reference, vat=False):
         try:
             email = email.lower()
             user = request.env['res.users'].sudo().search([('login', '=', email)])
 
             if user:
-                return 'el email {} ya se encuentra registrado'.format(email)
+                return {'message': 'el email {} ya se encuentra registrado'.format(email)}
+            partner = request.env['res.partner'].sudo().search(
+                [('vat', '=', vat)])
+            if partner:
+                return {'message': 'el rut ingresado ya esta registrado'}
 
             partner = request.env['res.partner'].sudo().search(
                 [('email', '=', email)])
@@ -67,16 +71,18 @@ class RegisterController(http.Controller):
                      'partner_longitude': longitude, 'l10n_cl_sii_taxpayer_type': '1', 'vat': vat,
                      'comment': reference})
 
-            create_user = request.env['res.users'].sudo().create({
-                'name': name,
-                'login': email,
-                'email': email,
-                'company_id': 1,
-                'sel_groups_1_8_9': 8,
-                'partner_id': partner.id,
-                'mobile': phoneNumber,
-                'comment': reference
-            })
+            user = request.env['res.users'].sudo().search([('login', '=', email)])
+            if not user:
+                create_user = request.env['res.users'].sudo().create({
+                    'name': name,
+                    'login': email,
+                    'email': email,
+                    'company_id': 1,
+                    'sel_groups_1_8_9': 8,
+                    'partner_id': partner.id,
+                    'mobile': phoneNumber,
+                    'comment': reference
+                })
 
             return {'message': "Cliente creado correctamente", 'clientId': partner.id}
         except Exception as e:
