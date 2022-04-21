@@ -372,7 +372,7 @@ class MobileSaleController(http.Controller):
 
         return result
 
-    @http.route('/api/paymentmethod', type='json', method=['GET'], auth='token', cors='*')
+    @http.route('/api/total_order', type='json', method=['GET'], auth='token', cors='*')
     def get_my_order_total(self, employee):
         session = request.env['truck.session'].sudo().search([('employee_id', '=', employee)])
         orders = request.env['mobile.sale.order'].sudo().search(
