@@ -45,6 +45,8 @@ class MobileSaleController(http.Controller):
             if session.truck_id.id in trucks:
                 warehouse_id = ware.id
                 break
+        if not warehouse_id:
+            return {'message': 'Compra no realizado, usted no se encuentra asociado a ningun local de ventas'}
         mobile = request.env['mobile.sale.order'].sudo().create({
             'state': 'draft',
             'customer_id': customer.id,
@@ -78,7 +80,7 @@ class MobileSaleController(http.Controller):
             'payment_method': int(payment)
         })
         mobile.make_done()
-        return {'message': 'Compra realizada satifactoriamente'}
+        return {'message': 'Compra realizada satifactoriamente','create_order': True}
 
     @http.route('/api/create_sale_order', type="json", method=['POST'], auth="token", cors='*')
     def create_sale_order(self, products, client):
