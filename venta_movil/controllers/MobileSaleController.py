@@ -8,7 +8,7 @@ import googlemaps
 import requests
 import math
 from odoo.tools import date_utils
-from odoo import models
+from odoo import models, fields
 from datetime import date
 
 
@@ -136,7 +136,7 @@ class MobileSaleController(http.Controller):
     @http.route('/api/cancel', type="json", method=['GET'], auth="token", cors='*')
     def cancel_order(self, mobile_id, truck):
         try:
-            mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)],limit=1)
+            mobile = request.env['mobile.sale.order'].sudo().search([('id', '=', mobile_id)], limit=1)
             truck = request.env['truck.session'].sudo().search(
                 [('truck_id.name', '=', truck), ('is_present', '=', True)])
             if not mobile_id:
@@ -205,7 +205,8 @@ class MobileSaleController(http.Controller):
             [('seller_id', '=', False), ('state', '=', 'confirm')])
         session = request.env['truck.session'].sudo().search([('id', '=', session)])
         order_assigned = request.env['mobile.sale.order'].search(
-            [('seller_id', '=', session.id), ('state', 'not in', ['done', 'cancel', 'draft'])]).filtered(lambda x: request.env.uid not in x.not_accepted_truck_ids.ids)
+            [('seller_id', '=', session.id), ('state', 'not in', ['done', 'cancel', 'draft'])]).filtered(
+            lambda x: request.env.uid not in x.not_accepted_truck_ids.ids)
         if order_active and not order_assigned:
             order_with_stock = request.env['mobile.sale.order'].sudo().search(
                 [('id', 'in', verify_stock_truck_for_order(order_active, session))])
@@ -368,6 +369,16 @@ class MobileSaleController(http.Controller):
             })
 
         return result
+
+    @http.route('/api/paymentmethod', type='json', method=['GET'], auth='token', cors='*')
+    def get_my_order_total(self, employee):
+        session = request.env['truck.session'].sudo().search([('employee_id', '=', employee)])
+        orders = request.env['mobile.sale.order'].sudo().search(
+            [('seller_id', 'in', session.mapped('id')), ('state', '=', 'done')], order="date_done desc")
+        order_total_money = sum(order.total_sale for order in orders)
+        order_total_qty = sum(orders.mapped('mobile_lines').mapped('qty'))
+
+        return {'order_total_money': order_total_money, 'order_total_qty': order_total_qty}
 
     def compare_list(self, array1, array2):
         return functools.reduce(lambda x, y: x and y, map(lambda p, q: p == q,
