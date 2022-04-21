@@ -377,6 +377,8 @@ class MobileSaleController(http.Controller):
         session = request.env['truck.session'].sudo().search([('employee_id', '=', employee)])
         orders = request.env['mobile.sale.order'].sudo().search(
             [('seller_id', 'in', session.mapped('id')), ('state', '=', 'done'),('date_done','=',datetime.datetime.now().strftime('%Y-%m-%d'))], order="date_done desc")
+        if len(orders) == 0:
+            return {"message": "No se han realizado ventas el dia de hoy"}
         order_total_money = sum(order.total_sale for order in orders)
         order_total_qty = sum(orders.mapped('mobile_lines').mapped('qty'))
 
