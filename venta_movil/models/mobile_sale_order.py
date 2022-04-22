@@ -157,7 +157,7 @@ class MobileSaleOrder(models.Model):
                     if change > 0:
                         item.change = change
 
-    def write(self,values):
+    def write(self, values):
         res = super(MobileSaleOrder, self).write(values)
         return res
 
@@ -239,15 +239,15 @@ class MobileSaleOrder(models.Model):
     def make_done(self):
 
         sale_odoo = self.env['sale.order'].create({
-                'company_id': self.env.user.company_id.id,
-                'currency_id': self.currency_id.id,
-                'partner_id': self.customer_id.id,
-                'picking_policy': 'direct',
-                'origin': self.id,
-                'with_delivery': True,
-                'loan_supply': self.is_loan,
-                'warehouse_id': self.warehouse_id.id,
-                'pricelist_id': self.price_list_id.id
+            'company_id': self.env.user.company_id.id,
+            'currency_id': self.currency_id.id,
+            'partner_id': self.customer_id.id,
+            'picking_policy': 'direct',
+            'origin': self.id,
+            'with_delivery': True,
+            'loan_supply': self.is_loan,
+            'warehouse_id': self.warehouse_id.id,
+            'pricelist_id': self.price_list_id.id
         })
 
         for line in self.mobile_lines:
@@ -279,7 +279,7 @@ class MobileSaleOrder(models.Model):
                     'location_id': self.location_id.id,
                 })
         else:
-            for line in self.mobile_lines:
+            for line in self.mobile_lines.filtered(lambda x: x.product_id.invoice_policy != 'order'):
                 self.env['stock.move.line'].create({
                     'move_id': sale_odoo.picking_ids[0].move_ids_without_package.filtered(
                         lambda a: a.product_id.id == line.product_id.id).id,
