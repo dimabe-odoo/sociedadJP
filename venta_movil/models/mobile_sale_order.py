@@ -271,15 +271,7 @@ class MobileSaleOrder(models.Model):
 
         sale_odoo.action_confirm()
         models._logger.error(sale_odoo.state)
-        if sale_odoo.picking_ids[0].move_line_ids_without_package:
-            for stock in sale_odoo.picking_ids[0].move_line_ids_without_package:
-                models._logger.error(sale_odoo.picking_ids[0].move_line_ids_without_package)
-                stock.write({
-                    'qty_done': self.mobile_lines.filtered(lambda a: a.product_id.id == stock.product_id.id).qty,
-                    'location_id': self.location_id.id,
-                })
-        else:
-            for line in self.mobile_lines.filtered(lambda x: x.product_id.invoice_policy != 'order'):
+        for line in self.mobile_lines:
                 self.env['stock.move.line'].create({
                     'move_id': sale_odoo.picking_ids[0].move_ids_without_package.filtered(
                         lambda a: a.product_id.id == line.product_id.id).id,
@@ -291,7 +283,7 @@ class MobileSaleOrder(models.Model):
                     'location_dest_id': sale_odoo.picking_ids[0].move_ids_without_package.filtered(
                         lambda a: a.product_id.id == line.product_id.id).location_dest_id.id,
                     'date': datetime.date.today(),
-                })
+            })
         models._logger.error('{}'.format(sale_odoo.picking_ids))
         # if self.mobile_lines.filtered(lambda a: a.loan_qty > 0):
         #     sale_odoo.write({
